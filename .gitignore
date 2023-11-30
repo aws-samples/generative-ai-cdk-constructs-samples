@@ -1,0 +1,16 @@
+**/.env
+
+########################################################################
+# Python - https://github.com/github/gitignore/blob/master/Python.gitignore
+########################################################################
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+########################################################################
+# OSX - https://github.com/github/gitignore/blob/master/Global/macOS.gitignore
+########################################################################
+# General
+.DS_Store
+**/venv
