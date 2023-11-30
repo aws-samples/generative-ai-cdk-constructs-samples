@@ -20,9 +20,9 @@
     "typescript": "~5.2.2"
   },
   "dependencies": {
-    "@cdklabs/generative-ai-cdk-constructs": "0.0.86",
-    "aws-cdk-lib": "2.103.1",
-    "constructs": "^10.0.0",
+    "@cdklabs/generative-ai-cdk-constructs": "0.1.0",
+    "aws-cdk-lib": "2.111.0",
+    "constructs": "^10.3.0",
     "source-map-support": "^0.5.21"
   }
 }
