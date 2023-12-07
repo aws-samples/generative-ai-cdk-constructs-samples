@@ -1,0 +1,59 @@
+import json
+import os
+import sys
+
+import boto3
+from botocore.exceptions import ClientError
+
+
+try:
+    s3_client = boto3.client('s3')
+    logs_client = boto3.client('logs')
+    s3 = boto3.resource('s3')
+    response_list_buckets = s3_client.list_buckets()
+
+    def empty_bucket(bucket_name):
+        bucket = s3.Bucket(bucket_name)
+        if s3.BucketVersioning(bucket_name).status == 'Enabled':
+            bucket.object_versions.delete()
+        else:
+            bucket.objects.all().delete()
+        return
+
+    for bucket in response_list_buckets['Buckets']:
+        try:
+            response_get_bucket_tagging = s3_client.get_bucket_tagging(Bucket=bucket['Name'])
+            for tag in response_get_bucket_tagging['TagSet']:
+                if tag['Key'] == 'app':
+                    if tag['Value'] == "generative-ai-cdk-constructs-samples":
+                        print(f'Deleting bucket "{bucket["Name"]}"...')
+                        empty_bucket(bucket['Name'])
+                        s3_client.delete_bucket(Bucket=bucket['Name'])                       
+                    break
+        except ClientError as client_error:
+            if client_error.response['Error']['Code'] == 'NoSuchTagSet':
+                None  # print(f'User pool, "{user_pool_id}", or client, "{app_client_id}" not found', file=sys.stderr)
+            else:
+                raise client_error
+
+    log_group_paginator = logs_client.get_paginator('describe_log_groups')
+    response_describe_log_groups_iterator = log_group_paginator.paginate()
+    for response_describe_log_groups in response_describe_log_groups_iterator:
+        for log_group in response_describe_log_groups["logGroups"]:
+            print(f'Deleting log group "{log_group["logGroupName"]}"...')
+            logs_client.delete_log_group(logGroupName=log_group['logGroupName'])
+              
+            # # "arn" has `:*` at the end which is an invalid resource??
+            # response_list_tags_for_resource = logs_client.list_tags_for_resource(resourceArn=log_group["arn"][:-2])
+            # for key, value in response_list_tags_for_resource['tags'].items():
+            #     if key == 'app' and value == 'generative-ai-cdk-constructs-samples':
+            #         print(f'Deleting log group "{log_group["logGroupName"]}"...')
+            #         logs_client.delete_log_group(logGroupName=log_group['logGroupName'])
+            #         break
+
+    exit(0)
+
+except ClientError as client_error:
+    raise client_error
+
+exit(1)

@@ -17,7 +17,7 @@ if os.path.isfile(cdk_deploy_output_file):
         api_stack='ApiStack'
         persistence_stack='PersistenceStack'
         
-        app_client_secret = parsed_json[api_stack]["ClientSecret"]
+
         app_client_id = parsed_json[api_stack]["ClientId"]
         user_pool_id = parsed_json[api_stack]["UserPoolId"]
 
@@ -32,7 +32,8 @@ if os.path.isfile(cdk_deploy_output_file):
                 ClientId=app_client_id
             )
             print(f'APP_URI="{parsed_json[api_stack]["AppUri"]}"')
-            print(f'CLIENT_SECRET="{response_describe_user_pool_client["UserPoolClient"]["ClientSecret"]}"')
+            app_client_secret = response_describe_user_pool_client["UserPoolClient"]["ClientSecret"]
+            print(f'CLIENT_SECRET="{app_client_secret}"')
             # print(f'CLIENT_SECRET="{app_client_secret}"') # use the API
             print(f'AUTHENTICATED_ROLE_ARN="{parsed_json[api_stack]["AuthenticatedRoleArn"]}"')
             print(f'CLIENT_ID="{app_client_id}"')
