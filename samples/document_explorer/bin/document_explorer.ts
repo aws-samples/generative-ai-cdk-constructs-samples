@@ -11,12 +11,15 @@ const env = {
     account: process.env.CDK_DEFAULT_ACCOUNT,
 }
 const app = new cdk.App();
+cdk.Tags.of(app).add("app", "generative-ai-cdk-constructs-samples");
+
 // cdk.Aspects.of(app).add(new cdknag.AwsSolutionsChecks({verbose:true}));
 
 //-----------------------------------------------------------------------------
 // Networking Layer
 //-----------------------------------------------------------------------------
 const network = new NetworkingStack(app, 'NetworkingStack', {env: env});
+cdk.Tags.of(network).add("stacl", "network");
 
 //-----------------------------------------------------------------------------
 // Persistence Layer
@@ -33,6 +36,7 @@ const persistence = new PersistenceStack(app, 'PersistenceStack', {
   volumeSize: 100,
   removalPolicy: cdk.RemovalPolicy.DESTROY
 });
+cdk.Tags.of(persistence).add("stack", "persistence");
 
 //-----------------------------------------------------------------------------
 // API Layer
@@ -48,5 +52,7 @@ const api = new ApiStack(app, 'ApiStack', {
   cacheNodeType: 'cache.r6g.xlarge',
   engine: 'redis',
   numCacheNodes: 1,
-  removalPolicy: cdk.RemovalPolicy.DESTROY
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
+  clientUrl: 'http://localhost:8501/'
 });
+cdk.Tags.of(api).add("stack", "api");

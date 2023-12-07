@@ -122,10 +122,10 @@ export class PersistenceStack extends Stack {
       //---------------------------------------------------------------------
       // Export values
       //---------------------------------------------------------------------
-      new cdk.CfnOutput(this, "InputsAssetsBucket", {
+      new cdk.CfnOutput(this, "S3InputBucket", {
         value: this.inputsAssetsBucket.bucketName,
       });
-      new cdk.CfnOutput(this, "processedAssetsBucket", {
+      new cdk.CfnOutput(this, "S3ProcessedBucket", {
         value: this.processedAssetsBucket.bucketName,
       });
 
