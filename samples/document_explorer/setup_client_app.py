@@ -34,7 +34,6 @@ if os.path.isfile(cdk_deploy_output_file):
             print(f'APP_URI="{parsed_json[api_stack]["AppUri"]}"')
             app_client_secret = response_describe_user_pool_client["UserPoolClient"]["ClientSecret"]
             print(f'CLIENT_SECRET="{app_client_secret}"')
-            # print(f'CLIENT_SECRET="{app_client_secret}"') # use the API
             print(f'AUTHENTICATED_ROLE_ARN="{parsed_json[api_stack]["AuthenticatedRoleArn"]}"')
             print(f'CLIENT_ID="{app_client_id}"')
             print(f'COGNITO_DOMAIN="{parsed_json[api_stack]["CognitoDomain"]}"')

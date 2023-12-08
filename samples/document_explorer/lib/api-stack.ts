@@ -266,10 +266,6 @@ export class ApiStack extends Stack {
       value: this.cognitoClient.userPoolClientId, 
     });
 
-    // new cdk.CfnOutput(this, "ClientSecret", {
-    //   value: this.cognitoClient.userPoolClientSecret.unsafeUnwrap(),
-    // });
-
     new cdk.CfnOutput(this, "AppUri", {
       value: props.clientUrl,
     });

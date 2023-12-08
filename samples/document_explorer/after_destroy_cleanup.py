@@ -42,14 +42,6 @@ try:
         for log_group in response_describe_log_groups["logGroups"]:
             print(f'Deleting log group "{log_group["logGroupName"]}"...')
             logs_client.delete_log_group(logGroupName=log_group['logGroupName'])
-              
-            # # "arn" has `:*` at the end which is an invalid resource??
-            # response_list_tags_for_resource = logs_client.list_tags_for_resource(resourceArn=log_group["arn"][:-2])
-            # for key, value in response_list_tags_for_resource['tags'].items():
-            #     if key == 'app' and value == 'generative-ai-cdk-constructs-samples':
-            #         print(f'Deleting log group "{log_group["logGroupName"]}"...')
-            #         logs_client.delete_log_group(logGroupName=log_group['logGroupName'])
-            #         break
 
     exit(0)
 
