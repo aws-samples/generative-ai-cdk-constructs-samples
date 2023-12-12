@@ -1,5 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
-import { Aws, Stack, StackProps, aws_elasticache } from 'aws-cdk-lib';
+import { Aws, Stack, StackProps, Tags, aws_elasticache } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
 import * as iam from 'aws-cdk-lib/aws-iam';
@@ -25,6 +25,7 @@ export interface ApiProps extends StackProps {
   engine: string;
   numCacheNodes: number;
   removalPolicy: cdk.RemovalPolicy;
+  clientUrl: string;
 }
 
 export class ApiStack extends Stack {
@@ -59,8 +60,8 @@ export class ApiStack extends Stack {
     this.cognitoClient = this.cognitoPool.addClient('CognitoClient', {
       generateSecret: true,
       oAuth: {
-        callbackUrls: ["http://localhost:8501/"],
-        logoutUrls: ["http://localhost:8501/"]
+        callbackUrls: [props.clientUrl],
+        logoutUrls: [props.clientUrl]
       },
     });
 
@@ -263,6 +264,10 @@ export class ApiStack extends Stack {
 
     new cdk.CfnOutput(this, "ClientId", {
       value: this.cognitoClient.userPoolClientId, 
+    });
+
+    new cdk.CfnOutput(this, "AppUri", {
+      value: props.clientUrl,
     });
 
     new cdk.CfnOutput(this, "IdentityPoolId", {
