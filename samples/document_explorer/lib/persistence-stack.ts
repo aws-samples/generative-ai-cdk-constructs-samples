@@ -26,6 +26,7 @@ export interface PersistenceProps extends StackProps {
 // Persistence Stack
 //-----------------------------------------------------------------------------
 export class PersistenceStack extends Stack {
+  public readonly accesslogBucket: s3.Bucket;
   public readonly inputsAssetsBucket: s3.Bucket;
   public readonly processedAssetsBucket: s3.Bucket;
   public readonly opensearchDomain: opensearch.Domain;
@@ -34,13 +35,29 @@ export class PersistenceStack extends Stack {
     super(scope, id, props);
 
       //---------------------------------------------------------------------
+      // S3 - Input Access Logs
+      //---------------------------------------------------------------------
+      this.accesslogBucket = new s3.Bucket(this, 'AccessLogs', {
+        enforceSSL: true,
+        versioned: true,
+        publicReadAccess: false,
+        blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+        encryption: s3.BucketEncryption.S3_MANAGED,
+        removalPolicy: props.removalPolicy
+      });
+
+      //---------------------------------------------------------------------
       // S3 - Input Assets
       //---------------------------------------------------------------------
       this.inputsAssetsBucket = new s3.Bucket(this, 'InputsAssets', {
         enforceSSL: true,
+        versioned: true,
+        publicReadAccess: false,
         blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
         encryption: s3.BucketEncryption.S3_MANAGED,
         removalPolicy: props.removalPolicy,
+        serverAccessLogsBucket: this.accesslogBucket,
+        serverAccessLogsPrefix: 'inputsAssetsBucketLogs/',
         cors: [
           {
             allowedMethods: [s3.HttpMethods.GET, s3.HttpMethods.PUT, s3.HttpMethods.POST],
@@ -59,9 +76,13 @@ export class PersistenceStack extends Stack {
       //---------------------------------------------------------------------
       this.processedAssetsBucket = new s3.Bucket(this, 'ProcessedAssets', {
         enforceSSL: true,
+        versioned: true,
+        publicReadAccess: false,
         blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
         encryption: s3.BucketEncryption.S3_MANAGED,
         removalPolicy: props.removalPolicy,
+        serverAccessLogsBucket: this.accesslogBucket,
+        serverAccessLogsPrefix: 'processedAssetsBucketLogs/',
         cors: [
           {
             allowedMethods: [s3.HttpMethods.GET, s3.HttpMethods.PUT, s3.HttpMethods.POST],
