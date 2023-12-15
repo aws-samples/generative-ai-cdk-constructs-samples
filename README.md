@@ -1,6 +1,6 @@
 # Sample Apps for AWS Generative AI CDK Constructs
 
-This repo provides sample apps to demonstrate how to build your own Generative AI solutions using [AWS Generative AI CDK Constructs](https://github.com/awslabs/generative-ai-cdk-constructs).
+This repo provides samples to demonstrate how to build your own Generative AI solutions using [AWS Generative AI CDK Constructs](https://github.com/awslabs/generative-ai-cdk-constructs).
 
 ## Getting started
 
