@@ -29,10 +29,10 @@ const persistence = new PersistenceStack(app, 'PersistenceStack', {
   securityGroups: network.securityGroups,
   masterNodes: 3,
   dataNodes: 3,
-  masterNodeInstanceType: 'm6g.4xlarge.search',
-  dataNodeInstanceType: 'r6g.8xlarge.search',
+  masterNodeInstanceType: 'm6g.large.search',
+  dataNodeInstanceType: 'm6g.large.search',
   availabilityZoneCount: 3,
-  volumeSize: 100,
+  volumeSize: 20,
   removalPolicy: cdk.RemovalPolicy.DESTROY
 });
 cdk.Tags.of(persistence).add("stack", "persistence");

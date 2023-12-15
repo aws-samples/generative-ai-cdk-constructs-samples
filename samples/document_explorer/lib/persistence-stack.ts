@@ -16,8 +16,8 @@ export interface PersistenceProps extends StackProps {
   securityGroups: ec2.SecurityGroup[];
   masterNodes: 1 | 3 | 5;
   dataNodes: number;
-  masterNodeInstanceType: 't3.small.search' | 't3.medium.search' | 'm6g.4xlarge.search' | 'm6g.8xlarge.search';
-  dataNodeInstanceType: 't3.small.search' | 't3.medium.search' | 'r6g.4xlarge.search' | 'r6g.8xlarge.search';
+  masterNodeInstanceType: 'm6g.large.search' | 'm6g.4xlarge.search' | 'm6g.8xlarge.search';
+  dataNodeInstanceType: 'm6g.large.search' | 'r6g.4xlarge.search' | 'r6g.8xlarge.search';
   availabilityZoneCount:number;
   volumeSize: number;
   removalPolicy: cdk.RemovalPolicy;
