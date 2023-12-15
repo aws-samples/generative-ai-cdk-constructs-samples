@@ -1,6 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { Aws, Stack, StackProps, Tags, aws_elasticache } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
+import { NagSuppressions } from 'cdk-nag'
 
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
@@ -47,7 +48,19 @@ export class ApiStack extends Stack {
       autoVerify: { email: true },
       signInAliases: { email: true },
       removalPolicy: props.removalPolicy,
+      advancedSecurityMode: cognito.AdvancedSecurityMode.ENFORCED,
+      passwordPolicy: {
+        minLength: 12,
+        requireLowercase: true,
+        requireUppercase: true,
+        requireDigits: true,
+        requireSymbols: true,
+        tempPasswordValidity: cdk.Duration.days(3),
+      }
     });
+    NagSuppressions.addResourceSuppressions(this.cognitoPool, [
+      {id: 'AwsSolutions-COG2', reason: 'An MFA is not required to create a sample UserPool.'},
+    ])
 
 
       const uniqueStackIdPart = cdk.Fn.select(2, cdk.Fn.split('/', `${cdk.Aws.STACK_ID}`));
@@ -94,6 +107,7 @@ export class ApiStack extends Stack {
         'authenticated': this.authenticatedRole.roleArn
       }
     });
+    NagSuppressions.addResourceSuppressions(this.authenticatedRole, [{id: 'AwsSolutions-IAM5', reason: '* bucket ARN prefix'}], true)
 
     const mergedApiRole = new iam.Role(this, 'mergedApiRole', {
       assumedBy:new iam.ServicePrincipal('appsync.amazonaws.com')
@@ -107,9 +121,10 @@ export class ApiStack extends Stack {
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         actions: ['logs:CreateLogGroup', 'logs:CreateLogStream', 'logs:PutLogEvents'],
-        resources: ['*'],
+        resources: ["arn:aws:logs:"+Aws.REGION+":"+cdk.Stack.of(this).account+":*"],
       }),
     );
+    NagSuppressions.addResourceSuppressions(appsynccloudWatchlogsRole, [{id: 'AwsSolutions-IAM5', reason: '* used after region:account prefix'}], true)
 
     //---------------------------------------------------------------------
     // AppSync Merged API
@@ -161,6 +176,8 @@ export class ApiStack extends Stack {
         `${this.mergedApi.attrArn}/sourceApiAssociations/*`,
       ]
     }));
+    NagSuppressions.addResourceSuppressions(mergedApiRole, [{id: 'AwsSolutions-IAM5', reason: '* used after ARN prefix'}], true)
+
     // Add Source API
     const cfn_source_api_association_rag = new appsync.CfnSourceApiAssociation(this, "RagApiAssociation", {
       mergedApiIdentifier: this.mergedApi.attrApiId,
@@ -202,6 +219,8 @@ export class ApiStack extends Stack {
         `${this.mergedApi.attrArn}/sourceApiAssociations/*`,
       ]
     }));
+    NagSuppressions.addResourceSuppressions(mergedApiRole, [{id: 'AwsSolutions-IAM5', reason: '* used after ARN prefix'}], true)
+
     // Add Source API
     const cfn_source_api_association_summarization = new appsync.CfnSourceApiAssociation(this, "SummarizationApiAssociation", {
       mergedApiIdentifier: this.mergedApi.attrApiId,
@@ -237,6 +256,8 @@ export class ApiStack extends Stack {
         `${this.mergedApi.attrArn}/sourceApiAssociations/*`,
       ]
     }));
+    NagSuppressions.addResourceSuppressions(mergedApiRole, [{id: 'AwsSolutions-IAM5', reason: '* used after ARN prefix'}], true)
+
     // Add Source API
     const cfn_source_api_association_qa = new appsync.CfnSourceApiAssociation(this, "QaApiAssociation", {
       mergedApiIdentifier: this.mergedApi.attrApiId,
@@ -246,6 +267,18 @@ export class ApiStack extends Stack {
     // Add dependency
     cfn_source_api_association_qa.node.addDependency(this.mergedApi);
     cfn_source_api_association_qa.node.addDependency(qa.graphqlApi);
+
+    //-----------------------------------------------------------------------------
+    // Suppress cdk-nag warnings for Generative AI CDK Constructs
+    // Reference: https://github.com/cdklabs/cdk-nag/blob/main/RULES.md
+    //-----------------------------------------------------------------------------
+    NagSuppressions.addResourceSuppressions([rag, summarization, qa], [
+      {id: 'AwsSolutions-IAM4', reason: 'AWS managed policies defined in @cdklabs/generative-ai-cdk-constructs'},
+      {id: 'AwsSolutions-IAM5', reason: 'Wildcard permissions defined in @cdklabs/generative-ai-cdk-constructs'},
+      {id: 'AwsSolutions-S1', reason: 'S3 access logs defined in @cdklabs/generative-ai-cdk-constructs'},
+      {id: 'AwsSolutions-S10', reason: 'S3 bucket policy defined in @cdklabs/generative-ai-cdk-constructs'},
+      {id: 'AwsSolutions-SQS3', reason: 'SQS DLQ property defined in @cdklabs/generative-ai-cdk-constructs'},
+    ], true)
 
     //---------------------------------------------------------------------
     // Export values

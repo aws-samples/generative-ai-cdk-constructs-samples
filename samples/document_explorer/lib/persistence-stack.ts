@@ -1,6 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { Stack, StackProps } from 'aws-cdk-lib';
+import { NagSuppressions } from 'cdk-nag';
 
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as s3 from 'aws-cdk-lib/aws-s3';
@@ -37,6 +38,7 @@ export class PersistenceStack extends Stack {
       //---------------------------------------------------------------------
       // S3 - Input Access Logs
       //---------------------------------------------------------------------
+      // 
       this.accesslogBucket = new s3.Bucket(this, 'AccessLogs', {
         enforceSSL: true,
         versioned: true,
@@ -45,6 +47,9 @@ export class PersistenceStack extends Stack {
         encryption: s3.BucketEncryption.S3_MANAGED,
         removalPolicy: props.removalPolicy
       });
+      NagSuppressions.addResourceSuppressions(this.accesslogBucket, [
+        {id: 'AwsSolutions-S1', reason: 'There is no need to enable access logging for the AccessLogs bucket.'},
+      ])
 
       //---------------------------------------------------------------------
       // S3 - Input Assets
@@ -133,12 +138,27 @@ export class PersistenceStack extends Stack {
       //---------------------------------------------------------------------
       this.opensearchDomain.addAccessPolicies(
         new iam.PolicyStatement({
-          actions: ['es:*'],
+          actions: [
+            'es:ESHttpDelete',
+            'es:ESHttpGet',
+            'es:ESHttpHead',
+            'es:ESHttpPost',
+            'es:ESHttpPut'
+          ],
           principals: [new iam.AccountPrincipal(cdk.Stack.of(this).account)],
           effect: iam.Effect.ALLOW,
           resources: [this.opensearchDomain.domainArn, `${this.opensearchDomain.domainArn}/*`],
+          conditions: {
+            StringEquals: {
+              'aws:SourceVpc': props.vpc.vpcId
+            }
+          }
         }),
       );
+      NagSuppressions.addResourceSuppressions(this.opensearchDomain, [
+        {id: 'AwsSolutions-OS3', reason: 'Access policy restricting access to the VPC'},
+        {id: 'AwsSolutions-IAM5', reason: 'Access policy restricting access to the VPC'},
+      ])
 
       //---------------------------------------------------------------------
       // Export values
