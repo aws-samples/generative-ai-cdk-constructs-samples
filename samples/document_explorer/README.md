@@ -1,8 +1,8 @@
-# Document explorer
+# Document Explorer
 
 ## Overview
 
-The Sample Generative AI Application demonstrates how to build end-to-end solutions leveraging AWS services and the [Generative AI Constructs library](https://github.com/awslabs/generative-ai-cdk-constructs).
+The "Document Explorer" sample generative AI application demonstrates how to build end-to-end solutions leveraging AWS services and [AWS Generative AI CDK Constructs](https://github.com/awslabs/generative-ai-cdk-constructs).
 
 It includes examples of key components needed in generative AI applications:
 
@@ -10,9 +10,9 @@ It includes examples of key components needed in generative AI applications:
 
 - [Document Summarization](https://github.com/awslabs/generative-ai-cdk-constructs/tree/main/src/patterns/gen-ai/aws-summarization-appsync-stepfn): Summarizes PDF documents leveraging Large Language Models like Anthropic Claude V2 via Amazon Bedrock. 
 
-- [Question Answering](https://github.com/awslabs/generative-ai-cdk-constructs/tree/main/src/patterns/gen-ai/aws-qa-appsync-opensearch): Answers natural language questions by retrieving relevant documents from the knowledge base and leveraging Large Language Models.
+- [Question Answering](https://github.com/awslabs/generative-ai-cdk-constructs/tree/main/src/patterns/gen-ai/aws-qa-appsync-opensearch): Answers natural language questions by retrieving relevant documents from the knowledge base and leveraging Large Language Models like Anthropic Claude V2 via Amazon Bedrock.
 
-By providing reusable constructs following AWS best practices, this app enables quickly building custom generative AI apps on AWS. The constructs abstract complexity of orchestrating AWS services like Lambda, OpenSearch, Step Functions, Bedrock, etc.
+By providing reusable constructs following AWS best practices, this app helps you quickly build custom generative AI apps on AWS. The constructs abstract complexity of orchestrating AWS services like Lambda, OpenSearch, Step Functions, Bedrock, etc.
 
 Here is the architecture diagram of the sample application:
 
@@ -20,9 +20,7 @@ Here is the architecture diagram of the sample application:
 
 ## Folder Structure
 
-This document explorer codebase is organized into folders containing the ```frontend``` and ```backend``` infrastructure code. The frontend client app is built with [Streamlit](https://streamlit.io/) and located in the ```client_app``` folder. The backend code lives in ```bin/document_explorer.ts``` and uses the AWS CDK resources defined in the ```lib``` folder.
-
-If you need more information about 
+This Document Explorer codebase is organized into folders containing the ```frontend``` and ```backend``` infrastructure code. The frontend client app is built with [Streamlit](https://streamlit.io/) and is located in the ```client_app``` folder. The backend code lives in ```bin/document_explorer.ts``` and uses the AWS CDK resources defined in the ```lib``` folder.
 
 The key folders are:
 
@@ -48,11 +46,11 @@ samples/document_explorer
 
 ## Getting started
 
-To deploy this document explorer, follow these steps to set up the required tools and configure your AWS environment:
+To deploy this Document Explorer, follow these steps to set up the required tools and configure your AWS environment:
 
-### Pre-requisites
+### Prerequisites
 
-- An AWS account. We recommend to deploy this solution in a new account
+- An AWS account. We recommend you deploy this solution in a new account.
 - [AWS CLI](https://aws.amazon.com/cli/): configure your credentials
 
 ```
@@ -69,7 +67,7 @@ Default output format [None]: json
 
 ### Deploy the solution
 
-This project is built using the [Cloud Development Kit (CDK)](https://aws.amazon.com/cdk/). See [Getting Started With the AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html) for additional details and prerequisites.
+This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.amazon.com/cdk/). See [Getting Started With the AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html) for additional details and prerequisites.
 
 1. Clone this repository.
     ```shell
@@ -93,7 +91,7 @@ This project is built using the [Cloud Development Kit (CDK)](https://aws.amazon
     fi
     ```
 
-5. Enable Access to Bedrock Models
+5. Enable Access to Amazon Bedrock Models
 > You must explicitly enable access to models before they can be used with the Amazon Bedrock service. Please follow these steps in the [Amazon Bedrock User Guide](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html) to enable access to the models (at minimum, ```Anthropic::Claude```):.
 
 6. Deploy the sample in your account. 
@@ -146,7 +144,7 @@ S3_PROCESSED_BUCKET = "<PersistenceStack.processedAssetsBucket>"
 
 - Upload sample PDF files to the input bucket. For example, download Amazon's Annual Letters to Shareholders from 1997-2022 from [ir.aboutamazon.com](https://ir.aboutamazon.com/annual-reports-proxies-and-shareholder-letters/default.aspx). Then:
 
-### Steo 01. Test document ingestion
+### Step 01. Test document ingestion
 `Subscription` *(Optional - to track completion)*
 ```graphql
 subscription UpdateIngestionJobStatus {
@@ -199,7 +197,7 @@ mutation IngestDocuments {
 }
 ```
 
-### Steo 02. Run summarization
+### Step 02. Run summarization
 ```Subscription```
 ```graphql
 subscription UpdateSummaryJobStatus {
@@ -226,7 +224,7 @@ mutation GenerateSummary {
 }
 ```
 
-### Steo 03. Ask Question
+### Step 03. Ask question
 ```Subscription```
 ```graphql
 subscription UpdateQAJobStatus {
@@ -256,7 +254,7 @@ mutation PostQuestion {
 
 ## Clean up
 
-Do not forget to delete the stack to avoid unexpected charges
+Do not forget to delete the stack to avoid unexpected charges.
 
 First make sure to remove all data from the Amazon Simple Storage Service (Amazon S3) Buckets. Then:
 
@@ -264,7 +262,7 @@ First make sure to remove all data from the Amazon Simple Storage Service (Amazo
     $ cdk destroy --all
 ```
 
-Then in the AWS console delete the S3 buckets
+Then in the AWS Console delete the S3 buckets.
 
 # Content Security Legal Disclaimer
 The sample code; software libraries; command line tools; proofs of concept; templates; or other related technology (including any of the foregoing that are provided by our personnel) is provided to you as AWS Content under the AWS Customer Agreement, or the relevant written agreement between you and AWS (whichever applies). You should not use this AWS Content in your production accounts, or on production or other critical data. You are responsible for testing, securing, and optimizing the AWS Content, such as sample code, as appropriate for production grade use based on your specific quality control practices and standards. Deploying AWS Content may incur AWS charges for creating or using AWS chargeable resources, such as running Amazon EC2 instances or using Amazon S3 storage.
