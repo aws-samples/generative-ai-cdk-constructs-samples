@@ -1,6 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { Stack, StackProps } from 'aws-cdk-lib';
+import { NagSuppressions } from 'cdk-nag';
 
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as s3 from 'aws-cdk-lib/aws-s3';
@@ -26,6 +27,7 @@ export interface PersistenceProps extends StackProps {
 // Persistence Stack
 //-----------------------------------------------------------------------------
 export class PersistenceStack extends Stack {
+  public readonly accesslogBucket: s3.Bucket;
   public readonly inputsAssetsBucket: s3.Bucket;
   public readonly processedAssetsBucket: s3.Bucket;
   public readonly opensearchDomain: opensearch.Domain;
@@ -34,13 +36,33 @@ export class PersistenceStack extends Stack {
     super(scope, id, props);
 
       //---------------------------------------------------------------------
+      // S3 - Input Access Logs
+      //---------------------------------------------------------------------
+      // 
+      this.accesslogBucket = new s3.Bucket(this, 'AccessLogs', {
+        enforceSSL: true,
+        versioned: true,
+        publicReadAccess: false,
+        blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+        encryption: s3.BucketEncryption.S3_MANAGED,
+        removalPolicy: props.removalPolicy
+      });
+      NagSuppressions.addResourceSuppressions(this.accesslogBucket, [
+        {id: 'AwsSolutions-S1', reason: 'There is no need to enable access logging for the AccessLogs bucket.'},
+      ])
+
+      //---------------------------------------------------------------------
       // S3 - Input Assets
       //---------------------------------------------------------------------
       this.inputsAssetsBucket = new s3.Bucket(this, 'InputsAssets', {
         enforceSSL: true,
+        versioned: true,
+        publicReadAccess: false,
         blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
         encryption: s3.BucketEncryption.S3_MANAGED,
         removalPolicy: props.removalPolicy,
+        serverAccessLogsBucket: this.accesslogBucket,
+        serverAccessLogsPrefix: 'inputsAssetsBucketLogs/',
         cors: [
           {
             allowedMethods: [s3.HttpMethods.GET, s3.HttpMethods.PUT, s3.HttpMethods.POST],
@@ -59,9 +81,13 @@ export class PersistenceStack extends Stack {
       //---------------------------------------------------------------------
       this.processedAssetsBucket = new s3.Bucket(this, 'ProcessedAssets', {
         enforceSSL: true,
+        versioned: true,
+        publicReadAccess: false,
         blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
         encryption: s3.BucketEncryption.S3_MANAGED,
         removalPolicy: props.removalPolicy,
+        serverAccessLogsBucket: this.accesslogBucket,
+        serverAccessLogsPrefix: 'processedAssetsBucketLogs/',
         cors: [
           {
             allowedMethods: [s3.HttpMethods.GET, s3.HttpMethods.PUT, s3.HttpMethods.POST],
@@ -112,12 +138,27 @@ export class PersistenceStack extends Stack {
       //---------------------------------------------------------------------
       this.opensearchDomain.addAccessPolicies(
         new iam.PolicyStatement({
-          actions: ['es:*'],
+          actions: [
+            'es:ESHttpDelete',
+            'es:ESHttpGet',
+            'es:ESHttpHead',
+            'es:ESHttpPost',
+            'es:ESHttpPut'
+          ],
           principals: [new iam.AccountPrincipal(cdk.Stack.of(this).account)],
           effect: iam.Effect.ALLOW,
           resources: [this.opensearchDomain.domainArn, `${this.opensearchDomain.domainArn}/*`],
+          conditions: {
+            StringEquals: {
+              'aws:SourceVpc': props.vpc.vpcId
+            }
+          }
         }),
       );
+      NagSuppressions.addResourceSuppressions(this.opensearchDomain, [
+        {id: 'AwsSolutions-OS3', reason: 'Access policy restricting access to the VPC'},
+        {id: 'AwsSolutions-IAM5', reason: 'Access policy restricting access to the VPC'},
+      ])
 
       //---------------------------------------------------------------------
       // Export values

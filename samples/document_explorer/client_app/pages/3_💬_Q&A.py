@@ -6,7 +6,8 @@ import streamlit as st
 from dotenv import load_dotenv
 from streamlit_extras.switch_page_button import switch_page
 # Local imports
-from common.cognito_helper import CognitoHelper  
+from common.cognito_helper import CognitoHelper
+from common.streamlit_utils import hide_deploy_button
 from graphql.graphql_mutation_client import GraphQLMutationClient  
 from graphql.graphql_subscription_client import GraphQLSubscriptionClient
 from graphql.mutations import Mutations
@@ -138,6 +139,7 @@ def subscribe_to_answering_updates():
 #========================================================================================
 # Streamlit page configuration
 st.set_page_config(page_title="Q&A", page_icon="💬", layout="wide") 
+hide_deploy_button()
 
 # Check if user is authenticated and display login/logout buttons
 auth = CognitoHelper() 

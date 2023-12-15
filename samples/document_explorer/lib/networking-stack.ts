@@ -2,6 +2,8 @@ import { Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as logs from 'aws-cdk-lib/aws-logs';
 
 export class NetworkingStack extends Stack {
     public readonly vpc: ec2.Vpc;
@@ -35,7 +37,24 @@ export class NetworkingStack extends Stack {
             ],
             ipAddresses: ec2.IpAddresses.cidr('10.0.0.0/16')
         });
-    
+
+        //---------------------------------------------------------------------
+        // VPC Flow Logs
+        //---------------------------------------------------------------------
+        const logGroup = new logs.LogGroup(this, 'VPCFlowLogsLogGroup');
+        const vpcFlowLogrole = new iam.Role(this, 'VPCFlowLogsRole', {
+        assumedBy: new iam.ServicePrincipal('vpc-flow-logs.amazonaws.com'),
+        });
+        new ec2.FlowLog(this, 'FlowLog', {
+            resourceType: ec2.FlowLogResourceType.fromVpc(this.vpc),
+            destination: ec2.FlowLogDestination.toCloudWatchLogs(logGroup, vpcFlowLogrole),
+        });
+
+        //---------------------------------------------------------------------
+        // Gateway VPC endpoint for S3
+        //---------------------------------------------------------------------
+        this.vpc.addGatewayEndpoint("S3GatewayEndpoint", {service: ec2.GatewayVpcEndpointAwsService.S3});
+
         //---------------------------------------------------------------------
         // Security Group
         //---------------------------------------------------------------------
