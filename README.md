@@ -6,7 +6,7 @@ This repo provides sample apps to demonstrate how to you build your own Generati
 
 |Use Case|Description|Language|
 |-|-|-|
-|[Document explorer](samples/document_explorer/)|This sample provides an end-to-end experience that allows a user to ingest documents into a knowledge base, then summarize and ask questions against those documents.|TypeScript|
+|[Document Explorer](samples/document_explorer/)|This sample provides an end-to-end experience that allows a user to ingest documents into a knowledge base, then summarize and ask questions against those documents.|TypeScript|
 
 ## Contributing
 
