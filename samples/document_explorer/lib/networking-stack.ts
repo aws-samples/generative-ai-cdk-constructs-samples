@@ -38,7 +38,9 @@ export class NetworkingStack extends Stack {
             ipAddresses: ec2.IpAddresses.cidr('10.0.0.0/16')
         });
 
-        //VPC Flow Logs
+        //---------------------------------------------------------------------
+        // VPC Flow Logs
+        //---------------------------------------------------------------------
         const logGroup = new logs.LogGroup(this, 'VPCFlowLogsLogGroup');
         const vpcFlowLogrole = new iam.Role(this, 'VPCFlowLogsRole', {
         assumedBy: new iam.ServicePrincipal('vpc-flow-logs.amazonaws.com'),
@@ -47,7 +49,12 @@ export class NetworkingStack extends Stack {
             resourceType: ec2.FlowLogResourceType.fromVpc(this.vpc),
             destination: ec2.FlowLogDestination.toCloudWatchLogs(logGroup, vpcFlowLogrole),
         });
-    
+
+        //---------------------------------------------------------------------
+        // Gateway VPC endpoint for S3
+        //---------------------------------------------------------------------
+        this.vpc.addGatewayEndpoint("S3GatewayEndpoint", {service: ec2.GatewayVpcEndpointAwsService.S3});
+
         //---------------------------------------------------------------------
         // Security Group
         //---------------------------------------------------------------------
