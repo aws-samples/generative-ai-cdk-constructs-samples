@@ -2,12 +2,14 @@
 import streamlit as st
 # Local imports
 from common.cognito_helper import CognitoHelper
+from common.streamlit_utils import hide_deploy_button
 
 #========================================================================================
 # [View] Render UI components  
 #========================================================================================
 # Streamlit page configuration
 st.set_page_config(page_title="Generative AI CDK Constructs Samples", page_icon="🤖")
+hide_deploy_button()
 
 # Check if user is authenticated and display login/logout buttons
 auth = CognitoHelper() 
