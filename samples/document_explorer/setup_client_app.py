@@ -54,7 +54,7 @@ if os.path.isfile(cdk_deploy_output_file):
                 ClientId=app_client_id,
                 SecretHash=secret_hash,
                 Username=username,
-                Password='Sample123!'
+                Password='Sample12345!'
             )
             response_admin_confirm_sign_up = client.admin_confirm_sign_up(
                 UserPoolId=parsed_json[api_stack]["UserPoolId"],
