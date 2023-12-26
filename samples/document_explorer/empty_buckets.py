@@ -24,8 +24,9 @@ if os.path.isfile(cdk_deploy_output_file):
 
                 response_get_bucket_logging = client.get_bucket_logging(Bucket=bucket_name)
                 if 'LoggingEnabled' in response_get_bucket_logging and 'TargetBucket' in response_get_bucket_logging['LoggingEnabled']:
-                    logging_bucket = s3.Bucket(response_get_bucket_logging['LoggingEnabled']['TargetBucket'])
-                    if logging_bucket.versioning.status == 'Enabled':
+                    logging_bucket_name = response_get_bucket_logging['LoggingEnabled']['TargetBucket']
+                    logging_bucket = s3.Bucket(logging_bucket_name)
+                    if s3.BucketVersioning(logging_bucket_name).status == 'Enabled':
                         logging_bucket.object_versions.filter(Prefix=response_get_bucket_logging['LoggingEnabled']['TargetPrefix']).delete()
                     else:
                         logging_bucket.objects.filter(Prefix=response_get_bucket_logging['LoggingEnabled']['TargetPrefix']).delete()
