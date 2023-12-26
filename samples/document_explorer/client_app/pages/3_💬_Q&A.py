@@ -27,7 +27,7 @@ def get_selected_filename():
     if not selected_file:
         return None
     
-    return os.path.splitext(selected_file)[0]
+    return selected_file
 
 def get_selected_transformed_filename():
     """Get selected source filename from session state."""
@@ -36,8 +36,7 @@ def get_selected_transformed_filename():
     if not selected_file:
         return None
 
-    base_name = os.path.splitext(selected_file)[0]
-    return f"{base_name}.txt"
+    return f"{selected_file}.txt"
 
 selected_filename = get_selected_filename()
 

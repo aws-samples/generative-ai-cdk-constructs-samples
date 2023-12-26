@@ -33,8 +33,7 @@ def get_selected_source_filename():
     if not selected_file:
         return None
 
-    base_name = os.path.splitext(selected_file)[0]
-    return f"{base_name}.pdf"
+    return f"{selected_file}.pdf"
 
 # Get selected source file if authenticated
 selected_file = get_selected_source_filename()
