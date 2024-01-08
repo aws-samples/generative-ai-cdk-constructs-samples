@@ -32,7 +32,7 @@ try:
                     break
         except ClientError as client_error:
             if client_error.response['Error']['Code'] == 'NoSuchTagSet':
-                None  # print(f'User pool, "{user_pool_id}", or client, "{app_client_id}" not found', file=sys.stderr)
+                None  # print(f'NoSuchTagSet found', file=sys.stderr)
             else:
                 raise client_error
 

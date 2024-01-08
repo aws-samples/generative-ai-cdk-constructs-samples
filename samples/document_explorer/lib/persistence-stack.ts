@@ -21,6 +21,7 @@ export interface PersistenceProps extends StackProps {
   availabilityZoneCount:number;
   volumeSize: number;
   removalPolicy: cdk.RemovalPolicy;
+  logRemovalPolicy: cdk.RemovalPolicy;
 }
 
 //-----------------------------------------------------------------------------
@@ -45,7 +46,7 @@ export class PersistenceStack extends Stack {
         publicReadAccess: false,
         blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
         encryption: s3.BucketEncryption.S3_MANAGED,
-        removalPolicy: props.removalPolicy
+        removalPolicy: props.logRemovalPolicy
       });
       NagSuppressions.addResourceSuppressions(this.accesslogBucket, [
         {id: 'AwsSolutions-S1', reason: 'There is no need to enable access logging for the AccessLogs bucket.'},
