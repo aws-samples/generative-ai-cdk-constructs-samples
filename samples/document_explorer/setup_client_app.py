@@ -57,11 +57,11 @@ if os.path.isfile(cdk_deploy_output_file):
                 Password='Sample12345!'
             )
             response_admin_confirm_sign_up = client.admin_confirm_sign_up(
-                UserPoolId=parsed_json[api_stack]["UserPoolId"],
+                UserPoolId=user_pool_id,
                 Username=username
             )
             response_admin_update_user_attributes = client.admin_update_user_attributes(
-                UserPoolId=parsed_json[api_stack]["UserPoolId"],
+                UserPoolId=user_pool_id,
                 Username=username,
                 UserAttributes=[
                     {
