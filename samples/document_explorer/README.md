@@ -114,7 +114,7 @@ Between each stack, to protect you against unintended changes that affect your s
     pip install -r requirements.txt
     ```
 
-8. Create an ```.env``` file with the following content. Replace the property values with the values retrieved from the stack outputs/console.
+8. Still within the /client_app directory, create an ```.env``` file with the following content or mutate the ```.env-example```. Replace the property values with the values retrieved from the stack outputs/console.
 
 ```
 COGNITO_DOMAIN="<ApiStack.CognitoDomain>"
@@ -130,6 +130,8 @@ S3_INPUT_BUCKET = "<PersistenceStack.InputsAssetsBucket>"
 S3_PROCESSED_BUCKET = "<PersistenceStack.processedAssetsBucket>"
 
 ```
+
+Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved from the AWS Console. Go to the [Amazon Cognito page](https://console.aws.amazon.com/cognito/home) in the AWS console, then select the created user pool. Under App integration, select App client settings. Then, select Show Details and copy the value of the App client secret.
 
 9. Run client_app
     ```shell
