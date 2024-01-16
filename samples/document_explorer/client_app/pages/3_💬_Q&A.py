@@ -1,6 +1,7 @@
 # Standard library imports
 import os
 import base64
+from copy import copy
 # Third party imports 
 import streamlit as st
 from dotenv import load_dotenv
@@ -103,6 +104,8 @@ def on_message_update(message, subscription_client):
 
     elif status == "LLM streaming ended":
         st.session_state.message_widget.markdown(st.session_state.message_widget_text)
+        if st.session_state.messages[-1]['role'] == 'assistant':
+            st.session_state.messages[-1]['content'] = copy(st.session_state.message_widget_text)
         subscription_client.unsubscribe()
 
 
