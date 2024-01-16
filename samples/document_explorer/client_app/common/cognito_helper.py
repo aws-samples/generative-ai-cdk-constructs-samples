@@ -119,11 +119,11 @@ class CognitoHelper:
         """Sets session state variables after authentication."""
         try:
             
-            auth_query_params = dict(st.experimental_get_query_params())
-            if "code" not in auth_query_params or not auth_query_params["code"][0]:
+            auth_query_params = st.query_params.to_dict()
+            if "code" not in auth_query_params or not auth_query_params["code"]:
                 return
 
-            auth_code = auth_query_params["code"][0]
+            auth_code = auth_query_params["code"]
             access_token, id_token = self.get_user_tokens(auth_code)
 
             if access_token != "":
