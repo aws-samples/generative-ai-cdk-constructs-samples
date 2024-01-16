@@ -31,6 +31,7 @@ class Mutations:
             $max_docs: Int
             $verbose: Boolean
             $streaming: Boolean
+            $responseGenerationMethod: String
             ) {
             postQuestion(
                 jobid: $jobid
@@ -40,6 +41,7 @@ class Mutations:
                 max_docs: $max_docs
                 verbose: $verbose
                 streaming: $streaming
+                responseGenerationMethod: $responseGenerationMethod
             ) {
                 __typename
             }

@@ -47,6 +47,7 @@ def post_question_about_selected_file():
     """Send summary job request to GraphQL API."""
 
     selected_transformed_filename = get_selected_transformed_filename()
+    generative_method = st.session_state.get("generative_method", "LONG_CONTEXT")
     if auth.is_authenticated() and selected_transformed_filename:
         # Get user tokens
         access_token, id_token = auth.get_user_tokens()
@@ -66,8 +67,12 @@ def post_question_about_selected_file():
             "question": st.session_state.get("encoded_question", ""),
             "max_docs": 1,
             "verbose": False,
-            "streaming": True
+            "streaming": True,
+            "responseGenerationMethod": generative_method
         }
+        # print the variables
+        print(variables, "variables")
+        # console.log(variables, "variables")
         return mutation_client.execute(Mutations.POST_QUESTION, "PostQuestion", variables)
 
     return None
@@ -147,6 +152,14 @@ auth.print_login_logout_buttons()
 
 # Logged in user UI
 if auth.is_authenticated() and selected_filename:
+    # Add a radio button for method selection
+    generative_method = st.radio(
+        "Select Response Generation Method:",
+        ('RAG', 'LONG_CONTEXT')
+    )
+    # Add a divider here
+    st.markdown("---")
+    st.session_state['generative_method'] = generative_method
 
     # Initialize chat history
     if "messages_filename" not in st.session_state or st.session_state.messages_filename != selected_filename:
