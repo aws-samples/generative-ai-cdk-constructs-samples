@@ -70,9 +70,6 @@ def post_question_about_selected_file():
             "streaming": True,
             "responseGenerationMethod": generative_method
         }
-        # print the variables
-        print(variables, "variables")
-        # console.log(variables, "variables")
         return mutation_client.execute(Mutations.POST_QUESTION, "PostQuestion", variables)
 
     return None
