@@ -1,6 +1,7 @@
 # Standard library imports
 import os
 import base64
+from copy import copy
 # Third party imports 
 import streamlit as st
 from dotenv import load_dotenv
@@ -47,6 +48,7 @@ def post_question_about_selected_file():
     """Send summary job request to GraphQL API."""
 
     selected_transformed_filename = get_selected_transformed_filename()
+    generative_method = st.session_state.get("generative_method", "LONG_CONTEXT")
     if auth.is_authenticated() and selected_transformed_filename:
         # Get user tokens
         access_token, id_token = auth.get_user_tokens()
@@ -66,7 +68,8 @@ def post_question_about_selected_file():
             "question": st.session_state.get("encoded_question", ""),
             "max_docs": 1,
             "verbose": False,
-            "streaming": True
+            "streaming": True,
+            "responseGenerationMethod": generative_method
         }
         return mutation_client.execute(Mutations.POST_QUESTION, "PostQuestion", variables)
 
@@ -103,6 +106,8 @@ def on_message_update(message, subscription_client):
 
     elif status == "LLM streaming ended":
         st.session_state.message_widget.markdown(st.session_state.message_widget_text)
+        if st.session_state.messages[-1]['role'] == 'assistant':
+            st.session_state.messages[-1]['content'] = copy(st.session_state.message_widget_text)
         subscription_client.unsubscribe()
 
 
@@ -147,6 +152,14 @@ auth.print_login_logout_buttons()
 
 # Logged in user UI
 if auth.is_authenticated() and selected_filename:
+    # Add a radio button for method selection
+    generative_method = st.radio(
+        "Select Response Generation Method:",
+        ('RAG', 'LONG_CONTEXT')
+    )
+    # Add a divider here
+    st.markdown("---")
+    st.session_state['generative_method'] = generative_method
 
     # Initialize chat history
     if "messages_filename" not in st.session_state or st.session_state.messages_filename != selected_filename:
