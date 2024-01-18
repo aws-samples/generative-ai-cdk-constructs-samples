@@ -34,7 +34,6 @@ const persistence = new PersistenceStack(app, 'PersistenceStack', {
   availabilityZoneCount: 3,
   volumeSize: 20,
   removalPolicy: cdk.RemovalPolicy.DESTROY,
-  logRemovalPolicy: cdk.RemovalPolicy.RETAIN_ON_UPDATE_OR_DELETE
 });
 cdk.Tags.of(persistence).add("stack", "persistence");
 
