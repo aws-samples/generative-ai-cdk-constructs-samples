@@ -1,9 +1,15 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
-import { BedrockAgentStack } from '../lib/bedrock-agent-stack';
+import {BedrockAgentStack} from '../lib/bedrock-agent-stack';
+import {AwsSolutionsChecks} from "cdk-nag";
 
 const app = new cdk.App();
+
+
+cdk.Tags.of(app).add("app", "generative-ai-cdk-constructs-samples");
+cdk.Aspects.of(app).add(new AwsSolutionsChecks({verbose: true}));
+
 new BedrockAgentStack(app, 'BedrockAgentStack', {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
