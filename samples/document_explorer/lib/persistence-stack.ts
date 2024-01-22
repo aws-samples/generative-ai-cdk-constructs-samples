@@ -45,7 +45,8 @@ export class PersistenceStack extends Stack {
         publicReadAccess: false,
         blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
         encryption: s3.BucketEncryption.S3_MANAGED,
-        removalPolicy: props.removalPolicy
+        removalPolicy: props.removalPolicy,
+        autoDeleteObjects: props.removalPolicy == cdk.RemovalPolicy.DESTROY ? true : false,
       });
       NagSuppressions.addResourceSuppressions(this.accesslogBucket, [
         {id: 'AwsSolutions-S1', reason: 'There is no need to enable access logging for the AccessLogs bucket.'},
@@ -61,6 +62,7 @@ export class PersistenceStack extends Stack {
         blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
         encryption: s3.BucketEncryption.S3_MANAGED,
         removalPolicy: props.removalPolicy,
+        autoDeleteObjects: props.removalPolicy == cdk.RemovalPolicy.DESTROY ? true : false,
         serverAccessLogsBucket: this.accesslogBucket,
         serverAccessLogsPrefix: 'inputsAssetsBucketLogs/',
         cors: [

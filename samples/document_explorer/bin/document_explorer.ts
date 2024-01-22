@@ -33,7 +33,7 @@ const persistence = new PersistenceStack(app, 'PersistenceStack', {
   dataNodeInstanceType: 'm6g.large.search',
   availabilityZoneCount: 3,
   volumeSize: 20,
-  removalPolicy: cdk.RemovalPolicy.DESTROY
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
 });
 cdk.Tags.of(persistence).add("stack", "persistence");
 
