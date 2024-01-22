@@ -19,7 +19,8 @@ def handler(event, context):
     
     response = runtime.invoke_endpoint(EndpointName=ENDPOINT_NAME,
                                        ContentType='application/json',
-                                       Body=json.dumps(dic))
+                                       Body=json.dumps(dic),
+                                       CustomAttributes="accept_eula=false")
     
     result = json.loads(response['Body'].read().decode())
     print(result)
