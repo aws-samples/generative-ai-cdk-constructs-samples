@@ -14,7 +14,7 @@ Here is the architecture diagram of the sample application:
 
 ## Folder Structure
 
-This Document Explorer codebase is organized into folders : the backend code lives in ```bin/sagemaker_jumpstart_model.ts``` and uses the AWS CDK resources defined in the ```lib``` folder.
+This sample application codebase is organized into folders : the backend code lives in ```bin/sagemaker_jumpstart_model.ts``` and uses the AWS CDK resources defined in the ```lib``` folder.
 
 The key folders are:
 
