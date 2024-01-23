@@ -6,6 +6,8 @@ The "SageMaker Custom model deployment" sample generative AI application demonst
 
 Specifically, this sample deploys an AWS Lambda function which interacts with a SageMaker real-time endpoint, hosting [bge-base-en-v1.5](https://huggingface.co/BAAI/bge-base-en-v1.5) to generate embeddings on AWS Inferentia 2. 
 
+If you are interested to learn more about training and deploying models using [AWS Trainium](https://aws.amazon.com/machine-learning/trainium/) and [AWS Inferentia](https://aws.amazon.com/machine-learning/inferentia/), this [workshop](https://github.com/aws-samples/ml-specialized-hardware/tree/main) provides several accelerators and tutorials.
+
 By providing reusable constructs following AWS best practices, this app helps you quickly build custom generative AI apps on AWS.
 
 Here is the architecture diagram of the sample application:
