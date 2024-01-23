@@ -79,13 +79,13 @@ This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.am
     $ cdk deploy
     ```
 
-The command above will deploy one stack in your account. With the default configuration of this sample, the observed deployment time was ~615 seconds (10 minutes).
+The command above will deploy one stack in your account. With the default configuration of this sample, the observed deployment time was ~371 seconds (6 minutes).
 
 To protect you against unintended changes that affect your security posture, the AWS CDK Toolkit prompts you to approve security-related changes before deploying them. You will need to answer yes to get all the stack deployed.
 
 ### Test
 
-- In the AWS console, navigate to [AWS Lambda](https://us-east-1.console.aws.amazon.com/lambda/home?region=us-east-1#/functions?sb=lastModified&so=DESCENDING) and select the function named ```lambdallama2```
+- In the AWS console, navigate to [AWS Lambda](https://us-east-1.console.aws.amazon.com/lambda/home?region=us-east-1#/functions?sb=lastModified&so=DESCENDING) and select the function named ```testmistralhuggingface```
 
 - Under the Code tab, click ```Test```. This will send a request to the SageMaker endpoint, and display the result. 
 
