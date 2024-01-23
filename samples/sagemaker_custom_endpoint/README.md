@@ -4,7 +4,7 @@
 
 The "SageMaker Custom model deployment" sample generative AI application demonstrates how to deploy and interact with a model where artifacts are stored in an Amazon Simple Storage Service (S3) bucket, leveraging AWS services and [AWS Generative AI CDK Constructs](https://github.com/awslabs/generative-ai-cdk-constructs).
 
-Specifically, this sample deploys an AWS Lambda function which interacts with a SageMaker real-time endpoint, hosting [](https://huggingface.co/BAAI/bge-base-en-v1.5) to generate embeddings on Inferentia 2. 
+Specifically, this sample deploys an AWS Lambda function which interacts with a SageMaker real-time endpoint, hosting [bge-base-en-v1.5](https://huggingface.co/BAAI/bge-base-en-v1.5) to generate embeddings on AWS Inferentia 2. 
 
 By providing reusable constructs following AWS best practices, this app helps you quickly build custom generative AI apps on AWS.
 
@@ -38,7 +38,10 @@ samples/sagemaker_custom_model
 
 ### Prepare your model
 
-First, you need to prepare the model to run on the Inferentia 2 hardware. For this, you can follow steps 1 to 3 from this [blog post](https://www.philschmid.de/inferentia2-embeddings). Save the location where your model artifacts are saved.
+First, you need to prepare the model to run on the AWS Inferentia 2 hardware. For this, you can follow steps 1 to 3 from this [blog post](https://www.philschmid.de/inferentia2-embeddings). Save the location where your model artifacts are saved.
+
+> Note
+> This sample was tested in the region us-east-2. The Amazon S3 bucket containing your model artifacts needs to be in the same region where your real-time endpoint is deployed.
 
 To deploy this sample application, follow these steps to set up the required tools and configure your AWS environment:
 
@@ -73,7 +76,7 @@ This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.am
     cd samples/sagemaker_custom_model
     ```
 
-3. Update the location of your model artifacts. Update in [](./lib/sagemaker_custom_endpoint-stack.ts)
+3. Update the location of your model artifacts. Update in [sagemaker_custom_endpoint-stack.ts](./lib/sagemaker_custom_endpoint-stack.ts) the field ```modelDataUrl``` to specify the location where your saved your model artifacts during the [prepare your model](#prepare-your-model) step. The field should look like this: ```s3//BUCKET//KEY```. Also, replace the bucket arn field (```BUCKET_ARN```) in the same file with the ARN of the Amazon S3 bucket containing your model artifacts. This will give the permissions to the construct to pull your model artifacts.
 
 3. Boostrap AWS CDK resources on the AWS account.
     ```shell
@@ -91,7 +94,7 @@ To protect you against unintended changes that affect your security posture, the
 
 ### Test
 
-- In the AWS console, navigate to [AWS Lambda](https://us-east-1.console.aws.amazon.com/lambda/home?region=us-east-1#/functions?sb=lastModified&so=DESCENDING) and select the function named ```lambdallama2```
+- In the AWS console, navigate to [AWS Lambda](https://us-east-1.console.aws.amazon.com/lambda/home?region=us-east-1#/functions?sb=lastModified&so=DESCENDING) and select the function named ```testbgecustom```
 
 - Under the Code tab, click ```Test```. This will send a request to the SageMaker endpoint, and display the result. 
 
@@ -101,9 +104,13 @@ To protect you against unintended changes that affect your security posture, the
 
 Do not forget to delete the stack to avoid unexpected charges.
 
+First make sure to remove all data from the Amazon Simple Storage Service (Amazon S3) Bucket.
+
 ```shell
     $ cdk destroy
 ```
+
+Delete all the associated logs created by the different services in Amazon CloudWatch logs
 
 # Content Security Legal Disclaimer
 The sample code; software libraries; command line tools; proofs of concept; templates; or other related technology (including any of the foregoing that are provided by our personnel) is provided to you as AWS Content under the AWS Customer Agreement, or the relevant written agreement between you and AWS (whichever applies). You should not use this AWS Content in your production accounts, or on production or other critical data. You are responsible for testing, securing, and optimizing the AWS Content, such as sample code, as appropriate for production grade use based on your specific quality control practices and standards. Deploying AWS Content may incur AWS charges for creating or using AWS chargeable resources, such as running Amazon EC2 instances or using Amazon S3 storage.

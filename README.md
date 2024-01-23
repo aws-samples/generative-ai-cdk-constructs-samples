@@ -9,6 +9,7 @@ This repo provides samples to demonstrate how to build your own Generative AI so
 |[Document Explorer](samples/document_explorer/)| This sample provides an end-to-end experience that allows a user to ingest documents into a knowledge base, then summarize and ask questions against those documents.|TypeScript|
 |[SageMaker JumpStart model](samples/sagemaker_jumpstart_model/)| This sample provides a sample application which deploys a SageMaker real-time endpoint hosting a Llama 2 foundation model developed by Meta from Amazon JumpStart, and an AWS Lambda function to run inference requests against that endpoint.|TypeScript|
 |[SageMaker Hugging face model](samples/sagemaker_huggingface_model/)| This sample provides a sample application which deploys a SageMaker real-time endpoint hosting a model (Mistral 7B) from Hugging Face, and an AWS Lambda function to run inference requests against that endpoint.|TypeScript|
+|[SageMaker custom endpoint](samples/sagemaker_custom_endpoint/)| This sample provides a sample application which deploys a SageMaker real-time endpoint hosting a model with artifacts stored in an Amazon Simple Storage Service (S3) bucket, and an AWS Lambda function to run inference requests against that endpoint. This sample uses Inferentia 2 as the hardware accelerator. |TypeScript|
 
 ## Contributing
 
