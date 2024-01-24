@@ -2866,7 +2866,7 @@ packages:
     dev: true
 
   file:generative-ai-cdk-constructs@0.0.0.jsii.tgz(aws-cdk-lib@2.121.1)(constructs@10.0.0):
-    resolution: {integrity: sha512-6+YhWhfhqQcNEumwgD20Mi1d8pZSIfbqm6zaPCMu2zIyznJBix5LUE/IALERzaZdwcbzte2Cvwg8sAHicXzAGQ==, tarball: file:generative-ai-cdk-constructs@0.0.0.jsii.tgz}
+    resolution: {integrity: sha512-6SgAqMRvHrn/l0mghGPMckPsKUVtLx2sLzmNIghpr0QsgfBK5WqzQya2ExEbxp7xSCUrzkbSo48HjbvvueqIQQ==, tarball: file:generative-ai-cdk-constructs@0.0.0.jsii.tgz}
     id: file:generative-ai-cdk-constructs@0.0.0.jsii.tgz
     name: '@cdklabs/generative-ai-cdk-constructs'
     version: 0.0.0

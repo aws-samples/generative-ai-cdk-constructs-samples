@@ -54,7 +54,7 @@ export class BedrockAgentStack extends cdk.Stack {
     });
 
     new cdk.CfnOutput(this, 'AgentId', {value: agent.agentId});
-    new cdk.CfnOutput(this, 'KnowledgeBaseId', {value: kb.kbId});
+    new cdk.CfnOutput(this, 'KnowledgeBaseId', {value: kb.knowledgeBaseId});
     new cdk.CfnOutput(this, 'DataSourceId', {value: dataSource.dataSourceId});
     new cdk.CfnOutput(this, 'DocumentBucket', {value: docBucket.bucketName});
 
