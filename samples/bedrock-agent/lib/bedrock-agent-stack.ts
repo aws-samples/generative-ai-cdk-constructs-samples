@@ -33,8 +33,8 @@ export class BedrockAgentStack extends cdk.Stack {
       serverAccessLogsPrefix: 'inputsAssetsBucketLogs/',
     });
     const kb = new bedrock.KnowledgeBase(this, 'KB', {
-      embeddingsModel: bedrock.BedrockKBEmbeddingsModel.TITAN_EMBED_TEXT_V1,
-      description: 'Use this knowledge base to answer questions about books. ' +
+      embeddingsModel: bedrock.BedrockFoundationModel.TITAN_EMBED_TEXT_V1,
+      instruction: 'Use this knowledge base to answer questions about books. ' +
         'It contains the full text of novels. Please quote the books to explain your answers.',
     });
 
@@ -48,7 +48,7 @@ export class BedrockAgentStack extends cdk.Stack {
     });
 
     const agent = new bedrock.Agent(this, 'Agent', {
-      foundationModel: bedrock.BedrockAgentsFoundationModel.ANTHROPIC_CLAUDE_V2_1,
+      foundationModel: bedrock.BedrockFoundationModel.ANTHROPIC_CLAUDE_V2_1,
       instruction: "You are a helpful and friendly agent that answers questions about literature.",
       knowledgeBases: [kb],
     });
