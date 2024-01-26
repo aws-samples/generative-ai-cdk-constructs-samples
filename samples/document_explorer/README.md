@@ -266,6 +266,83 @@ First make sure to remove all data from the Amazon Simple Storage Service (Amazo
 
 Then in the AWS Console delete the S3 buckets.
 
+## Deployment Options
+
+This application implements search capabilities using Amazon OpenSearch Serverless by default. However, you can configure it to use Amazon OpenSearch Service instead. Review the [developer guide](https://docs.aws.amazon.com/opensearch-service/latest/developerguide/choose-service.html) for help choosing between Serverless and Service.
+
+The key differences when using OpenSearch Service are:
+
+### Networking Stack
+
+- Set `openSearchServiceType` to `'es'` instead of `'aoss'`
+
+### Persistence Stack
+
+- Set `openSearchServiceType` to `'es'` 
+- Pass `OpenSearchServiceProps` instead of `OpenSearchServerlessProps`
+- Configure domain properties like instance types, number of nodes, storage, etc. 
+- Create an OpenSearch domain instead of a collection
+
+### API Stack
+
+- Reference the OpenSearch domain instead of the collection
+
+Here is an example `bin/document_explorer.ts` configured for OpenSearch Service:
+
+```typescript
+// ...
+
+//-----------------------------------------------------------------------------
+// Networking Layer
+//-----------------------------------------------------------------------------
+const network = new NetworkingStack(app, 'NetworkingStack', {
+  env: env,
+  openSearchServiceType: 'es',
+});
+cdk.Tags.of(network).add("stacl", "network");
+
+//-----------------------------------------------------------------------------
+// Persistence Layer
+//-----------------------------------------------------------------------------
+const persistence = new PersistenceStack(app, 'PersistenceStack', {
+  env: env,
+  vpc: network.vpc,
+  securityGroups: network.securityGroups,
+  openSearchServiceType: 'es',
+  openSearchProps: {
+    masterNodes: 3,
+    dataNodes: 3,
+    masterNodeInstanceType: 'm6g.large.search',
+    dataNodeInstanceType: 'm6g.large.search',
+    availabilityZoneCount: 3,
+    volumeSize: 20,
+  } as OpenSearchServiceProps,
+  removalPolicy: cdk.RemovalPolicy.DESTROY  
+});
+cdk.Tags.of(persistence).add("stack", "persistence");
+
+//-----------------------------------------------------------------------------
+// API Layer
+//-----------------------------------------------------------------------------
+const api = new ApiStack(app, 'ApiStack', {
+  env: env,
+  description: '(uksb-1tupboc43) API Layer stack',
+  existingOpensearchDomain: persistence.opensearchDomain,
+  existingVpc: network.vpc,
+  existingSecurityGroup: network.securityGroups[0],
+  existingInputAssetsBucketObj: persistence.inputAssetsBucket,
+  existingProcessedAssetsBucketObj: persistence.processedAssetsBucket,
+  openSearchIndexName: 'doc-explorer',
+  cacheNodeType: 'cache.r6g.xlarge',
+  engine: 'redis',
+  numCacheNodes: 1,
+  removalPolicy: cdk.RemovalPolicy.DESTROY,
+  clientUrl: 'http://localhost:8501/'
+});
+cdk.Tags.of(api).add("stack", "api");
+
+// ...
+```
 # Content Security Legal Disclaimer
 The sample code; software libraries; command line tools; proofs of concept; templates; or other related technology (including any of the foregoing that are provided by our personnel) is provided to you as AWS Content under the AWS Customer Agreement, or the relevant written agreement between you and AWS (whichever applies). You should not use this AWS Content in your production accounts, or on production or other critical data. You are responsible for testing, securing, and optimizing the AWS Content, such as sample code, as appropriate for production grade use based on your specific quality control practices and standards. Deploying AWS Content may incur AWS charges for creating or using AWS chargeable resources, such as running Amazon EC2 instances or using Amazon S3 storage.
 

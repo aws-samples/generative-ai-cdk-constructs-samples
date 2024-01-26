@@ -9,6 +9,7 @@ import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cognito from 'aws-cdk-lib/aws-cognito';
 import * as appsync from 'aws-cdk-lib/aws-appsync';
 import * as opensearchservice from 'aws-cdk-lib/aws-opensearchservice';
+import * as openSearchServerless from 'aws-cdk-lib/aws-opensearchserverless';
 
 import * as emergingTech from '@cdklabs/generative-ai-cdk-constructs';
 
@@ -16,7 +17,8 @@ import * as emergingTech from '@cdklabs/generative-ai-cdk-constructs';
 // Stack Properties
 //-----------------------------------------------------------------------------
 export interface ApiProps extends StackProps {
-  existingOpensearchDomain: opensearchservice.IDomain;
+  existingOpensearchDomain?: opensearchservice.IDomain;
+  existingOpensearchServerlessCollection?: openSearchServerless.CfnCollection;
   existingVpc: ec2.IVpc;
   existingSecurityGroup: ec2.SecurityGroup;
   existingInputAssetsBucketObj: s3.IBucket;
@@ -162,7 +164,8 @@ export class ApiStack extends Stack {
       existingInputAssetsBucketObj: props.existingInputAssetsBucketObj,
       existingProcessedAssetsBucketObj: props.existingProcessedAssetsBucketObj,
       existingOpensearchDomain: props.existingOpensearchDomain,
-      openSearchIndexName: 'joyride',
+      existingOpensearchServerlessCollection: props.existingOpensearchServerlessCollection,
+      openSearchIndexName: props.openSearchIndexName,
       observability: true,
     });
     // Update Merged API Policy
@@ -242,6 +245,7 @@ export class ApiStack extends Stack {
       existingSecurityGroup: props.existingSecurityGroup,
       existingInputAssetsBucketObj: props.existingProcessedAssetsBucketObj,
       existingOpensearchDomain: props.existingOpensearchDomain,
+      existingOpensearchServerlessCollection: props.existingOpensearchServerlessCollection,
       openSearchIndexName: props.openSearchIndexName,
       observability: true,
     });
