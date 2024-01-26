@@ -2,8 +2,8 @@ lockfileVersion: '6.0'
 
 dependencies:
   '@cdklabs/generative-ai-cdk-constructs':
-    specifier: file:generative-ai-cdk-constructs@0.0.0.jsii.tgz
-    version: file:generative-ai-cdk-constructs@0.0.0.jsii.tgz(aws-cdk-lib@2.121.1)(constructs@10.0.0)
+    specifier: ^0.1.43
+    version: 0.1.43(aws-cdk-lib@2.121.1)(constructs@10.0.0)
   aws-cdk-lib:
     specifier: 2.121.1
     version: 2.121.1(constructs@10.0.0)
@@ -383,6 +383,18 @@ packages:
   /@bcoe/v8-coverage@0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
     dev: true
+
+  /@cdklabs/generative-ai-cdk-constructs@0.1.43(aws-cdk-lib@2.121.1)(constructs@10.0.0):
+    resolution: {integrity: sha512-E6KOYsbBhPBgDvgvVffeK8a3wSS/ui+bmxcOelAnvjnoVpgSs588Io6lbTyB2lVqxsnN+f9jImzd6GZKEdhrig==}
+    engines: {node: '>= 18.12.0 <= 20.x'}
+    peerDependencies:
+      aws-cdk-lib: ^2.116.0
+      constructs: ^10.3.0
+    dependencies:
+      aws-cdk-lib: 2.121.1(constructs@10.0.0)
+      cdk-nag: 2.28.21(aws-cdk-lib@2.121.1)(constructs@10.0.0)
+      constructs: 10.0.0
+    dev: false
 
   /@cspotcode/source-map-support@0.8.1:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -1018,6 +1030,16 @@ packages:
 
   /cdk-nag@2.28.13(aws-cdk-lib@2.121.1)(constructs@10.0.0):
     resolution: {integrity: sha512-f+fteEq09+N7H2heqls0NcTC+MFcXl6fztEjjpKK0qTo5eFAKmDekEHLRGY5LX8v/JlueoVyhttsjaULNwnoSg==}
+    peerDependencies:
+      aws-cdk-lib: ^2.116.0
+      constructs: ^10.0.5
+    dependencies:
+      aws-cdk-lib: 2.121.1(constructs@10.0.0)
+      constructs: 10.0.0
+    dev: false
+
+  /cdk-nag@2.28.21(aws-cdk-lib@2.121.1)(constructs@10.0.0):
+    resolution: {integrity: sha512-azuSfFF5+IPSWRerDtw5GxMmVcZxOocRvQ6ogJ1lUI8mJnHxjYpy7qUxfrel5dX6nciWxmxzMjHQG/lT3Wr6wg==}
     peerDependencies:
       aws-cdk-lib: ^2.116.0
       constructs: ^10.0.5
@@ -2864,18 +2886,3 @@ packages:
     resolution: {integrity: sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==}
     engines: {node: '>=6'}
     dev: true
-
-  file:generative-ai-cdk-constructs@0.0.0.jsii.tgz(aws-cdk-lib@2.121.1)(constructs@10.0.0):
-    resolution: {integrity: sha512-lXgkhrcsxGeJXDgwiSRAhq+5gyC9m4OAI+DxhTJpCRA56pkZjFU0jkdDvPw5ujt0F3DxHXJvWhPpvoZNDYN1eA==, tarball: file:generative-ai-cdk-constructs@0.0.0.jsii.tgz}
-    id: file:generative-ai-cdk-constructs@0.0.0.jsii.tgz
-    name: '@cdklabs/generative-ai-cdk-constructs'
-    version: 0.0.0
-    engines: {node: '>= 18.12.0 <= 20.x'}
-    peerDependencies:
-      aws-cdk-lib: ^2.114.0
-      constructs: ^10.3.0
-    dependencies:
-      aws-cdk-lib: 2.121.1(constructs@10.0.0)
-      cdk-nag: 2.28.13(aws-cdk-lib@2.121.1)(constructs@10.0.0)
-      constructs: 10.0.0
-    dev: false

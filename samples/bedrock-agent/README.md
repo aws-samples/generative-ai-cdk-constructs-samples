@@ -16,7 +16,7 @@ Copy **dist/js/generative-ai-cdk-constructs@0.0.0.jsii.tgz** to this directory.
 ### Build
 ~~~sh
 pnpm install # Install dependencies
-pnpm projen build # build
+pnpm cdk synth # build
 ~~~
 
 ### Deploy

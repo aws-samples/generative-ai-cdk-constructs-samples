@@ -2,7 +2,7 @@ import * as cdk from 'aws-cdk-lib';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import {Construct} from 'constructs';
 
-import * as bedrock from '@cdklabs/generative-ai-cdk-constructs/lib/cdk-lib/bedrock';
+import { bedrock } from '@cdklabs/generative-ai-cdk-constructs';
 import {NagSuppressions} from "cdk-nag";
 
 export class BedrockAgentStack extends cdk.Stack {
@@ -48,8 +48,8 @@ export class BedrockAgentStack extends cdk.Stack {
     });
 
     const agent = new bedrock.Agent(this, 'Agent', {
-      foundationModel: bedrock.BedrockFoundationModel.ANTHROPIC_CLAUDE_V2_1,
-      instruction: "You are a helpful and friendly agent that answers questions about literature.",
+      foundationModel: bedrock.BedrockFoundationModel.ANTHROPIC_CLAUDE_INSTANT_V1_2,
+      instruction: 'You are a helpful and friendly agent that answers questions about literature.',
       knowledgeBases: [kb],
     });
 
