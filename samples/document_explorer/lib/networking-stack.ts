@@ -4,13 +4,19 @@ import { Construct } from 'constructs';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import * as logs from 'aws-cdk-lib/aws-logs';
+import * as openSearchServerless from 'aws-cdk-lib/aws-opensearchserverless';
+
+export interface NetworkingProps extends StackProps {
+    openSearchServiceType: 'es' | 'aoss';
+}
 
 export class NetworkingStack extends Stack {
     public readonly vpc: ec2.Vpc;
     public readonly securityGroups: ec2.SecurityGroup[];
+    public readonly openSearchVpcEndpoint: openSearchServerless.CfnVpcEndpoint;
     public readonly privateSubnets: string[];
 
-    constructor(scope: Construct, id: string, props?: StackProps) {
+    constructor(scope: Construct, id: string, props: NetworkingProps) {
         super(scope, id, props);
 
         //---------------------------------------------------------------------
@@ -67,6 +73,19 @@ export class NetworkingStack extends Stack {
             }),
         ];
         this.securityGroups[0].addIngressRule(this.securityGroups[0], ec2.Port.tcp(443), 'allow https within sg');
+
+
+        //---------------------------------------------------------------------
+        // Interface VPC endpoint for OpenSearch
+        //---------------------------------------------------------------------
+        if (props.openSearchServiceType === 'aoss') {
+            this.openSearchVpcEndpoint = new openSearchServerless.CfnVpcEndpoint(this, 'OpenSearchVpcEndpoint', {
+                name: 'opensearch-vpc-endpoints',
+                vpcId: this.vpc.vpcId,
+                subnetIds: this.vpc.selectSubnets({ subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS }).subnetIds,
+                securityGroupIds: [this.securityGroups[0].securityGroupId]
+            });
+        }
 
         //---------------------------------------------------------------------
         // Private Subnets

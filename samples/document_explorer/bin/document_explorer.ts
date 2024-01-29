@@ -3,7 +3,7 @@ import * as cdk from 'aws-cdk-lib';
 import { NagSuppressions, AwsSolutionsChecks } from 'cdk-nag';
 
 import { NetworkingStack } from '../lib/networking-stack';
-import { PersistenceStack } from '../lib/persistence-stack';
+import { PersistenceStack, OpenSearchServiceProps, OpenSearchServerlessProps } from '../lib/persistence-stack';
 import { ApiStack } from '../lib/api-stack';
 
 const env = {
@@ -17,7 +17,10 @@ cdk.Aspects.of(app).add(new AwsSolutionsChecks({verbose:true}));
 //-----------------------------------------------------------------------------
 // Networking Layer
 //-----------------------------------------------------------------------------
-const network = new NetworkingStack(app, 'NetworkingStack', {env: env});
+const network = new NetworkingStack(app, 'NetworkingStack', {
+  env: env,
+  openSearchServiceType: 'aoss',
+});
 cdk.Tags.of(network).add("stacl", "network");
 
 //-----------------------------------------------------------------------------
@@ -27,13 +30,12 @@ const persistence = new PersistenceStack(app, 'PersistenceStack', {
   env: env,
   vpc: network.vpc,
   securityGroups: network.securityGroups,
-  masterNodes: 3,
-  dataNodes: 3,
-  masterNodeInstanceType: 'm6g.large.search',
-  dataNodeInstanceType: 'm6g.large.search',
-  availabilityZoneCount: 3,
-  volumeSize: 20,
-  removalPolicy: cdk.RemovalPolicy.DESTROY,
+  openSearchServiceType: 'aoss',
+  openSearchProps: {
+    openSearchVpcEndpointId: network.openSearchVpcEndpoint.attrId,
+    collectionName: 'doc-explorer'
+  } as OpenSearchServerlessProps,
+  removalPolicy: cdk.RemovalPolicy.DESTROY  
 });
 cdk.Tags.of(persistence).add("stack", "persistence");
 
@@ -43,12 +45,12 @@ cdk.Tags.of(persistence).add("stack", "persistence");
 const api = new ApiStack(app, 'ApiStack', {
   env: env,
   description: '(uksb-1tupboc43) API Layer stack',
-  existingOpensearchDomain: persistence.opensearchDomain,
+  existingOpensearchServerlessCollection: persistence.opensearchCollection,
   existingVpc: network.vpc,
   existingSecurityGroup: network.securityGroups[0],
-  existingInputAssetsBucketObj: persistence.inputsAssetsBucket,
+  existingInputAssetsBucketObj: persistence.inputAssetsBucket,
   existingProcessedAssetsBucketObj: persistence.processedAssetsBucket,
-  openSearchIndexName: 'joyride',
+  openSearchIndexName: 'doc-explorer',
   cacheNodeType: 'cache.r6g.xlarge',
   engine: 'redis',
   numCacheNodes: 1,
