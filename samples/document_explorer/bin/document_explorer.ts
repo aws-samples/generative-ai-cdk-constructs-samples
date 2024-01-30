@@ -9,7 +9,7 @@ import { ApiStack } from '../lib/api-stack';
 const env = {
     region: process.env.CDK_DEFAULT_REGION,
     account: process.env.CDK_DEFAULT_ACCOUNT,
-    clientUrl: process.env.STREAMLIT_CLIENTURL? process.env.STREAMLIT_CLIENTURL : "http://localhost:8501"
+    clientUrl: process.env.STREAMLIT_CLIENTURL? process.env.STREAMLIT_CLIENTURL : "http://localhost:8501/"
 }
 const app = new cdk.App();
 cdk.Tags.of(app).add("app", "generative-ai-cdk-constructs-samples");
