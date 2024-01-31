@@ -21,6 +21,7 @@ cdk.Aspects.of(app).add(new AwsSolutionsChecks({verbose:true}));
 const network = new NetworkingStack(app, 'NetworkingStack', {
   env: env,
   openSearchServiceType: 'aoss',
+  natGateways: 1
 });
 cdk.Tags.of(network).add("stacl", "network");
 
@@ -34,7 +35,8 @@ const persistence = new PersistenceStack(app, 'PersistenceStack', {
   openSearchServiceType: 'aoss',
   openSearchProps: {
     openSearchVpcEndpointId: network.openSearchVpcEndpoint.attrId,
-    collectionName: 'doc-explorer'
+    collectionName: 'doc-explorer',
+    standbyReplicas: 'DISABLED'
   } as OpenSearchServerlessProps,
   removalPolicy: cdk.RemovalPolicy.DESTROY  
 });
