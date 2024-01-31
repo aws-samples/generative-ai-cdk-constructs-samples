@@ -21,6 +21,7 @@ cdk.Aspects.of(app).add(new AwsSolutionsChecks({verbose:true}));
 const network = new NetworkingStack(app, 'NetworkingStack', {
   env: env,
   openSearchServiceType: 'aoss',
+  natGateways: 1
 });
 cdk.Tags.of(network).add("stacl", "network");
 

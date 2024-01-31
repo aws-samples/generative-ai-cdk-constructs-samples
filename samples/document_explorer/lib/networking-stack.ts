@@ -8,6 +8,7 @@ import * as openSearchServerless from 'aws-cdk-lib/aws-opensearchserverless';
 
 export interface NetworkingProps extends StackProps {
     openSearchServiceType: 'es' | 'aoss';
+    natGateways?: number;
 }
 
 export class NetworkingStack extends Stack {
@@ -41,7 +42,8 @@ export class NetworkingStack extends Stack {
                 cidrMask: 24,
             },
             ],
-            ipAddresses: ec2.IpAddresses.cidr('10.0.0.0/16')
+            ipAddresses: ec2.IpAddresses.cidr('10.0.0.0/16'),
+            natGateways: props.natGateways,
         });
 
         //---------------------------------------------------------------------
