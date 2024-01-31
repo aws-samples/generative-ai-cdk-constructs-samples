@@ -24,6 +24,7 @@ export interface OpenSearchServiceProps extends ResourceProps {
 export interface OpenSearchServerlessProps extends ResourceProps {
   openSearchVpcEndpointId: string;
   collectionName: string;
+  standbyReplicas?: string;
 }
 
 export interface PersistenceProps extends StackProps {
@@ -255,7 +256,8 @@ export class PersistenceStack extends Stack {
       this.opensearchCollection = new openSearchServerless.CfnCollection(this, 'Collection', {
         name: openSearchProps.collectionName,
         description: 'Vector search collection',
-        type: 'VECTORSEARCH'
+        type: 'VECTORSEARCH',
+        standbyReplicas: openSearchProps.standbyReplicas
       });
       this.opensearchCollection.addDependency(encryptionPolicy);
       this.opensearchCollection.addDependency(dataAccessPolicy);
