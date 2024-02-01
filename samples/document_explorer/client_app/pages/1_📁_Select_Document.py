@@ -220,12 +220,14 @@ if auth.is_authenticated():
     )
     
     # File uploader
-    uploaded_file = st.file_uploader('Upload a document', type=['pdf'])
-    st.session_state['progress_bar_widget'] = st.empty()
-    if uploaded_file:
-        s3.upload_fileobj(uploaded_file, S3_INPUT_BUCKET, uploaded_file.name)
-        st.session_state['uploaded_filename'] = uploaded_file.name
-        subscribe_to_file_ingestion_updates()
+    with st.form("file-uploader", clear_on_submit=True):
+            uploaded_file = st.file_uploader('Upload a document', type=['pdf'])
+            submitted = st.form_submit_button("Submit", use_container_width=True)
+            st.session_state['progress_bar_widget'] = st.empty()
+            if uploaded_file and submitted:
+                s3.upload_fileobj(uploaded_file, S3_INPUT_BUCKET, uploaded_file.name)
+                st.session_state['uploaded_filename'] = uploaded_file.name
+                subscribe_to_file_ingestion_updates()
 
     # Transformed file grid
     transformed_files = s3.list_objects_v2(Bucket=S3_PROCESSED_BUCKET)
