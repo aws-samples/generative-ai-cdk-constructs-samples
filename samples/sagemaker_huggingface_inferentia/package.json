@@ -1,0 +1,28 @@
+{
+  "name": "sagemaker_huggingface_inferentia",
+  "version": "0.1.0",
+  "bin": {
+    "sagemaker_huggingface_inferentia": "bin/sagemaker_huggingface_inferentia.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.11",
+    "@types/node": "20.11.6",
+    "aws-cdk": "2.124.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.3.3"
+  },
+  "dependencies": {
+    "@cdklabs/generative-ai-cdk-constructs": "^0.1.55",
+    "aws-cdk-lib": "2.124.0",
+    "constructs": "^10.0.0",
+    "source-map-support": "^0.5.21"
+  }
+}
