@@ -4,12 +4,22 @@ import os
 
 runtime= boto3.client('runtime.sagemaker')
     
-ENDPOINT_NAME = os.environ['SG_ENDPOINT_NAME']
+ENDPOINT_NAME = os.environ['ENDPOINT_NAME']
 
 def handler(event, context):
     
     dic = {
-        "inputs": "the mesmerizing performances of the leads keep the film grounded and keep the audience riveted .",
+        "inputs": "Can you tell me an interesting fact about AWS?",
+        "parameters": {
+            "do_sample": True,
+            "top_p": 0.6,
+            "temperature": 0.9,
+            "top_k": 50,
+            "max_new_tokens": 256,
+            "repetition_penalty": 1.03,
+            "return_full_text": False,
+            "stop": ["</s>"]
+        }
     }
     
     response = runtime.invoke_endpoint(EndpointName=ENDPOINT_NAME,
