@@ -1,9 +1,12 @@
 import * as cdk from 'aws-cdk-lib';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as lambda_python from '@aws-cdk/aws-lambda-python-alpha';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import {Construct} from 'constructs';
 
-import { bedrock } from '@cdklabs/generative-ai-cdk-constructs';
+import {bedrock} from '@cdklabs/generative-ai-cdk-constructs';
 import {NagSuppressions} from "cdk-nag";
+import * as path from "path";
 
 export class BedrockAgentStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -53,11 +56,35 @@ export class BedrockAgentStack extends cdk.Stack {
       knowledgeBases: [kb],
     });
 
+    const actionGroupFunction = new lambda_python.PythonFunction(this, 'ActionGroupFunction', {
+      runtime: lambda.Runtime.PYTHON_3_12,
+      entry: path.join(__dirname, '../lambda/action-group'),
+      layers: [lambda.LayerVersion.fromLayerVersionArn(this, 'PowerToolsLayer', `arn:aws:lambda:${this.region}:017000801446:layer:AWSLambdaPowertoolsPythonV2:60`)],
+    });
+
+    agent.addActionGroup({
+      actionGroupName: 'query-library',
+      description: 'Use these functions to get information about the books in the library.',
+      actionGroupExecutor: actionGroupFunction,
+      actionGroupState: "ENABLED",
+      apiSchema: bedrock.ApiSchema.fromAsset(path.join(__dirname, 'action-group.yaml')),
+    });
+
     new cdk.CfnOutput(this, 'AgentId', {value: agent.agentId});
     new cdk.CfnOutput(this, 'KnowledgeBaseId', {value: kb.knowledgeBaseId});
     new cdk.CfnOutput(this, 'DataSourceId', {value: dataSource.dataSourceId});
     new cdk.CfnOutput(this, 'DocumentBucket', {value: docBucket.bucketName});
 
+    NagSuppressions.addResourceSuppressions(
+      actionGroupFunction,
+      [
+        {
+          id: 'AwsSolutions-IAM4',
+          reason: 'ActionGroup Lambda uses the AWSLambdaBasicExecutionRole AWS Managed Policy.',
+        }
+      ],
+      true,
+    );
     NagSuppressions.addResourceSuppressionsByPath(
       this,
       `/${this.node.path}/LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8a/ServiceRole`,
