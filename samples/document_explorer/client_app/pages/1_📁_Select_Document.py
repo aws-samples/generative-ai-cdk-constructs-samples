@@ -8,7 +8,6 @@ import boto3
 import pandas as pd
 from dotenv import load_dotenv
 from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode
-from streamlit_extras.switch_page_button import switch_page
 import streamlit as st
 # Local imports
 from common.cognito_helper import CognitoHelper
@@ -64,7 +63,8 @@ def process_document(uploaded_filename):
         variables = {
             "ingestionInput": {
                 "files": [{"status": "", "name": uploaded_filename}],
-                "ingestionjobid": ingestion_job_id
+                "ingestionjobid": ingestion_job_id,
+                "ignore_existing": True
             }
         }
         response = mutation_client.execute(Mutations.INGEST_DOCUMENTS, "IngestDocuments", variables)
@@ -196,17 +196,6 @@ def to_tuple(s3_object):
         format_last_modified(s3_object['LastModified'])
     )
 
-def navigate_to_summary(selected_filename):
-    """Update selected file and redirect to summary page
-
-    Args:
-        selected_filename (str): Selected file name
-    """
-        
-    st.session_state['selected_file'] = selected_filename
-    print(st.session_state['selected_file'])
-    switch_page("Summary")
-
 # Streamlit page configuration
 st.set_page_config(page_title="Select Document", page_icon="📁")
 hide_deploy_button()
@@ -259,7 +248,8 @@ if auth.is_authenticated():
             
         if selection["selected_rows"]:
             selected_filename = selection["selected_rows"][0]["Transformed Filename"]
-            navigate_to_summary(selected_filename)
+            st.session_state['selected_file'] = selected_filename
+            print(st.session_state['selected_file'])
 
     else:
         st.write("This bucket is empty!")
