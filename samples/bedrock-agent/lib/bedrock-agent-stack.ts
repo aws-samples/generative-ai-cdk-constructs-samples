@@ -4,7 +4,7 @@ import * as lambda_python from '@aws-cdk/aws-lambda-python-alpha';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import {Construct} from 'constructs';
 
-import {bedrock} from '@cdklabs/generative-ai-cdk-constructs';
+import { bedrock } from '@cdklabs/generative-ai-cdk-constructs';
 import {NagSuppressions} from "cdk-nag";
 import * as path from "path";
 
