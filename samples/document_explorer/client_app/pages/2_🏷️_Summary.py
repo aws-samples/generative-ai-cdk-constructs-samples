@@ -6,7 +6,6 @@ import streamlit as st
 from dotenv import load_dotenv
 import boto3
 from streamlit_javascript import st_javascript
-from streamlit_extras.switch_page_button import switch_page
 # Local imports
 from common.cognito_helper import CognitoHelper
 from common.streamlit_utils import hide_deploy_button
@@ -193,6 +192,4 @@ elif not auth.is_authenticated():
     st.stop()
 else:
     st.write("Please select a document!")
-    if st.button("Go to the document selection page"):
-       switch_page("Select_Document")
     st.stop()
