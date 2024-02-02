@@ -54,7 +54,7 @@ const api = new ApiStack(app, 'ApiStack', {
   existingInputAssetsBucketObj: persistence.inputAssetsBucket,
   existingProcessedAssetsBucketObj: persistence.processedAssetsBucket,
   openSearchIndexName: 'doc-explorer',
-  cacheNodeType: 'cache.r6g.xlarge',
+  cacheNodeType: 'cache.t4g.medium',
   engine: 'redis',
   numCacheNodes: 1,
   removalPolicy: cdk.RemovalPolicy.DESTROY,
