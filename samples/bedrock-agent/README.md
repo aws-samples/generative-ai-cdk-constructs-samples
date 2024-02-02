@@ -7,7 +7,9 @@ selection of books from Project Gutenburg.
 
 This app deploys a Bedrock Agent that can consult a Bedrock Knowledge Base
 backed by OpenSearch Serverless as a vector store. An S3 bucket is created to
-store the books for the Knowledge Base.
+store the books for the Knowledge Base. The agent also includes a Bedrock Agent
+Action Group that provides a function to query the most popular books in Project
+Gutenburg.
 
 By providing reusable constructs following AWS best practices, this app helps you quickly build custom generative AI apps on AWS. The constructs abstract complexity of orchestrating AWS services like S3, OpenSearch, Bedrock, etc.
 
@@ -27,7 +29,9 @@ samples/bedrock-agent-stack
 ├── bin
 │   └── bedrock-agent.ts                      # CDK app
 ├── lib                                       # CDK Stacks
-│   ├── bedrock-agent-stack.ts                # Stack deploying the S3 bucket, Bedrock Agent, and Knowledge Base
+│   ├── bedrock-agent-stack.ts                # Stack deploying the S3 bucket, Bedrock Agent, Action Group, and Knowledge Base
+├── lambda                                    # Lambda functions
+│   └── action-group                          # Action Group functions
 ```
 
 ## Getting started
@@ -98,7 +102,9 @@ Navigate to the [Bedrock Agents console](https://us-east-1.console.aws.amazon.co
 
 Ask some questions. You may need to tell the agent what book you want to ask about or refresh the session when asking about different books.
 
-#### Example
+#### Example questions
+
+* What are the most popular books in the library?
 
 **Frankenstein**
 * What does the Creature want Victor to do?
