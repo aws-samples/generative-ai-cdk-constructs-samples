@@ -1,0 +1,92 @@
+openapi: 3.0.3
+info:
+  title: Literary API
+  description: Actions that Bedrock Agents can take to retrieve book details.
+  version: 1.0.0
+paths:
+  /top_books:
+    get:
+      summary: Get metadata about the most popular books
+      description: Get metadata about the most popular books in the library.
+      operationId: getTopBooks
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    description: The number of books in the library.
+                  books:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Book'
+        '400':
+          description: Invalid request
+          content: {}
+components:
+  schemas:
+    Person:
+      type: object
+      properties:
+        birth_year:
+          type: integer
+        death_year:
+          type: integer
+        name:
+          type: string
+    Format:
+      type: object
+      description: A mapping of MIME-type to download URL.
+      additionalProperties: true
+    Book:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: The ID of the book.
+        title:
+          type: string
+          description: The title of the book.
+        subjects:
+          type: array
+          description: The subjects of the book.
+          items:
+            type: string
+        authors:
+          type: array
+          description: The author of the book.
+          items:
+            $ref: '#/components/schemas/Person'
+        translators:
+          type: array
+          description: The translator of the book.
+          items:
+            $ref: '#/components/schemas/Person'
+        bookshelves:
+          type: array
+          description: The bookshelves the book is in.
+          items:
+            type: string
+        languages:
+          type: array
+          description: The languages the book is in.
+          items:
+            type: string
+        copyright:
+          type: boolean
+          description: Whether the book is copyrighted.
+        media_type:
+          type: string
+          description: The media type of the book.
+        formats:
+          type: array
+          description: The download formats of the book.
+          items:
+            $ref: '#/components/schemas/Format'
+        download_count:
+          type: integer
+          description: The number of times the book has been downloaded.
