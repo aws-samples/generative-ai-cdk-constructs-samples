@@ -54,6 +54,7 @@ Default output format [None]: json
 - Node.js: v18.12.1
 - [AWS CDK](https://github.com/aws/aws-cdk/releases/tag/v2.116.0): 2.116.0
 - jq: jq-1.6
+- Make sure you have sufficient quota for the instance type implemented in this sample (service Amazon SageMaker, instance type `ml_inf2_8xlarge` for endpoint usage). For more information, refer to [AWS service quotas](https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html).
 
 ### Deploy the solution
 
@@ -85,7 +86,7 @@ To protect you against unintended changes that affect your security posture, the
 
 ### Test
 
-- In the AWS console, navigate to [AWS Lambda](https://us-east-1.console.aws.amazon.com/lambda/home?region=us-east-1#/functions?sb=lastModified&so=DESCENDING) and select the function named ```testmistralhuggingface```
+- In the AWS console, navigate to [AWS Lambda](https://us-east-1.console.aws.amazon.com/lambda/home?region=us-east-1#/functions?sb=lastModified&so=DESCENDING) and select the function named ```testzephyrhuggingfaceinferentia```
 
 - Under the Code tab, click ```Test```. This will send a request to the SageMaker endpoint, and display the result. 
 
