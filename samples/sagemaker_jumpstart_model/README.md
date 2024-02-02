@@ -52,6 +52,7 @@ Default output format [None]: json
 - Node.js: v18.12.1
 - [AWS CDK](https://github.com/aws/aws-cdk/releases/tag/v2.114.0): 2.114.0
 - jq: jq-1.6
+- Make sure you have sufficient quota for the instance type implemented in this sample (service Amazon SageMaker, instance type `ml.g5.2xlarge` for endpoint usage). For more information, refer to [AWS service quotas](https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html).
 
 ### Deploy the solution
 
