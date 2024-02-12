@@ -65,7 +65,7 @@ const api = new ApiStack(app, 'ApiStack', {
   existingSecurityGroup: network.securityGroups[0],
   existingInputAssetsBucketObj: persistence.inputAssetsBucket,
   existingProcessedAssetsBucketObj: persistence.processedAssetsBucket,
-  openSearchIndexName: 'doc-explorer',
+  openSearchIndexName: 'image-search',
   cacheNodeType: 'cache.t4g.medium',
   engine: 'redis',
   numCacheNodes: 1,

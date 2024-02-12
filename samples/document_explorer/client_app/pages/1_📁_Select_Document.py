@@ -52,7 +52,7 @@ class DocumentStatus(int):
 #========================================================================================
 # [Controller] Networking: GraphQL mutation helper functions 
 #========================================================================================
-def process_document(uploaded_filename):
+def process_document(uploaded_filename,model_id,streaming,provider,tempreature):
     """Send document to ingestion pipeline
     
     Args:
@@ -74,11 +74,13 @@ def process_document(uploaded_filename):
         mutation_client = GraphQLMutationClient(GRAPHQL_ENDPOINT, id_token)
         variables = {
             "ingestionInput": {
+                "embeddings_model":[{"provider":provider,"modelId":model_id,"streaming":streaming}],
                 "files": [{"status": "", "name": uploaded_filename}],
                 "ingestionjobid": ingestion_job_id,
                 "ignore_existing": True
             }
         }
+        print(f' mutation query arguments :: {variables}')
         response = mutation_client.execute(Mutations.INGEST_DOCUMENTS, "IngestDocuments", variables)
 
         return response
@@ -101,7 +103,15 @@ def on_subscription_registered():
         return
 
     st.session_state['progress_bar_widget'].progress(DocumentStatus.PROCESSING_STARTED)
-    process_document(uploaded_filename)
+    temperature=float(st.session_state["temperature"])
+    model_id=st.session_state["model_id"]
+    streaming=st.session_state["streaming"]
+    provider=st.session_state["provider"]
+
+    print(f'on_subscription_registered :: {uploaded_filename}')
+    
+    process_document(uploaded_filename,model_id,streaming,provider,temperature)
+
 
 
 def on_message_update(message, subscription_client):
@@ -209,7 +219,9 @@ def to_tuple(s3_object):
     )
 
 # Streamlit page configuration
-st.set_page_config(page_title="Select Document", page_icon="📁")
+st.set_page_config(page_title="Select Document",
+                    page_icon="📁",
+                    initial_sidebar_state="expanded",)
 hide_deploy_button()
 
 # Check if user is authenticated and display login/logout buttons
@@ -273,3 +285,47 @@ if auth.is_authenticated():
 else:
     st.write("Please login!")
     st.stop()
+
+#########################
+#        SIDEBAR
+#########################
+
+# sidebar
+MODEL_ID_OPTIONS=['amazon.titan-embed-text-v1','amazon.titan-embed-image-v1']
+MODEL_ID_PROVIDER=['Sagemaker Endpoint','Bedrock']
+
+with st.sidebar:
+        st.header("Settings")
+        
+
+        st.subheader("Model Config")
+
+        provider = st.selectbox(
+                label="Select model provider:",
+                options=MODEL_ID_PROVIDER,
+                key="provider",
+                help="Select model provider.",
+            )
+
+        model_id = st.selectbox(
+                label="Select model id:",
+                options=MODEL_ID_OPTIONS,
+                key="model_id",
+                help="Select model type to create and store embeddings in open search cluster as per your use case.",
+            )
+
+        streaming = st.selectbox(
+                label="Select streaming:",
+                options=[True,False],
+                key="streaming",
+                help="Enable or disable streaming on response",
+            )
+
+        temperature = st.slider(
+                label="Temperature:",
+                value=0.45,
+                min_value=0.0,
+                max_value=1.0,
+                key="temperature",
+            )
+

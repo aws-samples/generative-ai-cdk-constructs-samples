@@ -43,7 +43,9 @@ def get_selected_source_filename():
     selected_file = st.session_state.get('selected_file')
     if not selected_file:
         return None
-
+    #todo - update this logic 
+    if selected_file.endswith(".png"):
+        return selected_file
     return f"{selected_file}.pdf"
 
 # Get selected source file if authenticated
@@ -175,28 +177,34 @@ if auth.is_authenticated() and selected_file:
         pdf_height = int(pdf_width * 4/3)
 
         credentials = auth.get_user_temporary_credentials()  
-        s3 = boto3.client('s3',
-                        aws_access_key_id=credentials['AccessKeyId'],
-                        aws_secret_access_key=credentials['SecretAccessKey'],
-                        aws_session_token=credentials['SessionToken'])
+        print(f'selected file :: {selected_file} ')
+        
+        if(selected_file.endswith(".png")):
+            print(f' No summary available for :: {selected_file} ')
 
-        pdf_object = s3.get_object(Bucket=S3_INPUT_BUCKET, Key=selected_file)
-        pdf_content = pdf_object['Body'].read()
+        else:
+            s3 = boto3.client('s3',
+                            aws_access_key_id=credentials['AccessKeyId'],
+                            aws_secret_access_key=credentials['SecretAccessKey'],
+                            aws_session_token=credentials['SessionToken'])
 
-        st.write("Preview")
-        display_pdf(pdf_content, pdf_width, pdf_height)
+            pdf_object = s3.get_object(Bucket=S3_INPUT_BUCKET, Key=selected_file)
+            pdf_content = pdf_object['Body'].read()
 
-    with col2:
-        # Display summary widget
-        text_width = int(st_javascript("window.innerWidth", key="text_width") - 20)
-        text_height = int(text_width * 4/3)
+            st.write("Preview")
+            display_pdf(pdf_content, pdf_width, pdf_height)
 
-        summary_widget = st.empty()
-        if summary_widget and text_height > 0:
-            summary_widget.text_area(f"Summary for **{selected_file}**", "Processing...", height=text_height)
-            st.session_state['summary_widget'] = summary_widget
-            st.session_state['summary_widget_height'] = text_height
-            subscribe_to_summary_updates()
+        with col2:
+            # Display summary widget
+            text_width = int(st_javascript("window.innerWidth", key="text_width") - 20)
+            text_height = int(text_width * 4/3)
+
+            summary_widget = st.empty()
+            if summary_widget and text_height > 0:
+                summary_widget.text_area(f"Summary for **{selected_file}**", "Processing...", height=text_height)
+                st.session_state['summary_widget'] = summary_widget
+                st.session_state['summary_widget_height'] = text_height
+                subscribe_to_summary_updates()
 
 # Guest user UI 
 elif not auth.is_authenticated():
