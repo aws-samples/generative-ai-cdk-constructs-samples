@@ -15,6 +15,7 @@ from io import BytesIO
 import os
 import base64
 from copy import copy
+import requests
 # Third party imports 
 import streamlit as st
 from dotenv import load_dotenv
@@ -35,6 +36,7 @@ load_dotenv()
 
 # Configure buckets and API endpoint  
 GRAPHQL_ENDPOINT = os.environ.get("GRAPHQL_ENDPOINT")  
+S3_PROCESSED_BUCKET = os.environ.get("S3_PROCESSED_BUCKET") 
 
 def get_selected_filename():
     selected_file = st.session_state.get("selected_file")
@@ -43,6 +45,14 @@ def get_selected_filename():
     
     return selected_file
 
+def get_image_url():
+    image_url = st.session_state.get("image_url")
+    if not image_url:
+        print(f'no image url present , not able to display image ')
+        return None
+    
+    return image_url
+
 def get_selected_transformed_filename():
     """Get selected source filename from session state."""
     
@@ -50,7 +60,7 @@ def get_selected_transformed_filename():
     if not selected_file:
         return None
     #todo - update this logic 
-    if selected_file.endswith(".png"):
+    if selected_file.endswith(".png") or selected_file.endswith(".jpg") or selected_file.endswith(".jpeg"):
         return selected_file
     return f"{selected_file}.txt"
 
@@ -59,9 +69,9 @@ selected_filename = get_selected_filename()
 #========================================================================================
 # [Controller] Networking: GraphQL mutation helper functions 
 #========================================================================================
-def post_question_about_selected_file():
+def post_question_about_selected_file(params):
     """Send summary job request to GraphQL API."""
-
+    
     selected_transformed_filename = get_selected_transformed_filename()
     generative_method = st.session_state.get("generative_method", "LONG_CONTEXT")
     if auth.is_authenticated() and selected_transformed_filename:
@@ -79,18 +89,19 @@ def post_question_about_selected_file():
         print(f' posting question now :: ')
         variables = {
              "embeddings_model": {
-                "modelId": "",
-                "provider": "",
-                "streaming":True
+                "modelId": params['embedding_model_id'],
+                "provider": params['embedding_provider'],
+                "streaming":params['streaming']
             },
             "jobid": summary_job_id,
             "jobstatus": "",
-            "filename": selected_transformed_filename,
+            "filename": '',
             "presignedurl":'https://persistencestack-processedassets6ba25f4c-5cxemxijzhlx.s3.us-east-1.amazonaws.com/test.png?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJIMEYCIQD2VtSl7gmPddhrNWpcAB9ooXQFdTYPfyNx0CkzTQu0%2BgIhAKhfGxO60Zv4QAhZHgBTT%2B90QqR7fo8IxnVgtT6Cnw8hKuYCCGEQABoMNTg3OTYyMDkzNzMwIgxJWIF9iKcuCsHBIlwqwwIRAu3eUqMBKFZ%2FBQ3JofLWh5CmSgiPezR6MUkcek2kbrknjQDerkKWN%2BxzcaK83nO5dcTVgzxNSD300XhnJlVvDSopFaTQtJuK76igLufXH6F2mdawWN3ThQNznCXFGUP1O8mw50cvYiCv0Gg2rcTaWxUjS5scYAG%2FIlIxIuFyrXDHe0U3BvrFAgVozu8uun%2BlUR3%2F3hQW8JJFfeC4aIt223oTfmIgIWPuqaJ5uYY8IHCYgGMTCWMmtXDsv14edZAF5LJh2NyQicZh0fTLRMRMeNG5vdaBCU0TRv0P8wlI%2FdDlk1QFuZHmiPN%2FvcdXEGvLVu77K7OCsWI0oQ4omNord0UEAVIOA0IG352ujLhH8nqF%2BhZtqPp6etk%2Fv043F9td6Ld5KprLV2tKX4AVBBMhYzDi5v8E972rD5wz0t0NFKM8PTCIgKmuBjqGAl9sbVrj6alHOwK8kBpsgVOOX4bp%2Bqsm8g%2B%2FKrXmQeqiv8kGqd1LieUs8VB4BKGcPiYdnkV8nEHh1j5TM7yn74Rr3fRhZ54mOlMiDsjdBBmuE8f8CScy%2F7A1dw8OvCkeJT0D8Zt%2F0goS4qupYEsVV0Ivbk97qtsXMj5xt5EVfA362SVbNfproU8Y6LRx7rnFMh%2B3p76aCAqnNXnqNUOiY2J7x2AijoYLGC95SCdFRNtkFyfjKWYIFeh%2BNqKeM3xhpkt%2FD1Bx86jfTcHIzh28zjt4h26RO%2FHrg1x8MIbUoxbJqK5spVfLQKUK88GbeTJpOuZNIwXix%2B5z3xaJHRuLpJqjH%2FaMV9g%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240212T221742Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=ASIAYRZKFSCRAGHJV4M3%2F20240212%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=f270757211a1b2c3d6ccd3a68f118ebb49fd635f41562c94abb55d031f2b8884',
+            "presignedurl":'',
             "qa_model": {
-                "modelId": "",
-                "provider": "",
-                "streaming":""
+                "modelId": params['qa_model_id'],
+                "provider": params['qa_provider'],
+                "streaming":params['streaming']
             },
             "retrieval":{
                 "max_docs": 1,
@@ -116,7 +127,14 @@ def post_question_about_selected_file():
 #----------------------------------------------------------------------------------------
 def on_subscription_registered():
     """Callback when subscription is registered"""
-    post_question_about_selected_file()
+    params={
+        "embedding_model_id":st.session_state["embedding_model_id"],
+        "qa_model_id":st.session_state["qa_model_id"],
+        "streaming":st.session_state["streaming"],
+        "embedding_provider":st.session_state["embedding_provider"],
+        "qa_provider":st.session_state["qa_provider"]
+    }
+    post_question_about_selected_file(params)
 
 selected_file = get_selected_transformed_filename()
 
@@ -214,11 +232,18 @@ if auth.is_authenticated() and selected_filename:
     print(f'start  QA on :: {selected_filename}')
     if selected_filename.endswith(".jpg") or selected_filename.endswith(".jpeg")  or selected_filename.endswith(".png") or selected_filename.endswith(".jpeg"):
         st.session_state.messages = [{"role": "assistant", "content": f"Ask me anything about **{selected_filename}**!"}]
+        img = get_image_url()
         # display image from s3 using presigned url
         s3 = boto3.client('s3')
-        response = s3.get_object(Bucket='persistencestack-processedassets6ba25f4c-5cxemxijzhlx', Key=selected_filename)
-        file_stream = BytesIO(response['Body'].read())
-        st.image(file_stream,width=400)
+        image_url = get_image_url()
+        if image_url:
+            # s3 get object from presigned url
+            #response = requests.get(image_url)
+            response = s3.get_object(Bucket=S3_PROCESSED_BUCKET, Key=selected_filename)
+            file_stream = BytesIO(response['Body'].read())
+            st.image(file_stream,width=400)
+        else:
+            print(' No image to display')
 
 
 
@@ -261,3 +286,60 @@ elif not auth.is_authenticated():
 else:
     st.write("Please select a document!")
     st.stop()
+
+#########################
+#        SIDEBAR
+#########################
+
+# sidebar
+EMBEDDING_MODEL_ID_OPTIONS=['amazon.titan-embed-text-v1','amazon.titan-embed-image-v1']
+QA_MODEL_ID_OPTIONS=['anthropic.claude-v2']
+EMBEDDING_MODEL_ID_PROVIDER=['Sagemaker Endpoint','Bedrock']
+QA_MODEL_ID_PROVIDER=['Sagemaker Endpoint','Bedrock']
+
+with st.sidebar:
+        st.header("Settings")
+        st.subheader("Q&A Configuration")
+
+        embedding_provider = st.selectbox(
+                label="Select embedding model provider:",
+                options=EMBEDDING_MODEL_ID_PROVIDER,
+                key="embedding_provider",
+                help="Select model provider.",
+            )
+        qa_provider = st.selectbox(
+                label="Select qa model provider:",
+                options=QA_MODEL_ID_PROVIDER,
+                key="qa_provider",
+                help="Select model provider.",
+            )
+
+        embedding_model_id = st.selectbox(
+                label="Select embedding model id:",
+                options=EMBEDDING_MODEL_ID_OPTIONS,
+                key="embedding_model_id",
+                help="Select model type to create and store embeddings in open search cluster as per your use case.",
+            )
+
+        qa_model_id = st.selectbox(
+                label="Select qa model id:",
+                options=QA_MODEL_ID_OPTIONS,
+                key="qa_model_id",
+                help="Select model type to generate response for your questions.",
+            )
+
+        streaming = st.selectbox(
+                label="Select streaming:",
+                options=[True,False],
+                key="streaming",
+                help="Enable or disable streaming on response",
+            )
+
+        temperature = st.slider(
+                label="Temperature:",
+                value=0.45,
+                min_value=0.0,
+                max_value=1.0,
+                key="temperature",
+            )
+

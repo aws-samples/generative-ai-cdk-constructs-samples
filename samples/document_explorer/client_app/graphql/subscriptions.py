@@ -20,6 +20,7 @@ class Subscriptions:
                 files {
                     name
                     status
+                    imageurl
                 }
             }
         }

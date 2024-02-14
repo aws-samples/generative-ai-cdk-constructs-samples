@@ -52,13 +52,14 @@ class DocumentStatus(int):
 #========================================================================================
 # [Controller] Networking: GraphQL mutation helper functions 
 #========================================================================================
-def process_document(uploaded_filename,model_id,streaming,provider,tempreature):
+def process_document(params):
     """Send document to ingestion pipeline
     
     Args:
         uploaded_filename (str): Name of uploaded file
         
     """
+   
     
     if auth.is_authenticated():
         # Get user tokens
@@ -74,15 +75,16 @@ def process_document(uploaded_filename,model_id,streaming,provider,tempreature):
         mutation_client = GraphQLMutationClient(GRAPHQL_ENDPOINT, id_token)
         variables = {
             "ingestionInput": {
-                "embeddings_model":[{"provider":provider,"modelId":model_id,"streaming":streaming}],
-                "files": [{"status": "", "name": uploaded_filename}],
+                "embeddings_model":{"provider":params['provider'],
+                                     "modelId":params['model_id'],
+                                     "streaming":params['model_id']},
+                "files": [{"status": "", "name": params['uploaded_filename']}],
                 "ingestionjobid": ingestion_job_id,
                 "ignore_existing": True
             }
         }
         print(f' mutation query arguments :: {variables}')
         response = mutation_client.execute(Mutations.INGEST_DOCUMENTS, "IngestDocuments", variables)
-
         return response
 
     return None
@@ -103,14 +105,18 @@ def on_subscription_registered():
         return
 
     st.session_state['progress_bar_widget'].progress(DocumentStatus.PROCESSING_STARTED)
-    temperature=float(st.session_state["temperature"])
-    model_id=st.session_state["model_id"]
-    streaming=st.session_state["streaming"]
-    provider=st.session_state["provider"]
-
+    
+    params={
+        "temperature":float(st.session_state["temperature"]),
+        "model_id":st.session_state["model_id"],
+        "streaming":st.session_state["streaming"],
+        "provider":st.session_state["provider"],
+        "uploaded_filename":st.session_state["uploaded_filename"]
+    }
+    
     print(f'on_subscription_registered :: {uploaded_filename}')
     
-    process_document(uploaded_filename,model_id,streaming,provider,temperature)
+    process_document(params)
 
 
 
@@ -121,8 +127,8 @@ def on_message_update(message, subscription_client):
         message (dict): Message payload
         subscription_client (GraphQLSubscriptionClient): Client instance
     """
-
     ingestion_status = message.get("updateIngestionJobStatus")
+    print(f'ingestion_status :: {ingestion_status}')
     if not ingestion_status:
         return
 
@@ -132,6 +138,7 @@ def on_message_update(message, subscription_client):
 
     first_file = files[0]
     status = first_file.get("status")
+    image_url = first_file.get("imageurl")
     if not status:
         return
 
@@ -140,6 +147,7 @@ def on_message_update(message, subscription_client):
     if status in ['ingested', 'file already exists']:
         is_still_processing = False
         logging.info(f"Ingestion completed. Status: {status}")
+        st.session_state['image_url'] = image_url
         st.session_state['progress_bar_widget'].progress(DocumentStatus.PROCESSING_COMPLETE)
 
     elif status in ['unsupported', 'unable to load document']:
@@ -165,7 +173,7 @@ def on_message_update(message, subscription_client):
 #----------------------------------------------------------------------------------------
 def subscribe_to_file_ingestion_updates():
     """Subscribe to GraphQL subscription for file ingestion job status updates."""
-
+    
     if auth.is_authenticated():
         st.session_state['progress_bar_widget'].progress(DocumentStatus.SUBSCRIBING)
 
@@ -224,6 +232,8 @@ st.set_page_config(page_title="Select Document",
                     initial_sidebar_state="expanded",)
 hide_deploy_button()
 
+
+
 # Check if user is authenticated and display login/logout buttons
 auth = CognitoHelper()
 auth.set_session_state()
@@ -233,7 +243,7 @@ auth.print_login_logout_buttons()
 if auth.is_authenticated():
     st.markdown("# Select a document")
     st.write("Doc explorer lets you upload, summarize, and ask questions about your documents using GenAI.")
-
+   
     # Create S3 client
     credentials = auth.get_user_temporary_credentials()
     s3 = boto3.client(
@@ -243,16 +253,61 @@ if auth.is_authenticated():
         aws_session_token=credentials["SessionToken"]
     )
     
+    # sidebar
+    MODEL_ID_OPTIONS=['amazon.titan-embed-text-v1','amazon.titan-embed-image-v1']
+    MODEL_ID_PROVIDER=['Sagemaker Endpoint','Bedrock']
+
+    with st.sidebar:
+            st.header("Settings")
+        
+            st.subheader("Data Ingestion Configuration")
+
+            provider = st.selectbox(
+                    label="Select model provider:",
+                    options=MODEL_ID_PROVIDER,
+                    key="provider",
+                    help="Select model provider.",
+                )
+
+            model_id = st.selectbox(
+                    label="Select model id:",
+                    options=MODEL_ID_OPTIONS,
+                    key="model_id",
+                    help="Select model type to create and store embeddings in open search cluster as per your use case.",
+                )
+
+            streaming = st.selectbox(
+                    label="Select streaming:",
+                    options=[True,False],
+                    key="streaming",
+                    help="Enable or disable streaming on response",
+                )
+
+            temperature = st.slider(
+                    label="Temperature:",
+                    value=0.45,
+                    min_value=0.0,
+                    max_value=1.0,
+                    key="temperature",
+                )
+
+
     # File uploader
     with st.form("file-uploader", clear_on_submit=True):
-            uploaded_file = st.file_uploader('Upload a document', type=['pdf'])
+
+            uploaded_file = st.file_uploader('Upload a document', type=['pdf','jpeg','png','jpg'])
             submitted = st.form_submit_button("Submit", use_container_width=True)
+            submit= True
+            if(uploaded_file and uploaded_file.name.endswith(tuple(['.png','.jpeg','.jpg'])) and model_id=='amazon.titan-embed-text-v1'):
+                st.warning("Invalid model id,Please select multimodality modal for image files")
+                submit=False
             st.session_state['progress_bar_widget'] = st.empty()
-            if uploaded_file and submitted:
+            if submit and uploaded_file and submitted:
                 s3.upload_fileobj(uploaded_file, S3_INPUT_BUCKET, uploaded_file.name)
                 st.session_state['uploaded_filename'] = uploaded_file.name
                 subscribe_to_file_ingestion_updates()
-
+            
+                
     # Transformed file grid
     transformed_files = s3.list_objects_v2(Bucket=S3_PROCESSED_BUCKET)
     if 'Contents' in transformed_files:
@@ -285,47 +340,4 @@ if auth.is_authenticated():
 else:
     st.write("Please login!")
     st.stop()
-
-#########################
-#        SIDEBAR
-#########################
-
-# sidebar
-MODEL_ID_OPTIONS=['amazon.titan-embed-text-v1','amazon.titan-embed-image-v1']
-MODEL_ID_PROVIDER=['Sagemaker Endpoint','Bedrock']
-
-with st.sidebar:
-        st.header("Settings")
-        
-
-        st.subheader("Model Config")
-
-        provider = st.selectbox(
-                label="Select model provider:",
-                options=MODEL_ID_PROVIDER,
-                key="provider",
-                help="Select model provider.",
-            )
-
-        model_id = st.selectbox(
-                label="Select model id:",
-                options=MODEL_ID_OPTIONS,
-                key="model_id",
-                help="Select model type to create and store embeddings in open search cluster as per your use case.",
-            )
-
-        streaming = st.selectbox(
-                label="Select streaming:",
-                options=[True,False],
-                key="streaming",
-                help="Enable or disable streaming on response",
-            )
-
-        temperature = st.slider(
-                label="Temperature:",
-                value=0.45,
-                min_value=0.0,
-                max_value=1.0,
-                key="temperature",
-            )
 
