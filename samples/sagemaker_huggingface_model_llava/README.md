@@ -63,7 +63,7 @@ Default output format [None]: json
 - Node.js: v18.12.1
 - [AWS CDK](https://github.com/aws/aws-cdk/releases/tag/v2.114.0): 2.114.0
 - jq: jq-1.6
-- Make sure you have sufficient quota for the instance type implemented in this sample (service Amazon SageMaker, instance type `ml_inf2_xlarge` for endpoint usage). For more information, refer to [AWS service quotas](https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html).
+- Make sure you have sufficient quota for the instance type implemented in this sample (service Amazon SageMaker, instance type `ml_g5_12xlarge` for endpoint usage). For more information, refer to [AWS service quotas](https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html).
 
 ### Deploy the solution
 
@@ -97,7 +97,7 @@ To protect you against unintended changes that affect your security posture, the
 
 ### Test
 
-- In the AWS console, navigate to [AWS Lambda](https://us-east-1.console.aws.amazon.com/lambda/home?region=us-east-1#/functions?sb=lastModified&so=DESCENDING) and select the function named ```testbgecustom```
+- In the AWS console, navigate to [AWS Lambda](https://us-east-1.console.aws.amazon.com/lambda/home?region=us-east-1#/functions?sb=lastModified&so=DESCENDING) and select the function named ```testllavahuggingface```
 
 - Under the Code tab, click ```Test```. This will send a request to the SageMaker endpoint, and display the result. 
 
@@ -114,7 +114,8 @@ First make sure to remove all data from the Amazon Simple Storage Service (Amazo
 ```
 
 Delete all the associated logs created by the different services in Amazon CloudWatch logs.
-Also, delete any notebook instance running.
+
+Also, delete any running notebook instance and associated files.
 
 # Content Security Legal Disclaimer
 The sample code; software libraries; command line tools; proofs of concept; templates; or other related technology (including any of the foregoing that are provided by our personnel) is provided to you as AWS Content under the AWS Customer Agreement, or the relevant written agreement between you and AWS (whichever applies). You should not use this AWS Content in your production accounts, or on production or other critical data. You are responsible for testing, securing, and optimizing the AWS Content, such as sample code, as appropriate for production grade use based on your specific quality control practices and standards. Deploying AWS Content may incur AWS charges for creating or using AWS chargeable resources, such as running Amazon EC2 instances or using Amazon S3 storage.
