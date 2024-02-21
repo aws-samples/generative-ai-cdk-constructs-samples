@@ -4,7 +4,7 @@
 
 The "SageMaker Custom model deployment" sample generative AI application demonstrates how to deploy and interact with a model where artifacts are stored in an Amazon Simple Storage Service (S3) bucket, leveraging AWS services and [AWS Generative AI CDK Constructs](https://github.com/awslabs/generative-ai-cdk-constructs).
 
-Specifically, this sample deploys an AWS Lambda function which interacts with a SageMaker real-time endpoint, hosting [bge-base-en-v1.5](https://huggingface.co/BAAI/bge-base-en-v1.5) to generate embeddings on AWS Inferentia 2. 
+Specifically, this sample deploys an AWS Lambda function which interacts with a SageMaker real-time endpoint, hosting [bge-base-en-v1.5](https://huggingface.co/BAAI/bge-base-en-v1.5) to generate embeddings on AWS Inferentia2. 
 
 If you are interested to learn more about training and deploying models using [AWS Trainium](https://aws.amazon.com/machine-learning/trainium/) and [AWS Inferentia](https://aws.amazon.com/machine-learning/inferentia/), this [workshop](https://github.com/aws-samples/ml-specialized-hardware/tree/main) provides several accelerators and tutorials.
 
@@ -40,7 +40,7 @@ samples/sagemaker_custom_model
 
 ### Prepare your model
 
-First, you need to prepare the model to run on the AWS Inferentia 2 hardware. For this, you can follow steps 1 to 3 from this [blog post](https://www.philschmid.de/inferentia2-embeddings). Save the location where your model artifacts are saved.
+First, you need to prepare the model to run on the AWS Inferentia2 hardware. For this, you can follow steps 1 to 3 from this [blog post](https://www.philschmid.de/inferentia2-embeddings). Save the location where your model artifacts are saved.
 
 > Note
 > This sample was tested in the region us-east-2. The Amazon S3 bucket containing your model artifacts needs to be in the same region where your real-time endpoint is deployed.
