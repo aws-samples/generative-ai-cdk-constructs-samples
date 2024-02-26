@@ -1,10 +1,10 @@
-# SageMaker Hugging Face model deployment on AWS Inferentia 2
+# SageMaker Hugging Face model deployment on AWS Inferentia2
 
 ## Overview
 
 The "SageMaker Hugging Face model deployment" sample generative AI application demonstrates how to deploy and interact with a model supported by the [Hugging Face LLM Inference Container for Amazon SageMaker](https://github.com/awslabs/generative-ai-cdk-constructs/blob/main/src/patterns/gen-ai/aws-model-deployment-sagemaker/README_hugging_face.md#:~:text=Models%20supported%20by%20Hugging%20Face%20LLM%20Inference%20Container%20for%20Amazon%20SageMaker) leveraging AWS services and [AWS Generative AI CDK Constructs](https://github.com/awslabs/generative-ai-cdk-constructs).
 
-Specifically, this sample deploys an AWS Lambda function which interacts with a SageMaker real-time endpoint, hosting [aws-neuron/zephyr-7b-seqlen-2048-bs-4-cores-2](https://huggingface.co/aws-neuron/zephyr-7b-seqlen-2048-bs-4-cores-2) from Hugging Face on [AWS Inferentia 2](https://aws.amazon.com/ec2/instance-types/inf2/). This is possible thanks to the release of [Hugging Face Text Generation Inference for AWS Inferentia2](https://huggingface.co/blog/text-generation-inference-on-inferentia2). The previous blog post provides detailed information on the compatible models with this new release.
+Specifically, this sample deploys an AWS Lambda function which interacts with a SageMaker real-time endpoint, hosting [aws-neuron/zephyr-7b-seqlen-2048-bs-4-cores-2](https://huggingface.co/aws-neuron/zephyr-7b-seqlen-2048-bs-4-cores-2) from Hugging Face on [AWS Inferentia2](https://aws.amazon.com/ec2/instance-types/inf2/). This is possible thanks to the release of [Hugging Face Text Generation Inference for AWS Inferentia2](https://huggingface.co/blog/text-generation-inference-on-inferentia2). The previous blog post provides detailed information on the compatible models with this new release.
 
 By providing reusable constructs following AWS best practices, this app helps you quickly build custom generative AI apps on AWS.
 
