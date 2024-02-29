@@ -35,6 +35,7 @@ export interface ApiProps extends StackProps {
   existingSecurityGroup: ec2.SecurityGroup;
   existingInputAssetsBucketObj: s3.IBucket;
   existingProcessedAssetsBucketObj: s3.IBucket;
+  //existingGeneratedAssetsBucketObj: s3.IBucket;
   openSearchIndexName: string;
   cacheNodeType: string;
   engine: string;
@@ -115,6 +116,7 @@ export class ApiStack extends Stack {
     });
     props.existingInputAssetsBucketObj.grantReadWrite(this.authenticatedRole);
     props.existingProcessedAssetsBucketObj.grantRead(this.authenticatedRole);
+    //props.existingGeneratedAssetsBucketObj.grantRead(this.authenticatedRole);
     new cognito.CfnIdentityPoolRoleAttachment(this, 'IdentityPoolRoleAttachment', {
       identityPoolId: this.identityPool.ref,
       roles: {
@@ -284,7 +286,43 @@ export class ApiStack extends Stack {
     cfn_source_api_association_qa.node.addDependency(this.mergedApi);
     cfn_source_api_association_qa.node.addDependency(qa.graphqlApi);
 
+
+  //-----------------------------------------------------------------------------
+    // GenAI IMAGE GENERATION Construct
     //-----------------------------------------------------------------------------
+    // Construct
+    // const imageGeneration = new emergingTech.ContentGenerationAppsyncLambda(this, 'JoyrideImageGeneration', {
+    //   cognitoUserPool: this.cognitoPool,
+    //   existingVpc: props.existingVpc,
+    //   existingMergedApi: this.mergedApi,
+    //   existingSecurityGroup: props.existingSecurityGroup,
+    //   existingGeneratedAssetsBucketObj: props.existingGeneratedAssetsBucketObj,
+    //   observability: true,
+    // });
+    // // Update Merged API Policy
+    // mergedApiRole.addToPrincipalPolicy(new iam.PolicyStatement({
+    //   effect:iam.Effect.ALLOW,
+    //   actions:['appsync:SourceGraphQL', 'appsync:StartSchemaMerge'],
+    //   resources:[
+    //     `${imageGeneration.graphqlApi.arn}/*`,
+    //     `${imageGeneration.graphqlApi.arn}/sourceApiAssociations/*`,
+    //     `${this.mergedApi.attrArn}/*`,
+    //     `${this.mergedApi.attrArn}/sourceApiAssociations/*`,
+    //   ]
+    // }));
+    // NagSuppressions.addResourceSuppressions(mergedApiRole, [{id: 'AwsSolutions-IAM5', reason: '* used after ARN prefix'}], true)
+
+    // // Add Source API
+    // const cfn_source_api_association_imagegen = new appsync.CfnSourceApiAssociation(this, "ImgGenApiAssociation", {
+    //   mergedApiIdentifier: this.mergedApi.attrApiId,
+    //   sourceApiAssociationConfig: {mergeType:'AUTO_MERGE'},
+    //   sourceApiIdentifier: imageGeneration.graphqlApi.apiId
+    // });
+    // // Add dependency
+    // cfn_source_api_association_imagegen.node.addDependency(this.mergedApi);
+    // cfn_source_api_association_imagegen.node.addDependency(imageGeneration.graphqlApi);
+    
+     //-----------------------------------------------------------------------------
     // Suppress cdk-nag warnings for Generative AI CDK Constructs
     // Reference: https://github.com/cdklabs/cdk-nag/blob/main/RULES.md
     //-----------------------------------------------------------------------------
@@ -295,6 +333,7 @@ export class ApiStack extends Stack {
       {id: 'AwsSolutions-S10', reason: 'S3 bucket policy defined in @cdklabs/generative-ai-cdk-constructs'},
       {id: 'AwsSolutions-SQS3', reason: 'SQS DLQ property defined in @cdklabs/generative-ai-cdk-constructs'},
     ], true)
+
 
     //---------------------------------------------------------------------
     // Export values
@@ -334,5 +373,7 @@ export class ApiStack extends Stack {
     new cdk.CfnOutput(this, "GraphQLEndpoint", {
       value: this.mergedApi.attrGraphQlUrl,
     });
+
+  
   }
 }

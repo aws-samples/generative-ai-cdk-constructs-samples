@@ -48,22 +48,18 @@ class Subscriptions:
                 question
                 answer
                 jobstatus
-                filename
             }
         }
     """
 
- # Subscription to get updates on image generation job status
+    # Subscription to get updates on image generation job status
     # More info: https://github.com/awslabs/generative-ai-cdk-constructs/tree/main/src/patterns/gen-ai/aws-imagegen-appsync-lambda
     UPDATE_GENERATE_IMAGE_JOB_STATUS = """
-        subscription UpdateGenerateImageStatus($jobid: ID!) {
-            updateGenerateImageStatus(jobid: $jobid) {
+        subscription UpdateGenerateImageStatus($jobid: ID!,$filename: String!) {
+            updateGenerateImageStatus(jobid: $jobid,filename: $filename) {
                 filename
-                input_text
-                jobid
-                message
-                status
                 image_path
+                status
             }
         }
     """

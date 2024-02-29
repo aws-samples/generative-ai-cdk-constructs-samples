@@ -96,7 +96,7 @@ def post_question_about_selected_file(params):
             "jobid": summary_job_id,
             "jobstatus": "",
             "filename": '',
-            "presignedurl":'https://persistencestack-processedassets6ba25f4c-5cxemxijzhlx.s3.us-east-1.amazonaws.com/test.png?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEIj%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJIMEYCIQD2VtSl7gmPddhrNWpcAB9ooXQFdTYPfyNx0CkzTQu0%2BgIhAKhfGxO60Zv4QAhZHgBTT%2B90QqR7fo8IxnVgtT6Cnw8hKuYCCGEQABoMNTg3OTYyMDkzNzMwIgxJWIF9iKcuCsHBIlwqwwIRAu3eUqMBKFZ%2FBQ3JofLWh5CmSgiPezR6MUkcek2kbrknjQDerkKWN%2BxzcaK83nO5dcTVgzxNSD300XhnJlVvDSopFaTQtJuK76igLufXH6F2mdawWN3ThQNznCXFGUP1O8mw50cvYiCv0Gg2rcTaWxUjS5scYAG%2FIlIxIuFyrXDHe0U3BvrFAgVozu8uun%2BlUR3%2F3hQW8JJFfeC4aIt223oTfmIgIWPuqaJ5uYY8IHCYgGMTCWMmtXDsv14edZAF5LJh2NyQicZh0fTLRMRMeNG5vdaBCU0TRv0P8wlI%2FdDlk1QFuZHmiPN%2FvcdXEGvLVu77K7OCsWI0oQ4omNord0UEAVIOA0IG352ujLhH8nqF%2BhZtqPp6etk%2Fv043F9td6Ld5KprLV2tKX4AVBBMhYzDi5v8E972rD5wz0t0NFKM8PTCIgKmuBjqGAl9sbVrj6alHOwK8kBpsgVOOX4bp%2Bqsm8g%2B%2FKrXmQeqiv8kGqd1LieUs8VB4BKGcPiYdnkV8nEHh1j5TM7yn74Rr3fRhZ54mOlMiDsjdBBmuE8f8CScy%2F7A1dw8OvCkeJT0D8Zt%2F0goS4qupYEsVV0Ivbk97qtsXMj5xt5EVfA362SVbNfproU8Y6LRx7rnFMh%2B3p76aCAqnNXnqNUOiY2J7x2AijoYLGC95SCdFRNtkFyfjKWYIFeh%2BNqKeM3xhpkt%2FD1Bx86jfTcHIzh28zjt4h26RO%2FHrg1x8MIbUoxbJqK5spVfLQKUK88GbeTJpOuZNIwXix%2B5z3xaJHRuLpJqjH%2FaMV9g%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20240212T221742Z&X-Amz-SignedHeaders=host&X-Amz-Expires=7200&X-Amz-Credential=ASIAYRZKFSCRAGHJV4M3%2F20240212%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=f270757211a1b2c3d6ccd3a68f118ebb49fd635f41562c94abb55d031f2b8884',
+            "presignedurl":params['presignedurl'],
             "presignedurl":'',
             "qa_model": {
                 "modelId": params['qa_model_id'],
@@ -132,7 +132,8 @@ def on_subscription_registered():
         "qa_model_id":st.session_state["qa_model_id"],
         "streaming":st.session_state["streaming"],
         "embedding_provider":st.session_state["embedding_provider"],
-        "qa_provider":st.session_state["qa_provider"]
+        "qa_provider":st.session_state["qa_provider"],
+        "presignedurl":st.session_state.get("image_url")
     }
     post_question_about_selected_file(params)
 
@@ -150,7 +151,6 @@ def on_message_update(message, subscription_client):
 
     print(f'response received  :: {status}')
 
-    ## TODO - Check with @Heitor why status Done  was not enabled ?
     if status == "Done":
         encoded_answer = response_obj.get("answer")
         if not encoded_answer:
