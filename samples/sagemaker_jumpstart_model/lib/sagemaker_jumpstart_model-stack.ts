@@ -27,6 +27,7 @@ export class SagemakerJumpstartModelStack extends cdk.Stack {
     const JmpStrtTestConstruct = new genai.JumpStartSageMakerEndpoint(this, 'testllamatwosevenb', {
       model: genai.JumpStartModel.META_TEXTGENERATION_LLAMA_2_7B_F_2_0_2,
       instanceType: genai.SageMakerInstanceType.ML_G5_2XLARGE,
+      acceptEula: false,
       endpointName: SG_ENDPOINT_NAME
     });
 
@@ -44,7 +45,7 @@ export class SagemakerJumpstartModelStack extends cdk.Stack {
       timeout: cdk.Duration.minutes(15),
       memorySize: 1024,
       environment: {
-        'ENDPOINT_NAME': SG_ENDPOINT_NAME
+        'ENDPOINT_NAME': JmpStrtTestConstruct.cfnEndpoint.endpointName!
       }
     });
 
