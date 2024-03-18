@@ -28,7 +28,7 @@ from graphql.mutations import Mutations
 from graphql.subscriptions import Subscriptions
 import boto3
 from streamlit_option_menu import option_menu
-from st_pages import show_pages,Section, Page, hide_pages,add_page_title
+from st_pages import show_pages,Section, Page, hide_pages,add_indentation
 from streamlit_extras.switch_page_button import switch_page
 
 #========================================================================================
@@ -184,29 +184,31 @@ def subscribe_to_imagegen_updates():
 # [View] Render UI components  
 #========================================================================================
 # Streamlit page configuration
+
 st.set_page_config(page_title="Image Generation", page_icon=":camera:",
                     layout="wide",initial_sidebar_state="expanded")
+add_indentation() 
 print(f'load image page')
 st.session_state['selected_nav_index']=1
-selected = option_menu(
-        menu_title="AWS-GENERATIVE-AI-CDK-CONSTRUCTS SAMPLE APPS",
-        options=["Document Explorer", 'Content Generation'], 
-        icons=['💬', '📸'],
-        menu_icon="cast", 
-        default_index=st.session_state['selected_nav_index'],
-        orientation='horizontal'
-        ) 
-if selected == "Content Generation":
-    print(f'do nothing')
+# selected = option_menu(
+#         menu_title="AWS-GENERATIVE-AI-CDK-CONSTRUCTS SAMPLE APPS",
+#         options=["Document Explorer", 'Content Generation'], 
+#         icons=['💬', '📸'],
+#         menu_icon="cast", 
+#         default_index=st.session_state['selected_nav_index'],
+#         orientation='horizontal'
+#         ) 
+# if selected == "Content Generation":
+#     print(f'do nothing')
     
-    hide_pages(["Q&A","Select Document","Summary"])
-   # st.switch_page("pages/4_Image_Generation.py")
+#     hide_pages(["Q&A","Select Document","Summary","Visual Q&A"])
+#    # st.switch_page("pages/5_Image_Generation.py")
     
-elif selected == "Document Explorer":
-    hide_pages(["Image Generation","Image Search"])
-    st.session_state['selected_nav_index']=0
-    print(f'load doc explorer')
-    st.switch_page("pages/1_Select_Document.py")
+# elif selected == "Document Explorer":
+#     hide_pages(["Image Generation","Image Search"])
+#     st.session_state['selected_nav_index']=0
+#     print(f'load doc explorer')
+#     st.switch_page("pages/1_Select_Document.py")
 
 hide_deploy_button()
 

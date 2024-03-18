@@ -27,6 +27,9 @@ from graphql.graphql_subscription_client import GraphQLSubscriptionClient
 from graphql.mutations import Mutations
 from graphql.subscriptions import Subscriptions
 import boto3
+from streamlit_option_menu import option_menu
+from st_pages import show_pages,Section, Page, hide_pages,add_indentation
+from streamlit_extras.switch_page_button import switch_page
 
 #========================================================================================
 # [Model] Load configuration and environment variables
@@ -37,6 +40,9 @@ load_dotenv()
 # Configure buckets and API endpoint  
 GRAPHQL_ENDPOINT = os.environ.get("GRAPHQL_ENDPOINT")  
 S3_PROCESSED_BUCKET = os.environ.get("S3_PROCESSED_BUCKET") 
+s3 = boto3.client('s3')
+
+
 
 def get_selected_filename():
     selected_file = st.session_state.get("selected_file")
@@ -45,13 +51,6 @@ def get_selected_filename():
     
     return selected_file
 
-def get_image_url():
-    image_url = st.session_state.get("image_url")
-    if not image_url:
-        print(f'no image url present , not able to display image ')
-        return None
-    
-    return image_url
 
 def get_selected_transformed_filename():
     """Get selected source filename from session state."""
@@ -91,17 +90,18 @@ def post_question_about_selected_file(params):
              "embeddings_model": {
                 "modelId": params['embedding_model_id'],
                 "provider": params['embedding_provider'],
-                "streaming":params['streaming']
+                "streaming":params['streaming'],
+                "modality":params['modality']
             },
             "jobid": summary_job_id,
             "jobstatus": "",
-            "filename": '',
-            "presignedurl":params['presignedurl'],
-            "presignedurl":'',
+            "filename": "",
+            "presignedurl":"",
             "qa_model": {
                 "modelId": params['qa_model_id'],
                 "provider": params['qa_provider'],
-                "streaming":params['streaming']
+                "streaming":params['streaming'],
+                "modality":params['modality']
             },
             "retrieval":{
                 "max_docs": 1,
@@ -113,7 +113,7 @@ def post_question_about_selected_file(params):
             "responseGenerationMethod": generative_method
 
         }
-        
+        print(f'variables {variables}')
         return mutation_client.execute(Mutations.POST_QUESTION, "PostQuestion", variables)
 
     return None
@@ -133,11 +133,20 @@ def on_subscription_registered():
         "streaming":st.session_state["streaming"],
         "embedding_provider":st.session_state["embedding_provider"],
         "qa_provider":st.session_state["qa_provider"],
-        "presignedurl":st.session_state.get("image_url")
+        "modality":st.session_state["modality"],
+        
     }
     post_question_about_selected_file(params)
 
 selected_file = get_selected_transformed_filename()
+
+def display_image(key):
+    print(f'displaying image {key} from {S3_PROCESSED_BUCKET}')
+    if key is not None:
+        response = s3.get_object(Bucket=S3_PROCESSED_BUCKET, Key=key)
+        file_stream = BytesIO(response['Body'].read())
+        st.image(file_stream,width=400)
+    return response
 
 def on_message_update(message, subscription_client):
     """Callback when summary job status update is received."""
@@ -150,28 +159,49 @@ def on_message_update(message, subscription_client):
     status = response_obj.get("jobstatus")
 
     print(f'response received  :: {status}')
-
-    if status == "Done":
+    print(f'generative_method :: {generative_method}')
+    ## TODO - Check with @Heitor why status Done  was not enabled ?
+    if status != "Working on the question":
+        print(f'generative_method :: {generative_method}')
+        if generative_method == 'RAG':
+             filename = response_obj.get("filename")
+             #display_image(filename)
         encoded_answer = response_obj.get("answer")
         if not encoded_answer:
             return
         answer_text = base64.b64decode(encoded_answer).decode("utf-8")
         st.session_state.message_widget_text += answer_text
         st.session_state.message_widget.markdown(st.session_state.message_widget_text + " ▌")           
-
-    if status == "New LLM token":
-        encoded_answer = response_obj.get("answer")
-        if not encoded_answer:
-            return
-        answer_text = base64.b64decode(encoded_answer).decode("utf-8")
-        st.session_state.message_widget_text += answer_text
-        st.session_state.message_widget.markdown(st.session_state.message_widget_text + " ▌")           
-
-    elif status == "LLM streaming ended":
-        st.session_state.message_widget.markdown(st.session_state.message_widget_text)
-        if st.session_state.messages[-1]['role'] == 'assistant':
-            st.session_state.messages[-1]['content'] = copy(st.session_state.message_widget_text)
+        
         subscription_client.unsubscribe()
+    
+    
+    # if status == "Exception during prediction":
+    #     encoded_answer = response_obj.get("answer")
+    #     if not encoded_answer:
+    #         return
+    #     answer_text = base64.b64decode(encoded_answer).decode("utf-8")
+    #     st.session_state.message_widget_text += answer_text
+    #     st.session_state.message_widget.markdown(st.session_state.message_widget_text + " ▌")           
+    #     subscription_client.unsubscribe()
+    # if status == "New LLM token":
+    #     encoded_answer = response_obj.get("answer")
+    #     if not encoded_answer:
+    #         return
+    #     answer_text = base64.b64decode(encoded_answer).decode("utf-8")
+    #     st.session_state.message_widget_text += answer_text
+    #     st.session_state.message_widget.markdown(st.session_state.message_widget_text + " ▌")           
+
+    # elif status == "LLM streaming ended":
+    #     st.session_state.message_widget.markdown(st.session_state.message_widget_text)
+    #     if st.session_state.messages[-1]['role'] == 'assistant':
+    #         st.session_state.messages[-1]['content'] = copy(st.session_state.message_widget_text)
+    #     subscription_client.unsubscribe()
+    # elif status == "Failed to load the llm":
+    #     st.session_state.message_widget.markdown(st.session_state.message_widget_text)
+    #     if st.session_state.messages[-1]['role'] == 'assistant':
+    #         st.session_state.messages[-1]['content'] = copy(st.session_state.message_widget_text)
+    #     subscription_client.unsubscribe()
 
 
 #----------------------------------------------------------------------------------------
@@ -207,7 +237,27 @@ def subscribe_to_answering_updates():
 # [View] Render UI components  
 #========================================================================================
 # Streamlit page configuration
-st.set_page_config(page_title="Q&A", page_icon="💬", layout="wide") 
+
+st.set_page_config(page_title="Q&A", page_icon="💬", layout="wide",initial_sidebar_state="expanded") 
+add_indentation() 
+st.session_state['selected_nav_index']=0
+# selected = option_menu(
+#         menu_title="AWS-GENERATIVE-AI-CDK-CONSTRUCTS SAMPLE APPS",
+#         options=["Document Explorer", 'Content Generation'], 
+#         icons=['💬', '📸'],
+#         menu_icon="cast", 
+#         default_index=st.session_state['selected_nav_index'],
+#         orientation='horizontal'
+#         )
+# if selected == "Content Generation":
+#     hide_pages(["Q&A","Select Document","Summary","Visual Q&A"])
+#     st.session_state['selected_nav_index']=1
+#     st.switch_page("pages/5_Image_Generation.py")
+    
+# elif selected == "Document Explorer":
+#     hide_pages(["Image Generation","Image Search"])
+    #st.switch_page("pages/1_Select_Document.py")
+
 hide_deploy_button()
 
 # Check if user is authenticated and display login/logout buttons
@@ -232,59 +282,54 @@ if auth.is_authenticated() and selected_filename:
     print(f'start  QA on :: {selected_filename}')
     if selected_filename.endswith(".jpg") or selected_filename.endswith(".jpeg")  or selected_filename.endswith(".png") or selected_filename.endswith(".jpeg"):
         st.session_state.messages = [{"role": "assistant", "content": f"Ask me anything about **{selected_filename}**!"}]
-        img = get_image_url()
-        # display image from s3 using presigned url
-        s3 = boto3.client('s3')
-        image_url = get_image_url()
-        if image_url:
-            # s3 get object from presigned url
-            #response = requests.get(image_url)
-            response = s3.get_object(Bucket=S3_PROCESSED_BUCKET, Key=selected_filename)
-            file_stream = BytesIO(response['Body'].read())
-            st.image(file_stream,width=400)
+        # display image from s3 using presigned url     
+        if generative_method == 'LONG_CONTEXT':
+                # s3 get object from presigned url
+                #response = requests.get(image_url)
+                display_image(selected_filename)
         else:
-            print(' No image to display')
+                print('no image')
 
+        if "messages_filename" not in st.session_state or st.session_state.messages_filename != selected_filename:
+            st.session_state.messages_filename = selected_filename
+            st.session_state.messages = [{"role": "assistant", "content": f"Ask me anything about **{selected_filename}**!"}]
 
+        # Add Clear button
+        if st.button("Clear"):
+            st.session_state.messages = [{"role": "assistant", "content": f"Ask me anything about **{selected_filename}**!"}]
+            st.session_state.message_widget_text = ""
 
-    if "messages_filename" not in st.session_state or st.session_state.messages_filename != selected_filename:
-        st.session_state.messages_filename = selected_filename
-        st.session_state.messages = [{"role": "assistant", "content": f"Ask me anything about **{selected_filename}**!"}]
+        # Display chat history
+        for message in st.session_state.messages:
+            with st.chat_message(message["role"]):
+                st.markdown(message["content"])
 
-    # Add Clear button
-    if st.button("Clear"):
-        st.session_state.messages = [{"role": "assistant", "content": f"Ask me anything about **{selected_filename}**!"}]
-        st.session_state.message_widget_text = ""
+        # Handle user input
+        if prompt := st.chat_input():
+            # Display user message
+            st.chat_message("user").markdown(prompt)
+                
+            # Add user message to history
+            st.session_state.messages.append({"role": "user", "content": prompt})
 
-    # Display chat history
-    for message in st.session_state.messages:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
-
-    # Handle user input
-    if prompt := st.chat_input():
-        # Display user message
-        st.chat_message("user").markdown(prompt)
-            
-        # Add user message to history
-        st.session_state.messages.append({"role": "user", "content": prompt})
-
-        with st.chat_message("assistant"):
-            message_widget = st.empty()
-            message_widget_text = ""
-            message_widget.markdown("Processing ...")
-            st.session_state['message_widget'] = message_widget
-            st.session_state['message_widget_text'] = message_widget_text
-            st.session_state['encoded_question'] = base64.b64encode(prompt.encode("utf-8")).decode("utf-8") 
-            st.session_state.messages.append({"role": "assistant", "content": message_widget_text})
-            subscribe_to_answering_updates()
-
+            with st.chat_message("assistant"):
+                message_widget = st.empty()
+                message_widget_text = ""
+                message_widget.markdown("Processing ...")
+                st.session_state['message_widget'] = message_widget
+                st.session_state['message_widget_text'] = message_widget_text
+                st.session_state['encoded_question'] = base64.b64encode(prompt.encode("utf-8")).decode("utf-8") 
+                st.session_state.messages.append({"role": "assistant", "content": message_widget_text})
+                subscribe_to_answering_updates()
+    else:
+        st.warning("Please select a valid image!")
+        st.stop()
 # Guest user UI 
 elif not auth.is_authenticated():
-    st.write("Please login and select a document!")
+    st.warning("Please login and select a document!")
     st.stop()
 else:
-    st.write("Please select a document!")
+    st.warning("Please select a document!")
     st.stop()
 
 #########################
@@ -292,15 +337,23 @@ else:
 #########################
 
 # sidebar
-EMBEDDING_MODEL_ID_OPTIONS=['amazon.titan-embed-text-v1','amazon.titan-embed-image-v1']
-QA_MODEL_ID_OPTIONS=['anthropic.claude-v2']
-EMBEDDING_MODEL_ID_PROVIDER=['Sagemaker Endpoint','Bedrock']
-QA_MODEL_ID_PROVIDER=['Sagemaker Endpoint','Bedrock']
+EMBEDDING_MODEL_ID_OPTIONS=['amazon.titan-embed-image-v1','amazon.titan-embed-text-v1']
+QA_MODEL_ID_OPTIONS=['anthropic.claude-3-sonnet-20240229-v1:0','IDEFICS']
+EMBEDDING_MODEL_ID_PROVIDER=['Bedrock','Sagemaker Endpoint']
+QA_MODEL_ID_PROVIDER=['Bedrock','Sagemaker Endpoint']
+MODAILITY_OPTIONS=['Image']
 
 with st.sidebar:
         st.header("Settings")
         st.subheader("Q&A Configuration")
 
+        modality = st.selectbox(
+                label="Modality:",
+                options=MODAILITY_OPTIONS,
+                key="modality",
+                help="Select modality.",
+            )
+        
         embedding_provider = st.selectbox(
                 label="Select embedding model provider:",
                 options=EMBEDDING_MODEL_ID_PROVIDER,

@@ -26,7 +26,7 @@ from graphql.graphql_subscription_client import GraphQLSubscriptionClient
 from graphql.mutations import Mutations
 from graphql.subscriptions import Subscriptions
 from streamlit_option_menu import option_menu
-from st_pages import show_pages,Section, Page, hide_pages,add_page_title
+from st_pages import show_pages,Section, Page, hide_pages,add_indentation
 from streamlit_extras.switch_page_button import switch_page
 
 #========================================================================================
@@ -168,22 +168,24 @@ def display_pdf(pdf_content, pdf_viewer_width, pdf_viewer_height):
     st.markdown(pdf_html, unsafe_allow_html=True)
 
 # Streamlit page configuration
+
 st.set_page_config(page_title="Summary", page_icon="🏷️", layout="wide", initial_sidebar_state="expanded")
-selected = option_menu(
-        menu_title="AWS-GENERATIVE-AI-CDK-CONSTRUCTS SAMPLE APPS",
-        options=["Document Explorer", 'Content Generation'], 
-        icons=['💬', '📸'],
-        menu_icon="cast", 
-        #default_index=0,
-        orientation='horizontal'
-        )
-if selected == "Content Generation":
-    hide_pages(["Q&A","Select Document","Summary"])
-    st.session_state['selected_nav_index']=1
-    st.switch_page("pages/4_Image_Generation.py")
+add_indentation() 
+# selected = option_menu(
+#         menu_title="AWS-GENERATIVE-AI-CDK-CONSTRUCTS SAMPLE APPS",
+#         options=["Document Explorer", 'Content Generation'], 
+#         icons=['💬', '📸'],
+#         menu_icon="cast", 
+#         #default_index=0,
+#         orientation='horizontal'
+#         )
+# if selected == "Content Generation":
+#     hide_pages(["Q&A","Select Document","Summary","Visual Q&A"])
+#     st.session_state['selected_nav_index']=1
+#     st.switch_page("pages/5_Image_Generation.py")
     
-elif selected == "Document Explorer":
-    hide_pages(["Image Generation","Image Search"])
+# elif selected == "Document Explorer":
+#     hide_pages(["Image Generation","Image Search"])
     #st.switch_page("pages/1_Select_Document.py")
 
 hide_deploy_button()

@@ -27,22 +27,6 @@ from st_pages import show_pages,Section, Page, hide_pages,add_indentation
 #pages = ["1_📁_Select_Document", "2_🏷️_Summary", "3_💬_Q&A","4_:camera:_Image_Generation"]
 add_indentation() 
 
-show_pages(
-    [
-        Section("Document Explorer", icon="📁"),
-        Page("pages/1_doc_explorer_home.py", "Home", "🏠",in_section=True),
-        Page("pages/2_Select_Document.py", "Select Document", "📃",in_section=True),
-        Page("pages/3_Q&A.py", "Q&A", "💬",in_section=True),
-        Page("pages/4_Summary.py", "Summary", "🏷️",in_section=True),
-        Page("pages/5_Visual_Q&A.py", "Visual Q&A", "👁️‍🗨️",in_section=True),
-        Section(name="Content Generation", icon="🎨"),
-        Page("pages/6_content_generation_home.py", "Home", "🏠",in_section=True),
-        Page("pages/7_Image_Generation.py", "Generate Image", "📸",in_section=True),
-        Page("pages/8_Image_Search.py", "Search Image", "🔎",in_section=True),
-
-    ]
-)
-
 # selected = option_menu(
 #         menu_title="AWS-GENERATIVE-AI-CDK-CONSTRUCTS SAMPLE APPS",
 #         options=["Document Explorer", 'Content Generation'], 
@@ -101,6 +85,5 @@ if auth.is_authenticated():
     #     hide_pages(["Q&A","Select Document","Summary","Visual Q&A","Image Generation","Image Search"])
 
 else:
-    hide_pages(["Q&A","Select Document","Summary","Visual Q&A","Image Generation","Image Search"])
     st.write("Please login!")
     st.stop()

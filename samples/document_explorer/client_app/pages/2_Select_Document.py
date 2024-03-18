@@ -29,7 +29,7 @@ from graphql.graphql_subscription_client import GraphQLSubscriptionClient
 from graphql.mutations import Mutations
 from graphql.subscriptions import Subscriptions
 from streamlit_option_menu import option_menu
-from st_pages import show_pages,Section, Page, hide_pages,add_page_title
+from st_pages import show_pages,Section, Page, hide_pages,add_indentation
 from streamlit_extras.switch_page_button import switch_page
 
 
@@ -104,7 +104,15 @@ def process_document(params):
 #----------------------------------------------------------------------------------------
 def on_subscription_registered():
     """Callback when subscription is registered."""
-
+    params={
+        "embedding_model_id":st.session_state["embedding_model_id"],
+        "qa_model_id":st.session_state["qa_model_id"],
+        "streaming":st.session_state["streaming"],
+        "embedding_provider":st.session_state["embedding_provider"],
+        "qa_provider":st.session_state["qa_provider"],
+        "modality":st.session_state["modality"],
+        
+    }
     st.session_state['progress_bar_widget'].progress(DocumentStatus.SUBSCRIPTION_ACTIVE)
     uploaded_filename = st.session_state.get('uploaded_filename')
     if not uploaded_filename:
@@ -233,9 +241,11 @@ def to_tuple(s3_object):
     )
 
 # Streamlit page configuration
+
 st.set_page_config(page_title="Select Document",
                     page_icon="📁",layout="wide",
                     initial_sidebar_state="expanded",)
+add_indentation() 
 
 # st.session_state['selected_nav']='Document Explorer'
 # def on_change(key):
@@ -244,7 +254,7 @@ st.set_page_config(page_title="Select Document",
 #     if selected_nav == "Content Generation":
 #         print(f'move to images :: {selected_nav}')
 #         hide_pages(["Q&A","Select Document","Summary"])
-#         st.switch_page("pages/4_Image_Generation.py")
+#         st.switch_page("pages/5_Image_Generation.py")
     
 #     elif selected_nav == "Document Explorer":
 #         print(f'move to doc  :: {selected_nav}')
@@ -252,16 +262,16 @@ st.set_page_config(page_title="Select Document",
 
 st.session_state['selected_nav_index']=0
  
-selected_nav = option_menu(
-        menu_title="AWS-GENERATIVE-AI-CDK-CONSTRUCTS SAMPLE APPS",
-        options=["Document Explorer", 'Content Generation'], 
-        icons=['💬', '📸'],
-        menu_icon="cast", 
-        default_index=st.session_state['selected_nav_index'],
-        orientation='horizontal'
-        # on_change=on_change,
-        # key='menu_5'
-        )
+# selected_nav = option_menu(
+#         menu_title="AWS-GENERATIVE-AI-CDK-CONSTRUCTS SAMPLE APPS",
+#         options=["Document Explorer", 'Content Generation'], 
+#         icons=['💬', '📸'],
+#         menu_icon="cast", 
+#         default_index=st.session_state['selected_nav_index'],
+#         orientation='horizontal'
+#         # on_change=on_change,
+#         # key='menu_5'
+#         )
 
 if st.session_state.get('switch_button', False):
     st.session_state['menu_option'] = (st.session_state.get('menu_option', 0) + 1) % 4
@@ -269,16 +279,16 @@ if st.session_state.get('switch_button', False):
 else:
     manual_select = None
 
-if selected_nav == "Content Generation":
-    print(f'move to images  :: {selected_nav}')
-    st.session_state['selected_nav_index']=1
-    hide_pages(["Q&A","Select Document","Summary"])
-    st.switch_page("pages/4_Image_Generation.py")
+# if selected_nav == "Content Generation":
+#     print(f'move to images  :: {selected_nav}')
+#     st.session_state['selected_nav_index']=1
+#     hide_pages(["Q&A","Select Document","Summary","Visual Q&A"])
+#     st.switch_page("pages/5_Image_Generation.py")
     
-elif selected_nav == "Document Explorer":
-    print(f'move to doc  :: {selected_nav}')
-    st.session_state['selected_nav_index']=0
-    hide_pages(["Image Generation","Image Search"])
+# elif selected_nav == "Document Explorer":
+#     print(f'move to doc  :: {selected_nav}')
+#     st.session_state['selected_nav_index']=0
+#     hide_pages(["Image Generation","Image Search"])
     #st.switch_page("pages/1_Select_Document.py")
    
     
@@ -308,7 +318,7 @@ if auth.is_authenticated():
     
     # sidebar
     MODEL_ID_OPTIONS=['amazon.titan-embed-text-v1','amazon.titan-embed-image-v1']
-    MODEL_ID_PROVIDER=['Sagemaker Endpoint','Bedrock']
+    MODEL_ID_PROVIDER=['Bedrock','Sagemaker Endpoint']
 
     with st.sidebar:
             st.header("Settings")
