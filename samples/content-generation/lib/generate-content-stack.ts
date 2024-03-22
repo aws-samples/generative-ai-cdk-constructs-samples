@@ -12,21 +12,22 @@ import * as logs from 'aws-cdk-lib/aws-logs';
 
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
-export class GenerateContentStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
-    super(scope, id, props);
+export interface GenerateContentStackProps extends StackProps {
+  natGateways: number;
+  clientUrl: string;
+}
 
- const env = {
-      region: process.env.CDK_DEFAULT_REGION,
-      account: process.env.CDK_DEFAULT_ACCOUNT,
-      natGateways: 1,
-      clientUrl: process.env.STREAMLIT_CLIENTURL? process.env.STREAMLIT_CLIENTURL : "http://localhost:8501/"
-  }
-  
-  
-  const app = new cdk.App();
-  cdk.Tags.of(app).add("app", "generative-ai-cdk-constructs-samples");
-  cdk.Aspects.of(app).add(new AwsSolutionsChecks({verbose:true}));
+
+export class GenerateContentStack extends cdk.Stack {
+  public readonly cognitoPool: cognito.UserPool;
+  public readonly cognitoClient: cognito.UserPoolClient;
+  public readonly userPoolDomain: cognito.UserPoolDomain;
+  public readonly identityPool: cognito.CfnIdentityPool;
+  public readonly authenticatedRole: iam.Role;
+  public readonly generatedAssetsBucket: s3.Bucket;
+
+  constructor(scope: Construct, id: string, props: GenerateContentStackProps) {
+    super(scope, id, props);
   
   //---------------------------------------------------------------------
         // VPC
@@ -51,7 +52,7 @@ export class GenerateContentStack extends cdk.Stack {
           },
           ],
           ipAddresses: ec2.IpAddresses.cidr('10.0.0.0/16'),
-          natGateways: env.natGateways,
+          natGateways: props.natGateways,
       });
 
       //---------------------------------------------------------------------
@@ -103,7 +104,7 @@ export class GenerateContentStack extends cdk.Stack {
       //---------------------------------------------------------------------
     // S3 - Generated Assets
     //---------------------------------------------------------------------
-    const generatedAssetsBucket = new s3.Bucket(this, 'GeneratedAssets', {
+    this.generatedAssetsBucket = new s3.Bucket(this, 'GeneratedAssets', {
       enforceSSL: true,
       versioned: true,
       publicReadAccess: false,
@@ -126,7 +127,7 @@ export class GenerateContentStack extends cdk.Stack {
   //---------------------------------------------------------------------
     // Cognito User Pool and Client
     //---------------------------------------------------------------------
-    const cognitoPool = new cognito.UserPool(this, 'CognitoPool', {
+    this.cognitoPool = new cognito.UserPool(this, 'CognitoPool', {
       selfSignUpEnabled: true,
       autoVerify: { email: true },
       signInAliases: { email: true },
@@ -141,37 +142,61 @@ export class GenerateContentStack extends cdk.Stack {
         tempPasswordValidity: cdk.Duration.days(3),
       }
     });
-    NagSuppressions.addResourceSuppressions(cognitoPool, [
+    NagSuppressions.addResourceSuppressions(this.cognitoPool, [
       {id: 'AwsSolutions-COG2', reason: 'An MFA is not required to create a sample UserPool.'},
     ])
 
 
       const uniqueStackIdPart = cdk.Fn.select(2, cdk.Fn.split('/', `${cdk.Aws.STACK_ID}`));
-      const userPoolDomain = cognitoPool.addDomain('CognitoUserPoolDomain', {
+      this.userPoolDomain = this.cognitoPool.addDomain('CognitoUserPoolDomain', {
       cognitoDomain: {
         domainPrefix: uniqueStackIdPart,
       },
     });
     
-    const cognitoClient = cognitoPool.addClient('CognitoClient', {
+    this.cognitoClient = this.cognitoPool.addClient('CognitoClient', {
       generateSecret: true,
       oAuth: {
-        callbackUrls: [env.clientUrl],
-        logoutUrls: [env.clientUrl]
+        callbackUrls: [props.clientUrl],
+        logoutUrls: [props.clientUrl]
       },
     });
 
-    const identityPool = new cognito.CfnIdentityPool(this, 'IdentityPool', {
+    this.identityPool = new cognito.CfnIdentityPool(this, 'IdentityPool', {
       allowUnauthenticatedIdentities: false,
       cognitoIdentityProviders: [{
-        clientId: cognitoClient.userPoolClientId,
-        providerName: cognitoPool.userPoolProviderName,
+        clientId: this.cognitoClient.userPoolClientId,
+        providerName: this.cognitoPool.userPoolProviderName,
       }]
     });
 
-    const mergedApiRole = new iam.Role(this, 'mergedApiRole', {
+    //---------------------------------------------------------------------
+    // IAM Roles
+    //---------------------------------------------------------------------
+    this.authenticatedRole = new iam.Role(this, 'CognitoAuthenticatedRole', {
+      assumedBy: new iam.FederatedPrincipal(
+        'cognito-identity.amazonaws.com',
+        {
+          StringEquals: { 'cognito-identity.amazonaws.com:aud': this.identityPool.ref },
+          'ForAnyValue:StringLike': { 'cognito-identity.amazonaws.com:amr': 'authenticated' },
+        },
+        'sts:AssumeRoleWithWebIdentity',
+      ),
+    });
+   
+    this.generatedAssetsBucket.grantRead(this.authenticatedRole);
+    new cognito.CfnIdentityPoolRoleAttachment(this, 'IdentityPoolRoleAttachment', {
+      identityPoolId: this.identityPool.ref,
+      roles: {
+        'authenticated': this.authenticatedRole.roleArn
+      }
+    });
+
+   
+    const grapdhQLApiRole = new iam.Role(this, 'grapdhQLApiRole', {
       assumedBy:new iam.ServicePrincipal('appsync.amazonaws.com')
     });
+
 
     const appsynccloudWatchlogsRole = new iam.Role(this, 'appsynccloudWatchlogsRole', {
       assumedBy: new iam.ServicePrincipal('appsync.amazonaws.com'),
@@ -185,29 +210,7 @@ export class GenerateContentStack extends cdk.Stack {
       }),
     );
 
-    //---------------------------------------------------------------------
-    // AppSync Merged API
-    //---------------------------------------------------------------------
-    const mergedApi = new appsync.CfnGraphQLApi(this, 'mergedApi', {
-      apiType:'MERGED',
-      name:'mergedApi',
-      authenticationType:'AMAZON_COGNITO_USER_POOLS',
-      userPoolConfig: {
-        awsRegion: Aws.REGION,
-        userPoolId: cognitoPool.userPoolId,
-        defaultAction: 'ALLOW'
-      },
-      additionalAuthenticationProviders:[{
-        authenticationType:'AWS_IAM'
-      }],
-      logConfig: {
-        cloudWatchLogsRoleArn: appsynccloudWatchlogsRole.roleArn,
-        fieldLogLevel: 'ALL',
-        excludeVerboseContent: false,
-      },
-      xrayEnabled: true,
-      mergedApiExecutionRoleArn:mergedApiRole.roleArn,
-    });
+   
 
 
 
@@ -215,42 +218,22 @@ export class GenerateContentStack extends cdk.Stack {
     // GenAI IMAGE GENERATION Construct
     //-----------------------------------------------------------------------------
     // Construct
-    const imageGeneration = new genai.ContentGenerationAppsyncLambda(this, 'JoyrideImageGeneration', {
-      cognitoUserPool: cognitoPool,
+    const imageGeneration = new genai.ContentGenerationAppSyncLambda(this, 'ImageGeneration', {
+      cognitoUserPool: this.cognitoPool,
       existingVpc: vpc,
-      existingMergedApi: mergedApi,
       existingSecurityGroup: securityGroups[0],
-      existingGeneratedAssetsBucketObj: generatedAssetsBucket,
+      existingGeneratedAssetsBucketObj: this.generatedAssetsBucket,
       observability: true,
     });
-    // Update Merged API Policy
-    mergedApiRole.addToPrincipalPolicy(new iam.PolicyStatement({
-      effect:iam.Effect.ALLOW,
-      actions:['appsync:SourceGraphQL', 'appsync:StartSchemaMerge'],
-      resources:[
-        `${imageGeneration.graphqlApi.arn}/*`,
-        `${imageGeneration.graphqlApi.arn}/sourceApiAssociations/*`,
-        `${mergedApi.attrArn}/*`,
-        `${mergedApi.attrArn}/sourceApiAssociations/*`,
-      ]
-    }));
-    NagSuppressions.addResourceSuppressions(mergedApiRole, [{id: 'AwsSolutions-IAM5', reason: '* used after ARN prefix'}], true)
+   
+    NagSuppressions.addResourceSuppressions(grapdhQLApiRole, [{id: 'AwsSolutions-IAM5', reason: '* used after ARN prefix'}], true)
 
-    // Add Source API
-    const cfn_source_api_association_imagegen = new appsync.CfnSourceApiAssociation(this, "ImgGenApiAssociation", {
-      mergedApiIdentifier: mergedApi.attrApiId,
-      sourceApiAssociationConfig: {mergeType:'AUTO_MERGE'},
-      sourceApiIdentifier: imageGeneration.graphqlApi.apiId
-    });
-    // Add dependency
-    cfn_source_api_association_imagegen.node.addDependency(mergedApi);
-    cfn_source_api_association_imagegen.node.addDependency(imageGeneration.graphqlApi);
     
-     //-----------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------
     // Suppress cdk-nag warnings for Generative AI CDK Constructs
     // Reference: https://github.com/cdklabs/cdk-nag/blob/main/RULES.md
     //-----------------------------------------------------------------------------
-    NagSuppressions.addResourceSuppressions([imageGeneration], [
+    NagSuppressions.addResourceSuppressions([imageGeneration,vpcFlowLogrole], [
       {id: 'AwsSolutions-IAM4', reason: 'AWS managed policies defined in @cdklabs/generative-ai-cdk-constructs'},
       {id: 'AwsSolutions-IAM5', reason: 'Wildcard permissions defined in @cdklabs/generative-ai-cdk-constructs'},
       {id: 'AwsSolutions-S1', reason: 'S3 access logs defined in @cdklabs/generative-ai-cdk-constructs'},
@@ -258,6 +241,42 @@ export class GenerateContentStack extends cdk.Stack {
       {id: 'AwsSolutions-SQS3', reason: 'SQS DLQ property defined in @cdklabs/generative-ai-cdk-constructs'},
     ], true)
 
+    NagSuppressions.addResourceSuppressions(this.authenticatedRole, [{id: 'AwsSolutions-IAM5', reason: '* bucket ARN prefix'}], true)
+
+
+
+    new cdk.CfnOutput(this, "UserPoolId", {
+      value: this.cognitoPool.userPoolId,
+    });
+
+    new cdk.CfnOutput(this, "CognitoDomain", {
+      value: "https://"+this.userPoolDomain.domainName+".auth."+Aws.REGION+".amazoncognito.com",
+    });
+
+    new cdk.CfnOutput(this, "ClientId", {
+      value: this.cognitoClient.userPoolClientId, 
+    });
+
+    new cdk.CfnOutput(this, "AppUri", {
+      value: props.clientUrl,
+    });
+
+    new cdk.CfnOutput(this, "IdentityPoolId", {
+      value: this.identityPool.ref, 
+    });
+
+    new cdk.CfnOutput(this, "AuthenticatedRoleArn", {
+      value: this.authenticatedRole.roleArn, 
+    });
+
+
+    new cdk.CfnOutput(this, "S3ProcessedBucket", {
+      value: this.generatedAssetsBucket.bucketName
+    });
+
+    new cdk.CfnOutput(this, "graphQLendpoint", {
+      value: imageGeneration.graphqlApi.graphqlUrl,
+    });
 
     // The code that defines your stack goes here
 

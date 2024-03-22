@@ -2,9 +2,24 @@
 import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import { GenerateContentStack } from '../lib/generate-content-stack';
+import { NagSuppressions, AwsSolutionsChecks } from 'cdk-nag';
+
+
+const env = {
+  region: process.env.CDK_DEFAULT_REGION,
+  account: process.env.CDK_DEFAULT_ACCOUNT,
+  natGateways: 1,
+  clientUrl: process.env.STREAMLIT_CLIENTURL? process.env.STREAMLIT_CLIENTURL : "http://localhost:8501/"
+}
+
 
 const app = new cdk.App();
+//cdk.Tags.of(app).add("app", "generative-ai-cdk-constructs-samples");
+//cdk.Aspects.of(app).add(new AwsSolutionsChecks({verbose:true}));
+
 new GenerateContentStack(app, 'GenerateContentStack', {
+  natGateways: 1,
+  clientUrl:env.clientUrl
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */
