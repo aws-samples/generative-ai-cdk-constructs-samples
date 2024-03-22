@@ -14,12 +14,12 @@ const env = {
 
 
 const app = new cdk.App();
-//cdk.Tags.of(app).add("app", "generative-ai-cdk-constructs-samples");
-//cdk.Aspects.of(app).add(new AwsSolutionsChecks({verbose:true}));
 
 new GenerateContentStack(app, 'GenerateContentStack', {
   natGateways: 1,
-  clientUrl:env.clientUrl
+  clientUrl:env.clientUrl,
+  description: '(uksb-1tupboc43) Image generation stack',
+
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */
