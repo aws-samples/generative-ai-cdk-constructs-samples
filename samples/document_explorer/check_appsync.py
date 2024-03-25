@@ -19,7 +19,7 @@ from botocore.exceptions import ClientError
 import requests
 from requests_aws4auth import AWS4Auth
 
-cdk_deploy_output_file = 'apistack-outputs.json'
+cdk_deploy_output_file = 'apistack-outputs.json' if len(sys.argv) < 2 else sys.argv[1]
 
 if os.path.isfile(cdk_deploy_output_file):
     with open(cdk_deploy_output_file) as cdk_deploy_output:
