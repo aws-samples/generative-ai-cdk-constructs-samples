@@ -319,11 +319,7 @@ if auth.is_authenticated():
             pd.Series(transformed_files['Contents']).apply(to_tuple).tolist(),
             columns=["Transformed Filename", "Last Modified"]
         )
-        print(f' file :: {df["Transformed Filename"]}')
-        print(f' dulicate :: {df[df.duplicated()]}')
-        
-        #df = df.drop(df[df['Transformed Filename'].str.endswith(r'.txt')].index)
-        
+       
 
         options = GridOptionsBuilder.from_dataframe(df)
         options.configure_selection("single")

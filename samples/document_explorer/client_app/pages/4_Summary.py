@@ -171,22 +171,6 @@ def display_pdf(pdf_content, pdf_viewer_width, pdf_viewer_height):
 
 st.set_page_config(page_title="Summary", page_icon="🏷️", layout="wide", initial_sidebar_state="expanded")
 add_indentation() 
-# selected = option_menu(
-#         menu_title="AWS-GENERATIVE-AI-CDK-CONSTRUCTS SAMPLE APPS",
-#         options=["Document Explorer", 'Content Generation'], 
-#         icons=['💬', '📸'],
-#         menu_icon="cast", 
-#         #default_index=0,
-#         orientation='horizontal'
-#         )
-# if selected == "Content Generation":
-#     hide_pages(["Q&A","Select Document","Summary","Visual Q&A"])
-#     st.session_state['selected_nav_index']=1
-#     st.switch_page("pages/5_Image_Generation.py")
-    
-# elif selected == "Document Explorer":
-#     hide_pages(["Image Generation","Image Search"])
-    #st.switch_page("pages/1_Select_Document.py")
 
 hide_deploy_button()
 

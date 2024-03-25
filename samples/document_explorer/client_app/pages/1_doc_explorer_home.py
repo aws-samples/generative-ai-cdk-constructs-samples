@@ -27,22 +27,6 @@ from st_pages import show_pages,Section, Page, hide_pages,add_indentation
 #pages = ["1_📁_Select_Document", "2_🏷️_Summary", "3_💬_Q&A","4_:camera:_Image_Generation"]
 add_indentation() 
 
-# selected = option_menu(
-#         menu_title="AWS-GENERATIVE-AI-CDK-CONSTRUCTS SAMPLE APPS",
-#         options=["Document Explorer", 'Content Generation'], 
-#         icons=['💬', '📸'],
-#         menu_icon="cast", 
-#         #default_index=0,
-#         orientation='horizontal'
-#         )
-
-
-# Define a function to hide selected pages
-# def hide_pages(pages_to_hide):
-#     for page in pages_to_hide:
-#         st.sidebar.markdown(f"## {page}")
-#         st.sidebar.markdown("This page is hidden.")
-
 #with st.sidebar:
 # Check if user is authenticated and display login/logout buttons
 auth = CognitoHelper() 
@@ -50,9 +34,7 @@ auth.set_session_state()
 auth.print_login_logout_buttons()
 
 if auth.is_authenticated():
-    # if selected == "Document Explorer":
-    #     st.title="You have selected document explorer "
-    #     hide_pages(["Image Generation","Image Search"])
+   
        
         hide_deploy_button()
 
@@ -75,14 +57,6 @@ if auth.is_authenticated():
         ''')
         st.image('assets/doc_explorer_diagram.png', width=700)
         st.markdown('<style>div[class="stApp"] > div[class="css-1es6loc e1tzin5j2"]{text-align:center;}</style>', unsafe_allow_html=True)
-
-
-        
-    # if selected == "Content Generation":
-    #     hide_pages(["Q&A","Select Document","Summary","Visual Q&A"])
-
-    # else:
-    #     hide_pages(["Q&A","Select Document","Summary","Visual Q&A","Image Generation","Image Search"])
 
 else:
     st.write("Please login!")

@@ -233,7 +233,7 @@ if auth.is_authenticated() and selected_filename:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
 
-        # Handle user input
+    # Handle user input
     if prompt := st.chat_input():
             # Display user message
             st.chat_message("user").markdown(prompt)
@@ -250,9 +250,7 @@ if auth.is_authenticated() and selected_filename:
                 st.session_state['encoded_question'] = base64.b64encode(prompt.encode("utf-8")).decode("utf-8") 
                 st.session_state.messages.append({"role": "assistant", "content": message_widget_text})
                 subscribe_to_answering_updates()
-    else:
-        st.warning("Please select a pdf file!")
-        st.stop()
+    
 # Guest user UI 
 elif not auth.is_authenticated():
     st.warning("Please login and select a document!")
@@ -266,8 +264,9 @@ else:
 #########################
 
 # sidebar
-EMBEDDING_MODEL_ID_OPTIONS=['amazon.titan-embed-text-v1',
-                            'amazon.titan-embed-image-v1']
+EMBEDDING_MODEL_ID_OPTIONS=['amazon.titan-embed-image-v1',
+                            'amazon.titan-embed-text-v1',
+                            ]
 QA_MODEL_ID_OPTIONS=['anthropic.claude-3-sonnet-20240229-v1:0',
                      'anthropic.claude-3-haiku-20240307-v1:0',
                      'anthropic.claude-v2:1',

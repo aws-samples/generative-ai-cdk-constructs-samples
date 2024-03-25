@@ -21,22 +21,18 @@ export class SagemakerHuggingfaceModelStack extends cdk.Stack {
     super(scope, id, props);
 
     // Define some constants
-    const SG_ENDPOINT_NAME = 'idefics';
-    const HUGGING_FACE_MODEL_ID = 'HuggingFaceM4/idefics-80b-instruct';
+    const SG_ENDPOINT_NAME = 'mistralendpoint';
+    const HUGGING_FACE_MODEL_ID = 'mistralai/Mistral-7B-Instruct-v0.1';
 
     // Sagemaker construct model from Hugging Face
     const HuggingFaceEndpoint = new genai.HuggingFaceSageMakerEndpoint(this, 'testmistralendpoint', {
       modelId: HUGGING_FACE_MODEL_ID,
-      instanceType: genai.SageMakerInstanceType.ML_G5_48XLARGE,
+      instanceType: genai.SageMakerInstanceType.ML_G5_2XLARGE,
       container: genai.DeepLearningContainerImage.HUGGINGFACE_PYTORCH_TGI_INFERENCE_2_0_1_TGI1_1_0_GPU_PY39_CU118_UBUNTU20_04,
       environment: {
-        SM_NUM_GPUS: JSON.stringify(8),
-        MAX_INPUT_LENGTH: JSON.stringify(2048),
-        MAX_TOTAL_TOKENS: JSON.stringify(4096),
-        MAX_BATCH_TOTAL_TOKENS: JSON.stringify(8192),
-        // quantization required to work with ml.g5.48xlarge
-        // comment if deploying with ml.p4d or ml.p4e instances
-        HF_MODEL_QUANTIZE: "bitsandbytes",
+          SM_NUM_GPUS: '1',
+          MAX_INPUT_LENGTH: '2048',
+          MAX_TOTAL_TOKENS: '4096',
       },
       endpointName: SG_ENDPOINT_NAME
     });

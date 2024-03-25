@@ -126,30 +126,6 @@ export class PersistenceStack extends Stack {
       ]
     });
 
-     //---------------------------------------------------------------------
-    // S3 - Generated Assets
-    //---------------------------------------------------------------------
-    // this.generatedAssetsBucket = new s3.Bucket(this, 'GeneratedAssets', {
-    //   enforceSSL: true,
-    //   versioned: true,
-    //   publicReadAccess: false,
-    //   blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-    //   encryption: s3.BucketEncryption.S3_MANAGED,
-    //   removalPolicy: props.removalPolicy,
-    //   serverAccessLogsBucket: this.accessLogsBucket,
-    //   serverAccessLogsPrefix: 'generatedAssetsBucketLogs/',
-    //   cors: [
-    //     {
-    //       allowedMethods: [s3.HttpMethods.GET, s3.HttpMethods.PUT, s3.HttpMethods.POST],
-    //       allowedOrigins: [
-    //         'http://localhost:5173'
-    //       ],
-    //       allowedHeaders: ['*'],
-    //       exposedHeaders: ['Access-Control-Allow-Origin'],
-    //     }
-    //   ]
-    // });
-
     //---------------------------------------------------------------------
     // AWS OpenSearch Service
     //---------------------------------------------------------------------
@@ -311,9 +287,7 @@ export class PersistenceStack extends Stack {
     new cdk.CfnOutput(this, "S3ProcessedBucket", {
       value: this.processedAssetsBucket.bucketName
     });
-    // new cdk.CfnOutput(this, "S3GeneratedBucket", {
-    //   value: this.generatedAssetsBucket.bucketName
-    // });
+    
 
   }
 }
