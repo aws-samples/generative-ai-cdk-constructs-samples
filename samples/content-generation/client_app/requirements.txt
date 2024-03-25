@@ -1,0 +1,11 @@
+boto3==1.34.32
+pandas==2.2.0
+PyJWT==2.8.0 
+python-dotenv==1.0.1
+requests==2.31.0
+requests-aws4auth==1.2.3
+streamlit-aggrid==0.3.4.post3
+streamlit-javascript==0.1.5
+streamlit==1.30.0
+websocket-client==1.7.0
+st_pages==0.4.5
