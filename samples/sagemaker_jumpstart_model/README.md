@@ -71,7 +71,9 @@ This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.am
 3. Accept the EULA (End User License Agreement)
 
 Some JumpStart foundation models require explicit acceptance of an end-user license agreement (EULA) before deployment. The accept_eula value is set to false by default and must be explicitly redefined as true in order to accept the end-user license agreement. 
-To change this value, go to [lambda.py](./lambda/lambda.py) and update the value of ```CustomAttributes="accept_eula=false"``` to ```CustomAttributes="accept_eula=true"```. If you try to run inference while accept_eula is set to false, the inference will fail and an error message will be returned.
+To change this value:
+- go to [lambda.py](./lambda/lambda.py) and update the value of ```CustomAttributes="accept_eula=false"``` to ```CustomAttributes="accept_eula=true"```. If you try to run inference while accept_eula is set to false, the inference will fail and an error message will be returned.
+- go to [](./lib/sagemaker_jumpstart_model-stack.ts) and update the property ```acceptEula``` to true. If you try to synthesize the stack without setting that property to true, the process will fail.
 
 3. Boostrap AWS CDK resources on the AWS account.
     ```shell

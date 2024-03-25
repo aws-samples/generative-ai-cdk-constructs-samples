@@ -1,4 +1,4 @@
-# Bedrock Agent and Custom Knowledge Base
+# Amazon Bedrock Agent and Custom Knowledge Base
 
 ## Overview
 
