@@ -81,9 +81,9 @@ def process_document(params):
         mutation_client = GraphQLMutationClient(GRAPHQL_ENDPOINT, id_token)
         variables = {
             "ingestionInput": {
-                "embeddings_model":{"provider":params['provider'],
-                                     "modelId":params['model_id'],
-                                     "streaming":params['model_id']},
+                "embeddings_model":{"provider":params['embedding_provider'],
+                                     "modelId":params['embedding_model_id']
+                                     },
                 "files": [{"status": "", "name": params['uploaded_filename']}],
                 "ingestionjobid": ingestion_job_id,
                 "ignore_existing": True
@@ -104,15 +104,7 @@ def process_document(params):
 #----------------------------------------------------------------------------------------
 def on_subscription_registered():
     """Callback when subscription is registered."""
-    params={
-        "embedding_model_id":st.session_state["embedding_model_id"],
-        "qa_model_id":st.session_state["qa_model_id"],
-        "streaming":st.session_state["streaming"],
-        "embedding_provider":st.session_state["embedding_provider"],
-        "qa_provider":st.session_state["qa_provider"],
-        "modality":st.session_state["modality"],
-        
-    }
+    
     st.session_state['progress_bar_widget'].progress(DocumentStatus.SUBSCRIPTION_ACTIVE)
     uploaded_filename = st.session_state.get('uploaded_filename')
     if not uploaded_filename:
@@ -121,11 +113,10 @@ def on_subscription_registered():
     st.session_state['progress_bar_widget'].progress(DocumentStatus.PROCESSING_STARTED)
     
     params={
-        "temperature":float(st.session_state["temperature"]),
-        "model_id":st.session_state["model_id"],
-        "streaming":st.session_state["streaming"],
-        "provider":st.session_state["provider"],
-        "uploaded_filename":st.session_state["uploaded_filename"]
+        "uploaded_filename":st.session_state["uploaded_filename"],
+        "embedding_model_id":st.session_state["embedding_model_id"],
+        "embedding_provider":st.session_state["embedding_provider"],
+        
     }
     
     print(f'on_subscription_registered :: {uploaded_filename}')
@@ -247,31 +238,8 @@ st.set_page_config(page_title="Select Document",
                     initial_sidebar_state="expanded",)
 add_indentation() 
 
-# st.session_state['selected_nav']='Document Explorer'
-# def on_change(key):
-#     st.session_state['selected_nav']=selected_nav
-    
-#     if selected_nav == "Content Generation":
-#         print(f'move to images :: {selected_nav}')
-#         hide_pages(["Q&A","Select Document","Summary"])
-#         st.switch_page("pages/5_Image_Generation.py")
-    
-#     elif selected_nav == "Document Explorer":
-#         print(f'move to doc  :: {selected_nav}')
-#         hide_pages(["Image Generation"])
 
 st.session_state['selected_nav_index']=0
- 
-# selected_nav = option_menu(
-#         menu_title="AWS-GENERATIVE-AI-CDK-CONSTRUCTS SAMPLE APPS",
-#         options=["Document Explorer", 'Content Generation'], 
-#         icons=['💬', '📸'],
-#         menu_icon="cast", 
-#         default_index=st.session_state['selected_nav_index'],
-#         orientation='horizontal'
-#         # on_change=on_change,
-#         # key='menu_5'
-#         )
 
 if st.session_state.get('switch_button', False):
     st.session_state['menu_option'] = (st.session_state.get('menu_option', 0) + 1) % 4
@@ -279,18 +247,6 @@ if st.session_state.get('switch_button', False):
 else:
     manual_select = None
 
-# if selected_nav == "Content Generation":
-#     print(f'move to images  :: {selected_nav}')
-#     st.session_state['selected_nav_index']=1
-#     hide_pages(["Q&A","Select Document","Summary","Visual Q&A"])
-#     st.switch_page("pages/5_Image_Generation.py")
-    
-# elif selected_nav == "Document Explorer":
-#     print(f'move to doc  :: {selected_nav}')
-#     st.session_state['selected_nav_index']=0
-#     hide_pages(["Image Generation","Image Search"])
-    #st.switch_page("pages/1_Select_Document.py")
-   
     
 
 hide_deploy_button()
@@ -317,42 +273,27 @@ if auth.is_authenticated():
     )
     
     # sidebar
-    MODEL_ID_OPTIONS=['amazon.titan-embed-text-v1','amazon.titan-embed-image-v1']
-    MODEL_ID_PROVIDER=['Bedrock','Sagemaker Endpoint']
+    EMBEDDING_MODEL_ID_OPTIONS=['amazon.titan-embed-image-v1','amazon.titan-embed-text-v1']
+    EMBEDDING_MODEL_ID_PROVIDER=['Bedrock','Sagemaker']
 
     with st.sidebar:
             st.header("Settings")
         
             st.subheader("Data Ingestion Configuration")
 
-            provider = st.selectbox(
-                    label="Select model provider:",
-                    options=MODEL_ID_PROVIDER,
-                    key="provider",
-                    help="Select model provider.",
-                )
+            embedding_provider = st.selectbox(
+                label="Select embedding model provider:",
+                options=EMBEDDING_MODEL_ID_PROVIDER,
+                key="embedding_provider",
+                help="Select model provider.",
+            )
 
-            model_id = st.selectbox(
-                    label="Select model id:",
-                    options=MODEL_ID_OPTIONS,
-                    key="model_id",
-                    help="Select model type to create and store embeddings in open search cluster as per your use case.",
-                )
-
-            streaming = st.selectbox(
-                    label="Select streaming:",
-                    options=[True,False],
-                    key="streaming",
-                    help="Enable or disable streaming on response",
-                )
-
-            temperature = st.slider(
-                    label="Temperature:",
-                    value=0.45,
-                    min_value=0.0,
-                    max_value=1.0,
-                    key="temperature",
-                )
+            embedding_model_id = st.selectbox(
+                label="Select embedding model id:",
+                options=EMBEDDING_MODEL_ID_OPTIONS,
+                key="embedding_model_id",
+                help="Select model type to create and store embeddings in open search cluster as per your use case.",
+            )
 
 
     # File uploader
@@ -361,7 +302,7 @@ if auth.is_authenticated():
             uploaded_file = st.file_uploader('Upload a document', type=['pdf','jpeg','png','jpg'])
             submitted = st.form_submit_button("Submit", use_container_width=True)
             submit= True
-            if(uploaded_file and uploaded_file.name.endswith(tuple(['.png','.jpeg','.jpg'])) and model_id=='amazon.titan-embed-text-v1'):
+            if(uploaded_file and uploaded_file.name.endswith(tuple(['.png','.jpeg','.jpg'])) and embedding_model_id=='amazon.titan-embed-text-v1'):
                 st.warning("Invalid model id,Please select multimodality modal for image files")
                 submit=False
             st.session_state['progress_bar_widget'] = st.empty()
@@ -378,6 +319,8 @@ if auth.is_authenticated():
             pd.Series(transformed_files['Contents']).apply(to_tuple).tolist(),
             columns=["Transformed Filename", "Last Modified"]
         )
+        print(f' file :: {df["Transformed Filename"]}')
+        print(f' dulicate :: {df[df.duplicated()]}')
         
         #df = df.drop(df[df['Transformed Filename'].str.endswith(r'.txt')].index)
         

@@ -63,13 +63,3 @@ class Mutations:
             }
         }
     """
-
-    # GraphQL mutation string to generate image
-    # More info: https://github.com/awslabs/generative-ai-cdk-constructs/tree/main/src/patterns/gen-ai/aws-imagegen-appsyn-lambda
-    GENERATE_IMAGE = """
-        mutation GenerateImage($imageInput: ImageInput!) {
-            generateImage(imageInput: $imageInput) {
-                __typename
-            }
-        }
-    """

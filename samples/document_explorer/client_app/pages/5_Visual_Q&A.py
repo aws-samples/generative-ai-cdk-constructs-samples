@@ -95,13 +95,15 @@ def post_question_about_selected_file(params):
             },
             "jobid": summary_job_id,
             "jobstatus": "",
-            "filename": "",
+            "filename": selected_filename,
             "presignedurl":"",
             "qa_model": {
                 "modelId": params['qa_model_id'],
                 "provider": params['qa_provider'],
                 "streaming":params['streaming'],
-                "modality":params['modality']
+                "modality":params['modality'],
+                "model_kwargs":"{\n \"temperature\":"+str(params['temperature'])+",\"top_p\":"+str(params['top_p'])+",\"top_k\":"+str(params['top_k'])+",\"length\":\""+str(params['length'])+"\"}"
+
             },
             "retrieval":{
                 "max_docs": 1,
@@ -134,6 +136,10 @@ def on_subscription_registered():
         "embedding_provider":st.session_state["embedding_provider"],
         "qa_provider":st.session_state["qa_provider"],
         "modality":st.session_state["modality"],
+        "temperature":st.session_state["temperature"] ,  
+        "top_p":st.session_state["top_p"] ,
+        "top_k":st.session_state["top_k"] , 
+        "length":st.session_state["length"] 
         
     }
     post_question_about_selected_file(params)
@@ -150,19 +156,14 @@ def display_image(key):
 
 def on_message_update(message, subscription_client):
     """Callback when summary job status update is received."""
-    print(f'listenning....')
     response_obj = message.get("updateQAJobStatus")
-    print(f'response received or not :: {response_obj}')
     if not response_obj:
         return
 
     status = response_obj.get("jobstatus")
 
     print(f'response received  :: {status}')
-    print(f'generative_method :: {generative_method}')
-    ## TODO - Check with @Heitor why status Done  was not enabled ?
     if status != "Working on the question":
-        print(f'generative_method :: {generative_method}')
         if generative_method == 'RAG':
              filename = response_obj.get("filename")
              #display_image(filename)
@@ -175,34 +176,19 @@ def on_message_update(message, subscription_client):
         
         subscription_client.unsubscribe()
     
-    
-    # if status == "Exception during prediction":
-    #     encoded_answer = response_obj.get("answer")
-    #     if not encoded_answer:
-    #         return
-    #     answer_text = base64.b64decode(encoded_answer).decode("utf-8")
-    #     st.session_state.message_widget_text += answer_text
-    #     st.session_state.message_widget.markdown(st.session_state.message_widget_text + " ▌")           
-    #     subscription_client.unsubscribe()
-    # if status == "New LLM token":
-    #     encoded_answer = response_obj.get("answer")
-    #     if not encoded_answer:
-    #         return
-    #     answer_text = base64.b64decode(encoded_answer).decode("utf-8")
-    #     st.session_state.message_widget_text += answer_text
-    #     st.session_state.message_widget.markdown(st.session_state.message_widget_text + " ▌")           
+    if status == "New LLM token":
+        encoded_answer = response_obj.get("answer")
+        if not encoded_answer:
+            return
+        answer_text = base64.b64decode(encoded_answer).decode("utf-8")
+        st.session_state.message_widget_text += answer_text
+        st.session_state.message_widget.markdown(st.session_state.message_widget_text + " ▌")           
 
-    # elif status == "LLM streaming ended":
-    #     st.session_state.message_widget.markdown(st.session_state.message_widget_text)
-    #     if st.session_state.messages[-1]['role'] == 'assistant':
-    #         st.session_state.messages[-1]['content'] = copy(st.session_state.message_widget_text)
-    #     subscription_client.unsubscribe()
-    # elif status == "Failed to load the llm":
-    #     st.session_state.message_widget.markdown(st.session_state.message_widget_text)
-    #     if st.session_state.messages[-1]['role'] == 'assistant':
-    #         st.session_state.messages[-1]['content'] = copy(st.session_state.message_widget_text)
-    #     subscription_client.unsubscribe()
-
+    elif status == "LLM streaming ended":
+        st.session_state.message_widget.markdown(st.session_state.message_widget_text)
+        if st.session_state.messages[-1]['role'] == 'assistant':
+            st.session_state.messages[-1]['content'] = copy(st.session_state.message_widget_text)
+        subscription_client.unsubscribe()
 
 #----------------------------------------------------------------------------------------
 # Subscription registration
@@ -241,22 +227,7 @@ def subscribe_to_answering_updates():
 st.set_page_config(page_title="Q&A", page_icon="💬", layout="wide",initial_sidebar_state="expanded") 
 add_indentation() 
 st.session_state['selected_nav_index']=0
-# selected = option_menu(
-#         menu_title="AWS-GENERATIVE-AI-CDK-CONSTRUCTS SAMPLE APPS",
-#         options=["Document Explorer", 'Content Generation'], 
-#         icons=['💬', '📸'],
-#         menu_icon="cast", 
-#         default_index=st.session_state['selected_nav_index'],
-#         orientation='horizontal'
-#         )
-# if selected == "Content Generation":
-#     hide_pages(["Q&A","Select Document","Summary","Visual Q&A"])
-#     st.session_state['selected_nav_index']=1
-#     st.switch_page("pages/5_Image_Generation.py")
-    
-# elif selected == "Document Explorer":
-#     hide_pages(["Image Generation","Image Search"])
-    #st.switch_page("pages/1_Select_Document.py")
+
 
 hide_deploy_button()
 
@@ -270,26 +241,22 @@ if auth.is_authenticated() and selected_filename:
     # Add a radio button for method selection
     generative_method = st.radio(
         "Select Response Generation Method:",
-        ('RAG', 'LONG_CONTEXT')
+        ( 'LONG_CONTEXT','RAG',)
     )
     # Add a divider here
     st.markdown("---")
     st.session_state['generative_method'] = generative_method
 
-    # Initialize chat history
     # if selected_filename has jpg or png or jpeg
-
-    print(f'start  QA on :: {selected_filename}')
     if selected_filename.endswith(".jpg") or selected_filename.endswith(".jpeg")  or selected_filename.endswith(".png") or selected_filename.endswith(".jpeg"):
-        st.session_state.messages = [{"role": "assistant", "content": f"Ask me anything about **{selected_filename}**!"}]
+        
         # display image from s3 using presigned url     
         if generative_method == 'LONG_CONTEXT':
-                # s3 get object from presigned url
-                #response = requests.get(image_url)
                 display_image(selected_filename)
         else:
                 print('no image')
 
+         # Initialize chat history
         if "messages_filename" not in st.session_state or st.session_state.messages_filename != selected_filename:
             st.session_state.messages_filename = selected_filename
             st.session_state.messages = [{"role": "assistant", "content": f"Ask me anything about **{selected_filename}**!"}]
@@ -337,10 +304,19 @@ else:
 #########################
 
 # sidebar
-EMBEDDING_MODEL_ID_OPTIONS=['amazon.titan-embed-image-v1','amazon.titan-embed-text-v1']
-QA_MODEL_ID_OPTIONS=['anthropic.claude-3-sonnet-20240229-v1:0','IDEFICS']
-EMBEDDING_MODEL_ID_PROVIDER=['Bedrock','Sagemaker Endpoint']
-QA_MODEL_ID_PROVIDER=['Bedrock','Sagemaker Endpoint']
+EMBEDDING_MODEL_ID_OPTIONS=['amazon.titan-embed-image-v1',
+                            'amazon.titan-embed-text-v1',
+                            ]
+QA_MODEL_ID_OPTIONS=['anthropic.claude-3-sonnet-20240229-v1:0',
+                     'anthropic.claude-3-haiku-20240307-v1:0',
+                     'anthropic.claude-v2:1',
+                     'anthropic.claude-v2',
+                     'anthropic.claude-instant-v1',
+                     'amazon.titan-text-lite-v1',
+                     'amazon.titan-text-express-v1',
+                     'IDEFICS']
+EMBEDDING_MODEL_ID_PROVIDER=['Bedrock','Sagemaker']
+QA_MODEL_ID_PROVIDER=['Bedrock','Sagemaker']
 MODAILITY_OPTIONS=['Image']
 
 with st.sidebar:
@@ -390,9 +366,31 @@ with st.sidebar:
 
         temperature = st.slider(
                 label="Temperature:",
-                value=0.45,
+                value=1.0,
                 min_value=0.0,
                 max_value=1.0,
                 key="temperature",
+            )
+        top_p = st.slider(
+                label="Top P:",
+                value=0.999,
+                min_value=0.0,
+                max_value=0.999,
+                key="top_p",
+            )
+        top_k = st.slider(
+                label="Top K:",
+                value=250,
+                min_value=0,
+                max_value=500,
+                key="top_k",
+            )
+            
+        length = st.number_input(
+                label="Maximum Length",
+                value=2000,
+                min_value=0,
+                max_value=4096,
+                key="length",
             )
 

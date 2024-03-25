@@ -89,6 +89,8 @@ def post_question_about_selected_file(params):
                 "modelId": params['qa_model_id'],
                 "provider": params['qa_provider'],
                 "streaming":params['streaming'],
+                "model_kwargs":"{\n \"temperature\":"+str(params['temperature'])+",\"top_p\":"+str(params['top_p'])+",\"top_k\":"+str(params['top_k'])+",\"length\":\""+str(params['length'])+"\"}"
+
             },
             "retrieval":{
                 "max_docs": 1,
@@ -100,7 +102,7 @@ def post_question_about_selected_file(params):
             "responseGenerationMethod": generative_method
 
         }
-        print('ask question')
+        print(f'ask question::: {variables} ')
         return mutation_client.execute(Mutations.POST_QUESTION, "PostQuestion", variables)
 
     return None
@@ -119,7 +121,11 @@ def on_subscription_registered():
         "qa_model_id":st.session_state["qa_model_id"],
         "streaming":st.session_state["streaming"],
         "embedding_provider":st.session_state["embedding_provider"],
-        "qa_provider":st.session_state["qa_provider"]        
+        "qa_provider":st.session_state["qa_provider"],
+        "temperature":st.session_state["temperature"] ,  
+        "top_p":st.session_state["top_p"] ,
+        "top_k":st.session_state["top_k"] , 
+        "length":st.session_state["length"] ,            
     }
     post_question_about_selected_file(params)
 
@@ -133,7 +139,8 @@ def on_message_update(message, subscription_client):
         return
 
     status = response_obj.get("jobstatus")
-    if status == "Done":
+    print(f'status :: {status}')
+    if status != "Working on the question":
         encoded_answer = response_obj.get("answer")
         if not encoded_answer:
             return
@@ -190,22 +197,6 @@ def subscribe_to_answering_updates():
 
 st.set_page_config(page_title="Q&A", page_icon="💬", layout="wide") 
 add_indentation() 
-# selected = option_menu(
-#         menu_title="AWS-GENERATIVE-AI-CDK-CONSTRUCTS SAMPLE APPS",
-#         options=["Document Explorer", 'Content Generation'], 
-#         icons=['💬', '📸'],
-#         menu_icon="cast", 
-#         #default_index=0,
-#         orientation='horizontal'
-#         )
-# if selected == "Content Generation":
-#     hide_pages(["Q&A","Select Document","Summary","Visual Q&A"])
-#     st.session_state['selected_nav_index']=1
-#     st.switch_page("pages/5_Image_Generation.py")
-    
-# elif selected == "Document Explorer":
-#     hide_pages(["Image Generation","Image Search"])
-    #st.switch_page("pages/1_Select_Document.py")
 
 
 hide_deploy_button()
@@ -226,26 +217,24 @@ if auth.is_authenticated() and selected_filename:
     st.markdown("---")
     st.session_state['generative_method'] = generative_method
    
-    name, extension = os.path.splitext(selected_filename)
-    if (extension!=".jpg" or extension!=".jpeg" or extension!=".png" or extension!=".svg"):
 
-        # Initialize chat history
-        if "messages_filename" not in st.session_state or st.session_state.messages_filename != selected_filename:
-            st.session_state.messages_filename = selected_filename
-            st.session_state.messages = [{"role": "assistant", "content": f"Ask me anything about **{selected_filename}**!"}]
+    # Initialize chat history
+    if "messages_filename" not in st.session_state or st.session_state.messages_filename != selected_filename:
+        st.session_state.messages_filename = selected_filename
+        st.session_state.messages = [{"role": "assistant", "content": f"Ask me anything about **{selected_filename}**!"}]
 
-        # Add Clear button
-        if st.button("Clear"):
-            st.session_state.messages = [{"role": "assistant", "content": f"Ask me anything about **{selected_filename}**!"}]
-            st.session_state.message_widget_text = ""
+    # Add Clear button
+    if st.button("Clear"):
+        st.session_state.messages = [{"role": "assistant", "content": f"Ask me anything about **{selected_filename}**!"}]
+        st.session_state.message_widget_text = ""
 
-        # Display chat history
-        for message in st.session_state.messages:
-            with st.chat_message(message["role"]):
-                st.markdown(message["content"])
+    # Display chat history
+    for message in st.session_state.messages:
+        with st.chat_message(message["role"]):
+            st.markdown(message["content"])
 
         # Handle user input
-        if prompt := st.chat_input():
+    if prompt := st.chat_input():
             # Display user message
             st.chat_message("user").markdown(prompt)
                 
@@ -277,10 +266,18 @@ else:
 #########################
 
 # sidebar
-EMBEDDING_MODEL_ID_OPTIONS=['amazon.titan-embed-text-v1','amazon.titan-embed-image-v1']
-QA_MODEL_ID_OPTIONS=['anthropic.claude-v2:1','IDEFICS']
-EMBEDDING_MODEL_ID_PROVIDER=['Bedrock','Sagemaker Endpoint']
-QA_MODEL_ID_PROVIDER=['Bedrock','Sagemaker Endpoint']
+EMBEDDING_MODEL_ID_OPTIONS=['amazon.titan-embed-text-v1',
+                            'amazon.titan-embed-image-v1']
+QA_MODEL_ID_OPTIONS=['anthropic.claude-3-sonnet-20240229-v1:0',
+                     'anthropic.claude-3-haiku-20240307-v1:0',
+                     'anthropic.claude-v2:1',
+                     'anthropic.claude-v2',
+                     'anthropic.claude-instant-v1',
+                     'amazon.titan-text-lite-v1',
+                     'amazon.titan-text-express-v1',
+                     'IDEFICS']
+EMBEDDING_MODEL_ID_PROVIDER=['Bedrock','Sagemaker']
+QA_MODEL_ID_PROVIDER=['Bedrock','Sagemaker']
 
 with st.sidebar:
         st.header("Settings")
@@ -323,9 +320,31 @@ with st.sidebar:
 
         temperature = st.slider(
                 label="Temperature:",
-                value=0.45,
+                value=1.0,
                 min_value=0.0,
                 max_value=1.0,
                 key="temperature",
+            )
+        top_p = st.slider(
+                label="Top P:",
+                value=0.999,
+                min_value=0.0,
+                max_value=0.999,
+                key="top_p",
+            )
+        top_k = st.slider(
+                label="Top K:",
+                value=250,
+                min_value=0,
+                max_value=500,
+                key="top_k",
+            )
+            
+        length = st.number_input(
+                label="Maximum Length",
+                value=2000,
+                min_value=0,
+                max_value=4096,
+                key="length",
             )
 

@@ -35,29 +35,9 @@ show_pages(
         Page("pages/3_Q&A.py", "Q&A", "💬",in_section=True),
         Page("pages/4_Summary.py", "Summary", "🏷️",in_section=True),
         Page("pages/5_Visual_Q&A.py", "Visual Q&A", "👁️‍🗨️",in_section=True),
-        Section(name="Content Generation", icon="🎨"),
-        Page("pages/6_content_generation_home.py", "Home", "🏠",in_section=True),
-        Page("pages/7_Image_Generation.py", "Generate Image", "📸",in_section=True),
-        Page("pages/8_Image_Search.py", "Search Image", "🔎",in_section=True),
-
+        
     ]
 )
-
-# selected = option_menu(
-#         menu_title="AWS-GENERATIVE-AI-CDK-CONSTRUCTS SAMPLE APPS",
-#         options=["Document Explorer", 'Content Generation'], 
-#         icons=['💬', '📸'],
-#         menu_icon="cast", 
-#         #default_index=0,
-#         orientation='horizontal'
-#         )
-
-
-# Define a function to hide selected pages
-# def hide_pages(pages_to_hide):
-#     for page in pages_to_hide:
-#         st.sidebar.markdown(f"## {page}")
-#         st.sidebar.markdown("This page is hidden.")
 
 #with st.sidebar:
 # Check if user is authenticated and display login/logout buttons
@@ -93,14 +73,8 @@ if auth.is_authenticated():
         st.markdown('<style>div[class="stApp"] > div[class="css-1es6loc e1tzin5j2"]{text-align:center;}</style>', unsafe_allow_html=True)
 
 
-        
-    # if selected == "Content Generation":
-    #     hide_pages(["Q&A","Select Document","Summary","Visual Q&A"])
-
-    # else:
-    #     hide_pages(["Q&A","Select Document","Summary","Visual Q&A","Image Generation","Image Search"])
-
+      
 else:
-    hide_pages(["Q&A","Select Document","Summary","Visual Q&A","Image Generation","Image Search"])
+    hide_pages(["Q&A","Select Document","Summary","Visual Q&A"])
     st.write("Please login!")
     st.stop()
