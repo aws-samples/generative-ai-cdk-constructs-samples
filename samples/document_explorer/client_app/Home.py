@@ -24,7 +24,7 @@ from st_pages import show_pages,Section, Page, hide_pages,add_indentation
 # [View] Render UI components  
 #========================================================================================
 # Streamlit page configuration
-#pages = ["1_📁_Select_Document", "2_🏷️_Summary", "3_💬_Q&A","4_:camera:_Image_Generation"]
+st.set_page_config(page_title="Generative AI CDK Constructs Samples", page_icon="🤖")
 add_indentation() 
 
 show_pages(
@@ -46,10 +46,7 @@ auth.set_session_state()
 auth.print_login_logout_buttons()
 
 if auth.is_authenticated():
-    # if selected == "Document Explorer":
-    #     st.title="You have selected document explorer "
-    #     hide_pages(["Image Generation","Image Search"])
-       
+   
         hide_deploy_button()
 
         # Guest user UI 

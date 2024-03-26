@@ -140,14 +140,6 @@ def on_message_update(message, subscription_client):
 
     status = response_obj.get("jobstatus")
     print(f'status :: {status}')
-    if status != "Working on the question":
-        encoded_answer = response_obj.get("answer")
-        if not encoded_answer:
-            return
-        answer_text = base64.b64decode(encoded_answer).decode("utf-8")
-        st.session_state.message_widget_text += answer_text
-        st.session_state.message_widget.markdown(st.session_state.message_widget_text + " ▌")           
-        subscription_client.unsubscribe()
     if status == "New LLM token":
         encoded_answer = response_obj.get("answer")
         if not encoded_answer:
