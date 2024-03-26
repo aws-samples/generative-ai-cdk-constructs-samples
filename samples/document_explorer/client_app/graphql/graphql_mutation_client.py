@@ -52,7 +52,7 @@ class GraphQLMutationClient:
             "operationName": operation_name, 
             "variables": variables if variables else {}
         }
-        
+        print(f' query :: {query}')  
         try:
             response = requests.post(self.graphql_endpoint, json=data, headers=self.headers)
             response.raise_for_status()

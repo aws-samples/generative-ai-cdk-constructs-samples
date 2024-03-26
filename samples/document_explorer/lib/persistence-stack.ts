@@ -54,6 +54,7 @@ export class PersistenceStack extends Stack {
   public readonly accessLogsBucket: s3.Bucket;
   public readonly inputAssetsBucket: s3.Bucket;
   public readonly processedAssetsBucket: s3.Bucket;
+  //public readonly generatedAssetsBucket: s3.Bucket;
   public readonly opensearchDomain: opensearch.Domain;
   public readonly opensearchCollection: openSearchServerless.CfnCollection;
 
@@ -286,6 +287,7 @@ export class PersistenceStack extends Stack {
     new cdk.CfnOutput(this, "S3ProcessedBucket", {
       value: this.processedAssetsBucket.bucketName
     });
+    
 
   }
 }

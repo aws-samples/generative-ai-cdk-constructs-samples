@@ -20,6 +20,7 @@ class Subscriptions:
                 files {
                     name
                     status
+                    imageurl
                 }
             }
         }
@@ -47,6 +48,9 @@ class Subscriptions:
                 question
                 answer
                 jobstatus
+                filename
             }
         }
     """
+
+ 

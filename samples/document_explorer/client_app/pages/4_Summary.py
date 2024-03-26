@@ -25,6 +25,9 @@ from graphql.graphql_mutation_client import GraphQLMutationClient
 from graphql.graphql_subscription_client import GraphQLSubscriptionClient
 from graphql.mutations import Mutations
 from graphql.subscriptions import Subscriptions
+from streamlit_option_menu import option_menu
+from st_pages import show_pages,Section, Page, hide_pages,add_indentation
+from streamlit_extras.switch_page_button import switch_page
 
 #========================================================================================
 # [Model] Load configuration and environment variables
@@ -37,6 +40,8 @@ S3_INPUT_BUCKET = os.environ.get("S3_INPUT_BUCKET")
 S3_PROCESSED_BUCKET = os.environ.get("S3_PROCESSED_BUCKET")
 GRAPHQL_ENDPOINT = os.environ.get("GRAPHQL_ENDPOINT")  
 
+
+
 def get_selected_source_filename():
     """Get selected source filename from session state."""
     
@@ -44,7 +49,12 @@ def get_selected_source_filename():
     if not selected_file:
         return None
 
-    return f"{selected_file}.pdf"
+    #if a image then don't change the extension
+    image_ext = ['.jpg','.jpeg','.png','.svg']
+    if selected_file.endswith(tuple(image_ext)):
+        return selected_file
+    else:
+        return f"{selected_file}.pdf"
 
 # Get selected source file if authenticated
 selected_file = get_selected_source_filename()
@@ -158,7 +168,10 @@ def display_pdf(pdf_content, pdf_viewer_width, pdf_viewer_height):
     st.markdown(pdf_html, unsafe_allow_html=True)
 
 # Streamlit page configuration
+
 st.set_page_config(page_title="Summary", page_icon="🏷️", layout="wide", initial_sidebar_state="expanded")
+add_indentation() 
+
 hide_deploy_button()
 
 # Check if user is authenticated and display login/logout buttons
@@ -175,28 +188,32 @@ if auth.is_authenticated() and selected_file:
         pdf_height = int(pdf_width * 4/3)
 
         credentials = auth.get_user_temporary_credentials()  
-        s3 = boto3.client('s3',
-                        aws_access_key_id=credentials['AccessKeyId'],
-                        aws_secret_access_key=credentials['SecretAccessKey'],
-                        aws_session_token=credentials['SessionToken'])
+        if(selected_file.endswith(".jpeg")):
+            st.info(' No summary available for the image file :: '+selected_file)
 
-        pdf_object = s3.get_object(Bucket=S3_INPUT_BUCKET, Key=selected_file)
-        pdf_content = pdf_object['Body'].read()
+        else:
+            s3 = boto3.client('s3',
+                            aws_access_key_id=credentials['AccessKeyId'],
+                            aws_secret_access_key=credentials['SecretAccessKey'],
+                            aws_session_token=credentials['SessionToken'])
 
-        st.write("Preview")
-        display_pdf(pdf_content, pdf_width, pdf_height)
+            pdf_object = s3.get_object(Bucket=S3_INPUT_BUCKET, Key=selected_file)
+            pdf_content = pdf_object['Body'].read()
 
-    with col2:
-        # Display summary widget
-        text_width = int(st_javascript("window.innerWidth", key="text_width") - 20)
-        text_height = int(text_width * 4/3)
+            st.write("Preview")
+            display_pdf(pdf_content, pdf_width, pdf_height)
 
-        summary_widget = st.empty()
-        if summary_widget and text_height > 0:
-            summary_widget.text_area(f"Summary for **{selected_file}**", "Processing...", height=text_height)
-            st.session_state['summary_widget'] = summary_widget
-            st.session_state['summary_widget_height'] = text_height
-            subscribe_to_summary_updates()
+            with col2:
+                # Display summary widget
+                text_width = int(st_javascript("window.innerWidth", key="text_width") - 20)
+                text_height = int(text_width * 4/3)
+
+                summary_widget = st.empty()
+                if summary_widget and text_height > 0:
+                    summary_widget.text_area(f"Summary for **{selected_file}**", "Processing...", height=text_height)
+                    st.session_state['summary_widget'] = summary_widget
+                    st.session_state['summary_widget_height'] = text_height
+                    subscribe_to_summary_updates()
 
 # Guest user UI 
 elif not auth.is_authenticated():
