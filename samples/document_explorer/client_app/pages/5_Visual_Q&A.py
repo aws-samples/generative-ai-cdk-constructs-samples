@@ -163,7 +163,7 @@ def on_message_update(message, subscription_client):
     status = response_obj.get("jobstatus")
 
     print(f'response received  :: {status}')
-    if status != "Working on the question":
+    if status == "Done":
         if generative_method == 'RAG':
              filename = response_obj.get("filename")
              #display_image(filename)
@@ -181,9 +181,9 @@ def on_message_update(message, subscription_client):
         if not encoded_answer:
             return
         answer_text = base64.b64decode(encoded_answer).decode("utf-8")
-        st.session_state.message_widget_text += answer_text
+        st.session_state.message_widget_text += answer_text.replace('"', '')
         st.session_state.message_widget.markdown(st.session_state.message_widget_text + " ▌")           
-
+        
     elif status == "LLM streaming ended":
         st.session_state.message_widget.markdown(st.session_state.message_widget_text)
         if st.session_state.messages[-1]['role'] == 'assistant':
