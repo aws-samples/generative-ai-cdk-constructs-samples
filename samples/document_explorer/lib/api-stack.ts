@@ -221,7 +221,6 @@ export class ApiStack extends Stack {
       existingProcessedAssetsBucketObj: props.existingProcessedAssetsBucketObj,
       observability: true,
       isFileTransformationRequired: props.openSearchIndexName,
-      cfnCacheClusterProps: cfnCacheClusterProps,
     });
     // Update Merged API Policy
     mergedApiRole.addToPrincipalPolicy(new iam.PolicyStatement({
