@@ -20,7 +20,7 @@ import sys
 import boto3
 from botocore.exceptions import ClientError
 
-cdk_deploy_output_file = 'apistack-outputs.json'
+cdk_deploy_output_file = 'apistack-outputs.json' if len(sys.argv) < 2 else sys.argv[1]
 
 if os.path.isfile(cdk_deploy_output_file):
     with open(cdk_deploy_output_file) as cdk_deploy_output:
@@ -56,37 +56,52 @@ if os.path.isfile(cdk_deploy_output_file):
             print(f'S3_INPUT_BUCKET="{parsed_json[persistence_stack]["S3InputBucket"]}"')
             print(f'S3_PROCESSED_BUCKET="{parsed_json[persistence_stack]["S3ProcessedBucket"]}"')
 
-            username = 'sample@example.com'
-            key = bytes(app_client_secret, 'latin-1')
-            msg = bytes(username + app_client_id, 'latin-1')
-            new_digest = hmac.new(key, msg, hashlib.sha256).digest()
-            secret_hash = base64.b64encode(new_digest).decode()
+            try:
+                username = 'sample@example.com'
+                response_get_user = client.admin_get_user(
+                    UserPoolId=user_pool_id,
+                    Username=username
+                )
+            except ClientError as client_error_user:
+                if client_error_user.response['Error']['Code'] == 'UserNotFoundException':
 
-            response_sign_up = client.sign_up(
-                ClientId=app_client_id,
-                SecretHash=secret_hash,
-                Username=username,
-                Password='Sample12345!'
-            )
-            response_admin_confirm_sign_up = client.admin_confirm_sign_up(
-                UserPoolId=user_pool_id,
-                Username=username
-            )
-            response_admin_update_user_attributes = client.admin_update_user_attributes(
-                UserPoolId=user_pool_id,
-                Username=username,
-                UserAttributes=[
-                    {
-                        'Name': 'email_verified',
-                        'Value': 'true'
-                    }
-                ]
-            )
-            exit(0)
+                    key = bytes(app_client_secret, 'latin-1')
+                    msg = bytes(username + app_client_id, 'latin-1')
+                    new_digest = hmac.new(key, msg, hashlib.sha256).digest()
+                    secret_hash = base64.b64encode(new_digest).decode()
+
+                    response_sign_up = client.sign_up(
+                        ClientId=app_client_id,
+                        SecretHash=secret_hash,
+                        Username=username,
+                        Password='Sample12345!'
+                    )
+                    response_admin_confirm_sign_up = client.admin_confirm_sign_up(
+                        UserPoolId=user_pool_id,
+                        Username=username
+                    )
+                    response_admin_update_user_attributes = client.admin_update_user_attributes(
+                        UserPoolId=user_pool_id,
+                        Username=username,
+                        UserAttributes=[
+                            {
+                                'Name': 'email_verified',
+                                'Value': 'true'
+                            }
+                        ]
+                    )
+                else:
+                    raise client_error_user
+
+
 
         except ClientError as client_error:
+            print(client_error.response['Error']['Code'])
             if client_error.response['Error']['Code'] == 'ResourceNotFoundException':
                 print(f'User pool, "{user_pool_id}", or client, "{app_client_id}" not found', file=sys.stderr)
             raise client_error
 
+        exit(0)
+else:
+    print(f"Missing file, \"{cdk_deploy_output_file}\"")
 exit(1)
