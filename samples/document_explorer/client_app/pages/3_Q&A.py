@@ -24,6 +24,9 @@ from graphql.graphql_mutation_client import GraphQLMutationClient
 from graphql.graphql_subscription_client import GraphQLSubscriptionClient
 from graphql.mutations import Mutations
 from graphql.subscriptions import Subscriptions
+from streamlit_option_menu import option_menu
+from st_pages import show_pages,Section, Page, hide_pages,add_indentation
+from streamlit_extras.switch_page_button import switch_page
 
 #========================================================================================
 # [Model] Load configuration and environment variables
@@ -55,7 +58,7 @@ selected_filename = get_selected_filename()
 #========================================================================================
 # [Controller] Networking: GraphQL mutation helper functions 
 #========================================================================================
-def post_question_about_selected_file():
+def post_question_about_selected_file(params):
     """Send summary job request to GraphQL API."""
 
     selected_transformed_filename = get_selected_transformed_filename()
@@ -73,15 +76,33 @@ def post_question_about_selected_file():
         # Call GraphQL mutation
         mutation_client = GraphQLMutationClient(GRAPHQL_ENDPOINT, id_token)
         variables = {
+             "embeddings_model": {
+                "modelId": params['embedding_model_id'],
+                "provider": params['embedding_provider'],
+                "streaming":params['streaming'],
+            },
             "jobid": summary_job_id,
             "jobstatus": "",
-            "filename": selected_transformed_filename,
-            "question": st.session_state.get("encoded_question", ""),
-            "max_docs": 1,
+            #"filename": selected_filename+".txt",
+            "filename": "",
+            "qa_model": {
+                "modelId": params['qa_model_id'],
+                "provider": params['qa_provider'],
+                "streaming":params['streaming'],
+                "model_kwargs":"{\n \"temperature\":"+str(params['temperature'])+",\"top_p\":"+str(params['top_p'])+",\"top_k\":"+str(params['top_k'])+",\"length\":\""+str(params['length'])+"\"}"
+
+            },
+            "retrieval":{
+                "max_docs": 1,
+	            "index_name": "",
+	            "filter_filename": ""
+            },
             "verbose": False,
-            "streaming": True,
+            "question": st.session_state.get("encoded_question", ""),
             "responseGenerationMethod": generative_method
+
         }
+        print(f'ask question::: {variables} ')
         return mutation_client.execute(Mutations.POST_QUESTION, "PostQuestion", variables)
 
     return None
@@ -95,7 +116,18 @@ def post_question_about_selected_file():
 #----------------------------------------------------------------------------------------
 def on_subscription_registered():
     """Callback when subscription is registered"""
-    post_question_about_selected_file()
+    params={
+        "embedding_model_id":st.session_state["embedding_model_id"],
+        "qa_model_id":st.session_state["qa_model_id"],
+        "streaming":st.session_state["streaming"],
+        "embedding_provider":st.session_state["embedding_provider"],
+        "qa_provider":st.session_state["qa_provider"],
+        "temperature":st.session_state["temperature"] ,  
+        "top_p":st.session_state["top_p"] ,
+        "top_k":st.session_state["top_k"] , 
+        "length":st.session_state["length"] ,            
+    }
+    post_question_about_selected_file(params)
 
 selected_file = get_selected_transformed_filename()
 
@@ -107,6 +139,7 @@ def on_message_update(message, subscription_client):
         return
 
     status = response_obj.get("jobstatus")
+    print(f'status :: {status}')
     if status == "New LLM token":
         encoded_answer = response_obj.get("answer")
         if not encoded_answer:
@@ -153,7 +186,11 @@ def subscribe_to_answering_updates():
 # [View] Render UI components  
 #========================================================================================
 # Streamlit page configuration
+
 st.set_page_config(page_title="Q&A", page_icon="💬", layout="wide") 
+add_indentation() 
+
+
 hide_deploy_button()
 
 # Check if user is authenticated and display login/logout buttons
@@ -171,6 +208,7 @@ if auth.is_authenticated() and selected_filename:
     # Add a divider here
     st.markdown("---")
     st.session_state['generative_method'] = generative_method
+   
 
     # Initialize chat history
     if "messages_filename" not in st.session_state or st.session_state.messages_filename != selected_filename:
@@ -189,26 +227,115 @@ if auth.is_authenticated() and selected_filename:
 
     # Handle user input
     if prompt := st.chat_input():
-        # Display user message
-        st.chat_message("user").markdown(prompt)
-            
-        # Add user message to history
-        st.session_state.messages.append({"role": "user", "content": prompt})
+            # Display user message
+            st.chat_message("user").markdown(prompt)
+                
+            # Add user message to history
+            st.session_state.messages.append({"role": "user", "content": prompt})
 
-        with st.chat_message("assistant"):
-            message_widget = st.empty()
-            message_widget_text = ""
-            message_widget.markdown("Processing ...")
-            st.session_state['message_widget'] = message_widget
-            st.session_state['message_widget_text'] = message_widget_text
-            st.session_state['encoded_question'] = base64.b64encode(prompt.encode("utf-8")).decode("utf-8") 
-            st.session_state.messages.append({"role": "assistant", "content": message_widget_text})
-            subscribe_to_answering_updates()
-
+            with st.chat_message("assistant"):
+                message_widget = st.empty()
+                message_widget_text = ""
+                message_widget.markdown("Processing ...")
+                st.session_state['message_widget'] = message_widget
+                st.session_state['message_widget_text'] = message_widget_text
+                st.session_state['encoded_question'] = base64.b64encode(prompt.encode("utf-8")).decode("utf-8") 
+                st.session_state.messages.append({"role": "assistant", "content": message_widget_text})
+                subscribe_to_answering_updates()
+    
 # Guest user UI 
 elif not auth.is_authenticated():
-    st.write("Please login and select a document!")
+    st.warning("Please login and select a document!")
     st.stop()
 else:
-    st.write("Please select a document!")
+    st.warning("Please select a document!")
     st.stop()
+
+#########################
+#        SIDEBAR
+#########################
+
+# sidebar
+EMBEDDING_MODEL_ID_OPTIONS=['amazon.titan-embed-image-v1',
+                            'amazon.titan-embed-text-v1',
+                            ]
+QA_MODEL_ID_OPTIONS=['anthropic.claude-3-sonnet-20240229-v1:0',
+                     'anthropic.claude-3-haiku-20240307-v1:0',
+                     'anthropic.claude-v2:1',
+                     'anthropic.claude-v2',
+                     'anthropic.claude-instant-v1',
+                     'amazon.titan-text-lite-v1',
+                     'amazon.titan-text-express-v1',
+                     'IDEFICS']
+EMBEDDING_MODEL_ID_PROVIDER=['Bedrock','Sagemaker']
+QA_MODEL_ID_PROVIDER=['Bedrock','Sagemaker']
+
+with st.sidebar:
+        st.header("Settings")
+        st.subheader("Q&A Configuration")
+
+        
+        embedding_provider = st.selectbox(
+                label="Select embedding model provider:",
+                options=EMBEDDING_MODEL_ID_PROVIDER,
+                key="embedding_provider",
+                help="Select model provider.",
+            )
+        qa_provider = st.selectbox(
+                label="Select qa model provider:",
+                options=QA_MODEL_ID_PROVIDER,
+                key="qa_provider",
+                help="Select model provider.",
+            )
+
+        embedding_model_id = st.selectbox(
+                label="Select embedding model id:",
+                options=EMBEDDING_MODEL_ID_OPTIONS,
+                key="embedding_model_id",
+                help="Select model type to create and store embeddings in open search cluster as per your use case.",
+            )
+
+        qa_model_id = st.selectbox(
+                label="Select qa model id:",
+                options=QA_MODEL_ID_OPTIONS,
+                key="qa_model_id",
+                help="Select model type to generate response for your questions.",
+            )
+
+        streaming = st.selectbox(
+                label="Select streaming:",
+                options=[True,False],
+                key="streaming",
+                help="Enable or disable streaming on response",
+            )
+
+        temperature = st.slider(
+                label="Temperature:",
+                value=1.0,
+                min_value=0.0,
+                max_value=1.0,
+                key="temperature",
+            )
+        top_p = st.slider(
+                label="Top P:",
+                value=0.999,
+                min_value=0.0,
+                max_value=0.999,
+                key="top_p",
+            )
+        top_k = st.slider(
+                label="Top K:",
+                value=250,
+                min_value=0,
+                max_value=500,
+                key="top_k",
+            )
+            
+        length = st.number_input(
+                label="Maximum Length",
+                value=2000,
+                min_value=0,
+                max_value=4096,
+                key="length",
+            )
+

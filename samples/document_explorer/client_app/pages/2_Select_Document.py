@@ -28,6 +28,10 @@ from graphql.graphql_mutation_client import GraphQLMutationClient
 from graphql.graphql_subscription_client import GraphQLSubscriptionClient
 from graphql.mutations import Mutations
 from graphql.subscriptions import Subscriptions
+from streamlit_option_menu import option_menu
+from st_pages import show_pages,Section, Page, hide_pages,add_indentation
+from streamlit_extras.switch_page_button import switch_page
+
 
 #========================================================================================
 # [Model] Load configuration and environment variables
@@ -37,6 +41,8 @@ load_dotenv()
 S3_INPUT_BUCKET = os.environ.get("S3_INPUT_BUCKET")
 S3_PROCESSED_BUCKET = os.environ.get("S3_PROCESSED_BUCKET")
 GRAPHQL_ENDPOINT = os.environ.get("GRAPHQL_ENDPOINT")
+
+
 
 # Initialize logger
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
@@ -52,13 +58,14 @@ class DocumentStatus(int):
 #========================================================================================
 # [Controller] Networking: GraphQL mutation helper functions 
 #========================================================================================
-def process_document(uploaded_filename):
+def process_document(params):
     """Send document to ingestion pipeline
     
     Args:
         uploaded_filename (str): Name of uploaded file
         
     """
+   
     
     if auth.is_authenticated():
         # Get user tokens
@@ -74,13 +81,16 @@ def process_document(uploaded_filename):
         mutation_client = GraphQLMutationClient(GRAPHQL_ENDPOINT, id_token)
         variables = {
             "ingestionInput": {
-                "files": [{"status": "", "name": uploaded_filename}],
+                "embeddings_model":{"provider":params['embedding_provider'],
+                                     "modelId":params['embedding_model_id']
+                                     },
+                "files": [{"status": "", "name": params['uploaded_filename']}],
                 "ingestionjobid": ingestion_job_id,
                 "ignore_existing": True
             }
         }
+        print(f' mutation query arguments :: {variables}')
         response = mutation_client.execute(Mutations.INGEST_DOCUMENTS, "IngestDocuments", variables)
-
         return response
 
     return None
@@ -94,14 +104,25 @@ def process_document(uploaded_filename):
 #----------------------------------------------------------------------------------------
 def on_subscription_registered():
     """Callback when subscription is registered."""
-
+    
     st.session_state['progress_bar_widget'].progress(DocumentStatus.SUBSCRIPTION_ACTIVE)
     uploaded_filename = st.session_state.get('uploaded_filename')
     if not uploaded_filename:
         return
 
     st.session_state['progress_bar_widget'].progress(DocumentStatus.PROCESSING_STARTED)
-    process_document(uploaded_filename)
+    
+    params={
+        "uploaded_filename":st.session_state["uploaded_filename"],
+        "embedding_model_id":st.session_state["embedding_model_id"],
+        "embedding_provider":st.session_state["embedding_provider"],
+        
+    }
+    
+    print(f'on_subscription_registered :: {uploaded_filename}')
+    
+    process_document(params)
+
 
 
 def on_message_update(message, subscription_client):
@@ -111,8 +132,8 @@ def on_message_update(message, subscription_client):
         message (dict): Message payload
         subscription_client (GraphQLSubscriptionClient): Client instance
     """
-
     ingestion_status = message.get("updateIngestionJobStatus")
+    print(f'ingestion_status :: {ingestion_status}')
     if not ingestion_status:
         return
 
@@ -122,6 +143,7 @@ def on_message_update(message, subscription_client):
 
     first_file = files[0]
     status = first_file.get("status")
+    image_url = first_file.get("imageurl")
     if not status:
         return
 
@@ -130,6 +152,7 @@ def on_message_update(message, subscription_client):
     if status in ['ingested', 'file already exists']:
         is_still_processing = False
         logging.info(f"Ingestion completed. Status: {status}")
+        st.session_state['image_url'] = image_url
         st.session_state['progress_bar_widget'].progress(DocumentStatus.PROCESSING_COMPLETE)
 
     elif status in ['unsupported', 'unable to load document']:
@@ -155,7 +178,7 @@ def on_message_update(message, subscription_client):
 #----------------------------------------------------------------------------------------
 def subscribe_to_file_ingestion_updates():
     """Subscribe to GraphQL subscription for file ingestion job status updates."""
-
+    
     if auth.is_authenticated():
         st.session_state['progress_bar_widget'].progress(DocumentStatus.SUBSCRIBING)
 
@@ -209,8 +232,26 @@ def to_tuple(s3_object):
     )
 
 # Streamlit page configuration
-st.set_page_config(page_title="Select Document", page_icon="📁")
+
+st.set_page_config(page_title="Select Document",
+                    page_icon="📁",layout="wide",
+                    initial_sidebar_state="expanded",)
+add_indentation() 
+
+
+st.session_state['selected_nav_index']=0
+
+if st.session_state.get('switch_button', False):
+    st.session_state['menu_option'] = (st.session_state.get('menu_option', 0) + 1) % 4
+    manual_select = st.session_state['menu_option']
+else:
+    manual_select = None
+
+    
+
 hide_deploy_button()
+
+
 
 # Check if user is authenticated and display login/logout buttons
 auth = CognitoHelper()
@@ -221,7 +262,7 @@ auth.print_login_logout_buttons()
 if auth.is_authenticated():
     st.markdown("# Select a document")
     st.write("Doc explorer lets you upload, summarize, and ask questions about your documents using GenAI.")
-
+   
     # Create S3 client
     credentials = auth.get_user_temporary_credentials()
     s3 = boto3.client(
@@ -231,16 +272,46 @@ if auth.is_authenticated():
         aws_session_token=credentials["SessionToken"]
     )
     
+    # sidebar
+    EMBEDDING_MODEL_ID_OPTIONS=['amazon.titan-embed-image-v1','amazon.titan-embed-text-v1']
+    EMBEDDING_MODEL_ID_PROVIDER=['Bedrock','Sagemaker']
+
+    with st.sidebar:
+            st.header("Settings")
+        
+            st.subheader("Data Ingestion Configuration")
+
+            embedding_provider = st.selectbox(
+                label="Select embedding model provider:",
+                options=EMBEDDING_MODEL_ID_PROVIDER,
+                key="embedding_provider",
+                help="Select model provider.",
+            )
+
+            embedding_model_id = st.selectbox(
+                label="Select embedding model id:",
+                options=EMBEDDING_MODEL_ID_OPTIONS,
+                key="embedding_model_id",
+                help="Select model type to create and store embeddings in open search cluster as per your use case.",
+            )
+
+
     # File uploader
     with st.form("file-uploader", clear_on_submit=True):
-            uploaded_file = st.file_uploader('Upload a document', type=['pdf'])
+
+            uploaded_file = st.file_uploader('Upload a document', type=['pdf','jpeg','png','jpg'])
             submitted = st.form_submit_button("Submit", use_container_width=True)
+            submit= True
+            if(uploaded_file and uploaded_file.name.endswith(tuple(['.png','.jpeg','.jpg'])) and embedding_model_id=='amazon.titan-embed-text-v1'):
+                st.warning("Invalid model id,Please select multimodality modal for image files")
+                submit=False
             st.session_state['progress_bar_widget'] = st.empty()
-            if uploaded_file and submitted:
+            if submit and uploaded_file and submitted:
                 s3.upload_fileobj(uploaded_file, S3_INPUT_BUCKET, uploaded_file.name)
                 st.session_state['uploaded_filename'] = uploaded_file.name
                 subscribe_to_file_ingestion_updates()
-
+            
+                
     # Transformed file grid
     transformed_files = s3.list_objects_v2(Bucket=S3_PROCESSED_BUCKET)
     if 'Contents' in transformed_files:
@@ -248,6 +319,7 @@ if auth.is_authenticated():
             pd.Series(transformed_files['Contents']).apply(to_tuple).tolist(),
             columns=["Transformed Filename", "Last Modified"]
         )
+       
 
         options = GridOptionsBuilder.from_dataframe(df)
         options.configure_selection("single")
@@ -273,3 +345,4 @@ if auth.is_authenticated():
 else:
     st.write("Please login!")
     st.stop()
+
