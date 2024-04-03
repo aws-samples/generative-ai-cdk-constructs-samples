@@ -246,7 +246,7 @@ if auth.is_authenticated() and selected_file:
         with col2:
             # Display summary widget
             text_width = int(st_javascript("window.innerWidth", key="text_width") - 20)
-            text_height = int(text_width * 4/3)
+            text_height = int(text_width * 3/4)
 
             summary_widget = st.empty()
             if('file_processed' not in st.session_state): 

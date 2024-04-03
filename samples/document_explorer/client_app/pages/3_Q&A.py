@@ -93,7 +93,7 @@ def post_question_about_selected_file(params):
 
             },
             "retrieval":{
-                "max_docs": 1,
+                "max_docs": params['max_docs'],
 	            "index_name": "",
 	            "filter_filename": ""
             },
@@ -125,7 +125,8 @@ def on_subscription_registered():
         "temperature":st.session_state["temperature"] ,  
         "top_p":st.session_state["top_p"] ,
         "top_k":st.session_state["top_k"] , 
-        "length":st.session_state["length"] ,            
+        "length":st.session_state["length"] ,   
+        "max_docs":st.session_state["max_docs"] ,              
     }
     post_question_about_selected_file(params)
 
@@ -308,6 +309,14 @@ with st.sidebar:
                 key="streaming",
                 help="Enable or disable streaming on response",
             )
+        
+        max_docs = st.number_input(
+                label="Max docs for RAG",
+                value=1,
+                min_value=0,
+                max_value=10,
+                key="max_docs",
+            )
 
         temperature = st.slider(
                 label="Temperature:",
@@ -330,6 +339,7 @@ with st.sidebar:
                 max_value=500,
                 key="top_k",
             )
+        
             
         length = st.number_input(
                 label="Maximum Length",
