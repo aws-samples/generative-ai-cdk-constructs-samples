@@ -79,14 +79,19 @@ This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.am
     cd samples/sagemaker_huggingface_model_llava
     ```
 
-3. Update the location of your model artifacts. Update in [sagemaker_huggingface_model_llava-stack.ts](./lib/sagemaker_huggingface_model_llava-stack.ts) the field ```modelDataUrl``` to specify the location where your saved your model artifacts during the [prepare your model](#prepare-your-model) step. The field should look like this: ```s3//BUCKET//KEY```. Also, replace the bucket arn field (```BUCKET_ARN```) in the same file with the ARN of the Amazon S3 bucket containing your model artifacts. This will give the permissions to the construct to pull your model artifacts.
+4. Install packages
+   ```shell
+   npm install
+   ```
 
-3. Boostrap AWS CDK resources on the AWS account.
+5. Update the location of your model artifacts. Update in [sagemaker_huggingface_model_llava-stack.ts](./lib/sagemaker_huggingface_model_llava-stack.ts) the field ```modelDataUrl``` to specify the location where your saved your model artifacts during the [prepare your model](#prepare-your-model) step. The field should look like this: ```s3//BUCKET//KEY```. Also, replace the bucket arn field (```BUCKET_ARN```) in the same file with the ARN of the Amazon S3 bucket containing your model artifacts. This will give the permissions to the construct to pull your model artifacts.
+
+6. Boostrap AWS CDK resources on the AWS account.
     ```shell
     cdk bootstrap aws://ACCOUNT_ID/REGION
     ```
 
-6. Deploy the sample in your account. 
+7. Deploy the sample in your account. 
     ```shell
     $ cdk deploy
     ```

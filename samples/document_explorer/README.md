@@ -79,22 +79,27 @@ This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.am
     cd samples/document_explorer
     ```
 
-3. Boostrap AWS CDK resources on the AWS account.
+3. Install packages
+   ```shell
+   npm install
+   ```
+
+4. Boostrap AWS CDK resources on the AWS account.
     ```shell
     cdk bootstrap aws://ACCOUNT_ID/REGION
     ```
 
-4. The persistence layer requires the existence of the AWSServiceRoleForAmazonElasticsearchService Service-Linked Role (SLR). The following command checks if the SLR exists and creates one if needed:
+5. The persistence layer requires the existence of the AWSServiceRoleForAmazonElasticsearchService Service-Linked Role (SLR). The following command checks if the SLR exists and creates one if needed:
     ```shell
     if ! aws iam get-role --role-name AWSServiceRoleForAmazonElasticsearchService > /dev/null 2>&1; then
     aws iam create-service-linked-role --aws-service-name es.amazonaws.com 
     fi
     ```
 
-5. Enable Access to Amazon Bedrock Models
+6. Enable Access to Amazon Bedrock Models
 > You must explicitly enable access to models before they can be used with the Amazon Bedrock service. Please follow these steps in the [Amazon Bedrock User Guide](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html) to enable access to the models (at minimum, ```Anthropic::Claude```):.
 
-6. Deploy the sample in your account. 
+7. Deploy the sample in your account. 
     ```shell
     $ cdk deploy --all
     ```
@@ -106,7 +111,7 @@ The command above will deploy three stacks in your account. Some services requir
 
 Between each stack, to protect you against unintended changes that affect your security posture, the AWS CDK Toolkit prompts you to approve security-related changes before deploying them. You will need to answer yes at each step to get all the stacks deployed.
 
-7. Configure client_app
+8. Configure client_app
     ```shell
     cd client_app
     python -m venv venv
@@ -114,7 +119,7 @@ Between each stack, to protect you against unintended changes that affect your s
     pip install -r requirements.txt
     ```
 
-8. Still within the /client_app directory, create an ```.env``` file with the following content or mutate the ```.env-example```. Replace the property values with the values retrieved from the stack outputs/console.
+9. Still within the /client_app directory, create an ```.env``` file with the following content or mutate the ```.env-example```. Replace the property values with the values retrieved from the stack outputs/console.
 
 ```
 COGNITO_DOMAIN="<ApiStack.CognitoDomain>"
@@ -133,7 +138,7 @@ S3_PROCESSED_BUCKET = "<PersistenceStack.processedAssetsBucket>"
 
 Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved from the AWS Console. Go to the [Amazon Cognito page](https://console.aws.amazon.com/cognito/home) in the AWS console, then select the created user pool. Under App integration, select App client settings. Then, select Show Details and copy the value of the App client secret.
 
-9. Run client_app
+10. Run client_app
     ```shell
     streamlit run Home.py
     ```

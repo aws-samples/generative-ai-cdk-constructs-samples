@@ -79,9 +79,14 @@ This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.am
     cd samples/sagemaker_custom_model
     ```
 
-3. Update the location of your model artifacts. Update in [sagemaker_custom_endpoint-stack.ts](./lib/sagemaker_custom_endpoint-stack.ts) the field ```modelDataUrl``` to specify the location where your saved your model artifacts during the [prepare your model](#prepare-your-model) step. The field should look like this: ```s3//BUCKET//KEY```. Also, replace the bucket arn field (```BUCKET_ARN```) in the same file with the ARN of the Amazon S3 bucket containing your model artifacts. This will give the permissions to the construct to pull your model artifacts.
+3. Install packages
+   ```shell
+   npm install
+   ```
 
-3. Boostrap AWS CDK resources on the AWS account.
+4. Update the location of your model artifacts. Update in [sagemaker_custom_endpoint-stack.ts](./lib/sagemaker_custom_endpoint-stack.ts) the field ```modelDataUrl``` to specify the location where your saved your model artifacts during the [prepare your model](#prepare-your-model) step. The field should look like this: ```s3//BUCKET//KEY```. Also, replace the bucket arn field (```BUCKET_ARN```) in the same file with the ARN of the Amazon S3 bucket containing your model artifacts. This will give the permissions to the construct to pull your model artifacts.
+
+5. Boostrap AWS CDK resources on the AWS account.
     ```shell
     cdk bootstrap aws://ACCOUNT_ID/REGION
     ```
