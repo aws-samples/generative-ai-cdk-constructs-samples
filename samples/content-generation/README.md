@@ -73,7 +73,12 @@ This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.am
     cd samples/content-generation
     ```
 
-3. Boostrap AWS CDK resources on the AWS account.
+3. Install packages
+   ```shell
+   npm install
+   ```
+
+4. Boostrap AWS CDK resources on the AWS account.
     ```shell
     cdk bootstrap aws://ACCOUNT_ID/REGION
     ```

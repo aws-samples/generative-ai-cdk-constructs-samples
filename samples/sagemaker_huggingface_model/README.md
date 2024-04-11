@@ -70,12 +70,17 @@ This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.am
     cd samples/sagemaker_huggingface_model
     ```
 
-3. Boostrap AWS CDK resources on the AWS account.
+3. Install packages
+   ```shell
+   npm install
+   ```
+
+4. Boostrap AWS CDK resources on the AWS account.
     ```shell
     cdk bootstrap aws://ACCOUNT_ID/REGION
     ```
 
-6. Deploy the sample in your account. 
+5. Deploy the sample in your account. 
     ```shell
     $ cdk deploy
     ```
