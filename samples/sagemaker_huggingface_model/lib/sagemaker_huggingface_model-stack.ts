@@ -33,6 +33,7 @@ export class SagemakerHuggingfaceModelStack extends cdk.Stack {
           SM_NUM_GPUS: '1',
           MAX_INPUT_LENGTH: '2048',
           MAX_TOTAL_TOKENS: '4096',
+          HF_API_TOKEN: 'XXXXX'
       },
       endpointName: SG_ENDPOINT_NAME
     });
