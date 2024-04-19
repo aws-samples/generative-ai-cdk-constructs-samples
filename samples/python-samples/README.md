@@ -11,6 +11,25 @@ It includes examples of key components needed in generative AI applications:
 
 - [Amazon OpenSearch Vector Index](https://github.com/awslabs/generative-ai-cdk-constructs/blob/main/src/cdk-lib/opensearch-vectorindex/README.md): CDK L1 Custom Resource to create a vector index.		
 
+### Prerequisites
+
+- An AWS account. We recommend you deploy this solution in a new account.
+- [AWS CLI](https://aws.amazon.com/cli/): configure your credentials
+
+```
+aws configure --profile [your-profile] 
+AWS Access Key ID [None]: xxxxxx
+AWS Secret Access Key [None]:yyyyyyyyyy
+Default region name [None]: us-east-1 
+Default output format [None]: json
+```
+
+- Python : v3.11
+- [AWS CDK](https://github.com/aws/aws-cdk/releases/tag/v2.68.0): 2.68.0
+- [Docker](https://www.docker.com/products/docker-desktop/): Docker must be up and running in your machine.
+
+## Getting started
+
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
