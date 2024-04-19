@@ -55,6 +55,11 @@ Default output format [None]: json
 - [AWS CDK](https://github.com/aws/aws-cdk/releases/tag/v2.114.0): 2.114.0
 - jq: jq-1.6
 - Make sure you have sufficient quota for the instance type implemented in this sample (service Amazon SageMaker, instance type `ml.g5.2xlarge` for endpoint usage). For more information, refer to [AWS service quotas](https://docs.aws.amazon.com/general/latest/gr/aws_service_limits.html).
+- [A Hugging Face account](https://huggingface.co/welcome)
+- A Hugging Face API token. Mistral models are now gated on Hugging Face. To get access, you need to create a user access token. The procedure is detailed here: https://huggingface.co/docs/hub/security-tokens
+- Accept to share you contact information: The model deployed in this sample requires you to agree to share your information before you can access it. Once logged in, visit the [model page](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.1) and click on the button 'Agree and access repository'.
+
+![Hugging Face](./doc/images/mistral_hf.png)
 
 ### Deploy the solution
 
@@ -74,6 +79,9 @@ This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.am
    ```shell
    npm install
    ```
+
+3. Update your API Access token
+Navigate to the [stack file](./lib/sagemaker_huggingface_model-stack.ts) and update the value of the variable ```HF_API_TOKEN``` to use the value of the user access token you created in the pre-requisites.
 
 4. Boostrap AWS CDK resources on the AWS account.
     ```shell
