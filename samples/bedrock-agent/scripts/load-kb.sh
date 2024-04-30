@@ -23,7 +23,7 @@ BOOKS_LIST=("https://www.gutenberg.org/ebooks/84.txt.utf-8"
   "https://www.gutenberg.org/ebooks/1513.txt.utf-8")
 
 # make a temporary directory to download the books
-BOOKS_DIR=`mktemp -d -t books`
+BOOKS_DIR=`mktemp -d -t books.XXXXX`
 
 pushd $BOOKS_DIR
 

@@ -221,7 +221,6 @@ export class ApiStack extends Stack {
       existingProcessedAssetsBucketObj: props.existingProcessedAssetsBucketObj,
       observability: true,
       isFileTransformationRequired: props.openSearchIndexName,
-      cfnCacheClusterProps: cfnCacheClusterProps,
     });
     // Update Merged API Policy
     mergedApiRole.addToPrincipalPolicy(new iam.PolicyStatement({
@@ -284,7 +283,8 @@ export class ApiStack extends Stack {
     cfn_source_api_association_qa.node.addDependency(this.mergedApi);
     cfn_source_api_association_qa.node.addDependency(qa.graphqlApi);
 
-    //-----------------------------------------------------------------------------
+
+     //-----------------------------------------------------------------------------
     // Suppress cdk-nag warnings for Generative AI CDK Constructs
     // Reference: https://github.com/cdklabs/cdk-nag/blob/main/RULES.md
     //-----------------------------------------------------------------------------
@@ -295,6 +295,7 @@ export class ApiStack extends Stack {
       {id: 'AwsSolutions-S10', reason: 'S3 bucket policy defined in @cdklabs/generative-ai-cdk-constructs'},
       {id: 'AwsSolutions-SQS3', reason: 'SQS DLQ property defined in @cdklabs/generative-ai-cdk-constructs'},
     ], true)
+
 
     //---------------------------------------------------------------------
     // Export values
@@ -334,5 +335,7 @@ export class ApiStack extends Stack {
     new cdk.CfnOutput(this, "GraphQLEndpoint", {
       value: this.mergedApi.attrGraphQlUrl,
     });
+
+  
   }
 }

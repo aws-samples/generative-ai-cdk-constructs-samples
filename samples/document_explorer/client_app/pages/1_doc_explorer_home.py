@@ -24,20 +24,8 @@ from st_pages import show_pages,Section, Page, hide_pages,add_indentation
 # [View] Render UI components  
 #========================================================================================
 # Streamlit page configuration
-st.set_page_config(page_title="Generative AI CDK Constructs Samples", page_icon="🤖")
+#pages = ["1_📁_Select_Document", "2_🏷️_Summary", "3_💬_Q&A","4_:camera:_Image_Generation"]
 add_indentation() 
-
-show_pages(
-    [
-        Section("Document Explorer", icon="📁"),
-        Page("pages/1_doc_explorer_home.py", "Home", "🏠",in_section=True),
-        Page("pages/2_Select_Document.py", "Select Document", "📃",in_section=True),
-        Page("pages/3_Q&A.py", "Q&A", "💬",in_section=True),
-        Page("pages/4_Summary.py", "Summary", "🏷️",in_section=True),
-        Page("pages/5_Visual_Q&A.py", "Visual Q&A", "👁️‍🗨️",in_section=True),
-        
-    ]
-)
 
 #with st.sidebar:
 # Check if user is authenticated and display login/logout buttons
@@ -47,6 +35,7 @@ auth.print_login_logout_buttons()
 
 if auth.is_authenticated():
    
+       
         hide_deploy_button()
 
         # Guest user UI 
@@ -69,9 +58,6 @@ if auth.is_authenticated():
         st.image('assets/doc_explorer_diagram.png', width=700)
         st.markdown('<style>div[class="stApp"] > div[class="css-1es6loc e1tzin5j2"]{text-align:center;}</style>', unsafe_allow_html=True)
 
-
-      
 else:
-    hide_pages(["Q&A","Select Document","Summary","Visual Q&A"])
     st.write("Please login!")
     st.stop()

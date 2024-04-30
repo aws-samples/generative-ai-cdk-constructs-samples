@@ -20,6 +20,7 @@ class Subscriptions:
                 files {
                     name
                     status
+                    imageurl
                 }
             }
         }
@@ -30,12 +31,10 @@ class Subscriptions:
     UPDATE_SUMMARY_JOB_STATUS = """  
         subscription UpdateSummaryJobStatus($summary_job_id: ID) {
             updateSummaryJobStatus(summary_job_id: $summary_job_id) {
+                name
+                status
+                summary
                 summary_job_id
-                files {
-                    name
-                    status 
-                    summary
-                }
             }
         }
     """
@@ -47,6 +46,9 @@ class Subscriptions:
                 question
                 answer
                 jobstatus
+                filename
             }
         }
     """
+
+ 
