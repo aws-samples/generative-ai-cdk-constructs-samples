@@ -83,14 +83,12 @@ def post_question_about_selected_file(params):
             },
             "jobid": summary_job_id,
             "jobstatus": "",
-            #"filename": selected_filename+".txt",
-            "filename": "",
+            "filename": selected_filename+".txt",
             "qa_model": {
                 "modelId": params['qa_model_id'],
                 "provider": params['qa_provider'],
                 "streaming":params['streaming'],
                 "model_kwargs":"{\n \"temperature\":"+str(params['temperature'])+",\"top_p\":"+str(params['top_p'])+",\"top_k\":"+str(params['top_k'])+",\"length\":\""+str(params['length'])+"\"}"
-
             },
             "retrieval":{
                 "max_docs": params['max_docs'],
@@ -267,6 +265,7 @@ QA_MODEL_ID_OPTIONS=['anthropic.claude-3-sonnet-20240229-v1:0',
                      'anthropic.claude-instant-v1',
                      'amazon.titan-text-lite-v1',
                      'amazon.titan-text-express-v1',
+                     'amazon.titan-text-premier-v1:0',
                      'IDEFICS']
 EMBEDDING_MODEL_ID_PROVIDER=['Bedrock','Sagemaker']
 QA_MODEL_ID_PROVIDER=['Bedrock','Sagemaker']
