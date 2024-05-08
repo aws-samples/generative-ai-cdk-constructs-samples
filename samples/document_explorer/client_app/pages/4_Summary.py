@@ -292,6 +292,7 @@ MODEL_ID_OPTIONS=['anthropic.claude-3-sonnet-20240229-v1:0',
                      'anthropic.claude-instant-v1',
                      'amazon.titan-text-lite-v1',
                      'amazon.titan-text-express-v1',
+                     'amazon.titan-text-premier-v1:0',
                      'IDEFICS']
 MODEL_ID_PROVIDER=['Bedrock','Sagemaker']
 LANGUAGE_OPTIONS=['English','Spanish','French']
