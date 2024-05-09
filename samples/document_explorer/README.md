@@ -111,6 +111,14 @@ The command above will deploy three stacks in your account. Some services requir
 
 Between each stack, to protect you against unintended changes that affect your security posture, the AWS CDK Toolkit prompts you to approve security-related changes before deploying them. You will need to answer yes at each step to get all the stacks deployed.
 
+> **Note**
+> If your deployment fails with the message: **MemorySize value failed to satisfy constraint: Member must have value less than or equal to 3008**
+then your AWS Account is likely either too new or unused for the region, and there are these choices to fix:
+> - [Contact AWS Support](https://support.console.aws.amazon.com/support/home#/)
+> - to increase your AWS Lambda maximum memory size limits to 10Gb. This will not happen immediately, but is the recommended option.
+> - Deploy the CDK samples with the [optional](https://github.com/awslabs/generative-ai-cdk-constructs/pull/193)
+ cdk deploy --all --outputs-file apistack-outputs.json --context maximumLambdaMemorySize=3008 parameter. This method is available without waiting, but will limit functionality and cause unexpected failures when more memory than is available is required.
+
 8. Configure client_app
     ```shell
     cd client_app
