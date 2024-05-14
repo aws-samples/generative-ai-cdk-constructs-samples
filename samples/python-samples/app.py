@@ -21,33 +21,33 @@ BedrockOpensearchStack(app, "BedrockOpensearchStack",
     env=env
     )
 
-# #---------------------------------------------------------------------------
-# # Bedrock knowledge base with Amazon RDS Aurora PostgreSQL
-# #---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+# Bedrock knowledge base with Amazon RDS Aurora PostgreSQL
+#---------------------------------------------------------------------------
     
 
-# BedrockAuroraStack(app, "BedrockAuroraStack",
-#     env=env
-#     )
+BedrockAuroraStack(app, "BedrockAuroraStack",
+    env=env
+    )
 
-# #---------------------------------------------------------------------------
-# # Bedrock knowledge base with Pinecone
-# #---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+# Bedrock knowledge base with Pinecone
+#---------------------------------------------------------------------------
     
 
 
-# BedrockPineconeStack(app, "BedrockPineconeStack",
-#     env=env
-#     )
+BedrockPineconeStack(app, "BedrockPineconeStack",
+    env=env
+    )
 
 
-# #---------------------------------------------------------------------------
-# # OpensearchVectorIndex
-# #---------------------------------------------------------------------------
+#---------------------------------------------------------------------------
+# OpensearchVectorIndex
+#---------------------------------------------------------------------------
     
-# OpensearchVectorIndex(app, "OpensearchVectorIndex",
-#     env=env
-#     )
+OpensearchVectorIndex(app, "OpensearchVectorIndex",
+    env=env
+    )
 
 
 app.synth()
