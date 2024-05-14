@@ -19,6 +19,7 @@ import {Construct} from 'constructs';
 import { bedrock } from '@cdklabs/generative-ai-cdk-constructs';
 import {NagSuppressions} from "cdk-nag";
 import * as path from "path";
+import { AgentActionGroup } from '@cdklabs/generative-ai-cdk-constructs/lib/cdk-lib/bedrock';
 
 export class BedrockAgentStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -74,13 +75,24 @@ export class BedrockAgentStack extends cdk.Stack {
       layers: [lambda.LayerVersion.fromLayerVersionArn(this, 'PowerToolsLayer', `arn:aws:lambda:${this.region}:017000801446:layer:AWSLambdaPowertoolsPythonV2:60`)],
     });
 
-    agent.addActionGroup({
+    const actionGroup = new AgentActionGroup(this,'MyActionGroup',{
       actionGroupName: 'query-library',
       description: 'Use these functions to get information about the books in the library.',
       actionGroupExecutor: actionGroupFunction,
       actionGroupState: "ENABLED",
       apiSchema: bedrock.ApiSchema.fromAsset(path.join(__dirname, 'action-group.yaml')),
     });
+
+    agent.addKnowledgeBases([kb])
+    agent.addActionGroups([actionGroup])
+
+    agent.addAlias({
+      aliasName: 'my-agent-alias',
+      description:'alias for my agent'
+      
+    })
+  
+
 
     new cdk.CfnOutput(this, 'AgentId', {value: agent.agentId});
     new cdk.CfnOutput(this, 'KnowledgeBaseId', {value: kb.knowledgeBaseId});
