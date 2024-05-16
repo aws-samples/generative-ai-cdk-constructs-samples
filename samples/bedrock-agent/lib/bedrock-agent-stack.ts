@@ -67,7 +67,8 @@ export class BedrockAgentStack extends cdk.Stack {
       foundationModel: bedrock.BedrockFoundationModel.ANTHROPIC_CLAUDE_INSTANT_V1_2,
       instruction: 'You are a helpful and friendly agent that answers questions about literature.',
       knowledgeBases: [kb],
-      enableUserInput: true
+      enableUserInput: true,
+      shouldPrepareAgent:true
     });
 
     const actionGroupFunction = new lambda_python.PythonFunction(this, 'ActionGroupFunction', {
