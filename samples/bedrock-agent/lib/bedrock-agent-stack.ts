@@ -67,12 +67,14 @@ export class BedrockAgentStack extends cdk.Stack {
       foundationModel: bedrock.BedrockFoundationModel.ANTHROPIC_CLAUDE_INSTANT_V1_2,
       instruction: 'You are a helpful and friendly agent that answers questions about literature.',
       knowledgeBases: [kb],
+      enableUserInput: true
     });
 
     const actionGroupFunction = new lambda_python.PythonFunction(this, 'ActionGroupFunction', {
       runtime: lambda.Runtime.PYTHON_3_12,
       entry: path.join(__dirname, '../lambda/action-group'),
       layers: [lambda.LayerVersion.fromLayerVersionArn(this, 'PowerToolsLayer', `arn:aws:lambda:${this.region}:017000801446:layer:AWSLambdaPowertoolsPythonV2:60`)],
+      timeout:cdk.Duration.minutes(2)
     });
 
     const actionGroup = new AgentActionGroup(this,'MyActionGroup',{
@@ -83,7 +85,6 @@ export class BedrockAgentStack extends cdk.Stack {
       apiSchema: bedrock.ApiSchema.fromAsset(path.join(__dirname, 'action-group.yaml')),
     });
 
-    agent.addKnowledgeBases([kb])
     agent.addActionGroups([actionGroup])
 
     agent.addAlias({
