@@ -4,7 +4,8 @@ from aws_cdk import (
     Stack,
     aws_s3 as s3,
     aws_lambda as _lambda,
-    CfnOutput
+    CfnOutput,
+    Duration as Duration
     # aws_sqs as sqs,
 )
 from constructs import Construct
@@ -60,7 +61,8 @@ class BedrockAuroraStack(Stack):
             "LambdaFunction",
             runtime=_lambda.Runtime.PYTHON_3_12,
             entry= os.path.join(os.path.dirname(__file__), '../lambda/action-group/'),
-            layers= [_lambda.LayerVersion.from_layer_version_arn(self, 'PowerToolsLayer', f'arn:aws:lambda:{self.region}:017000801446:layer:AWSLambdaPowertoolsPythonV2:60')]
+            layers= [_lambda.LayerVersion.from_layer_version_arn(self, 'PowerToolsLayer', f'arn:aws:lambda:{self.region}:017000801446:layer:AWSLambdaPowertoolsPythonV2:60')],
+            timeout= Duration.minutes(2),
         )       
         ag = bedrock.AgentActionGroup(
                 self, 
@@ -77,12 +79,14 @@ class BedrockAuroraStack(Stack):
             self,
             "Agent",
             foundation_model=bedrock.BedrockFoundationModel.ANTHROPIC_CLAUDE_V2_1,
-            instruction="You are a helpful and friendly agent that answers questions about insurance claims.",
+            instruction=" You are a helpful and friendly agent that answers questions about insurance claims.",
+            knowledge_bases=[kb],
+            enable_user_input= True,
+            should_prepare_agent=True
             )
        
-     ## associate action group,knowledge base with agent
+     ## associate action group with agent
         agent.add_action_group(ag)   
-        agent.add_knowledge_bases([kb])          
         
      ## agent alias
         agent.add_alias(
