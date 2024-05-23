@@ -50,8 +50,14 @@ export class BedrockGuardrailStack extends cdk.Stack {
 
     guardrails.uploadWordPolicyFromFile('./scripts/wordsPolicy.csv')
     
+
+
+    new cdk.CfnOutput(this, 'guardrailVersion', {value: guardrails.guardrailVersion});
+    new cdk.CfnOutput(this, 'guardrailId', {value: guardrails.guardrailId});
+
+
+
+
 }
-
-
 
 }
