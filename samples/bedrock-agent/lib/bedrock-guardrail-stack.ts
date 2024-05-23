@@ -14,29 +14,23 @@
 import * as cdk from 'aws-cdk-lib';
 import {Construct} from 'constructs';
 import { bedrock } from '@cdklabs/generative-ai-cdk-constructs';
-import { ContentPolicyConfig,FiltersConfigType,FiltersConfigStrength } from '@cdklabs/generative-ai-cdk-constructs/lib/cdk-lib/bedrock/content-policy';
-import { PersonalIdentifiableInformation, PiiEntitiesConfigAction, Topic } from '@cdklabs/generative-ai-cdk-constructs/lib/cdk-lib/bedrock';
+import {  General, InformationTechnology, PiiEntitiesConfigAction, Topic } from '@cdklabs/generative-ai-cdk-constructs/lib/cdk-lib/bedrock';
 
 export class BedrockGuardrailStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props: cdk.StackProps) {
       super(scope, id, props);
 
     const guardrails = new bedrock.Guardrail(this,'bedrockGuardrails',{
-        blockedInputMessaging:"Sorry, your query voilates our usage policy.",
-        blockedOutputsMessaging:"Sorry, I am unable to answer your question because of our usage policy.",
-        filtersConfig: [{
-            filtersConfigType: FiltersConfigType.HATE,
-            inputStrength: FiltersConfigStrength.HIGH,
-            outputStrength: FiltersConfigStrength.HIGH
-        }],
+        name: "my-BedrockGuardrails",
+        description: "Legal ethical guardrails.",
     });
 
     guardrails.addSensitiveInformationPolicyConfig([{
-      type: PersonalIdentifiableInformation.EMAIL,
+      type: General.EMAIL,
       action:   PiiEntitiesConfigAction.BLOCK
     },
     {
-        type: PersonalIdentifiableInformation.USERNAME,
+        type: InformationTechnology.IP_ADDRESS,
         action:   PiiEntitiesConfigAction.BLOCK  
     }],{
         name: "CUSTOMER_ID", 
@@ -44,19 +38,17 @@ export class BedrockGuardrailStack extends cdk.Stack {
         pattern: "/^[A-Z]{2}\d{6}$/",
         action: "BLOCK", 
     });
-    //   const customerIdRegex = /^[A-Z]{2}\d{6}$/;
+    // const customerIdRegex = /^[A-Z]{2}\d{6}$/;
     // console.log(customerIdRegex.test('AB123456')); // true
     // console.log(customerIdRegex.test('a123456')); // false
 
     const topic = new Topic(this,'topic');
-    topic.createFinancialAdviceTopic()
-    topic.createPoliticalAdviceTopic()
+    topic.financialAdviceTopic()
+    topic.politicalAdviceTopic()
     
     guardrails.addTopicPolicyConfig(topic)
 
-    guardrails.addWordPolicyConfig([{
-        text:"Let it be"
-    }])
+    guardrails.uploadWordPolicyFromFile('./scripts/wordsPolicy.csv')
     
 }
 
