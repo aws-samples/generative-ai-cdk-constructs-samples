@@ -16,7 +16,9 @@ class OpensearchVectorIndex(Stack):
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
-        vectorCollection = opensearchserverless.VectorCollection(self, "VectorCollection")
+        vectorCollection = opensearchserverless.VectorCollection(self, "VectorCollection",
+            collection_name='pythonsamples'
+        )
 
         vectorIndex = opensearch_vectorindex.VectorIndex(self, "VectorIndex",
             vector_dimensions= 1536,
