@@ -30,16 +30,6 @@ BedrockAuroraStack(app, "BedrockAuroraStack",
     env=env
     )
 
-#---------------------------------------------------------------------------
-# Bedrock knowledge base with Pinecone
-#---------------------------------------------------------------------------
-    
-
-
-BedrockPineconeStack(app, "BedrockPineconeStack",
-    env=env
-    )
-
 
 #---------------------------------------------------------------------------
 # OpensearchVectorIndex

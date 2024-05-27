@@ -26,16 +26,10 @@ class BedrockAuroraStack(Stack):
     #---------------------------------------------------------------------------
     
 
-        aurora = amazonaurora.AmazonAuroraVectorStore(
-            credentials_secret_arn='arn:aws:secretsmanager:your-region:123456789876:secret:your-key-name',
-            database_name='bedrock_vector_db',
-            metadata_field='metadata',
-            primary_key_field='id',
-            resource_arn='arn:aws:rds:your-region:123456789876:cluster:aurora-cluster-manual',
-            table_name='bedrock_integration.bedrock_kb',
-            text_field='chunks',
-            vector_field='embedding',
-)
+        aurora = amazonaurora.AmazonAuroraDefaultVectorStore(self,
+            'AuroraDefaultVectorStore',
+            embeddings_model_vector_dimension=bedrock.BedrockFoundationModel.COHERE_EMBED_ENGLISH_V3.vector_dimensions
+        )
 
         kb = bedrock.KnowledgeBase(self, 'KnowledgeBase-Aurora', 
                     vector_store= aurora,
