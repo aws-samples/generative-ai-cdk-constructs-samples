@@ -26,18 +26,10 @@ BedrockOpensearchStack(app, "BedrockOpensearchStack",
 #---------------------------------------------------------------------------
     
 
-BedrockAuroraStack(app, "BedrockAuroraStack",
-    env=env
-    )
+# BedrockAuroraStack(app, "BedrockAuroraStack",
+#     env=env
+#     )
 
-
-#---------------------------------------------------------------------------
-# OpensearchVectorIndex
-#---------------------------------------------------------------------------
-    
-OpensearchVectorIndex(app, "OpensearchVectorIndex",
-    env=env
-    )
 
 
 app.synth()
