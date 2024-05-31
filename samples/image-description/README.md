@@ -120,10 +120,13 @@ Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved fr
 - Click on Image Description on left panel.
 - Upload a file and select preferred configuration on left panel.
 - The image along with the generated summary should be displayed on the central panel.
-![image](client_app/assets/dog_english.gif)
 
+English 
+![image](client_app/assets/dog_english.gif)
+Spanish
 ![image](client_app/assets/cat_spanish.gif)
 
+Multiple Images
 ![image](client_app/assets/multiple_images.gif)
 
 ## Clean up
