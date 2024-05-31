@@ -2,6 +2,15 @@
 
 The "Image Description" sample generative AI application showcases the capability of generating descriptive text for images by leveraging the power of AWS services and the AWS Generative AI Cloud Development Kit (CDK) Constructs.
 
+
+English 
+![image](client_app/assets/dog_english.gif)
+
+Spanish
+![image](client_app/assets/cat_spanish.gif)
+
+Multiple Images
+![image](client_app/assets/multiple_images.gif)
 ## Overview
 
 The sample application features a Streamlit user interface, enabling users to authenticate via Amazon Cognito. Upon successful authentication, users can upload images and leverage the Anthropic Claude 3 foundation model to generate descriptive text for the uploaded images. Behind the scenes, this application utilizes AWS Generative AI CDK constructs, seamlessly integrated with Amazon Bedrock, to access the latest foundation models.
@@ -121,13 +130,6 @@ Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved fr
 - Upload a file and select preferred configuration on left panel.
 - The image along with the generated summary should be displayed on the central panel.
 
-English 
-![image](client_app/assets/dog_english.gif)
-Spanish
-![image](client_app/assets/cat_spanish.gif)
-
-Multiple Images
-![image](client_app/assets/multiple_images.gif)
 
 ## Clean up
 
