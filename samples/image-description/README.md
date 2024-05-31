@@ -124,6 +124,8 @@ Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved fr
 
 ![image](client_app/assets/cat_spanish.gif)
 
+![image](client_app/assets/multiple_images.gif)
+
 ## Clean up
 
 Do not forget to delete the stack to avoid unexpected charges.
