@@ -13,7 +13,7 @@ from cdklabs.generative_ai_cdk_constructs import (
     bedrock,
     
 )
-from aws_cdk.aws_lambda_python_alpha import ( PythonFunction,PythonLayerVersion)
+from aws_cdk.aws_lambda_python_alpha import ( BundlingOptions,PythonFunction,PythonLayerVersion)
 
 
 
@@ -51,6 +51,7 @@ class BedrockOpensearchStack(Stack):
             entry= os.path.join(os.path.dirname(__file__), '../lambda/action-group/'),
             layers= [_lambda.LayerVersion.from_layer_version_arn(self, 'PowerToolsLayer', f'arn:aws:lambda:{self.region}:017000801446:layer:AWSLambdaPowertoolsPythonV2:60')],
             timeout= Duration.minutes(2),
+            bundling = BundlingOptions(build_args={"POETRY_VERSION": "1.7.0"})
         )       
         ag = bedrock.AgentActionGroup(
                 self, 
