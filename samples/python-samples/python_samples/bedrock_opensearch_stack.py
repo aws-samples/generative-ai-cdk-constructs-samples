@@ -58,7 +58,9 @@ class BedrockOpensearchStack(Stack):
                 'ActionGroup',
                 action_group_name='query-library',
                 description= 'Use these functions to get information about the books in the library.',
-                action_group_executor= action_group_function,
+                action_group_executor=bedrock.ActionGroupExecutor(
+                  lambda_=action_group_function,
+                ),
                 action_group_state= 'ENABLED',
                 api_schema= bedrock.ApiSchema.from_asset(os.path.join(os.path.dirname(__file__), 'action-group.yaml'))
                 ) 
