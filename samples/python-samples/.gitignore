@@ -8,4 +8,5 @@ generative-ai-cdk-constructs@0.0.0.jsii.tgz
 # CDK asset staging directory
 .cdk.staging
 cdk.out
-**.venv
+**venv
+
