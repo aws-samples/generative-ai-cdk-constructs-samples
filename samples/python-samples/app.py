@@ -17,7 +17,7 @@ env = cdk.Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'),
 # Bedrock knowledge base with OpenSearch
 #---------------------------------------------------------------------------
 
-BedrockOpensearchStack(app, "BedrockOpensearchStack",
+BedrockOpensearchStack(app, "BedrockOpensearchStack"+os.getenv('SUFFIX',''),
     env=env
     )
 

@@ -14,7 +14,7 @@ from cdklabs.generative_ai_cdk_constructs import (
     bedrock,
     pinecone
 )
-from aws_cdk.aws_lambda_python_alpha import ( PythonFunction,PythonLayerVersion)
+from aws_cdk.aws_lambda_python_alpha import ( BundlingOptions,PythonFunction,PythonLayerVersion)
 
 class BedrockPineconeStack(Stack):
 
@@ -60,7 +60,7 @@ class BedrockPineconeStack(Stack):
             entry= os.path.join(os.path.dirname(__file__), '../lambda/action-group/'),
             layers= [_lambda.LayerVersion.from_layer_version_arn(self, 'PowerToolsLayer', f'arn:aws:lambda:{self.region}:017000801446:layer:AWSLambdaPowertoolsPythonV2:60')],
             timeout= Duration.minutes(2),
-
+            bundling = BundlingOptions(build_args={"POETRY_VERSION": "1.7.0"}),
         )       
 
         ag = bedrock.AgentActionGroup(
@@ -68,7 +68,9 @@ class BedrockPineconeStack(Stack):
                 'ActionGroup',
                 action_group_name='query-library',
                 description= 'Use these functions to get information about the books in the library.',
-                action_group_executor= action_group_function,
+                action_group_executor=bedrock.ActionGroupExecutor(
+                  lambda_=action_group_function,
+                ),
                 action_group_state= 'ENABLED',
                 api_schema= bedrock.ApiSchema.from_asset(os.path.join(os.path.dirname(__file__), 'action-group.yaml'))
                 ) 
