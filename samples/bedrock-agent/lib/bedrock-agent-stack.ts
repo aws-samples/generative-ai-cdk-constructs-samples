@@ -81,7 +81,9 @@ export class BedrockAgentStack extends cdk.Stack {
     const actionGroup = new AgentActionGroup(this,'MyActionGroup',{
       actionGroupName: 'query-library',
       description: 'Use these functions to get information about the books in the library.',
-      actionGroupExecutor: actionGroupFunction,
+      actionGroupExecutor: {
+        lambda: actionGroupFunction
+      },
       actionGroupState: "ENABLED",
       apiSchema: bedrock.ApiSchema.fromAsset(path.join(__dirname, 'action-group.yaml')),
     });
@@ -94,8 +96,6 @@ export class BedrockAgentStack extends cdk.Stack {
       
     })
   
-
-
     new cdk.CfnOutput(this, 'AgentId', {value: agent.agentId});
     new cdk.CfnOutput(this, 'KnowledgeBaseId', {value: kb.knowledgeBaseId});
     new cdk.CfnOutput(this, 'DataSourceId', {value: dataSource.dataSourceId});
