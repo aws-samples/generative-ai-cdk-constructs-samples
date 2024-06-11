@@ -1,37 +1,29 @@
-# Amazon Bedrock Agent and Custom Knowledge Base
+# Amazon Bedrock Agent and web crawler
 
 ## Overview
 
-A chat assistant designed to answer questions about literature using RAG from a
-selection of books from Project Gutenburg.
+This app deploys a Bedrock Agent with a Bedrock Agent Action Group that provides a function to query a website to answer a question, using the [web crawler construct](https://github.com/awslabs/generative-ai-cdk-constructs/tree/main/src/patterns/gen-ai/aws-web-crawler).
 
-This app deploys a Bedrock Agent that can consult a Bedrock Knowledge Base
-backed by OpenSearch Serverless as a vector store. An S3 bucket is created to
-store the books for the Knowledge Base. The agent also includes a Bedrock Agent
-Action Group that provides a function to query the most popular books in Project
-Gutenburg.
-
-By providing reusable constructs following AWS best practices, this app helps you quickly build custom generative AI apps on AWS. The constructs abstract complexity of orchestrating AWS services like S3, OpenSearch, Bedrock, etc.
+By providing reusable constructs following AWS best practices, this app helps you quickly build custom generative AI apps on AWS. The constructs abstract complexity of orchestrating AWS services like S3, Bedrock, etc.
 
 Here is the architecture diagram of the sample application:
 
-![Architecture Diagram](docs/images/architecture.png)
+![Architecture Diagram](docs/architecture.png)
 
 ## Folder Structure
 
-This sample application codebase is organized into folders : the backend code lives in ```bin/bedrock-agent.ts``` and uses the AWS CDK resources defined in the ```lib``` folder.
+This sample application codebase is organized into folders : the backend code lives in ```bin/bedrock-web-crawler.ts``` and uses the AWS CDK resources defined in the ```lib``` folder.
 
 The key folders are:
 
 ```
-samples/bedrock-agent-stack
+samples/bedrock-web-crawler
 │
 ├── bin
-│   └── bedrock-agent.ts                      # CDK app
-├── lib                                       # CDK Stacks
-│   ├── bedrock-agent-stack.ts                # Stack deploying the S3 bucket, Bedrock Agent, Action Group, and Knowledge Base
-├── lambda                                    # Lambda functions
-│   └── action-group                          # Action Group functions
+│   └── bedrock-web-crawler.ts                # CDK app
+├── lib
+|   ├── action-group.yaml                     # action group openapi schema
+│   ├── bedrock-web-crawler-stack.ts          # Stack deploying the web crawler, Bedrock Agent, Action Group
 ```
 
 ## Getting started
@@ -64,7 +56,7 @@ This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.am
 
 2. Enter the code sample backend directory.
     ```shell
-    cd samples/bedrock-agent
+    cd samples/bedrock-web-crawler
     ```
 
 3. Install packages
@@ -82,51 +74,24 @@ This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.am
 
 6. Deploy the sample in your account. 
     ```shell
-    $ cdk deploy --all
+    $ cdk deploy
     ```
 The command above will deploy one stack in your account. With the default configuration of this sample, the observed deployment time was ~381 seconds (6.5 minutes).
 
 To protect you against unintended changes that affect your security posture, the AWS CDK Toolkit prompts you to approve security-related changes before deploying them. You will need to answer yes to get the stack deployed.
 
-Outputs:
-```
-BedrockAgentStack.AgentId = <AgentID>
-BedrockAgentStack.DataSourceId = <DataSourceID>
-BedrockAgentStack.DocumentBucket = <DocBucket>
-BedrockAgentStack.KnowledgeBaseId = <KBID>
-```
-
-6. Load Knowledge Base.
-    ```shell
-    ./scripts/load-kb.sh s3://<DocBucket>/ <KBID> <DataSourceID>
-    ```
-
 ### Test
 
 Navigate to the [Bedrock Agents console](https://us-east-1.console.aws.amazon.com/bedrock/home?region=us-east-1#/agents) in your region and find your new agent.
 
-Ask some questions. You may need to tell the agent what book you want to ask about or refresh the session when asking about different books.
+Ask some questions.
 
 #### Example questions
 
-* What are the most popular books in the library?
+- what is https://github.com/awslabs/generative-ai-cdk-constructs about ?
+- summarize this page: https://aws.amazon.com/bedrock/agents/
 
-**Frankenstein**
-* What does the Creature want Victor to do?
-
-**Pride and Prejudice**
-* Who is Mr. Bingley quite taken with at the ball in Meryton?
-* How does Mr. Darcy offend Elizabeth at the first ball?
-* Why does Jane’s visit to the Bingleys end up lasting for days?
-
-**Moby Dick**
-* What does Ahab nail to the ship’s mast to motivate his crew in his quest for Moby Dick?
-* What frightens Ishmael the most about Moby Dick? 
-
-**Romeo and Juliet**
-* Why is Romeo exiled?
-* Where do Romeo and Juliet meet?
-
+![Example question](docs/agent_question_example.png)
 
 ## Clean up
 
