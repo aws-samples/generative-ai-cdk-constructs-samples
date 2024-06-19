@@ -15,11 +15,13 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as lambda_python from '@aws-cdk/aws-lambda-python-alpha';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import {Construct} from 'constructs';
-
+import * as fs from 'fs';
 import { bedrock } from '@cdklabs/generative-ai-cdk-constructs';
+
 import {NagSuppressions} from "cdk-nag";
 import * as path from "path";
 import { AgentActionGroup } from '@cdklabs/generative-ai-cdk-constructs/lib/cdk-lib/bedrock';
+//import { LambdaToDynamoDBProps, LambdaToDynamoDB } from '@aws-solutions-constructs/aws-lambda-dynamodb';
 
 export class BedrockAgentStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -37,7 +39,7 @@ export class BedrockAgentStack extends cdk.Stack {
     NagSuppressions.addResourceSuppressions(accesslogBucket, [
       {id: 'AwsSolutions-S1', reason: 'There is no need to enable access logging for the AccessLogs bucket.'},
     ])
-    const docBucket = new s3.Bucket(this, 'DocBucket', {
+    const docBucket = new s3.Bucket(this, 'docbucket', {
       enforceSSL: true,
       versioned: true,
       publicReadAccess: false,
@@ -48,44 +50,106 @@ export class BedrockAgentStack extends cdk.Stack {
       serverAccessLogsBucket: accesslogBucket,
       serverAccessLogsPrefix: 'inputsAssetsBucketLogs/',
     });
-    const kb = new bedrock.KnowledgeBase(this, 'KB', {
+    const kbInstructionFilePath = path.join(__dirname, 'kb-instruction.txt');
+    const kbInstruction = fs.readFileSync(kbInstructionFilePath, 'utf8');
+
+    const kb = new bedrock.KnowledgeBase(this, 'myKB', {
       embeddingsModel: bedrock.BedrockFoundationModel.TITAN_EMBED_TEXT_V1,
-      instruction: 'Use this knowledge base to answer questions about books. ' +
-        'It contains the full text of novels. Please quote the books to explain your answers.',
+      instruction: kbInstruction,
     });
+
+    
 
     const dataSource = new bedrock.S3DataSource(this, 'DataSource', {
       bucket: docBucket,
       knowledgeBase: kb,
-      dataSourceName: 'books',
+      dataSourceName: 'mydoc',
       chunkingStrategy: bedrock.ChunkingStrategy.FIXED_SIZE,
       maxTokens: 500,
       overlapPercentage: 20,
     });
 
-    const agent = new bedrock.Agent(this, 'Agent', {
-      foundationModel: bedrock.BedrockFoundationModel.ANTHROPIC_CLAUDE_INSTANT_V1_2,
-      instruction: 'You are a helpful and friendly agent that answers questions about literature.',
+    // Read the instruction from the instruction.txt file
+    const agentInstructionFilePath = path.join(__dirname, 'agent-instruction.txt');
+    const agentInstruction = fs.readFileSync(agentInstructionFilePath, 'utf8');
+
+    const orchestrationInstructionFilePath = path.join(__dirname, 'orchestration-instruction.txt');
+    const orchestrationInstruction = fs.readFileSync(orchestrationInstructionFilePath, 'utf8');
+
+
+    const agent = new bedrock.Agent(this, 'myAgent', {
+      foundationModel: bedrock.BedrockFoundationModel.ANTHROPIC_CLAUDE_SONNET_V1_0,
+      instruction: agentInstruction,
       knowledgeBases: [kb],
       enableUserInput: true,
-      shouldPrepareAgent:true
-    });
+      shouldPrepareAgent:true,
+    //   promptOverrideConfiguration:{
+    //     promptConfigurations:[
+    //       {
+    //         promptType: bedrock.PromptType.ORCHESTRATION,
+    //         inferenceConfiguration: {
+    //           temperature:0,
+    //           topK:250,
+    //           topP:1,
+    //           stopSequences:[],
+    //           maximumLength:2048
+    //         },
+    //         basePromptTemplate:orchestrationInstruction,
+    //         promptCreationMode:bedrock.PromptCreationMode.OVERRIDDEN,
+    //         promptState:bedrock.PromptState.ENABLED
 
-    const actionGroupFunction = new lambda_python.PythonFunction(this, 'ActionGroupFunction', {
+
+    //       }
+    //     ]
+    //   }
+    // 
+  });
+
+    const actionGroupFunction = new lambda_python.PythonFunction(this, 'myActionGroupFunction', {
       runtime: lambda.Runtime.PYTHON_3_12,
-      entry: path.join(__dirname, '../lambda/action-group'),
-      layers: [lambda.LayerVersion.fromLayerVersionArn(this, 'PowerToolsLayer', `arn:aws:lambda:${this.region}:017000801446:layer:AWSLambdaPowertoolsPythonV2:60`)],
+      entry: path.join(__dirname, '../lambda/functions'),
+      //layers: [lambda.LayerVersion.fromLayerVersionArn(this, 'PowerToolsLayer', `arn:aws:lambda:${this.region}:017000801446:layer:AWSLambdaPowertoolsPythonV2:60`)],
       timeout:cdk.Duration.minutes(2)
     });
 
-    const actionGroup = new AgentActionGroup(this,'MyActionGroup',{
-      actionGroupName: 'query-library',
-      description: 'Use these functions to get information about the books in the library.',
+    // const constructProps: LambdaToDynamoDBProps = {
+    //   existingLambdaObj:actionGroupFunction
+    // };
+    // new LambdaToDynamoDB(this, 'lambda-dynamodb', constructProps);
+
+    const functionSchemaProperty = {
+      functions: [{
+        name: 'getfatProductsDetails',
+        description: 'Fat food details',
+        parameters: {
+          nutrientValue: {
+            type: 'integer',
+            description: "20",
+            required: true,
+          },
+          limit: {
+            type: 'integer',
+            description: "20",
+            required: true,
+          },
+          offset: {
+            type: 'integer',
+            description: "0",
+            required: true,
+          },
+        },
+      }],
+    };
+
+    const actionGroup = new AgentActionGroup(this,'myFoodActionGroup',{
+      actionGroupName: 'my-food-info',
+      description: 'Use these functions to get information about all food items .',
       actionGroupExecutor: {
         lambda: actionGroupFunction
       },
       actionGroupState: "ENABLED",
-      apiSchema: bedrock.ApiSchema.fromAsset(path.join(__dirname, 'action-group.yaml')),
+      functionSchema: functionSchemaProperty
+     // apiSchema: bedrock.ApiSchema.fromAsset(path.join(__dirname, 'action-group.yaml')),
     });
 
     agent.addActionGroups([actionGroup])
