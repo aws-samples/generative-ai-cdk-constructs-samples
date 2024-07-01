@@ -7,8 +7,9 @@
 You have the option of running the setup from a local workspace or from a Cloud9 environment
 
 In case you opt for Cloud9, you have to setup a Cloud9 environment in the same AWS Account where this Backend will
-be installed. We **highly recommend using an isolated AWS Account** . If you do not have such account, reach out to 
-your Account Manager, and ask him for guidance on how to provision the account on your company.
+be installed.
+
+If your local workspace has a non-x86 processor architecture (for instance ARM, like the M processor from Macbooks), it's strongly recommended to perform the setup steps from a Cloud9 environment, to avoid bundling issues of Lambda function dependencies (see [ticket](https://github.com/awslabs/generative-ai-cdk-constructs/issues/541)) 
 
 #### Cloud9 setup (optional)
 
@@ -17,9 +18,7 @@ your Account Manager, and ask him for guidance on how to provision the account o
 3. Download the artifacts in the Cloud9 environment
 4. Proceed with the steps below
 
-### Prequisites 
-
-The following tooling needs to be installed:
+### Setup steps  
 
 In order to deploy this project, you need to have installed:
 
@@ -28,7 +27,6 @@ In order to deploy this project, you need to have installed:
 - Git (if using code repository)
 - [AWS CDK Toolkit](https://docs.aws.amazon.com/cdk/v2/guide/cli.html)
 - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
-
 
 With all installed, run this command:
 
@@ -47,13 +45,9 @@ Docker Desktop
 If any of these commands fails, you can revisit the documentation and check for possible steps you have forgotten to complete. 
 Ensure that your CDK version is using CDK V2, by checking if the second line of the output follows the pattern 2.*.*.
 
-With these installed, it is time to configure your environment to connect to your AWS Account. We **highly recommend 
-using an isolated AWS Account** to test this project. If you do not have such account, reach out to your Account Manager, 
-and ask him for guidance on how to provision the account on your company.     
-
+Having those installed, it is time to configure your environment to connect to your AWS Account.
 To set up your local environment to use such an AWS account you can follow the steps described at 
 https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html} 
-
 
 #### Create Python virtual environment
 
@@ -89,15 +83,7 @@ Run the following
 $ cdk bootstrap
 ```
 
-
-#### Setup AWS CodeCommit (optional)
-
-In case you want to use CodeCommit to host the source code of this project, you need to make sure you have one of the 
-authentication methods setup to be able to authenticate git into CodeCommit.
-Please follow the instructions at \url{https://docs.aws.amazon.com/codecommit/latest/userguide/setting-up.html} in order to choose the proceed with 
-most suitable authentication method.
-
-### Deployment
+#### Deployment
 
 
 1. Run AWS CDK Toolkit to deploy the Backend stack with the runtime resources.
