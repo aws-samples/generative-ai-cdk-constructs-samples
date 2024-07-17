@@ -16,7 +16,11 @@ By providing reusable constructs following AWS best practices, this app helps yo
 
 Here is the architecture diagram of the sample application:
 
-![Architecture Diagram](docs/images/architecture.png)
+### Front-End Architecture
+![Frontend Architecture Diagram](docs/images/StreamlitFrontend.png)
+
+### Back-End Architecture
+![Backend Architecture Diagram](docs/images/architecture.png)
 
 ## Folder Structure
 
@@ -29,11 +33,21 @@ samples/document_explorer
 ├── client_app                                   # Frontend using Python Streamlit
 │   │
 │   ├── Home.ts                                  # Sample app entry point
+│   ├── Dockerfile                               # Sample app entry point
 │   ├── assets/                                  # Static files
 │   ├── common/                                  # Utility classes
 │   ├── graphql/                                 # GraphQL statements and client
 │   └── pages/                                   # Streamlit pages for document selection, summarization, and QA
 │
+├── cdk-config-frontend
+│   └── frontend_stack.py                        # Frontend - CDK app
+│
+├── terraform-config-frontend                    # Frontend – Terraform
+│   │
+│   ├── main.tf                                  # Terraform resources 
+│   ├── outputs.tf                               # Outputs definition
+│   ├── variables.tf                             # Variables defintion
+│   └── terraform.tfvars                         # Variables values
 ├── bin
 │   └── document_explorer.ts                     # Backend - CDK app
 ├── lib                                          # CDK Stacks
@@ -65,7 +79,7 @@ Default output format [None]: json
 - [AWS CDK](https://github.com/aws/aws-cdk/releases/tag/v2.68.0): 2.68.0
 - jq: jq-1.6
 
-### Deploy the solution
+### Deploy the Backend with CDK
 
 This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.amazon.com/cdk/). See [Getting Started With the AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html) for additional details and prerequisites.
 
@@ -119,7 +133,101 @@ then your AWS Account is likely either too new or unused for the region, and the
 > - Deploy the CDK samples with the [optional](https://github.com/awslabs/generative-ai-cdk-constructs/pull/193)
  cdk deploy --all --outputs-file apistack-outputs.json --context maximumLambdaMemorySize=3008 parameter. This method is available without waiting, but will limit functionality and cause unexpected failures when more memory than is available is required.
 
-8. Configure client_app
+### Deploy the Front End to AWS via Terraform
+
+<details><summary>Terraform Instructions</summary>  
+
+1. Open the `/terraform-config-frontend` folder
+    ```shell
+        cd terraform-config-frontend
+    ```
+2. Configure your Dockerfile in `client_app/Dockerfile`. First make sure line 3 is uncommented and comment out line 6:
+```
+# Uncomment below for terraform deployment
+FROM public.ecr.aws/docker/library/python:3.11.9-slim
+
+# Uncomment below for CDK deployment
+# FROM python:3.11-slim
+```
+Configure your environment variables. Replace the property values with the values retrieved from the stack outputs/console. You will leave `APP_URI` as a placeholder for now because the URI will be the Cloudfront URL output from your Terraform deployment. 
+  ```
+ENV COGNITO_DOMAIN = "<ApiStack.CognitoDomain>"
+ENV REGION = "<ApiStack.Region>"
+ENV USER_POOL_ID = "<ApiStack.UserPoolId>"
+ENV CLIENT_ID = "<ApiStack.ClientId>"
+ENV CLIENT_SECRET = "COGNITO_CLIENT_SECRET"
+ENV IDENTITY_POOL_ID = "<ApiStack.IdentityPoolId>"
+ENV AUTHENTICATED_ROLE_ARN = "<ApiStack.AuthenticatedRoleArn>"
+ENV GRAPHQL_ENDPOINT = "<ApiStack.GraphQLEndpoint>"
+ENV S3_INPUT_BUCKET = "<PersistenceStack.InputsAssetsBucket>"
+ENV S3_PROCESSED_BUCKET = "<PersistenceStack.processedAssetsBucket>"
+ENV CLIENT_NAME = "<ApiStack.ClientName>"
+  ```
+   Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved from the AWS Console. Go to the [Amazon Cognito page](https://console.aws.amazon.com/cognito/home) in the AWS console, then select the created user pool. Under App integration, select App client settings. Then, select Show Details and copy the value of the App client secret. 
+
+3. Run `terraform init`
+4. Run `terraform import aws_cognito_user_pool_client.update_client {user-pool-id}/{client-id}` and make sure to update the `user-pool-id` and `client-id` values. In the `terraform.tfvars` folder, add the values for the `user_pool_id` and the `client_name`.
+5. Deploy the Terraform by running `terraform apply`
+6. Now that you have the CloudFront URL, go back to your `client_app/Dockerfile` and paste in the value of your Cloudfront URL like `https://XXXXXXXXXXXXXX.cloudfront.net`. Save the Dockerfile.Go to Cognito  and run `terraform apply` again. 
+7. Once your changes have been applied, open your browser to the outputted URL. It may take a few moments for the webapp to become available.
+</details>
+
+
+### Deploy the Front End to AWS via CDK
+
+<details><summary>CDK Instructions</summary> 
+
+1. Open the `/cdk-config-frontend` folder
+    ```shell
+        cd cdk-config-frontend
+    ```
+2. Configure your Dockerfile in `client_app/Dockerfile`. First make sure line 3 is commented out and uncomment line 6:
+```
+# Uncomment below for terraform deployment
+# FROM public.ecr.aws/docker/library/python:3.11.9-slim
+
+# Uncomment below for CDK deployment
+FROM python:3.11-slim
+``` 
+Configure your environment variables in `client_app/Dockerfile`. Replace the property values with the values retrieved from the stack outputs/console. You will leave `APP_URI` as a placeholder for now because the URI will be the Cloudfront URL output from your Terraform deployment. 
+
+  ```
+    ENV COGNITO_DOMAIN = "<ApiStack.CognitoDomain>"
+    ENV REGION = "<ApiStack.Region>"
+    ENV USER_POOL_ID = "<ApiStack.UserPoolId>"
+    ENV CLIENT_ID = "<ApiStack.ClientId>"
+    ENV CLIENT_SECRET = "COGNITO_CLIENT_SECRET"
+    ENV IDENTITY_POOL_ID = "<ApiStack.IdentityPoolId>"
+    ENV AUTHENTICATED_ROLE_ARN = "<ApiStack.AuthenticatedRoleArn>"
+    ENV GRAPHQL_ENDPOINT = "<ApiStack.GraphQLEndpoint>"
+    ENV S3_INPUT_BUCKET = "<PersistenceStack.InputsAssetsBucket>"
+    ENV S3_PROCESSED_BUCKET = "<PersistenceStack.processedAssetsBucket>"
+    ENV CLIENT_NAME = "<ApiStack.ClientName>"
+
+  ```
+  Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved from the AWS Console. Go to the [Amazon Cognito page](https://console.aws.amazon.com/cognito/home) in the AWS console, then select the created user pool. Under App integration, select App client settings. Then, select Show Details and copy the value of the App client secret.
+
+3. Create a virtual environment and install dependencies by running 
+```shell
+  python -m venv venv
+  source venv/bin/activate
+  pip install -r requirements.txt
+```
+4. Run `cdk bootstrap`
+5. Run `cdk deploy`. This can take up to 10-20 minutes. 
+6. Now that you have the CloudFront URL, go back to your `client_app/Dockerfile` and paste in the value of your Cloudfront URL like `https://XXXXXXXXXXXXXX.cloudfront.net`. Save the Dockerfile and run `cdk deploy` again.
+7. Now you have to add your CloudFront URL to your Cognito User Pool App Client. Go to [Amazon Cognito page](https://console.aws.amazon.com/cognito/home), select your user pool. Under the App integration tab, scroll to the bottom of the page and select the name of the App client under `App client list`. In the `Hosted UI` section, select `Edit`. Add your CloudFront URL to the `Allowed callback URLs` list and the `Allowed sign-out URLs` list. Select `Save changes`.  
+8. Once your changes have been applied, open your browser to the outputted URL. It may take a few moments for the webapp to become available.
+
+</details>
+
+
+### Deploy the Front End Locally
+
+<details>
+<summary>Local Deployment Instructions</summary>  
+
+1. Configure client_app
     ```shell
     cd client_app
     python -m venv venv
@@ -127,9 +235,9 @@ then your AWS Account is likely either too new or unused for the region, and the
     pip install -r requirements.txt
     ```
 
-9. Still within the /client_app directory, create an ```.env``` file with the following content or mutate the ```.env-example```. Replace the property values with the values retrieved from the stack outputs/console.
+2. Still within the /client_app directory, create an ```.env``` file with the following content or mutate the ```.env-example```. Replace the property values with the values retrieved from the stack outputs/console.
 
-```
+  ```
 COGNITO_DOMAIN="<ApiStack.CognitoDomain>"
 REGION="<ApiStack.Region>"
 USER_POOL_ID="<ApiStack.UserPoolId>"
@@ -142,14 +250,15 @@ GRAPHQL_ENDPOINT = "<ApiStack.GraphQLEndpoint>"
 S3_INPUT_BUCKET = "<PersistenceStack.InputsAssetsBucket>"
 S3_PROCESSED_BUCKET = "<PersistenceStack.processedAssetsBucket>"
 
-```
+  ```
 
 Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved from the AWS Console. Go to the [Amazon Cognito page](https://console.aws.amazon.com/cognito/home) in the AWS console, then select the created user pool. Under App integration, select App client settings. Then, select Show Details and copy the value of the App client secret.
 
-10. Run client_app
+3. Run client_app
     ```shell
     streamlit run Home.py
     ```
+</details>
 
 ### Test
 
