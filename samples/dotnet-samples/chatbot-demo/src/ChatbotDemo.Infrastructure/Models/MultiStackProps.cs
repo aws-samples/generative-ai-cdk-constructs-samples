@@ -7,4 +7,6 @@ public class MultiStackProps : StackProps
 {
     public Table ConnectionTable { get; set; }
     public string WebSocketCallbackUrl { get; set; }
+    public string GuardrailId { get; set; }
+    public string GuardrailVersion { get; set; }
 }

@@ -57,7 +57,8 @@ namespace ChatbotDemo.Infrastructure.Stacks
                 OverlapPercentage = 20
             });
 
-            var agentInstruction = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "./src/ChatbotDemo.Infrastructure/Instruction/agent-instruction.txt"));
+            var agentInstruction = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(),
+                "./src/ChatbotDemo.Infrastructure/Instruction/agent-instruction.txt"));
 
             var bedrockAgent = new Agent(this, $"{id}-agent", new AgentProps
             {
@@ -66,6 +67,11 @@ namespace ChatbotDemo.Infrastructure.Stacks
                 KnowledgeBases = [knowledgeBase],
                 EnableUserInput = true,
                 ShouldPrepareAgent = true,
+                GuardrailConfiguration = new GuardrailConfiguration
+                {
+                    GuardrailId = props?.GuardrailId,
+                    GuardrailVersion = props?.GuardrailVersion
+                }
             });
 
             var actionGroupFunction = new DotNetFunction(this, $"{id}-action-group-function", new DotNetFunctionProps()

@@ -11,12 +11,15 @@ namespace ChatbotDemo.Infrastructure
             var app = new App();
 
             var websocketStack = new WebSocketStack(app, "WebSocketStack");
+            var bedrockGuardrailStack = new BedrockGuardrailStack(app, "BedrockGuardrailStack");
             _ = new BedrockAgentStack(app, "BedrockAgentStack", new MultiStackProps
             {
                 ConnectionTable = websocketStack.ConnectionTable,
-                WebSocketCallbackUrl = websocketStack.WebSocketCallbackUrl
+                WebSocketCallbackUrl = websocketStack.WebSocketCallbackUrl,
+                GuardrailId = bedrockGuardrailStack.GuardrailId,
+                GuardrailVersion = bedrockGuardrailStack.GuardrailVersion
             });
-            _ = new BedrockGuardrailStack(app, "BedrockGuardrailStack");
+
 
             app.Synth();
         }

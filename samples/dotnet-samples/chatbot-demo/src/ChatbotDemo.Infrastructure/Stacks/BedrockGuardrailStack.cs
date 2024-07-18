@@ -7,6 +7,8 @@ namespace ChatbotDemo.Infrastructure.Stacks
 {
     public class BedrockGuardrailStack : Stack
     {
+        public string GuardrailId { get; set; }
+        public string GuardrailVersion { get; set; }
         internal BedrockGuardrailStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
         {
             var guardrails = new Guardrail(this, "bedrockGuardrail", new GuardrailProps
@@ -41,6 +43,8 @@ namespace ChatbotDemo.Infrastructure.Stacks
             
             guardrails.AddTopicPolicyConfig(topicPolicy);
 
+            GuardrailId = guardrails.GuardrailId;
+            GuardrailVersion = guardrails.GuardrailVersion;
             _ = new CfnOutput(this, "guardrailVersion", new CfnOutputProps
             {
                 Value = guardrails.GuardrailVersion,
