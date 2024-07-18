@@ -4,7 +4,7 @@ using ChatbotDemo.Infrastructure.Models.Request;
 using FluentAssertions;
 using NSubstitute;
 
-namespace ChatbotDemo.App.Tests;
+namespace ChatbotDemo.Api.Tests;
 
 public class ActionGroupFunctionTests
 {
