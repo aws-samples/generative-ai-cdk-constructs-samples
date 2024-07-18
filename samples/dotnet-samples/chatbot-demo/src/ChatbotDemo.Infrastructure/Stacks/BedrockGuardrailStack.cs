@@ -11,10 +11,10 @@ namespace ChatbotDemo.Infrastructure.Stacks
         public string GuardrailVersion { get; set; }
         internal BedrockGuardrailStack(Construct scope, string id, IStackProps props = null) : base(scope, id, props)
         {
-            var guardrails = new Guardrail(this, "bedrockGuardrail", new GuardrailProps
+            var guardrails = new Guardrail(this, $"{id}-guardrail", new GuardrailProps
             {
-                Name = "mm-guardrails",
-                Description = "Legal ethical guardrails"
+                Name = $"{id}-guardrail",
+                Description = "Legal ethical guardrails",
             });
 
             guardrails.AddSensitiveInformationPolicyConfig(new ISensitiveInformationPolicyConfigProps[]
@@ -37,7 +37,7 @@ namespace ChatbotDemo.Infrastructure.Stacks
                 Action = "BLOCK",
             });
 
-            var topicPolicy = new Topic(this, "mmTopic");
+            var topicPolicy = new Topic(this, $"{id}-guardrail-topic");
             topicPolicy.FinancialAdviceTopic();
             topicPolicy.PoliticalAdviceTopic();
             
