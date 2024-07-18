@@ -57,7 +57,7 @@ namespace ChatbotDemo.Infrastructure.Stacks
                 OverlapPercentage = 20
             });
 
-            var agentInstruction = Path.Combine(Directory.GetCurrentDirectory(), "Instruction/agent-instruction.txt");
+            var agentInstruction = File.ReadAllText(Path.Combine(Directory.GetCurrentDirectory(), "./src/ChatbotDemo.Infrastructure/Instruction/agent-instruction.txt"));
 
             var bedrockAgent = new Agent(this, $"{id}-agent", new AgentProps
             {
