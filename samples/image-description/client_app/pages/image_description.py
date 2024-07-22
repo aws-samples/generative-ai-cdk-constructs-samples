@@ -108,10 +108,6 @@ def on_message_update(message, subscription_client):
         return
 
     status = summary_response.get("status")
- 
-   
-    # summary_widget = st.session_state['summary_widget']
-    # text_height = st.session_state['summary_widget_height']
     
     if status == "New LLM token":
         encoded_summary = summary_response.get("summary")
@@ -242,10 +238,6 @@ if auth.is_authenticated():
 
 
     
-        
-                    
-                
-
 
 # Guest user UI 
 elif not auth.is_authenticated():
@@ -255,28 +247,46 @@ else:
     st.stop()
 
 
+def get_filtered_model_ids(modality):
+    MODEL_ID_OPTIONS = [
+        'anthropic.claude-3-sonnet-20240229-v1:0',
+        'anthropic.claude-3-haiku-20240307-v1:0',
+        'anthropic.claude-v2'
+    ]
+
+    if modality == "Image":
+        return [
+            'anthropic.claude-3-sonnet-20240229-v1:0',
+            'anthropic.claude-3-haiku-20240307-v1:0'
+        ]
+    elif modality == "Text":
+        return MODEL_ID_OPTIONS
+    else:
+        return []
+
+
 #########################
 #        SIDEBAR
 #########################
 
 # sidebar
 
-MODEL_ID_OPTIONS=['anthropic.claude-3-sonnet-20240229-v1:0',
-                     'anthropic.claude-3-haiku-20240307-v1:0',
-                     'anthropic.claude-v2:1',
-                     'anthropic.claude-v2',
-                     'anthropic.claude-instant-v1',
-                     'amazon.titan-text-lite-v1',
-                     'amazon.titan-text-express-v1',
-                     'amazon.titan-text-premier-v1:0',
-                     'IDEFICS']
-MODEL_ID_PROVIDER=['Bedrock','Sagemaker']
+default_modality = st.session_state.get("modality", "Image")
+
+MODEL_ID_OPTIONS=get_filtered_model_ids(default_modality)
+MODEL_ID_PROVIDER=['Bedrock']
 LANGUAGE_OPTIONS=['English','Spanish','French']
 
 with st.sidebar:
         st.header("Settings")
         st.subheader("Summarization Configuration")
 
+        modality = st.selectbox(
+                label="Select modality:",
+                options=["Image","Text"],
+                key="modality",
+                help="Select modality",
+            )
         
         model_provider = st.selectbox(
                 label="Select  model provider:",
@@ -306,13 +316,6 @@ with st.sidebar:
                 help="Select response language",
             )
         
-        modality = st.selectbox(
-                label="Select modality:",
-                options=["Image","Text"],
-                key="modality",
-                help="Select modality",
-            )
-       
         temperature = st.slider(
                 label="Temperature:",
                 value=1.0,
