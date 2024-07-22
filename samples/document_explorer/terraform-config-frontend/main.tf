@@ -1,9 +1,10 @@
 module "serverless-streamlit-app" {
-  source = "aws-ia/serverless-streamlit-app/aws" 
+  source = "aws-ia/serverless-streamlit-app/aws"
+  version = "1.1.0"
   path_to_app_dir = "../client_app/"
   app_name    = "streamlit-app"
-  environment = "prod"
-  app_version = "v0.0.1" # used as one of the tags for Docker image. Update this when you wish to push new changes to ECR.
+  environment = "dev"
+  app_version = "v0.0.1" 
 }
 
 # Update existing Cognito User Pool Client
