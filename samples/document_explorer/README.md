@@ -141,15 +141,7 @@ then your AWS Account is likely either too new or unused for the region, and the
     ```shell
         cd terraform-config-frontend
     ```
-2. Configure your Dockerfile in `client_app/Dockerfile`. First make sure line 3 is uncommented and comment out line 6:
-```
-# Uncomment below for terraform deployment
-FROM public.ecr.aws/docker/library/python:3.11.9-slim
-
-# Uncomment below for CDK deployment
-# FROM python:3.11-slim
-```
-Configure your environment variables. Replace the property values with the values retrieved from the stack outputs/console. You will leave `APP_URI` as a placeholder for now because the URI will be the Cloudfront URL output from your Terraform deployment. 
+2. Configure your environment variables in `client_app/Dockerfile`. Replace the property values with the values retrieved from the stack outputs/console. You will leave `APP_URI` as a placeholder for now because the URI will be the Cloudfront URL output from your Terraform deployment. 
   ```
 ENV COGNITO_DOMAIN = "<ApiStack.CognitoDomain>"
 ENV REGION = "<ApiStack.Region>"
@@ -181,15 +173,7 @@ ENV CLIENT_NAME = "<ApiStack.ClientName>"
     ```shell
         cd cdk-config-frontend
     ```
-2. Configure your Dockerfile in `client_app/Dockerfile`. First make sure line 3 is commented out and uncomment line 6:
-```
-# Uncomment below for terraform deployment
-# FROM public.ecr.aws/docker/library/python:3.11.9-slim
-
-# Uncomment below for CDK deployment
-FROM python:3.11-slim
-``` 
-Configure your environment variables in `client_app/Dockerfile`. Replace the property values with the values retrieved from the stack outputs/console. You will leave `APP_URI` as a placeholder for now because the URI will be the Cloudfront URL output from your Terraform deployment. 
+2. Configure your environment variables in `client_app/Dockerfile`. Replace the property values with the values retrieved from the stack outputs/console. You will leave `APP_URI` as a placeholder for now because the URI will be the Cloudfront URL output from your Terraform deployment. 
 
   ```
     ENV COGNITO_DOMAIN = "<ApiStack.CognitoDomain>"

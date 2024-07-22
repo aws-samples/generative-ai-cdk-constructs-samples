@@ -1,9 +1,5 @@
 #syntax=docker/dockerfile:1.4
-# Uncomment below for terraform deployment
-#FROM public.ecr.aws/docker/library/python:3.11.9-slim
-
-# Uncomment below for CDK deployment
-FROM python:3.11-slim
+FROM public.ecr.aws/docker/library/python:3.11.9-slim
 
 WORKDIR /app
 COPY requirements.txt ./requirements.txt
