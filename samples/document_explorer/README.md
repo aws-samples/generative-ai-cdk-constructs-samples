@@ -169,6 +169,8 @@ ENV CLIENT_NAME = "<ApiStack.ClientName>"
 
 <details><summary>CDK Instructions</summary> 
 
+Note: the CDK Front End deployment was adapted from [this blog](https://kawsaur.medium.com/serverless-streamlit-app-on-aws-with-https-b5e5ff889590).
+
 1. Open the `/cdk-config-frontend` folder
     ```shell
         cd cdk-config-frontend
