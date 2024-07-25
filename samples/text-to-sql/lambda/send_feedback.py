@@ -29,7 +29,9 @@ def lambda_handler(event, context):
         # Extract the task token and status from the message body
         #event_data = json.loads(input_message)
         task_token = event['TaskToken']
+        generated_query = event.get('generated_query', None)
         user_question = event['user_question']['value']
+        question_unique_id = event['question_unique_id']['value']
         reformulated_user_question = event['reformualted_question']['value']
         status = 'approve'
         
@@ -42,6 +44,8 @@ def lambda_handler(event, context):
                     'reformulated_user_question':reformulated_user_question,
                     'user_question':user_question,
                     'feedback_response':'No issue',
+                    'question_unique_id':question_unique_id,
+                    'generated_query':generated_query
                 })
             )
         elif status.lower() == 'reject':
@@ -54,6 +58,8 @@ def lambda_handler(event, context):
                     'reformulated_user_question':reformulated_user_question,
                     'user_question':user_question,
                     'feedback_response':'No issue',
+                    'question_unique_id':question_unique_id
+                    #'generated_query':generated_query
                 })
             )
         else:
