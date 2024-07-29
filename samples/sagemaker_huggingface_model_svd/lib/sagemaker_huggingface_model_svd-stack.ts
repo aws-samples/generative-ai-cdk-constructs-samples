@@ -40,7 +40,7 @@ export class SagemakerHuggingfaceModelSvdStack extends cdk.Stack {
         TS_MAX_REQUEST_SIZE: "1000000000",
         MMS_MAX_RESPONSE_SIZE: "1000000000",
         MMS_MAX_REQUEST_SIZE: "1000000000",
-        HF_API_TOKEN: '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'
+        HF_API_TOKEN: 'XXXXX'
       },
       endpointName: SG_ENDPOINT_NAME,
       startupHealthCheckTimeoutInSeconds: 900,
