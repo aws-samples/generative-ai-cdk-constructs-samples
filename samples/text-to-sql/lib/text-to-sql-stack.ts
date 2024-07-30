@@ -9,7 +9,8 @@ export class TextToSqlStack extends cdk.Stack {
     super(scope, id, props);
 
   const textT  = new  emergingTech.TextToSql(this, "TextToSql1", {
-      dbName: "Sqlite",
+      databaseType: emergingTech.DatabaseType.AURORA,
+      dbName: emergingTech.DbName.MYSQL,
       metadataSource:"config_file",
       stage:"dev",
     })
