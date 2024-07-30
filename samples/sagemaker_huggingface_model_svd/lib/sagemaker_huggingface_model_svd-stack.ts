@@ -11,6 +11,7 @@
  *  and limitations under the License.
  */
 import * as path from 'path';
+import { NagSuppressions } from "cdk-nag";
 import * as cdk from 'aws-cdk-lib';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
@@ -66,6 +67,21 @@ export class SagemakerHuggingfaceModelSvdStack extends cdk.Stack {
           'BUCKET_ARN/*',
         ],
       }),
+    );
+
+    NagSuppressions.addResourceSuppressions(
+      CustomHuggingFaceEndpoint,
+      [
+        {
+          id: 'AwsSolutions-IAM4',
+          reason: 'Sample SageMaker default endpoint role uses AWS Managed Policy.',
+        },
+        {
+          id: 'AwsSolutions-IAM5',
+          reason: 'Sample SageMaker default endpoint role uses wildcards for bucket access.',
+        },
+      ],
+      true,
     );
   }
 }
