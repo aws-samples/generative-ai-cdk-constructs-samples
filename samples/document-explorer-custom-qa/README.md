@@ -29,7 +29,7 @@ This Document Explorer codebase is organized into folders containing the ```fron
 The key folders are:
 
 ```
-samples/document_explorer
+samples/document-explorer-custom-qa
 ├── client_app                                   # Frontend using Python Streamlit
 │   │
 │   ├── Home.ts                                  # Sample app entry point
