@@ -29,7 +29,7 @@ export class SagemakerHuggingfaceModelSvdStack extends cdk.Stack {
     // Custom Sagemaker Endpoint construct
     const CustomHuggingFaceEndpoint = new genai.CustomSageMakerEndpoint(this, 'testsvdendpoint', {
       modelId: HUGGING_FACE_MODEL_ID,
-      instanceType: genai.SageMakerInstanceType.ML_G5_4XLARGE,
+      instanceType: genai.SageMakerInstanceType.ML_G5_8XLARGE,
       container: genai.DeepLearningContainerImage.HUGGINGFACE_PYTORCH_INFERENCE_2_1_0_TRANSFORMERS4_37_0_GPU_PY310_CU118_UBUNTU20_04,
       modelDataUrl: BUCKET_PATH+'/model.tar.gz',
       environment: {

@@ -117,11 +117,7 @@ To protect you against unintended changes that affect your security posture, the
 
 ### Test
 
-- In the AWS console, navigate to [AWS Lambda](https://us-east-1.console.aws.amazon.com/lambda/home?region=us-east-1#/functions?sb=lastModified&so=DESCENDING) and select the function named ```testsvdhuggingface```
-
-- Under the Code tab, click ```Test```. This will send a request to the SageMaker endpoint, and display the result. 
-
-- You can update the parameters and prompt sent to the endpoint in the ```dic``` (file lambda.py) structure.
+This sample provides a CLI Python tool to test the deployed endpoint and generate a video from a source image. To run the tool, please follow the guidance in the [model testing](./model_testing/README.md) folder.
 
 ## Clean up
 
