@@ -1,0 +1,15 @@
+.DS_Store
+*.js
+!jest.config.js
+*.d.ts
+node_modules
+*approval
+cdk.context.json
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+*.venv
+*venv
+*.env
+__pycache__
