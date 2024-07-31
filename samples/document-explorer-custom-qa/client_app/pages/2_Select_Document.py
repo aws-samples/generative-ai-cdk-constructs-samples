@@ -313,7 +313,7 @@ if auth.is_authenticated():
             for row in selection["selected_rows"]:
                 selected_filenames.append(row["Transformed Filename"])
             st.session_state['selected_files'] = selected_filenames
-        else:
+        elif 'selected_files' in st.session_state:
             del st.session_state['selected_files']
 
     else:
