@@ -41,6 +41,8 @@ export class ImageDescriptionStack extends cdk.Stack {
       }
     });
 
+    // Add unique value to avoid any resource name conflict between different acounts/environment 
+    const stage = "-QA"
   
     const uniqueStackIdPart = cdk.Fn.select(2, cdk.Fn.split('/', `${cdk.Aws.STACK_ID}`));
      
@@ -91,22 +93,7 @@ export class ImageDescriptionStack extends cdk.Stack {
       }
     });
 
-    // const graphQLApiRole = new iam.Role(this, 'graphQLApiRole', {
-    //   assumedBy:new iam.ServicePrincipal('appsync.amazonaws.com')
-    // });
-
-    // const appsynccloudWatchlogsRole = new iam.Role(this, 'appsynccloudWatchlogsRole', {
-    //   assumedBy: new iam.ServicePrincipal('appsync.amazonaws.com'),
-    // });
-
-    // appsynccloudWatchlogsRole.addToPolicy(
-    //   new iam.PolicyStatement({
-    //     effect: iam.Effect.ALLOW,
-    //     actions: ['logs:CreateLogGroup', 'logs:CreateLogStream', 'logs:PutLogEvents'],
-    //     resources: ["arn:aws:logs:"+cdk.Aws.REGION+":"+cdk.Stack.of(this).account+":*"],
-    //   }),
-    // );
-
+    
 
     
 
@@ -114,7 +101,7 @@ export class ImageDescriptionStack extends cdk.Stack {
     (this, 'ImageSummarization', {
       cognitoUserPool: this.cognitoPool,
       observability: true,
-      stage:"test",
+      stage:stage,
       isFileTransformationRequired: "true"
     });
 
