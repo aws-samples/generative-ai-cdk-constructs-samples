@@ -24,9 +24,11 @@ Default region name [None]: us-east-1
 Default output format [None]: json
 ```
 
-- Python : v3.11
+- [.NET](https://dotnet.microsoft.com/download): 8.0
 - [AWS CDK](https://github.com/aws/aws-cdk/releases/tag/v2.68.0): 2.68.0
 - [Docker](https://www.docker.com/products/docker-desktop/): Docker must be up and running in your machine.
+- [Amazon.Lambda.Tools](https://www.nuget.org/packages/Amazon.Lambda.Tools/)
+  - `dotnet tool install --global Amazon.Lambda.Tools`
 
 ## Getting started
 
@@ -44,5 +46,11 @@ It uses the [.NET Core CLI](https://docs.microsoft.com/dotnet/articles/core/) to
 * `cdk deploy`      deploy this stack to your default AWS account/region
 * `cdk diff`        compare deployed stack with current state
 * `cdk docs`        open CDK documentation
+
+## Scripts
+You can use the following shell scripts to publish or deploy the application.
+
+* `./scripts/local/publish.sh` publishes your .NET application to a local folder `dist`
+* `./scripts/local/deploy.sh` runs `publish.sh` and then deploys you application to AWS
 
 Enjoy!

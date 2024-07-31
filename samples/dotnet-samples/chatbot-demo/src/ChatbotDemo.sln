@@ -15,6 +15,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChatbotDemo.Api.Tests", "Ch
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{21F5AED5-8AD8-4981-B979-4B87D162864C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{C063FF7F-768A-47F1-8117-8D341CC5349D}"
+	ProjectSection(SolutionItems) = preProject
+		..\README.md = ..\README.md
+		..\cdk.json = ..\cdk.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
