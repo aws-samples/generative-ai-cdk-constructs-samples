@@ -43,7 +43,7 @@ Default output format [None]: json
    pip install -r requirements.txt
    ```
 
-5. Update the configuration in the [model_testing.py](./model_testing.py) file (L15-18) with your own values:
+5. Update the configuration in the [model_testing.py](./model_testing.py) file (L15-21) with your own values:
 ```
 S3_BUCKET : replace this with the name of your bucket containing your model artifacts
 ENDPOINT_NAME : replace this with the name of your async sagemaker endpoint

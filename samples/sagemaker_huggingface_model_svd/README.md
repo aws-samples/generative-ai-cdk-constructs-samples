@@ -119,6 +119,8 @@ To protect you against unintended changes that affect your security posture, the
 
 This sample provides a CLI Python tool to test the deployed endpoint and generate a video from a source image. To run the tool, please follow the guidance in the [model testing](./model_testing/README.md) folder.
 
+You can expose more parameters through the model_preparation steps for the model. A sample using additional parameters is available [here](https://github.com/garystafford/svdxt-sagemaker-huggingface/tree/main). The complete list of parameters is available [here](https://github.com/huggingface/diffusers/blob/ae05050db9d37d5af48a6cd0d6510a5ffb1c1cd4/src/diffusers/pipelines/stable_video_diffusion/pipeline_stable_video_diffusion.py#L339C5-L359C7).
+
 ## Clean up
 
 Do not forget to delete the stack to avoid unexpected charges.
