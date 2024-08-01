@@ -278,7 +278,7 @@ if auth.is_authenticated():
             uploaded_file = st.file_uploader('Upload a document', type=['pdf','jpeg','png','jpg'])
             submitted = st.form_submit_button("Submit", use_container_width=True)
             submit= True
-            if(uploaded_file and uploaded_file.name.endswith(tuple(['.png','.jpeg','.jpg'])) and embedding_model_id=='amazon.titan-embed-text-v1'):
+            if(uploaded_file and uploaded_file.name.endswith(tuple(['.png','.jpeg','.jpg'])) and st.session_state['embedding_model_id']=='amazon.titan-embed-text-v1'):
                 st.warning("Invalid model id,Please select multimodality modal for image files")
                 submit=False
             st.session_state['progress_bar_widget'] = st.empty()
