@@ -10,6 +10,8 @@ Please note: For commercial use, please refer to https://stability.ai/license.
 
 By providing reusable constructs following AWS best practices, this app helps you quickly build custom generative AI apps on AWS.
 
+Thanks to @kellan-cartledge for co-authoring this sample
+
 Here is the architecture diagram of the sample application:
 
 ![Architecture Diagram](./doc/images/architecture.png)
