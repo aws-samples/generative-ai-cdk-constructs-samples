@@ -4,7 +4,7 @@
 
 The "SageMaker custom Hugging Face model deployment svd" sample generative AI application demonstrates how to deploy and interact with a multimodal model where artifacts are stored in an Amazon Simple Storage Service (S3) bucket, leveraging AWS services and [AWS Generative AI CDK Constructs](https://github.com/awslabs/generative-ai-cdk-constructs).
 
-Specifically, this sample deploys an AWS Lambda function which interacts with a SageMaker async endpoint, hosting [stable-video-diffusion-img2vid-xt-1-1](https://huggingface.co/stabilityai/stable-video-diffusion-img2vid-xt-1-1). Stable Video Diffusion (SVD) 1.1 Image-to-Video is a diffusion model that takes in a still image as a conditioning frame, and generates a video from it.
+Specifically, this sample deploys an SageMaker async endpoint, hosting [stable-video-diffusion-img2vid-xt-1-1](https://huggingface.co/stabilityai/stable-video-diffusion-img2vid-xt-1-1). Stable Video Diffusion (SVD) 1.1 Image-to-Video is a diffusion model that takes in a still image as a conditioning frame, and generates a video from it. The sample also provides a CLI tool to test the endpoint.
 
 Please note: For commercial use, please refer to https://stability.ai/license. 
 
