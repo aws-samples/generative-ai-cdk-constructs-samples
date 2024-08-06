@@ -2,8 +2,7 @@
 
 The "Image Description" sample generative AI application showcases the capability of generating descriptive text for images by leveraging the power of AWS services and the AWS Generative AI Cloud Development Kit (CDK) Constructs.
 
-
-English 
+English
 ![image](client_app/assets/dog_english.gif)
 
 Spanish
@@ -11,6 +10,7 @@ Spanish
 
 Multiple Images
 ![image](client_app/assets/multiple_images.gif)
+
 ## Overview
 
 The sample application features a Streamlit user interface, enabling users to authenticate via Amazon Cognito. Upon successful authentication, users can upload images and leverage the Anthropic Claude 3 foundation model to generate descriptive text for the uploaded images. Behind the scenes, this application utilizes AWS Generative AI CDK constructs, seamlessly integrated with Amazon Bedrock, to access the latest foundation models.
@@ -34,7 +34,7 @@ samples/image-description
 │   ├── image-description.ts-stack.ts         # Stack deploying the S3 bucket, Bedrock Agent, Action Group, and Knowledge Base
 ├── client_app                                # Streamlit  
 │   └── pages
-        └── image-description.py               
+        └── image-description.py           
     └── Home.py                               # Streamlit landing 
 ```
 
@@ -56,6 +56,7 @@ Default output format [None]: json
 * Node.js: v18.12.1
 * AWS CDK: 2.68.0
 * jq: jq-1.6
+* Docker - This sample builds a Lambda function from a Docker image, thus you need [Docker desktop](https://www.docker.com/products/docker-desktop/) running on your machine.
 
 ### Deploy the solution
 
@@ -98,7 +99,7 @@ This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.am
    source venv/bin/activate
    pip install -r requirements.txt
    ```
-9. Still within the /client_app directory, create an ```.env``` file with the following content or mutate the ```.env-example```. Replace the property values with the values retrieved from the stack outputs/console.
+9. Still within the /client_app directory, create an ```.env``` file with the following content. Replace the property values with the values retrieved from the stack outputs/console.
 
 ```
 COGNITO_DOMAIN="<ImageDescStack.CognitoDomain>"
@@ -129,7 +130,6 @@ Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved fr
 - Click on Image Description on left panel.
 - Upload a file and select preferred configuration on left panel.
 - The image along with the generated summary should be displayed on the central panel.
-
 
 ## Clean up
 

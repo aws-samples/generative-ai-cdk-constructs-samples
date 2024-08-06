@@ -81,7 +81,7 @@ class CognitoHelper:
                 "redirect_uri": self.app_uri,
             }
             
-            token_response = requests.post(self.token_url, headers=headers, data=body)
+            token_response = requests.post(self.token_url, headers=headers, data=body,timeout=30)
             access_token = token_response.json()["access_token"]
             id_token = token_response.json()["id_token"]
 

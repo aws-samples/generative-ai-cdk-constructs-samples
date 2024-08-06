@@ -1,3 +1,17 @@
+#!/usr/bin/env node
+/**
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
+ *  with the License. A copy of the License is located at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  or in the 'license' file accompanying this file. This file is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES
+ *  OR CONDITIONS OF ANY KIND, express or implied. See the License for the specific language governing permissions
+ *  and limitations under the License.
+ */
+
 import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import * as emergingTech from "@cdklabs/generative-ai-cdk-constructs";
@@ -6,11 +20,29 @@ import { NagSuppressions } from "cdk-nag";
 import * as iam from "aws-cdk-lib/aws-iam";
 
 export class ImageDescriptionStack extends cdk.Stack {
+  /**
+   * Cognito pool of image description stack
+   */
   public readonly cognitoPool: cognito.UserPool;
+  /**
+   * Cognito client of image description stack
+   */
   public readonly cognitoClient: cognito.UserPoolClient;
+  /**
+   * User pool domain of image description stack
+   */
   public readonly userPoolDomain: cognito.UserPoolDomain;
+  /**
+   * Identity pool of image description stack
+   */
   public readonly identityPool: cognito.CfnIdentityPool;
+  /**
+   * Authenticated role of image description stack
+   */
   public readonly authenticatedRole: iam.Role;
+  /**
+   * Client url of image description stack
+   */
   public readonly clientUrl = "http://localhost:8501/";
 
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -35,8 +67,8 @@ export class ImageDescriptionStack extends cdk.Stack {
       },
     });
 
-    // Add unique value to avoid any resource name conflict between different acounts/environment
-    const stage = "-QA";
+    // Add unique value to for each account / environment.
+    const stage = "-DEV";
 
     const uniqueStackIdPart = cdk.Fn.select(
       2,
@@ -70,7 +102,7 @@ export class ImageDescriptionStack extends cdk.Stack {
     //---------------------------------------------------------------------
     // IAM Roles
     //---------------------------------------------------------------------
-    const authenticatedRole = new iam.Role(this, "CognitoAuthenticatedRoleAB", {
+    const authenticatedRole = new iam.Role(this, "CognitoAuthenticatedRole", {
       assumedBy: new iam.FederatedPrincipal(
         "cognito-identity.amazonaws.com",
         {
@@ -159,6 +191,56 @@ export class ImageDescriptionStack extends cdk.Stack {
     summarization.inputAssetBucket.grantReadWrite(this.authenticatedRole);
     summarization.processedAssetBucket.grantRead(this.authenticatedRole);
 
+    // CDK- NAG suppressions
+    NagSuppressions.addResourceSuppressions(
+      this,
+      [
+        {
+          id: "AwsSolutions-IAM5",
+          reason: "ESLogGroupPolicy managed by aws-cdk.",
+          appliesTo: [
+            "Resource::*",
+            "Resource::<ImageSummarizationprocessedassetsbucketdevimagedesstackiesummarizationb66b14bb8A565D3C.Arn>/*",
+            "Resource::<ImageSummarizationinputassetsbucketdevimagedesstackimagesummarizationb66b14bb41BB5AF5.Arn>/*",
+            "Resource::<ImageSummarizationsummarygeneratordevimagedesstackimagesummarizationb66b14bb0F1908FB.Arn>:*",
+            "Resource::<ImageSummarizationinputValidatorLambdaDEV5B95C05A.Arn>:*",
+            "Resource::<ImageSummarizationdocumentReaderLambdaDEV8B4FAE2D.Arn>:*"
+          ],
+        },
+        {
+          id: "AwsSolutions-IAM5",
+          reason: "s3 action managed by generative-ai-cdk-constructs.",
+          appliesTo: [
+            "Action::s3:*",
+            "Action::s3:Abort*",
+            "Action::s3:DeleteObject*",
+            "Action::s3:GetBucket*",
+            "Action::s3:GetObject*",
+            "Action::s3:List*",
+          ],
+        },
+        {
+          id: "AwsSolutions-IAM4",
+          reason: "ServiceRole managed by aws-cdk.",
+          appliesTo: [
+            "Policy::arn:<AWS::Partition>:iam::aws:policy/Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSAppSyncPushToCloudWatchLogs-role/AWSLambdaBasicExecutionRole",
+            "Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSAppSyncPushToCloudWatchLogs",
+            "Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+          ],
+        },
+        {
+          id: "AwsSolutions-L1",
+          reason: "Runtime managed by aws-cdk.",
+        },
+        {
+          id: "AwsSolutions-SQS3",
+          reason: "Queue managed by genertive ai cdk constructs.",
+        },
+      ],
+      true
+    );
+
+    // print cdk outpout
     new cdk.CfnOutput(this, "UserPoolId", {
       value: this.cognitoPool.userPoolId,
     });
