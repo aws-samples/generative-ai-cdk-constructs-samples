@@ -54,7 +54,7 @@ class GraphQLMutationClient:
         }
         print(f' query :: {query}')  
         try:
-            response = requests.post(self.graphql_endpoint, json=data, headers=self.headers)
+            response = requests.post(self.graphql_endpoint, json=data, headers=self.headers,timeout=30)
             response.raise_for_status()
             
         except requests.exceptions.RequestException as error:
