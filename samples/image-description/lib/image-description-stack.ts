@@ -118,54 +118,6 @@ export class ImageDescriptionStack extends cdk.Stack {
     });
     this.authenticatedRole = authenticatedRole;
 
-    NagSuppressions.addStackSuppressions(
-      this,
-      [
-        {
-          id: "AwsSolutions-IAM5",
-          reason: "ESLogGroupPolicy managed by aws-cdk.",
-          appliesTo: [
-            "Resource::*",
-            "Resource::<ImageSummarizationinputassetsQA2B28395F.Arn>/*",
-            "Resource::<ImageSummarizationprocessedassetsQAD2D9F63E.Arn>/*",
-            "Resource::<ImageSummarizationdocumentReaderLambdaQAB03C2980.Arn>:*",
-            "Resource::<ImageSummarizationinputValidatorLambdaQA80A8052C.Arn>:*",
-            "Resource::<ImageSummarizationsummarygeneratorQA456A0E10.Arn>:*",
-          ],
-        },
-        {
-          id: "AwsSolutions-IAM5",
-          reason: "s3 action managed by generative-ai-cdk-constructs.",
-          appliesTo: [
-            "Action::s3:*",
-            "Action::s3:Abort*",
-            "Action::s3:DeleteObject*",
-            "Action::s3:GetBucket*",
-            "Action::s3:GetObject*",
-            "Action::s3:List*",
-          ],
-        },
-        {
-          id: "AwsSolutions-IAM4",
-          reason: "ServiceRole managed by aws-cdk.",
-          appliesTo: [
-            "Policy::arn:<AWS::Partition>:iam::aws:policy/Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSAppSyncPushToCloudWatchLogs-role/AWSLambdaBasicExecutionRole",
-            "Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSAppSyncPushToCloudWatchLogs",
-            "Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-          ],
-        },
-        {
-          id: "AwsSolutions-L1",
-          reason: "Runtime managed by aws-cdk.",
-        },
-        {
-          id: "AwsSolutions-SQS3",
-          reason: "Queue managed by genertive ai cdk constructs.",
-        },
-      ],
-      true
-    );
-
     new cognito.CfnIdentityPoolRoleAttachment(
       this,
       "IdentityPoolRoleAttachment",
@@ -190,55 +142,6 @@ export class ImageDescriptionStack extends cdk.Stack {
 
     summarization.inputAssetBucket.grantReadWrite(this.authenticatedRole);
     summarization.processedAssetBucket.grantRead(this.authenticatedRole);
-
-    // CDK- NAG suppressions
-    NagSuppressions.addResourceSuppressions(
-      this,
-      [
-        {
-          id: "AwsSolutions-IAM5",
-          reason: "ESLogGroupPolicy managed by aws-cdk.",
-          appliesTo: [
-            "Resource::*",
-            "Resource::<ImageSummarizationprocessedassetsbucketdevimagedesstackiesummarizationb66b14bb8A565D3C.Arn>/*",
-            "Resource::<ImageSummarizationinputassetsbucketdevimagedesstackimagesummarizationb66b14bb41BB5AF5.Arn>/*",
-            "Resource::<ImageSummarizationsummarygeneratordevimagedesstackimagesummarizationb66b14bb0F1908FB.Arn>:*",
-            "Resource::<ImageSummarizationinputValidatorLambdaDEV5B95C05A.Arn>:*",
-            "Resource::<ImageSummarizationdocumentReaderLambdaDEV8B4FAE2D.Arn>:*"
-          ],
-        },
-        {
-          id: "AwsSolutions-IAM5",
-          reason: "s3 action managed by generative-ai-cdk-constructs.",
-          appliesTo: [
-            "Action::s3:*",
-            "Action::s3:Abort*",
-            "Action::s3:DeleteObject*",
-            "Action::s3:GetBucket*",
-            "Action::s3:GetObject*",
-            "Action::s3:List*",
-          ],
-        },
-        {
-          id: "AwsSolutions-IAM4",
-          reason: "ServiceRole managed by aws-cdk.",
-          appliesTo: [
-            "Policy::arn:<AWS::Partition>:iam::aws:policy/Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSAppSyncPushToCloudWatchLogs-role/AWSLambdaBasicExecutionRole",
-            "Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSAppSyncPushToCloudWatchLogs",
-            "Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-          ],
-        },
-        {
-          id: "AwsSolutions-L1",
-          reason: "Runtime managed by aws-cdk.",
-        },
-        {
-          id: "AwsSolutions-SQS3",
-          reason: "Queue managed by genertive ai cdk constructs.",
-        },
-      ],
-      true
-    );
 
     // print cdk outpout
     new cdk.CfnOutput(this, "UserPoolId", {
@@ -285,5 +188,54 @@ export class ImageDescriptionStack extends cdk.Stack {
     new cdk.CfnOutput(this, "S3ProcessedBucket", {
       value: summarization.processedAssetBucket.bucketName,
     });
+
+    // CDK- NAG suppressions
+    NagSuppressions.addResourceSuppressions(
+      this,
+      [
+        {
+          id: "AwsSolutions-IAM5",
+          reason: "ESLogGroupPolicy managed by aws-cdk.",
+          appliesTo: [
+            "Resource::*",
+            "Resource::<ImageSummarizationprocessedassetsbucketdevimagedesstackiesummarizationb66b14bb8A565D3C.Arn>/*",
+            "Resource::<ImageSummarizationinputassetsbucketdevimagedesstackimagesummarizationb66b14bb41BB5AF5.Arn>/*",
+            "Resource::<ImageSummarizationsummarygeneratordevimagedesstackimagesummarizationb66b14bb0F1908FB.Arn>:*",
+            "Resource::<ImageSummarizationinputValidatorLambdaDEV5B95C05A.Arn>:*",
+            "Resource::<ImageSummarizationdocumentReaderLambdaDEV8B4FAE2D.Arn>:*",
+          ],
+        },
+        {
+          id: "AwsSolutions-IAM5",
+          reason: "s3 action managed by generative-ai-cdk-constructs.",
+          appliesTo: [
+            "Action::s3:*",
+            "Action::s3:Abort*",
+            "Action::s3:DeleteObject*",
+            "Action::s3:GetBucket*",
+            "Action::s3:GetObject*",
+            "Action::s3:List*",
+          ],
+        },
+        {
+          id: "AwsSolutions-IAM4",
+          reason: "ServiceRole managed by aws-cdk.",
+          appliesTo: [
+            "Policy::arn:<AWS::Partition>:iam::aws:policy/Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSAppSyncPushToCloudWatchLogs-role/AWSLambdaBasicExecutionRole",
+            "Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSAppSyncPushToCloudWatchLogs",
+            "Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+          ],
+        },
+        {
+          id: "AwsSolutions-L1",
+          reason: "Runtime managed by aws-cdk.",
+        },
+        {
+          id: "AwsSolutions-SQS3",
+          reason: "Queue managed by genertive ai cdk constructs.",
+        },
+      ],
+      true
+    );
   }
 }
