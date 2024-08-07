@@ -11,91 +11,121 @@
 // and limitations under the License.
 //
 
-import { Amplify, API, Auth } from "aws-amplify";
+import { Amplify } from "aws-amplify";
+import { fetchAuthSession } from "aws-amplify/auth";
+import { get, post } from "aws-amplify/api";
 import axios from "axios";
+import { getErrorMessage } from "./utils";
 
 const env = import.meta.env;
 
 Amplify.configure({
   Auth: {
-    region: env.VITE_REGION_NAME,
-    userPoolId: env.VITE_COGNITO_USER_POOL_ID,
-    userPoolWebClientId: env.VITE_COGNITO_USER_POOL_CLIENT_ID,
-    identityPoolId: env.VITE_COGNITO_IDENTITY_POOL_ID,
-  },
-  API: {
-    endpoints: [
-      {
-        name: env.VITE_API_GATEWAY_REST_API_NAME,
-        endpoint: env.VITE_API_GATEWAY_REST_API_ENDPOINT,
-        custom_header: async () => {
-          return {
-            Authorization: `Bearer ${(await Auth.currentSession())
-              .getIdToken()
-              .getJwtToken()}`,
-          };
-        },
-      },
-    ],
+    Cognito: {
+      userPoolId: env.VITE_COGNITO_USER_POOL_ID,
+      userPoolClientId: env.VITE_COGNITO_USER_POOL_CLIENT_ID,
+      identityPoolId: env.VITE_COGNITO_IDENTITY_POOL_ID,
+    },
   },
 });
 
-export async function getJobs() {
-  const call = await API.get(env.VITE_API_GATEWAY_REST_API_NAME, `jobs`, {
-    response: true,
-  });
+const existingConfig = Amplify.getConfig();
 
-  return call.data;
+Amplify.configure({
+  ...existingConfig,
+  API: {
+    REST: {
+      [env.VITE_API_NAME]: {
+        endpoint: env.VITE_API_GATEWAY_REST_API_ENDPOINT,
+        region: env.VITE_AWS_REGION,
+      },
+    },
+  },
+});
+
+const authToken = (await fetchAuthSession()).tokens?.idToken?.toString();
+
+const defaultRestInput = {
+  apiName: env.VITE_API_NAME,
+  options: {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  },
+};
+
+export async function getJobs() {
+  try {
+    const restOperation = get({
+      ...defaultRestInput,
+      path: "/jobs",
+    });
+    const response = await restOperation.response;
+    return response.body.json();
+  } catch (e: unknown) {
+    console.log("GET call failed: ", getErrorMessage(e));
+  }
 }
 
-export async function getJob(jobId?: string) {
-  const call = await API.get(
-    env.VITE_API_GATEWAY_REST_API_NAME,
-    `jobs/${jobId}`,
-    {
-      response: true,
-    },
-  );
-
-  return call.data;
+export async function getJob(jobId: string) {
+  try {
+    const restOperation = get({
+      ...defaultRestInput,
+      path: `/jobs/${jobId}`,
+    });
+    const response = await restOperation.response;
+    return response.body.json();
+  } catch (e: unknown) {
+    console.log("GET call failed: ", getErrorMessage(e));
+  }
 }
 
 export async function uploadDocument(file: File | Blob, filename: string) {
-  const upload = await axios({
-    method: "PUT",
-    url: `${await API.endpoint(
-      env.VITE_API_GATEWAY_REST_API_NAME,
-    )}/documents/${filename}`,
-    data: file,
-    headers: {
-      Authorization: `Bearer ${(await Auth.currentSession())
-        .getIdToken()
-        .getJwtToken()}`,
-      "Content-Type": "text/plain",
-    },
-  });
+  try {
+    const upload = await axios({
+      method: "PUT",
+      url: `${env.VITE_API_GATEWAY_REST_API_ENDPOINT}/documents/${filename}`,
+      data: file,
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        "Content-Type": "text/plain",
+      },
+    });
 
-  return upload;
+    return upload;
+  } catch (e: unknown) {
+    console.log("PUT call failed: ", getErrorMessage(e));
+  }
 }
 
 export async function getDocument(filename: string) {
-  const call = await API.get(
-    env.VITE_API_GATEWAY_REST_API_NAME,
-    `documents/${filename}`,
-    {
-      response: true,
-    },
-  );
-
-  return call.data;
+  try {
+    const restOperation = get({
+      ...defaultRestInput,
+      path: `/documents/${filename}`,
+    });
+    const response = await restOperation.response;
+    return response;
+  } catch (e: unknown) {
+    console.log("GET call failed: ", getErrorMessage(e));
+  }
 }
 
 export async function createJob(filename: string) {
-  const call = await API.post(env.VITE_API_GATEWAY_REST_API_NAME, `jobs`, {
-    body: {
-      filename: filename,
-    },
-  });
-
-  return call.data;
+  try {
+    const restOperation = post({
+      ...defaultRestInput,
+      path: `/jobs`,
+      options: {
+        ...defaultRestInput.options,
+        body: {
+          filename: filename,
+        },
+      },
+    });
+    const response = await restOperation.response;
+    return response.body.json();
+  } catch (e: unknown) {
+    console.log("POST call failed: ", getErrorMessage(e));
+  }
 }
