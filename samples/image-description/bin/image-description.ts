@@ -12,7 +12,6 @@
  *  and limitations under the License.
  */
 
-import "source-map-support/register";
 import * as cdk from "aws-cdk-lib";
 import { AwsSolutionsChecks } from "cdk-nag";
 import { ImageDescriptionStack } from "../lib/image-description-stack";
