@@ -1,10 +1,30 @@
 #!/usr/bin/env node
-import 'source-map-support/register';
-import * as cdk from 'aws-cdk-lib';
-import { ImageDescriptionStack } from '../lib/image-description-stack';
-const app = new cdk.App();
-new ImageDescriptionStack(app, 'ImageDescStack', {
- 
-   env: { account: process.env.CDK_DEFAULT_ACCOUNT, region: process.env.CDK_DEFAULT_REGION },
+/**
+ *  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
+ *  with the License. A copy of the License is located at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  or in the 'license' file accompanying this file. This file is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES
+ *  OR CONDITIONS OF ANY KIND, express or implied. See the License for the specific language governing permissions
+ *  and limitations under the License.
+ */
 
-  });
+import "source-map-support/register";
+import * as cdk from "aws-cdk-lib";
+import { AwsSolutionsChecks } from "cdk-nag";
+import { ImageDescriptionStack } from "../lib/image-description-stack";
+
+const app = new cdk.App();
+cdk.Tags.of(app).add("app", "generative-ai-cdk-constructs-samples");
+cdk.Aspects.of(app).add(new AwsSolutionsChecks({ verbose: true }));
+
+const imageDescStack = new ImageDescriptionStack(app, "ImageDesStack", {
+  env: {
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+    region: process.env.CDK_DEFAULT_REGION,
+  },
+  description: "(uksb-1tupboc43) GenAI Image Description Stack",
+});
