@@ -12,7 +12,7 @@ English
 
 ![image](client_app/assets/dog_english.gif)
 
-Spanish
+French
 ![image](client_app/assets/cat_spanish.gif)
 
 Multiple Images
