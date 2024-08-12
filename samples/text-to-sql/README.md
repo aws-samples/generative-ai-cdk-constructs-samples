@@ -113,7 +113,7 @@ aws ec2 authorize-security-group-ingress \
     --group-id <lambda_security_group> \
     --protocol tcp \
     --port 22 \
-    --cidr 67.70.108.143/32
+    --cidr <YOUR_LOCAL_IP>/32
 ``` 
     
 Add inbound rules to NACL 
