@@ -254,7 +254,8 @@ def get_filtered_model_ids(modality):
     if modality == "Image":
         return [
             'anthropic.claude-3-sonnet-20240229-v1:0',
-            'anthropic.claude-3-haiku-20240307-v1:0'
+            'anthropic.claude-3-haiku-20240307-v1:0',
+            'anthropic.claude-3-5-sonnet-20240620-v1:0'
         ]
     elif modality == "Text":
         return MODEL_ID_OPTIONS
