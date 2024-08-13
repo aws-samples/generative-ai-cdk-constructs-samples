@@ -1,8 +1,8 @@
 {
-    "engine": "mysql",
-    "username": "admin",
-    "password": "jwdpIIAwe2oi5Y6n",
-    "host": "texttosqlstack-texttosql1auroraclusterae63c91d-dt3mr7vskegg.cluster-c15rreaqd1fd.us-east-1.rds.amazonaws.com",
-    "dbname": "Chinook",
+    "engine": "XXX",
+    "username": "XXX",
+    "password": "XXXX",
+    "host": "XXXXX",
+    "dbname": "xxx",
     "port": "3306"
 }
