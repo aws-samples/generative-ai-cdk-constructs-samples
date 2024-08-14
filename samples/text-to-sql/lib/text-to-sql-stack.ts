@@ -11,8 +11,8 @@ import {
 import * as cognito from "aws-cdk-lib/aws-cognito";
 import * as iam from "aws-cdk-lib/aws-iam";
 import * as lambda from "aws-cdk-lib/aws-lambda";
-import * as path from 'path';
-import { Aws } from 'aws-cdk-lib';
+import * as path from "path";
+import { Aws } from "aws-cdk-lib";
 
 export class TextToSqlStack extends cdk.Stack {
   /**
@@ -215,35 +215,34 @@ export class TextToSqlStack extends cdk.Stack {
     // Create an IAM role with permissions to publish messages to Step Functions
     const userFeedbackFunctionRole = new iam.Role(
       this,
-      'userFeedbackFunctionRole',
+      "userFeedbackFunctionRole",
       {
-        assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+        assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
         inlinePolicies: {
           LambdaFunctionServiceRolePolicy: new iam.PolicyDocument({
             statements: [
               new iam.PolicyStatement({
                 actions: [
-                  'logs:CreateLogGroup',
-                  'logs:CreateLogStream',
-                  'logs:PutLogEvents',
-                  'ec2:CreateNetworkInterface',
-                  'ec2:DeleteNetworkInterface',
-                  'ec2:AssignPrivateIpAddresses',
-                  'ec2:UnassignPrivateIpAddresses',
-                  'ec2:DescribeNetworkInterfaces',
-                  'states:SendTaskSuccess', 
-
+                  "logs:CreateLogGroup",
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents",
+                  "ec2:CreateNetworkInterface",
+                  "ec2:DeleteNetworkInterface",
+                  "ec2:AssignPrivateIpAddresses",
+                  "ec2:UnassignPrivateIpAddresses",
+                  "ec2:DescribeNetworkInterfaces",
+                  "states:SendTaskSuccess",
                 ],
                 resources: [
                   `arn:${Aws.PARTITION}:logs:${Aws.REGION}:${Aws.ACCOUNT_ID}:log-group:/aws/lambda/*`,
                   textToSql.stepFunction!.stateMachineArn,
-                  '*'
+                  "*",
                 ],
               }),
             ],
           }),
         },
-      },
+      }
     );
 
     // Feed back lambda function
@@ -266,17 +265,15 @@ export class TextToSqlStack extends cdk.Stack {
     );
 
     // Add a new POST method to the existing feedbackAPIResource with Cognito authorization
-    const feedbackAPIResource = restApi.root.addResource('feedbackAPI');
+    const feedbackAPIResource = restApi.root.addResource("feedbackAPI");
     feedbackAPIResource.addMethod(
-      'POST',
+      "POST",
       new apigateway.LambdaIntegration(userFeedbackFunction),
       {
         authorizationType: apigateway.AuthorizationType.COGNITO,
-        authorizer: cognitoAuthorizer, 
+        authorizer: cognitoAuthorizer,
       }
     );
-
-
 
     // print cdk outpout
     new cdk.CfnOutput(this, "UserPoolId", {
@@ -314,11 +311,10 @@ export class TextToSqlStack extends cdk.Stack {
       value: textToSql.outputQueue.queueName,
     });
     new cdk.CfnOutput(this, "FEEDBACK_ENDPOINT", {
-      value: restApi.url+"/feedbackAPI",
+      value: restApi.url + "/feedbackAPI",
     });
     new cdk.CfnOutput(this, "CONFIG_BUCKET", {
       value: textToSql.configAssetBucket.bucketName,
     });
-    
   }
 }
