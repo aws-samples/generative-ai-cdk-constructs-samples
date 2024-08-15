@@ -16,6 +16,9 @@ Underpinning this powerful application is the Generative AI CDK (aws-text-to-sql
 
 Overall, the "Text To SQL" generative AI sample application change the way users interact with databases, bridging the gap between natural language and complex SQL queries. 
 
+![Text to SQL chat](client_app/assets/texttosql.png)
+
+![Text to SQL metrics](client_app/assets/metrics.png)
 
 ## Architecture
 
