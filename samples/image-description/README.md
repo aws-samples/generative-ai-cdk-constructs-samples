@@ -8,15 +8,13 @@ Under the hood, the [AWS Generative AI CDK Constructs](https://github.com/awslab
 
 The AWS Generative AI CDK Constructs simplify the deployment and management of this complex architecture, enabling developers to focus on building innovative applications while leveraging the power of AWS services and generative AI models.
 
-English
-
-![image](client_app/assets/dog_english.gif)
+Multiple Images
+![image](client_app/assets/multiple_img.png)
 
 French
-![image](client_app/assets/cat_spanish.gif)
+![image](client_app/assets/french_img.png)
 
-Multiple Images
-![image](client_app/assets/multiple_images.gif)
+
 
 ## Architecture
 
