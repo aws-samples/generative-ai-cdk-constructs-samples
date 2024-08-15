@@ -209,7 +209,7 @@ def send_text_to_api(input_text, unique_id):
     response = requests.post(TEXT_TO_SQL_API_ENDPOINT,
                              headers=headers, json=payload)
     st.session_state["poll_feedback_queue"] = True
-
+    
     if response.status_code == 200:
         print(f"Text sent to API: {input_text}")
     else:
@@ -353,8 +353,7 @@ if auth.is_authenticated():
                 send_text_to_api(prompt, unique_id)
             else:
                 print("waiting for feedback or result to be displayed..")
-            print(f'Start polling for feedback... {
-                  st.session_state["poll_feedback_queue"]}')
+            print(f'Start polling for feedback...{st.session_state["poll_feedback_queue"]}')
 
         while st.session_state["poll_feedback_queue"] is True:
             receive_messages()
@@ -362,8 +361,7 @@ if auth.is_authenticated():
             time.sleep(5)  # Wait for 5 seconds before checking again
 
         print(" feedback polling ended..")
-        print(f'Start polling for result... {
-              st.session_state["poll_result_queue"]}')
+        print(f'Start polling for result... {st.session_state["poll_result_queue"]}')
         while st.session_state["poll_result_queue"] is True:
             receive_result()
             time.sleep(5)  # Wait for 5 seconds before checking again
@@ -384,9 +382,8 @@ with st.sidebar:
 
     workflow = st.selectbox(
         label="Select config file:",
-        options=["workflow_config.json", "knowledge_layer.json",
-                 "knowledge_layer_prompt.json",
-                 "kb_schema_linking_prompt.json",
+        options=["workflow_config.json",
+                 "knowledge_layer.json",
                  "few_shots.json"],
         key="workflow",
         help="Select workflow",

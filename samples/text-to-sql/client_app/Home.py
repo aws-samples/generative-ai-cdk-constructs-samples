@@ -43,7 +43,7 @@ auth.set_session_state()
 auth.print_login_logout_buttons()
 
 # Guest user UI
-st.write("# Welcome to Image Description Application.")
+st.write("# Welcome to Text to SQL Application.")
 st.markdown('''
 
 This sample application harnesses the power of generative AI to generate SQL from natural language.

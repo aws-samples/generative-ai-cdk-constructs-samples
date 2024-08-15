@@ -155,12 +155,32 @@ Transfer the SQL script file from your local machine to the EC2 instance:
 scp -i /path/to/key.pem /path/to/script-file.sql ec2-user@<ec2-instance-public-ip>:/home/ec2-user/
 ```
 
-Update AWS Secret with DB credentials
+Update mycreds.json with db details. 
+Login to Amazon Console and search for RDS.
+Click on Databases on left panel.
+Click on DB identifier
+Modify DB and add Master password.
+Add the same password in mycreds.json file.
+Copy Endpoint name (select writer instance).
+add host = Endpoint name in mycreds.json file.
+copy port and add it in mycreds.json file.
+
+```
+   "engine": "mysql",
+    "username": "admin", 
+    "password": "<password>",
+    "host": "<db host>", 
+    "dbname": "Chinook",
+    "port": "<db port>"
+```
+
+Update AWS Secret with DB credentials. 
+
 
  ```
 aws secretsmanager put-secret-value \
     --secret-id texttosqldbsecret \
-    --secret-string file://<PATH TO DB.SQL>
+    --secret-string file://db_setup/mycreds.json
  ```
 
 Connect to the Aurora MySQL cluster:
@@ -183,6 +203,16 @@ SHOW DATABASES;
 USE database_name;
 SHOW TABLES;
    ```
+
+9.  ## Upload config files
+- Update workflow_config.json for the primary execution flow of the aws-text-to-sql construct
+- Add knowledge_layer.json file in config_files directory. This file has a key-value pair between natural language most used keywords and db schema keywords.
+- Add few_shots.json file in config_files directory. This file has few examples for the input question
+and expected query. This is used by the LLM to generate accurate query.
+
+```cd text-to-sql
+aws s3 cp ./config_files s3://config-bucket-name/ --recursive
+```
 
 ## Run the Streamlit UI
 
@@ -227,8 +257,6 @@ Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved fr
 - Click on ```Insight to Data``` on left panel.
 - Ask sample question "How many makers are there?"
 
-## Config files
-- Update workflow_config.json file  of the aws-text-to-sql construct with this sample app config files
 
 ## Clean up
 
