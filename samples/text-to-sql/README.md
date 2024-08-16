@@ -12,9 +12,9 @@ In the event of a query execution failure, the application enters an auto-correc
 
 Furthermore, the application captures and displays key query metrics on the user interface, providing valuable insights into the performance and efficiency of the generated SQL queries. These metrics serve as benchmarks, enabling users to optimize their queries and ensure optimal database performance.
 
-Underpinning this powerful application is the Generative AI CDK (aws-text-to-sql) construct, a robust framework developed by AWS to facilitate the seamless integration of generative AI capabilities into applications. 
+Underpinning this powerful application is the Generative AI CDK (aws-text-to-sql) construct, a robust framework developed by AWS to facilitate the seamless integration of generative AI capabilities into applications.
 
-Overall, the "Text To SQL" generative AI sample application change the way users interact with databases, bridging the gap between natural language and complex SQL queries. 
+Overall, the "Text To SQL" generative AI sample application change the way users interact with databases, bridging the gap between natural language and complex SQL queries.
 
 ![Text to SQL chat](client_app/assets/texttosql.png)
 
@@ -40,7 +40,7 @@ samples/text-to-sql
 ├── client_app                                # Streamlit  
 │   └── pages
         └── 1_🤖_text_to_sql_client.py   
-        └── 2_📈_text_to_sql_metrics.py           
+        └── 2_📈_text_to_sql_metrics.py       
     └── Home.py                               # Streamlit landing 
 ```
 
@@ -98,31 +98,37 @@ This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.am
    $ cdk deploy --all
    ```
 8. ## Database Setup
-If you're using the default database service with the construct, you'll need to follow these steps to create the database and insert values into the tables using the script This sample application use ``` /client_app/config_files/Chinook_MySql.sql ``` file.
+
+If you're using the default database service with the construct, you'll need to follow these steps to create the database and insert values into the tables using the script This sample application use ```/client_app/config_files/Chinook_MySql.sql``` file. Please refer [this](https://github.com/lerocha/chinook-database/blob/master/ChinookDatabase/DataSources/Chinook_MySql.sql) for more details on db schema.
 
 Create an EC2 instance and SSH into it:
 
 Create a new key pair (if you don't have one already):
+
 ```
 aws ec2 create-key-pair --key-name dbsetup --query 'KeyMaterial' --output text > dbsetup.pem
 ```
+
 Launch EC2 Amazon linux instance
+
 ```
 aws ec2 run-instances --image-id ami-0cff7528ff583bf9a --count 1 --instance-type t2.medium --key-name MyKeyPair --security-group-ids <lambda_security_group> --subnet-id <YOUR_public_SUBNET_ID> --associate-public-ip-address --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=dbsetup}]'
 ```
 
+
 <!-- aws ec2 run-instances --image-id ami-0cff7528ff583bf9a --count 1 --instance-type t2.medium --key-name dbsetupv2 --security-group-ids sg-0c7f5db46421d72b4 --subnet-id subnet-0bbfae2f483b73c42 --associate-public-ip-address --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=dbsetupv2}]' -->
 
 Add inbound rules to security group
+
 ```
 aws ec2 authorize-security-group-ingress \
     --group-id <lambda_security_group> \
     --protocol tcp \
     --port 22 \
     --cidr <YOUR_LOCAL_PUBLIC_IP>/32
-``` 
-    
-Add inbound rules to NACL 
+```
+
+Add inbound rules to NACL
 
 ```
 aws ec2 create-network-acl-entry \
@@ -134,6 +140,7 @@ aws ec2 create-network-acl-entry \
     --rule-action allow \
     --ingress
 ```
+
 SSH to EC2 machine
 
 ```
@@ -143,22 +150,24 @@ ssh -i /path/to/key.pem ec2-user@<ec2-instance-public-ip>
 Once your are able to access the EC2 instance, next step is to run the db script with MySql client.
 
 Update the system packages:
-   ```
-   sudo dnf update -y
-   ```
 
- Install MariaDB:
-   ```
-   sudo dnf install mariadb105
-   ```
+```
+sudo dnf update -y
+```
+
+Install MariaDB:
+
+```
+sudo dnf install mariadb105
+```
 
 Transfer the SQL script file from your local machine to the EC2 instance:
-   
+
 ```
 scp -i /path/to/key.pem /path/to/script-file.sql ec2-user@<ec2-instance-public-ip>:/home/ec2-user/
 ```
 
-Update mycreds.json with db details. 
+Update mycreds.json with db details.
 Login to Amazon Console and search for RDS.
 Click on Databases on left panel.
 Click on DB identifier
@@ -177,41 +186,44 @@ copy port and add it in mycreds.json file.
     "port": "<db port>"
 ```
 
-Update AWS Secret with DB credentials. 
+Update AWS Secret with DB credentials.
 
-
- ```
+```
 aws secretsmanager put-secret-value \
-    --secret-id texttosqldbsecret \
-    --secret-string file://db_setup/mycreds.json
- ```
+   --secret-id texttosqldbsecret \
+   --secret-string file://db_setup/mycreds.json
+```
 
 Connect to the Aurora MySQL cluster:
+
 ```
 mysql -h <myauroracluster.cluster-xyz.us-east-1.rds.amazonaws.com> -P 3306 -u <myuse> -p
-   ```
+```
 
 Enter the password when prompted.
 
 ** Add master password through console
 
 Run the SQL script:
+
 ```sql
 SOURCE /home/ec2-user/Chinook_MySql.sql
 ```
 
 Verify the database and table names:
+
 ```sql
 SHOW DATABASES;
 USE database_name;
 SHOW TABLES;
-   ```
+```
 
-9.  ## Upload config files
+9. ## Upload config files
+
 - Update workflow_config.json for the primary execution flow of the aws-text-to-sql construct
 - Add knowledge_layer.json file in config_files directory. This file has a key-value pair between natural language most used keywords and db schema keywords.
 - Add few_shots.json file in config_files directory. This file has few examples for the input question
-and expected query. This is used by the LLM to generate accurate query.
+  and expected query. This is used by the LLM to generate accurate query.
 
 ```cd text-to-sql
 aws s3 cp ./config_files s3://config-bucket-name/ --recursive
@@ -260,7 +272,6 @@ Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved fr
 - Click on ```Insight to Data``` on left panel.
 - Ask sample question "How many makers are there?"
 
-
 ## Clean up
 
 Do not forget to delete the stack to avoid unexpected charges.
@@ -272,7 +283,6 @@ First make sure to remove all data from the Amazon Simple Storage Service (Amazo
 ```
 
 Then in the AWS Console delete the S3 buckets.
-
 
 # Content Security Legal Disclaimer
 

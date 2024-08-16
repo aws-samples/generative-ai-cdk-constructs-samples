@@ -28,6 +28,7 @@ def handler(input,lambda_context):
     reformualted_question = body_data.get('reformualted_question', None) 
     generated_query = body_data.get('generated_query', None)
     execute_sql_strategy = body_data.get('execute_sql_strategy', None)
+    execution_start_time = body_data.get('execution_start_time', None)
     
     print(f'sending feedback...')
     # Send a task success response to Step Functions
@@ -39,7 +40,8 @@ def handler(input,lambda_context):
                     'feedback_response':'',
                     'question_unique_id':unique_id,
                     'generated_query':generated_query,
-                    'execute_sql_strategy':execute_sql_strategy
+                    'execute_sql_strategy':execute_sql_strategy,
+                    'execution_start_time':execution_start_time
                 })
             )
     
