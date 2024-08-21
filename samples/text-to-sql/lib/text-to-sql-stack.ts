@@ -43,7 +43,7 @@ export class TextToSqlStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const stage = "-DEV";
+    const stage = "-QA";
     const uniqueStackIdPart = cdk.Fn.select(
       2,
       cdk.Fn.split("/", `${cdk.Aws.STACK_ID}`)
@@ -134,7 +134,7 @@ export class TextToSqlStack extends cdk.Stack {
     const textToSql = new emergingTech.TextToSql(this, "TextToSql1", {
       databaseType: emergingTech.DatabaseType.AURORA,
       dbName: emergingTech.DbName.MYSQL,
-      metadataSource: "config_file",
+      metadataSource: emergingTech.MetatdataSource.CONFIG_FILE,
       stage: "dev",
     });
 
@@ -188,9 +188,8 @@ export class TextToSqlStack extends cdk.Stack {
                 {
                   "Detail": "$util.escapeJavaScript($input.body)",
                   "DetailType": "POST-Request",
-                  "EventBusArn": "arn:aws:events:your-region:your-account-id:event-bus/your-custom-event-bus-name",
-
-                  "EventBusName": "texttosqlbusdevtexttosqlstacktexttosql1eb82bd03",
+                  "EventBusArn": "${eventBus!.eventBusArn}",
+                  "EventBusName": "${eventBus!.eventBusName}",
                   "Source": "webclient"
                 }
               ]
@@ -303,7 +302,7 @@ export class TextToSqlStack extends cdk.Stack {
       value: this.authenticatedRole.roleArn,
     });
 
-    new cdk.CfnOutput(this, "API_ENDPOINT", { value: restApi.url });
+    new cdk.CfnOutput(this, "API_ENDPOINT", { value: restApi.url +"/textToSqlAPI"});
     new cdk.CfnOutput(this, "FEEDBACK_QUEUE", {
       value: textToSql.feedbackQueue.queueName,
     });
@@ -316,5 +315,18 @@ export class TextToSqlStack extends cdk.Stack {
     new cdk.CfnOutput(this, "CONFIG_BUCKET", {
       value: textToSql.configAssetBucket.bucketName,
     });
+
+    new cdk.CfnOutput(this, "SECURITY_GROUP", {
+      value: textToSql.lambdaSecurityGroup.uniqueId,
+    });
+
+    new cdk.CfnOutput(this, "PUBLIC_SUBNET_ID", {
+      value: textToSql.vpc.publicSubnets.at(0)?.subnetId || "",
+    });
+    
+   
   }
+  
 }
+
+

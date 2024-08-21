@@ -112,11 +112,8 @@ aws ec2 create-key-pair --key-name dbsetup --query 'KeyMaterial' --output text >
 Launch EC2 Amazon linux instance
 
 ```
-aws ec2 run-instances --image-id ami-0cff7528ff583bf9a --count 1 --instance-type t2.medium --key-name MyKeyPair --security-group-ids <lambda_security_group> --subnet-id <YOUR_public_SUBNET_ID> --associate-public-ip-address --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=dbsetup}]'
+aws ec2 run-instances --image-id ami-066784287e358dad1 --count 1 --instance-type t2.medium --key-name MyKeyPair --security-group-ids <lambda_security_group> --subnet-id <YOUR_public_SUBNET_ID> --associate-public-ip-address --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=dbsetup}]'
 ```
-
-
-<!-- aws ec2 run-instances --image-id ami-0cff7528ff583bf9a --count 1 --instance-type t2.medium --key-name dbsetupv2 --security-group-ids sg-0c7f5db46421d72b4 --subnet-id subnet-0bbfae2f483b73c42 --associate-public-ip-address --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=dbsetupv2}]' -->
 
 Add inbound rules to security group
 
@@ -197,7 +194,7 @@ aws secretsmanager put-secret-value \
 Connect to the Aurora MySQL cluster:
 
 ```
-mysql -h <myauroracluster.cluster-xyz.us-east-1.rds.amazonaws.com> -P 3306 -u <myuse> -p
+mysql -h <myauroracluster.cluster-xyz.us-east-1.rds.amazonaws.com> -P 3306 -u <username> -p
 ```
 
 Enter the password when prompted.
