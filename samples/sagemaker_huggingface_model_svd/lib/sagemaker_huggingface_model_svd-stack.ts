@@ -22,9 +22,10 @@ export class SagemakerHuggingfaceModelSvdStack extends cdk.Stack {
 
     // Define some constants
     const BUCKET_NAME = 'XXXXXXXXXXX';
+    const BUCKET_KEY = 'svd-hf-1';
     const SG_ENDPOINT_NAME = 'svdendpoint';
     const HUGGING_FACE_MODEL_ID = 'stabilityai/stable-video-diffusion-img2vid-xt-1-1';
-    const BUCKET_PATH = `s3://${BUCKET_NAME}/svd-hf-1`
+    const BUCKET_PATH = `s3://${BUCKET_NAME}/${BUCKET_KEY}`
     const BUCKET_ARN = `arn:aws:s3:::${BUCKET_NAME}`
 
     // Custom Sagemaker Endpoint construct
