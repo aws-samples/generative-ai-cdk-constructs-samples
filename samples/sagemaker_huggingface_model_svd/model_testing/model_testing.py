@@ -25,7 +25,7 @@ s3_resource = boto3.resource("s3")
 sagemaker_client = boto3.client("sagemaker-runtime")
 
 # Configuration
-S3_BUCKET = "sagemaker-us-east-1-713520743023"
+S3_BUCKET = "XXXXX"
 S3_BUCKET_KEY = "svd-hf-1"
 S3_BUCKET_OUTPUT_KEY = "output" # this is the output folder in the S3 bucket (configured in the asyncInference construct settings)
 ENDPOINT_NAME = "svdendpoint" # endpoint name configured in the construct
