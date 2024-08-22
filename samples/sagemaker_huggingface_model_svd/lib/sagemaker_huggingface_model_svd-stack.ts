@@ -21,9 +21,13 @@ export class SagemakerHuggingfaceModelSvdStack extends cdk.Stack {
     super(scope, id, props);
 
     // Define some constants
+    const BUCKET_NAME = 'XXXXXXXXXXX';
     const SG_ENDPOINT_NAME = 'svdendpoint';
     const HUGGING_FACE_MODEL_ID = 'stabilityai/stable-video-diffusion-img2vid-xt-1-1';
-    const BUCKET_PATH = 's3://BUCKET'
+    const BUCKET_PATH = `s3://${BUCKET_NAME}/svd-hf-1`
+    const BUCKET_ARN = `arn:aws:s3:::${BUCKET_NAME}`
+
+    // S3 bucket for storing model artifacts
 
     // Custom Sagemaker Endpoint construct
     const CustomHuggingFaceEndpoint = new genai.CustomSageMakerEndpoint(this, 'testsvdendpoint', {
@@ -62,8 +66,8 @@ export class SagemakerHuggingfaceModelSvdStack extends cdk.Stack {
           's3:List*',
         ],
         resources: [
-          'BUCKET_ARN',
-          'BUCKET_ARN/*',
+          `${BUCKET_ARN}`,
+          `${BUCKET_ARN}/*`,
         ],
       }),
     );
