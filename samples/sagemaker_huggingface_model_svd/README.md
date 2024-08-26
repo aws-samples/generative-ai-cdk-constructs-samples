@@ -88,10 +88,13 @@ This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.am
    npm install
    ```
 
-5. Update the location of your model artifacts. Update in [sagemaker_huggingface_model_svd-stack.ts](./lib/sagemaker_huggingface_model_svd-stack.ts) the field ```modelDataUrl``` to specify the location where your saved your model artifacts during the [prepare your model](#prepare-your-model) step. The field should look like this: ```s3//BUCKET//KEY```. Also, replace the bucket arn field (```BUCKET_ARN```) in the same file with the ARN of the Amazon S3 bucket containing your model artifacts. This will give the permissions to the construct to pull your model artifacts. Specify the ```outputPath``` and ```failure``` folder paths where the construct will output the model response. Those folders need to be in the same bucket specified previously. For instance:
+5. Update the location of your model artifacts. First, update in [sagemaker_huggingface_model_svd-stack.ts](./lib/sagemaker_huggingface_model_svd-stack.ts) the field ```modelDataUrl``` to specify the location where your saved your model artifacts during the [prepare your model](#prepare-your-model) step. Next, replace the bucket name field (```BUCKET_NAME```) and potentially the bucket key (```BUCKET_KEY```) in the same file with the name of the Amazon S3 bucket containing your model artifacts. This will give the permissions to the construct to pull your model artifacts. Specify the ```outputPath``` and ```failure``` folder paths where the construct will output the model response. Those folders need to be in the same bucket specified previously. For instance:
 
 ```
-const BUCKET_PATH = 's3://sagemaker-us-east-1-XXXXXXXX/svd-hf-1'
+const BUCKET_NAME = 'sagemaker-us-east-1-XXXXXXXX'
+const BUCKET_KEY = 'svd-hf-1';
+const BUCKET_PATH = `s3://${BUCKET_NAME}/${BUCKET_KEY}`
+const BUCKET_ARN = `arn:aws:s3:::${BUCKET_NAME}`
 ...
 modelDataUrl: BUCKET_PATH+'/model.tar.gz',
 ...

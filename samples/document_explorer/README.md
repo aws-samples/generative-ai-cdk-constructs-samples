@@ -22,6 +22,9 @@ Here is the architecture diagram of the sample application:
 ### Back-End Architecture
 ![Backend Architecture Diagram](docs/images/architecture.png)
 
+### Multiple Document QA Modification
+To modify this sample with the ability to perform Question and Answering against multiple source documents, follow the instructions in the Multiple Document QA Modification [README](multi-doc-mod/README.md).
+
 ## Folder Structure
 
 This Document Explorer codebase is organized into folders containing the ```frontend``` and ```backend``` infrastructure code. The frontend client app is built with [Streamlit](https://streamlit.io/) and is located in the ```client_app``` folder. The backend code lives in ```bin/document_explorer.ts``` and uses the AWS CDK resources defined in the ```lib``` folder.
