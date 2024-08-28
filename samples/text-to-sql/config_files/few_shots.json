@@ -1,42 +1,28 @@
 [
     {
-        "input": "Find all albums for the artist 'AC/DC'.",
-        "query": "SELECT * FROM Album WHERE ArtistId = (SELECT ArtistId FROM Artist WHERE Name = 'AC/DC');"
+        "input": "Find all questions from 2024.",
+        "query": "SELECT * FROM POC_QuestionText WHERE Year = 2024;"
     },
     {
-        "input": "List all tracks in the 'Rock' genre.",
-        "query": "SELECT * FROM Track WHERE GenreId = (SELECT GenreId FROM Genre WHERE Name = 'Rock');"
+        "input": "Give me the list of single choice questions.",
+        "query": "SELECT * FROM POC_QuestionText qt JOIN POC_Question pq ON qt.QuesID = pq.QuesID WHERE pq.QuestionType = 2;"
     },
     {
-        "input": "Find the total duration of all tracks.",
-        "query": "SELECT SUM(Milliseconds) FROM Track;"
+        "input": "How many questions are there in 2024?",
+        "query": "SELECT COUNT(*) FROM POC_QuestionText WHERE Year = 2024;"
     },
     {
-        "input": "List all customers from Canada.",
-        "query": "SELECT * FROM Customer WHERE Country = 'Canada';"
+        "input": "Give me the list of students born in 2012?",
+        "query": "SELECT * FROM Student where year(dob) = 2012;"
+    },
+    
+    
+    {
+        "input": "what is the answer of question What color is the ocean?",
+        "query": "SELECT Text FROM POC_AnswerText pa JOIN POC_QuestionText pq ON pa.QuesID =  pq.QuesID WHERE pq.QuestionText = 'What color is the ocean?';"
     },
     {
-        "input": "How many tracks are there in the album with ID 5?",
-        "query": "SELECT COUNT(*) FROM Track WHERE AlbumId = 5;"
-    },
-    {
-        "input": "Find the total number of invoices.",
-        "query": "SELECT COUNT(*) FROM Invoice;"
-    },
-    {
-        "input": "List all tracks that are longer than 5 minutes.",
-        "query": "SELECT * FROM Track WHERE Milliseconds > 300000;"
-    },
-    {
-        "input": "Who are the top 5 customers by total purchase?",
-        "query": "SELECT CustomerId, SUM(Total) AS TotalPurchase FROM Invoice GROUP BY CustomerId ORDER BY TotalPurchase DESC LIMIT 5;"
-    },
-    {
-        "input": "Which albums are from the year 2000?",
-        "query": "SELECT * FROM Album WHERE strftime('%Y', ReleaseDate) = '2000';"
-    },
-    {
-        "input": "How many employees are there",
-        "query": "SELECT COUNT(*) FROM \"Employee\""
+        "input": "Give me the list of students living in Texas?",
+        "query": "SELECT * FROM Student t1 JOIN Address t2 ON t1.studentid = t2.studentid WHERE t2.state = 'Texas';"
     }
 ]

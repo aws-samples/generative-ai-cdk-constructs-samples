@@ -86,6 +86,10 @@ def receive_messages():
             execute_sql_strategy = message_body.get(
                 'execute_sql_strategy', {}).get('value', '')
             st.session_state["execute_sql_strategy"] = execute_sql_strategy
+            
+            execution_start_time = message_body.get(
+                'execution_start_time', {}).get('value', '')
+            st.session_state["execution_start_time"] = execution_start_time
 
             print(f'set original_user_question :: {original_user_question} ')
 
@@ -146,7 +150,7 @@ def receive_result():
             result_received = True
             message_body = json.loads(message['Body'])
 
-            print(f"Result received:")
+            print(f"Result received: {message_body}")
             # if(st.session_state["unique_id"]==)
             result = message_body.get('result', {}).get('value', '')
             if result:
@@ -242,6 +246,8 @@ def send_feedback(feedback_type, input_text, unique_id):
                "task_token": st.session_state["task_token"],
                "reformualted_question": reformualted_question,
                "generated_query": generated_query,
+               "execute_sql_strategy": st.session_state["execute_sql_strategy"],
+               "execution_start_time": st.session_state["execution_start_time"]
                }
     print(f"Payload: {payload}")
 

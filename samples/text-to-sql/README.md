@@ -164,42 +164,13 @@ Transfer the SQL script file from your local machine to the EC2 instance:
 scp -i /path/to/key.pem /path/to/script-file.sql ec2-user@<ec2-instance-public-ip>:/home/ec2-user/
 ```
 
-Update mycreds.json with db details.
-Login to Amazon Console and search for RDS.
-Click on Databases on left panel.
-Click on DB identifier
-Modify DB and add Master password.
-Add the same password in mycreds.json file.
-Copy Endpoint name (select writer instance).
-add host = Endpoint name in mycreds.json file.
-copy port and add it in mycreds.json file.
-
-```
-   "engine": "mysql",
-    "username": "admin", 
-    "password": "<password>",
-    "host": "<db host>", 
-    "dbname": "Chinook",
-    "port": "<db port>"
-```
-
-Update AWS Secret with DB credentials.
-
-```
-aws secretsmanager put-secret-value \
-   --secret-id texttosqldbsecret \
-   --secret-string file://db_setup/mycreds.json
-```
-
 Connect to the Aurora MySQL cluster:
 
 ```
 mysql -h <myauroracluster.cluster-xyz.us-east-1.rds.amazonaws.com> -P 3306 -u <username> -p
 ```
 
-Enter the password when prompted.
-
-** Add master password through console
+Enter the password when prompted. You can retrieve the password from the db secret.
 
 Run the SQL script:
 

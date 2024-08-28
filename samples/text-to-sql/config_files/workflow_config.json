@@ -1,7 +1,7 @@
 {
     "verbose": false,
     "semantic_layer": {
-        "strategy": "auto",
+        "strategy": "human",
         "config_files":{
             "prompt_template_path": "config/knowledge_layer_prompt.json"
         },
@@ -16,7 +16,7 @@
         "temperature": 0
     },
     "sql_generation": {
-        "strategy": "auto",
+        "strategy": "human",
         "few_shots_examples": "config/few_shots.json",
         "few_shots_strategy": "static",
         "few_shots_max": 5,
@@ -41,3 +41,4 @@
         "metrics_file_name": "metric/texttosql_metrics.csv"  
     }
 }
+

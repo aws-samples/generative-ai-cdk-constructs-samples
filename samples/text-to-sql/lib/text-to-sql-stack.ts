@@ -2,6 +2,11 @@ import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import * as emergingTech from "@cdklabs/generative-ai-cdk-constructs";
 import * as apigateway from "aws-cdk-lib/aws-apigateway";
+import * as secretsmanager from "aws-cdk-lib/aws-secretsmanager";
+import * as rds from "aws-cdk-lib/aws-rds";
+import * as ec2 from "aws-cdk-lib/aws-ec2";
+import { NagSuppressions } from "cdk-nag";
+
 import {
   Effect,
   PolicyStatement,
@@ -131,12 +136,32 @@ export class TextToSqlStack extends cdk.Stack {
       }
     );
 
+    const secret = this.createSecret(stage, "texttosqlacdbsecret");
+    const secretCompleteArn = secret.secretFullArn;
+    secret.addRotationSchedule("RotationSchedule", 
+      {  hostedRotation: secretsmanager.HostedRotation.mysqlSingleUser(),
+      });
+    
+
+    //---------------------------------------------------------------------
+    // TEXT TO SQL construct
+    //---------------------------------------------------------------------
+
     const textToSql = new emergingTech.TextToSql(this, "TextToSql1", {
-      databaseType: emergingTech.DatabaseType.AURORA,
+      databaseSecretARN: secretCompleteArn ? secretCompleteArn : "",
       dbName: emergingTech.DbName.MYSQL,
       metadataSource: emergingTech.MetatdataSource.CONFIG_FILE,
-      stage: "dev",
+      stage: stage,
     });
+
+    this.createAuroraCluster(
+      emergingTech.DbName.MYSQL,
+      3306,
+      textToSql.dbSecurityGroup,
+      secret,
+      textToSql.vpc,
+      "Chinook"
+    );
 
     const eventBus = textToSql.eventBus;
 
@@ -156,7 +181,9 @@ export class TextToSqlStack extends cdk.Stack {
       })
     );
 
-    // Create REST API Gateway
+    //---------------------------------------------------------------------
+    // REST API Gateway
+    //---------------------------------------------------------------------
     const restApi = new apigateway.RestApi(this, "RestAPIGw");
 
     const eventBridgeRestApiIntegration = new apigateway.AwsIntegration({
@@ -302,12 +329,14 @@ export class TextToSqlStack extends cdk.Stack {
       value: this.authenticatedRole.roleArn,
     });
 
-    new cdk.CfnOutput(this, "API_ENDPOINT", { value: restApi.url +"/textToSqlAPI"});
+    new cdk.CfnOutput(this, "API_ENDPOINT", {
+      value: restApi.url + "/textToSqlAPI",
+    });
     new cdk.CfnOutput(this, "FEEDBACK_QUEUE", {
-      value: textToSql.feedbackQueue.queueName,
+      value: textToSql.feedbackQueue.queueUrl,
     });
     new cdk.CfnOutput(this, "RESULT_QUEUE", {
-      value: textToSql.outputQueue.queueName,
+      value: textToSql.outputQueue.queueUrl,
     });
     new cdk.CfnOutput(this, "FEEDBACK_ENDPOINT", {
       value: restApi.url + "/feedbackAPI",
@@ -323,10 +352,139 @@ export class TextToSqlStack extends cdk.Stack {
     new cdk.CfnOutput(this, "PUBLIC_SUBNET_ID", {
       value: textToSql.vpc.publicSubnets.at(0)?.subnetId || "",
     });
-    
-   
+
+       // CDK- NAG suppressions
+       NagSuppressions.addResourceSuppressions(
+        this,
+        [
+          {
+            id: "AwsSolutions-IAM5",
+            reason: "ESLogGroupPolicy managed by aws-cdk.",
+            appliesTo: [
+              "Resource::*",
+              "Resource::<TextToSql1configassetQA2A0581E5.Arn>/*",
+              "Resource::<TextToSql1queryExecutorFunctionNameQA74D84D0B.Arn>:*",
+              "Resource::<TextToSql1queryGeneratorFunctionQA550773FE.Arn>:*",
+              "Resource::<TextToSql1reformulateQuestionFunctionQA1B72EAFF.Arn>:*",
+              "Resource::arn:<AWS::Partition>:bedrock:<AWS::Region>::foundation-model/*",
+              "Resource::arn:<AWS::Partition>:logs:<AWS::Region>:<AWS::AccountId>:log-group:/aws/lambda/*",
+              "Resource::arn:<AWS::Partition>:s3:::<TextToSql1configassetQA2A0581E5>/*",
+              "Resource::<TextToSql1autocorrectQueryFunctionQA80F3055B.Arn>:*",
+                        ],
+          },
+          {
+            id: "AwsSolutions-IAM5",
+            reason: "s3 action managed by generative-ai-cdk-constructs.",
+            appliesTo: [
+              "Action::s3:*",
+              "Action::s3:Abort*",
+              "Action::s3:DeleteObject*",
+              "Action::s3:GetBucket*",
+              "Action::s3:GetObject*",
+              "Action::s3:List*",
+            ],
+          },
+          {
+            id: "AwsSolutions-IAM4",
+            reason: "ServiceRole managed by aws-cdk.",
+            appliesTo: [
+              "Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+            ],
+          },
+          {
+            id: "AwsSolutions-L1",
+            reason: "Runtime managed by aws-cdk.",
+          },
+          {
+            id: "AwsSolutions-SQS3",
+            reason: "Queue managed by genertive ai cdk constructs.",
+          },
+          {
+            id: 'AwsSolutions-RDS6',
+            reason: 'Using password authentication for sample db.',
+          },
+          {
+            id: 'AwsSolutions-RDS10',
+            reason: 'Using sample db which needs to be deleted.',
+          },
+          {
+            id: 'AwsSolutions-RDS11',
+            reason: 'Using sample db which needs to be deleted.',
+          },
+          {
+            id: 'AwsSolutions-RDS14',
+            reason: 'Using sample db which needs to be deleted.',
+          },
+          {
+            id: 'AwsSolutions-APIG1',
+            reason: 'Using sample api for the sample app.',
+          },
+          {
+            id: 'AwsSolutions-APIG2',
+            reason: 'Using sample api for the sample app.',
+          },
+          {
+            id: 'AwsSolutions-APIG6',
+            reason: 'Using sample api for the sample app.',
+          },
+        ],
+        true
+      );
   }
+
+  //---------------------------------------------------------------------
+  // Create Database secret
+  //---------------------------------------------------------------------
+
+  private createSecret(
+    stage: string,
+    secretName: string
+  ): secretsmanager.Secret {
+    return new secretsmanager.Secret(this, "dbsecret" + stage, {
+      secretName: secretName,
+      generateSecretString: {
+        excludePunctuation: true,
+        passwordLength: 16,
+        secretStringTemplate: JSON.stringify({
+          username: "admin",
+        }),
+        generateStringKey: "password",
+      },
+    });
+  }
+
+  //---------------------------------------------------------------------
+  // Create Database
+  //---------------------------------------------------------------------
+
+  private createAuroraCluster(
+    dbName: string,
+    dbPort: number,
+    dbSecurityGroup: ec2.SecurityGroup,
+    secret: secretsmanager.Secret,
+    vpc: ec2.IVpc,
+    databaseName: string
+  ): rds.DatabaseCluster {
+    return new rds.DatabaseCluster(this, "AuroraCluster", {
+      engine: rds.DatabaseClusterEngine.auroraMysql({
+        version: rds.AuroraMysqlEngineVersion.VER_3_07_0,
+      }),
+      storageEncrypted:true,
+      port: dbPort,
+      credentials: rds.Credentials.fromSecret(secret),
+      instanceProps: {
+        vpc: vpc,
+        vpcSubnets: { subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS },
+        securityGroups: [dbSecurityGroup],
+        instanceType: ec2.InstanceType.of(
+          ec2.InstanceClass.BURSTABLE3,
+          ec2.InstanceSize.MEDIUM
+        ),
+      },
+      instances: 1,
+      defaultDatabaseName: databaseName,
+    });
+  }
+
   
 }
-
-

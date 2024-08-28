@@ -30,6 +30,8 @@ def handler(input,lambda_context):
     execute_sql_strategy = body_data.get('execute_sql_strategy', None)
     execution_start_time = body_data.get('execution_start_time', None)
     
+    print(f'execute_sql_strategy:: {execute_sql_strategy}')
+    print(f'generated_query :: {generated_query}')
     print(f'sending feedback...')
     # Send a task success response to Step Functions
     response = sfn_client.send_task_success(
