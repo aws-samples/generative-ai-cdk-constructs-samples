@@ -71,9 +71,12 @@ export class NetworkingStack extends Stack {
         });
 
         //---------------------------------------------------------------------
-        // Gateway VPC endpoint for S3
+        // Gateway VPC endpoint for services.
         //---------------------------------------------------------------------
         this.vpc.addGatewayEndpoint("S3GatewayEndpoint", {service: ec2.GatewayVpcEndpointAwsService.S3});
+        //this.vpc.addInterfaceEndpoint("BedrockRuntimeEndpoint", {service: ec2.InterfaceVpcEndpointAwsService.BEDROCK_RUNTIME});
+        //this.vpc.addInterfaceEndpoint("RecognitionEndpoint", {service: ec2.InterfaceVpcEndpointAwsService.REKOGNITION});
+        //this.vpc.addInterfaceEndpoint("AppSyncEndpoint", {service: ec2.InterfaceVpcEndpointAwsService.APP_SYNC});
 
         //---------------------------------------------------------------------
         // Security Group
