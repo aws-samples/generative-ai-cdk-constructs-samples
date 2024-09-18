@@ -206,6 +206,8 @@ if auth.is_authenticated():
         submitted = st.form_submit_button("Submit", use_container_width=True)
         st.session_state['progress_bar_widget'] = st.empty()
 
+        st.info("For best result please use image of max size 500 KB")
+
         for uploaded_file in uploaded_files:
             if uploaded_file and submitted:
                 s3.upload_fileobj(
@@ -254,7 +256,8 @@ def get_filtered_model_ids(modality):
     if modality == "Image":
         return [
             'anthropic.claude-3-sonnet-20240229-v1:0',
-            'anthropic.claude-3-haiku-20240307-v1:0'
+            'anthropic.claude-3-haiku-20240307-v1:0',
+            'anthropic.claude-3-5-sonnet-20240620-v1:0'
         ]
     elif modality == "Text":
         return MODEL_ID_OPTIONS
