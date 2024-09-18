@@ -184,7 +184,7 @@ export class TextToSqlStack extends cdk.Stack {
     //---------------------------------------------------------------------
     // REST API Gateway
     //---------------------------------------------------------------------
-    const restApi = new apigateway.RestApi(this, "RestAPIGw");
+    const restApi = new apigateway.RestApi(this, "texttosqlconstructapi");
 
     const eventBridgeRestApiIntegration = new apigateway.AwsIntegration({
       action: "PutEvents",
@@ -226,7 +226,7 @@ export class TextToSqlStack extends cdk.Stack {
       },
     });
 
-    const apiResource = restApi.root.addResource("textToSqlAPI");
+    const apiResource = restApi.root.addResource("getsqlfromtext");
 
     apiResource.addMethod("POST", eventBridgeRestApiIntegration, {
       requestParameters: {
@@ -291,7 +291,7 @@ export class TextToSqlStack extends cdk.Stack {
     );
 
     // Add a new POST method to the existing feedbackAPIResource with Cognito authorization
-    const feedbackAPIResource = restApi.root.addResource("feedbackAPI");
+    const feedbackAPIResource = restApi.root.addResource("getfeedback");
     feedbackAPIResource.addMethod(
       "POST",
       new apigateway.LambdaIntegration(userFeedbackFunction),
@@ -330,7 +330,7 @@ export class TextToSqlStack extends cdk.Stack {
     });
 
     new cdk.CfnOutput(this, "API_ENDPOINT", {
-      value: restApi.url + "/textToSqlAPI",
+      value: restApi.url + "/getsqlfromtext",
     });
     new cdk.CfnOutput(this, "FEEDBACK_QUEUE", {
       value: textToSql.feedbackQueue.queueUrl,
@@ -339,7 +339,7 @@ export class TextToSqlStack extends cdk.Stack {
       value: textToSql.outputQueue.queueUrl,
     });
     new cdk.CfnOutput(this, "FEEDBACK_ENDPOINT", {
-      value: restApi.url + "/feedbackAPI",
+      value: restApi.url + "/getfeedback",
     });
     new cdk.CfnOutput(this, "CONFIG_BUCKET", {
       value: textToSql.configAssetBucket.bucketName,
