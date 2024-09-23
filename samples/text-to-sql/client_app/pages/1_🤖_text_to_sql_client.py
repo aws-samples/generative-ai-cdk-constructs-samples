@@ -21,7 +21,6 @@ import time
 import requests
 import streamlit as st
 from dotenv import load_dotenv
-from st_pages import add_indentation
 import boto3
 # Local imports
 from common.cognito_helper import CognitoHelper
@@ -257,26 +256,9 @@ def send_feedback(feedback_type, input_text, unique_id):
     else:
         print(f"Error sending feedback to API: {response.text}")
 
-
-# ========================================================================================
-# [Controller] Manage realtime data subscriptions
-# ========================================================================================
-# ----------------------------------------------------------------------------------------
-# Subscription callbacks
-# ----------------------------------------------------------------------------------------
-
-# ----------------------------------------------------------------------------------------
-# Subscription registration
-# ----------------------------------------------------------------------------------------
 # ========================================================================================
 # [View] Render UI components
 # ========================================================================================
-
-
-# Streamlit page configuration
-st.set_page_config(page_title="Text To SQL Conversion", page_icon="🏷️",
-                   layout="wide", initial_sidebar_state="expanded")
-add_indentation()
 
 hide_deploy_button()
 
@@ -374,6 +356,22 @@ if auth.is_authenticated():
 
 elif not auth.is_authenticated():
     st.info("Please login !")
+    # Guest user UI
+    st.write("# Welcome to Text to SQL Application.")
+    st.markdown('''
+
+    This sample application harnesses the power of generative AI to generate SQL from natural language.
+
+            
+    Here is the architecture diagram of the sample application:
+    ''')
+
+    st.image('assets/architecture.png', width=700)
+    st.markdown(
+        '<style>div[class="stApp"] > div[class="css-1es6loc e1tzin5j2"]{text-align:center;}</style>', unsafe_allow_html=True)
+
+
+    st.stop()
     st.stop()
 else:
     st.stop()

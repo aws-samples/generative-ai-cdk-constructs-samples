@@ -15,7 +15,8 @@ import streamlit as st
 # Local imports
 from common.cognito_helper import CognitoHelper
 from common.streamlit_utils import hide_deploy_button
-from st_pages import show_pages, Section, Page, hide_pages, add_indentation
+from st_pages import  get_nav_from_toml
+
 
 
 # ========================================================================================
@@ -24,37 +25,23 @@ from st_pages import show_pages, Section, Page, hide_pages, add_indentation
 # Streamlit page configuration
 st.set_page_config(
     page_title="Generative AI CDK Constructs Samples", page_icon="🤖")
-add_indentation()
 
-show_pages(
-    [
-        Section("Home", icon="🏠"),
-        Page("pages/1_🤖_text_to_sql_client.py",
-             "Insight to Data", "🤖", in_section=True),
-        Page("pages/2_📈_text_to_sql_metrics.py",
-             "Metrics ", "🤖", in_section=True),
+#sections = st.sidebar.toggle("Sections", value=True, key="use_sections")
 
-    ]
+nav = get_nav_from_toml(
+    "pages/pages_sections.toml" 
 )
+pg = st.navigation(nav)
+pg.run()
+
+
+#add_page_title(pg)
+
 
 # Check if user is authenticated and display login/logout buttons
 auth = CognitoHelper()
 auth.set_session_state()
 auth.print_login_logout_buttons()
-
-# Guest user UI
-st.write("# Welcome to Text to SQL Application.")
-st.markdown('''
-
-This sample application harnesses the power of generative AI to generate SQL from natural language.
-
-        
-Here is the architecture diagram of the sample application:
-''')
-
-st.image('assets/architecture.png', width=700)
-st.markdown(
-    '<style>div[class="stApp"] > div[class="css-1es6loc e1tzin5j2"]{text-align:center;}</style>', unsafe_allow_html=True)
 
 
 if auth.is_authenticated():
@@ -62,6 +49,5 @@ if auth.is_authenticated():
     hide_deploy_button()
 
 else:
-    hide_pages(["Text To SQL Sample App"])
     st.info("Please login!")
-    st.stop()
+    
