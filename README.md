@@ -21,6 +21,7 @@ This repo provides samples to demonstrate how to build your own Generative AI so
 |[Python Samples](samples/python-samples/)| This project showcases the utilization of the 'generative-ai-cdk-constructs' package from the Python Package Index (PyPI).| Backend | Python|
 |[.NET Samples](samples/dotnet-samples/)| This project showcases the utilization of the 'Cdklabs.GenerativeAiCdkConstructs' package from nuget library.| Backend | .NET|
 |[Contract Compliance Analysis](samples/contract-compliance-analysis/)| This project automates the analysis of contracts by splitting them into clauses, determining clause types, evaluating compliance against a customer's legal guidelines, and assessing overall contract risk based on the number of compliant clauses. This is achieved through a workflow that leverages Large Language Models via Amazon Bedrock. | Backend + Frontend | Python for Backend, TypeScript (React) for Frontend |
+|[Text To SQL](samples/text-to-sql/)| The "Text To SQL" generative AI sample application solution enables users to interact with databases through natural language queries, eliminating the need for extensive SQL knowledge. This application leverages the powerful Anthropic Claude 3 model, hosted on Amazon Bedrock, to translate natural language queries into executable SQL statements seamlessly. | Backend + Frontend | Python for Backend, TypeScript (React) for Frontend |
 
 ## Contributing
 
