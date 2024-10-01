@@ -4,5 +4,5 @@ PyJWT==2.8.0
 python-dotenv==1.0.1
 requests==2.32.2
 requests-aws4auth==1.2.3
-streamlit==1.36.0
+streamlit==1.38.0
 st_pages==1.0.1
