@@ -15,7 +15,6 @@ French
 ![image](client_app/assets/french_img.png)
 
 
-
 ## Architecture
 
 ![Architecture Diagram](client_app/assets/architecture.png)
@@ -59,6 +58,7 @@ To deploy this Image description application, follow these steps to set up the r
 * jq: jq-1.6
 * Docker - This construct builds a Lambda function from a Docker image, thus you need [Docker desktop](https://www.docker.com/products/docker-desktop/) running on your machine.
 
+
 ### Deploy the solution
 
 This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.amazon.com/cdk/). See [Getting Started With the AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html) for additional details and prerequisites.
@@ -100,7 +100,7 @@ This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.am
    source venv/bin/activate
    pip install -r requirements.txt
    ```
-9. Still within the /client_app directory, create an ```.env``` file with the following content or mutate the ```.env-example```. Replace the property values with the values retrieved from the stack outputs/console.
+9. Still within the /client_app directory, create an ```.env``` file with the following content. Replace the property values with the values retrieved from the stack outputs/console.
 
 ```
 COGNITO_DOMAIN="<ImageDescStack.CognitoDomain>"
