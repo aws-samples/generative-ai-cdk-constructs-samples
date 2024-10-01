@@ -60,7 +60,7 @@ Default region name [None]: us-east-1
 Default output format [None]: json
 
 * Node.js: v18.12.1
-* AWS CDK: 2.68.0
+* AWS CDK: 2.149.0
 * jq: jq-1.6
 * Docker - This sample builds a Lambda function from a Docker image, thus you need [Docker desktop](https://www.docker.com/products/docker-desktop/) running on your machine.
 
