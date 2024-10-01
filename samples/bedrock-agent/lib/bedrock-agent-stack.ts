@@ -58,9 +58,10 @@ export class BedrockAgentStack extends cdk.Stack {
       bucket: docBucket,
       knowledgeBase: kb,
       dataSourceName: 'books',
-      chunkingStrategy: bedrock.ChunkingStrategy.FIXED_SIZE,
-      maxTokens: 500,
-      overlapPercentage: 20,
+      chunkingStrategy: bedrock.ChunkingStrategy.fixedSize({
+        maxTokens: 500,
+        overlapPercentage: 20
+      }),
     });
 
     const agent = new bedrock.Agent(this, 'Agent', {
