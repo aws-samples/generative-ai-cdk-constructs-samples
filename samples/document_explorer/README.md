@@ -36,7 +36,7 @@ samples/document_explorer
 ├── client_app                                   # Frontend using Python Streamlit
 │   │
 │   ├── Home.ts                                  # Sample app entry point
-│   ├── Dockerfile                               # Sample app entry point
+│   ├── Dockerfile                               # Sample app Dockerfile
 │   ├── assets/                                  # Static files
 │   ├── common/                                  # Utility classes
 │   ├── graphql/                                 # GraphQL statements and client
@@ -51,6 +51,12 @@ samples/document_explorer
 │   ├── outputs.tf                               # Outputs definition
 │   ├── variables.tf                             # Variables defintion
 │   └── terraform.tfvars                         # Variables values
+│
+├── terraform-config-backend                    # Backend – Terraform
+│   │
+│   ├── main.tf                                  # Terraform resources 
+│   └── outputs.tf                               # Outputs definition
+│
 ├── bin
 │   └── document_explorer.ts                     # Backend - CDK app
 ├── lib                                          # CDK Stacks
@@ -136,6 +142,16 @@ then your AWS Account is likely either too new or unused for the region, and the
 > - Deploy the CDK samples with the [optional](https://github.com/awslabs/generative-ai-cdk-constructs/pull/193)
  cdk deploy --all --outputs-file apistack-outputs.json --context maximumLambdaMemorySize=3008 parameter. This method is available without waiting, but will limit functionality and cause unexpected failures when more memory than is available is required.
 
+ ### Deploy the Backend with Terraform
+ 1. Open the `/terraform-config-backend` folder
+    ```shell
+        cd terraform-config-backend
+    ```
+ 2. Run `terraform init`
+ 3. Make sure you have Docker running and deploy the Terraform by running `terraform apply`
+
+
+
 ### Deploy the Front End to AWS via Terraform
 
 <details><summary>Terraform Instructions</summary>  
@@ -144,21 +160,21 @@ then your AWS Account is likely either too new or unused for the region, and the
     ```shell
         cd terraform-config-frontend
     ```
-2. Configure your environment variables in `client_app/Dockerfile`. Replace the property values with the values retrieved from the stack outputs/console. You will leave `APP_URI` as a placeholder for now because the URI will be the Cloudfront URL output from your Terraform deployment. 
+2. Configure your environment variables in `client_app/Dockerfile`. Replace the property values with the values the were outputted from the backend Terraform deployment in your terminal. You will leave `APP_URI` as a placeholder for now because the URI will be the Cloudfront URL output from your Front End Terraform deployment. 
   ```
-ENV COGNITO_DOMAIN = "<ApiStack.CognitoDomain>"
-ENV REGION = "<ApiStack.Region>"
-ENV USER_POOL_ID = "<ApiStack.UserPoolId>"
-ENV CLIENT_ID = "<ApiStack.ClientId>"
-ENV CLIENT_SECRET = "COGNITO_CLIENT_SECRET"
-ENV IDENTITY_POOL_ID = "<ApiStack.IdentityPoolId>"
-ENV AUTHENTICATED_ROLE_ARN = "<ApiStack.AuthenticatedRoleArn>"
-ENV GRAPHQL_ENDPOINT = "<ApiStack.GraphQLEndpoint>"
-ENV S3_INPUT_BUCKET = "<PersistenceStack.InputsAssetsBucket>"
-ENV S3_PROCESSED_BUCKET = "<PersistenceStack.processedAssetsBucket>"
-ENV CLIENT_NAME = "<ApiStack.ClientName>"
+ENV COGNITO_DOMAIN = "<Output.CognitoDomain>"
+ENV REGION = "<Output.Region>"
+ENV USER_POOL_ID = "<Output.UserPoolId>"
+ENV CLIENT_ID = "<Output.ClientId>"
+ENV CLIENT_SECRET = "<COGNITO_CLIENT_SECRET>"
+ENV IDENTITY_POOL_ID = "<Output.IdentityPoolId>"
+ENV AUTHENTICATED_ROLE_ARN = "<Output.AuthenticatedRoleArn>"
+ENV GRAPHQL_ENDPOINT = "<Output.GraphQLEndpoint>"
+ENV S3_INPUT_BUCKET = "<Output.InputsAssetsBucket>"
+ENV S3_PROCESSED_BUCKET = "<Output.ProcessedAssetsBucket>"
+ENV CLIENT_NAME = "<Output.ClientName>"
   ```
-   Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved from the AWS Console. Go to the [Amazon Cognito page](https://console.aws.amazon.com/cognito/home) in the AWS console, then select the created user pool. Under App integration, select App client settings. Then, select Show Details and copy the value of the App client secret. 
+    Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved from the AWS Console. Go to the [Amazon Cognito page](https://console.aws.amazon.com/cognito/home) in the AWS console, then select the created user pool. Under App integration, select App client settings. Then, select Show Details and copy the value of the App client secret.
 
 3. Run `terraform init`
 4. Run `terraform import aws_cognito_user_pool_client.update_client {user-pool-id}/{client-id}` and make sure to update the `user-pool-id` and `client-id` values. In the `terraform.tfvars` folder, add the values for the `user_pool_id` and the `client_name`.
