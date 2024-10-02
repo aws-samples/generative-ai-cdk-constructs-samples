@@ -87,42 +87,44 @@ Default output format [None]: json
 - Node.js: v18.12.1
 - [AWS CDK](https://github.com/aws/aws-cdk/releases/tag/v2.68.0): 2.68.0
 - jq: jq-1.6
-
-### Deploy the Backend with CDK
-
-This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.amazon.com/cdk/). See [Getting Started With the AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html) for additional details and prerequisites.
-
-1. Clone this repository.
+- Clone this repository.
     ```shell
     git clone <this>
     ```
-
-2. Enter the code sample backend directory.
+- Enter the code sample backend directory.
     ```shell
     cd samples/document_explorer
     ```
-
-3. Install packages
+- Install packages
    ```shell
    npm install
    ```
+- Enable Access to Amazon Bedrock Models
+> You must explicitly enable access to models before they can be used with the Amazon Bedrock service. Please follow these steps in the [Amazon Bedrock User Guide](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html) to enable access to the models (at minimum, ```Anthropic::Claude```):.
 
-4. Boostrap AWS CDK resources on the AWS account.
+### Deploy with CDK
+
+<details><summary>CDK Instructions</summary> 
+
+#### Deploy the Backend 
+
+This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.amazon.com/cdk/). See [Getting Started With the AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html) for additional details and prerequisites.
+
+
+
+1. Boostrap AWS CDK resources on the AWS account.
     ```shell
     cdk bootstrap aws://ACCOUNT_ID/REGION
     ```
 
-5. The persistence layer requires the existence of the AWSServiceRoleForAmazonElasticsearchService Service-Linked Role (SLR). The following command checks if the SLR exists and creates one if needed:
+2. The persistence layer requires the existence of the AWSServiceRoleForAmazonElasticsearchService Service-Linked Role (SLR). The following command checks if the SLR exists and creates one if needed:
     ```shell
     if ! aws iam get-role --role-name AWSServiceRoleForAmazonElasticsearchService > /dev/null 2>&1; then
     aws iam create-service-linked-role --aws-service-name es.amazonaws.com 
     fi
     ```
 
-6. Enable Access to Amazon Bedrock Models
-> You must explicitly enable access to models before they can be used with the Amazon Bedrock service. Please follow these steps in the [Amazon Bedrock User Guide](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access.html) to enable access to the models (at minimum, ```Anthropic::Claude```):.
-
-7. Deploy the sample in your account. 
+3. Deploy the sample in your account. 
     ```shell
     $ cdk deploy --all
     ```
@@ -142,51 +144,8 @@ then your AWS Account is likely either too new or unused for the region, and the
 > - Deploy the CDK samples with the [optional](https://github.com/awslabs/generative-ai-cdk-constructs/pull/193)
  cdk deploy --all --outputs-file apistack-outputs.json --context maximumLambdaMemorySize=3008 parameter. This method is available without waiting, but will limit functionality and cause unexpected failures when more memory than is available is required.
 
- ### Deploy the Backend with Terraform
- 1. Open the `/terraform-config-backend` folder
-    ```shell
-        cd terraform-config-backend
-    ```
- 2. Run `terraform init`
- 3. Make sure you have Docker running and deploy the Terraform by running `terraform apply`
+ ### Deploy the Front End
 
-
-
-### Deploy the Front End to AWS via Terraform
-
-<details><summary>Terraform Instructions</summary>  
-
-1. Open the `/terraform-config-frontend` folder
-    ```shell
-        cd terraform-config-frontend
-    ```
-2. Configure your environment variables in `client_app/Dockerfile`. Replace the property values with the values the were outputted from the backend Terraform deployment in your terminal. You will leave `APP_URI` as a placeholder for now because the URI will be the Cloudfront URL output from your Front End Terraform deployment. 
-  ```
-ENV COGNITO_DOMAIN = "<Output.CognitoDomain>"
-ENV REGION = "<Output.Region>"
-ENV USER_POOL_ID = "<Output.UserPoolId>"
-ENV CLIENT_ID = "<Output.ClientId>"
-ENV CLIENT_SECRET = "<COGNITO_CLIENT_SECRET>"
-ENV IDENTITY_POOL_ID = "<Output.IdentityPoolId>"
-ENV AUTHENTICATED_ROLE_ARN = "<Output.AuthenticatedRoleArn>"
-ENV GRAPHQL_ENDPOINT = "<Output.GraphQLEndpoint>"
-ENV S3_INPUT_BUCKET = "<Output.InputsAssetsBucket>"
-ENV S3_PROCESSED_BUCKET = "<Output.ProcessedAssetsBucket>"
-ENV CLIENT_NAME = "<Output.ClientName>"
-  ```
-    Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved from the AWS Console. Go to the [Amazon Cognito page](https://console.aws.amazon.com/cognito/home) in the AWS console, then select the created user pool. Under App integration, select App client settings. Then, select Show Details and copy the value of the App client secret.
-
-3. Run `terraform init`
-4. Run `terraform import aws_cognito_user_pool_client.update_client {user-pool-id}/{client-id}` and make sure to update the `user-pool-id` and `client-id` values. In the `terraform.tfvars` folder, add the values for the `user_pool_id` and the `client_name`.
-5. Deploy the Terraform by running `terraform apply`
-6. Now that you have the CloudFront URL, go back to your `client_app/Dockerfile` and paste in the value of your Cloudfront URL like `https://XXXXXXXXXXXXXX.cloudfront.net`. Save the Dockerfile.Go to Cognito  and run `terraform apply` again. 
-7. Once your changes have been applied, open your browser to the outputted URL. It may take a few moments for the webapp to become available.
-</details>
-
-
-### Deploy the Front End to AWS via CDK
-
-<details><summary>CDK Instructions</summary> 
 
 Note: the CDK Front End deployment was adapted from [this blog](https://kawsaur.medium.com/serverless-streamlit-app-on-aws-with-https-b5e5ff889590).
 
@@ -225,6 +184,54 @@ Note: the CDK Front End deployment was adapted from [this blog](https://kawsaur.
 8. Once your changes have been applied, open your browser to the outputted URL. It may take a few moments for the webapp to become available.
 
 </details>
+
+
+
+ ### Deploy with Terraform
+ <details><summary>Terraform Instructions</summary> 
+
+ #### Deploy the Backend
+ 1. Open the `/terraform-config-backend` folder
+    ```shell
+        cd terraform-config-backend
+    ```
+ 2. Run `terraform init`
+ 3. Make sure you have Docker running and deploy the Terraform by running `terraform apply`
+ 4. When prompted with `Do you want to perform these actions?` enter `yes` and wait for the backend to be deployed. This may take up to X minutes.
+
+
+
+#### Deploy the Front End
+
+
+
+1. Open the `/terraform-config-frontend` folder
+    ```shell
+        cd ../terraform-config-frontend
+    ```
+2. Configure your environment variables in `client_app/Dockerfile`. Replace the property values with the values the were outputted from the backend Terraform deployment in your terminal. You will leave `APP_URI` as a placeholder for now because the URI will be the Cloudfront URL output from your Front End Terraform deployment. 
+  ```
+ENV COGNITO_DOMAIN = "<Output.CognitoDomain>"
+ENV REGION = "<Output.Region>"
+ENV USER_POOL_ID = "<Output.UserPoolId>"
+ENV CLIENT_ID = "<Output.ClientId>"
+ENV CLIENT_SECRET = "<COGNITO_CLIENT_SECRET>"
+ENV IDENTITY_POOL_ID = "<Output.IdentityPoolId>"
+ENV AUTHENTICATED_ROLE_ARN = "<Output.AuthenticatedRoleArn>"
+ENV GRAPHQL_ENDPOINT = "<Output.GraphQLEndpoint>"
+ENV S3_INPUT_BUCKET = "<Output.InputsAssetsBucket>"
+ENV S3_PROCESSED_BUCKET = "<Output.ProcessedAssetsBucket>"
+ENV CLIENT_NAME = "<Output.ClientName>"
+  ```
+    Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved from the AWS Console. Go to the [Amazon Cognito page](https://console.aws.amazon.com/cognito/home) in the AWS console, then select the created user pool. Under App integration, select App client settings. Then, select Show Details and copy the value of the App client secret.
+
+3. Run `terraform init`
+4. Run `terraform import aws_cognito_user_pool_client.update_client {user-pool-id}/{client-id}` and make sure to update the `user-pool-id` and `client-id` values. In the `terraform.tfvars` folder, add the values for the `user_pool_id` and the `client_name`.
+5. Deploy the Terraform by running `terraform apply`
+6. Now that you have the CloudFront URL, go back to your `client_app/Dockerfile` and paste in the value of your Cloudfront URL like `https://XXXXXXXXXXXXXX.cloudfront.net`. Save the Dockerfile.Go to Cognito  and run `terraform apply` again. 
+7. Once your changes have been applied, open your browser to the outputted URL. It may take a few moments for the webapp to become available.
+</details>
+
 
 
 ### Deploy the Front End Locally
