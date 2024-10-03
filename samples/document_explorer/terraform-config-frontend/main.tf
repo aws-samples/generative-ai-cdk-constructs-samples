@@ -14,4 +14,23 @@ resource "aws_cognito_user_pool_client" "update_client" {
   callback_urls = ["${module.serverless-streamlit-app.streamlit_cloudfront_distribution_url}/", "http://localhost:8501/"]
   logout_urls   = ["${module.serverless-streamlit-app.streamlit_cloudfront_distribution_url}/", "http://localhost:8501/"]
   allowed_oauth_flows_user_pool_client = true
+  refresh_token_validity = 1
+  access_token_validity = 60
+  id_token_validity        = 60
+  token_validity_units {
+    refresh_token = "days"
+    access_token = "minutes"
+    id_token = "minutes"
+  }
+  explicit_auth_flows = ["ALLOW_CUSTOM_AUTH", "ALLOW_USER_PASSWORD_AUTH", "ALLOW_USER_SRP_AUTH", "ALLOW_REFRESH_TOKEN_AUTH"]
+}
+
+resource "aws_cognito_identity_pool" "update_pool" {
+  identity_pool_name = var.client_name
+  allow_classic_flow = true
+ cognito_identity_providers {
+    client_id               = var.client_id
+    provider_name           = "cognito-idp.us-east-1.amazonaws.com/${var.user_pool_id}"
+    server_side_token_check = false
+  }
 }
