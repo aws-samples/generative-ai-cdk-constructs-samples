@@ -9,8 +9,9 @@ module "serverless-streamlit-app" {
 
 # Update existing Cognito User Pool Client
 resource "aws_cognito_user_pool_client" "update_client" {
-  user_pool_id = var.user_pool_id  
-  name         = var.client_name
-  callback_urls = ["${module.serverless-streamlit-app.streamlit_cloudfront_distribution_url}", "http://localhost:8501/"]
-  logout_urls = ["${module.serverless-streamlit-app.streamlit_cloudfront_distribution_url}", "http://localhost:8501/"]
+  user_pool_id  = var.user_pool_id  
+  name          = var.client_name
+  callback_urls = ["${module.serverless-streamlit-app.streamlit_cloudfront_distribution_url}/", "http://localhost:8501/"]
+  logout_urls   = ["${module.serverless-streamlit-app.streamlit_cloudfront_distribution_url}/", "http://localhost:8501/"]
+  allowed_oauth_flows_user_pool_client = true
 }

@@ -179,7 +179,7 @@ Note: the CDK Front End deployment was adapted from [this blog](https://kawsaur.
 ```
 4. Run `cdk bootstrap`
 5. Run `cdk deploy`. This can take up to 10-20 minutes. 
-6. Now that you have the CloudFront URL, go back to your `client_app/Dockerfile` and paste in the value of your Cloudfront URL like `https://XXXXXXXXXXXXXX.cloudfront.net`. Save the Dockerfile and run `cdk deploy` again.
+6. Now that you have the CloudFront URL, go back to your `client_app/Dockerfile` and paste in the value of your Cloudfront URL like `https://XXXXXXXXXXXXXX.cloudfront.net/` for your APP_URI. Save the Dockerfile and run `cdk deploy` again.
 7. Now you have to add your CloudFront URL to your Cognito User Pool App Client. Go to [Amazon Cognito page](https://console.aws.amazon.com/cognito/home), select your user pool. Under the App integration tab, scroll to the bottom of the page and select the name of the App client under `App client list`. In the `Hosted UI` section, select `Edit`. Add your CloudFront URL to the `Allowed callback URLs` list and the `Allowed sign-out URLs` list. Select `Save changes`.  
 8. Once your changes have been applied, open your browser to the outputted URL. It may take a few moments for the webapp to become available.
 
@@ -197,7 +197,7 @@ Note: the CDK Front End deployment was adapted from [this blog](https://kawsaur.
     ```
  2. Run `terraform init`
  3. Make sure you have Docker running and deploy the Terraform by running `terraform apply`
- 4. When prompted with `Do you want to perform these actions?` enter `yes` and wait for the backend to be deployed. This may take up to X minutes.
+ 4. When prompted with `Do you want to perform these actions?` enter `yes` and wait for the backend to be deployed.
 
 
 
@@ -223,12 +223,14 @@ ENV S3_INPUT_BUCKET = "<Output.InputsAssetsBucket>"
 ENV S3_PROCESSED_BUCKET = "<Output.ProcessedAssetsBucket>"
 ENV CLIENT_NAME = "<Output.ClientName>"
   ```
-    Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved from the AWS Console. Go to the [Amazon Cognito page](https://console.aws.amazon.com/cognito/home) in the AWS console, then select the created user pool. Under App integration, select App client settings. Then, select Show Details and copy the value of the App client secret.
+
+  Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved from the AWS Console. Go to the [Amazon Cognito page](https://console.aws.amazon.com/cognito/home) in the AWS console, then select the created user pool. Under App integration, select App client settings. Then, select Show Details and copy the value of the App client secret. 
+
 
 3. Run `terraform init`
 4. Run `terraform import aws_cognito_user_pool_client.update_client {user-pool-id}/{client-id}` and make sure to update the `user-pool-id` and `client-id` values. In the `terraform.tfvars` folder, add the values for the `user_pool_id` and the `client_name`.
 5. Deploy the Terraform by running `terraform apply`
-6. Now that you have the CloudFront URL, go back to your `client_app/Dockerfile` and paste in the value of your Cloudfront URL like `https://XXXXXXXXXXXXXX.cloudfront.net`. Save the Dockerfile.Go to Cognito  and run `terraform apply` again. 
+6. Now that you have the CloudFront URL, go back to your `client_app/Dockerfile` and paste in the value of your Cloudfront URL like `https://XXXXXXXXXXXXXX.cloudfront.net/` for your APP_URI. Save the Dockerfile and run `terraform apply` again. 
 7. Once your changes have been applied, open your browser to the outputted URL. It may take a few moments for the webapp to become available.
 </details>
 
@@ -392,10 +394,16 @@ mutation PostQuestion {
 
 Do not forget to delete the stack to avoid unexpected charges.
 
-First make sure to remove all data from the Amazon Simple Storage Service (Amazon S3) Buckets. Then:
+First make sure to remove all data from the Amazon Simple Storage Service (Amazon S3) Buckets. Then if you deployed with CDK:
 
 ```shell
     $ cdk destroy --all
+```
+
+Or if you deployed with Terraform: 
+
+```shell
+    $ terraform destroy
 ```
 
 Then in the AWS Console delete the S3 buckets.
