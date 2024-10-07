@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-ec2": "3.662.0",
-    "@cdklabs/generative-ai-cdk-constructs": "file:generative-ai-cdk-constructs@0.0.0.jsii.tgz",
+    "@cdklabs/generative-ai-cdk-constructs": "^0.1.273",
     "aws-cdk-lib": "^2.149.0",
     "constructs": "^10.0.0",
     "source-map-support": "^0.5.21"
