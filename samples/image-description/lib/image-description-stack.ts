@@ -140,6 +140,7 @@ export class ImageDescriptionStack extends cdk.Stack {
       }
     );
 
+
     summarization.inputAssetBucket.grantReadWrite(this.authenticatedRole);
     summarization.processedAssetBucket.grantRead(this.authenticatedRole);
 
