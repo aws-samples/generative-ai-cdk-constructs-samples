@@ -21,7 +21,7 @@ class LlamaindexBasicDataLoaderStack(Stack):
 
         data_loader = LlamaIndexDataLoader(
             self, "LlamaIndexDataLoader",
-            docker_image_asset_directory=path.dirname(__file__) + path.sep + ".." + path.sep + "docker",
-            # memory_limit_mib=1024,
+            # Uncomment the next line to change from the default docker image
+            # docker_image_asset_directory=path.dirname(__file__) + path.sep + ".." + path.sep + "docker",
             container_logging_level="DEBUG",
         )
