@@ -1,0 +1,7 @@
+aws-cdk-lib==2.154.1
+constructs>=10.0.0,<11.0.0
+# Until released, use local build
+#cdklabs.generative-ai-cdk-constructs>=0.1.XXX
+
+# Replace with your full path here
+cdklabs.generative-ai-cdk-constructs @ file:///Users/${USER}/github.com/awslabs/generative-ai-cdk-constructs/dist/python/cdklabs.generative_ai_cdk_constructs-0.0.0-py3-none-any.whl
