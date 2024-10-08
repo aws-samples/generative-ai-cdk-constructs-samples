@@ -1,6 +1,7 @@
 aws-cdk-lib==2.154.1
 constructs>=10.0.0,<11.0.0
 aws-cdk.aws-lambda-python-alpha>=2.154.1a0
-cdklabs.generative-ai-cdk-constructs @ file:///Users/scoschre/github.com/aws-samples/generative-ai-cdk-constructs-samples/samples/llamaindex-lambda-loader/dist/python/cdklabs.generative_ai_cdk_constructs-0.0.0-py3-none-any.whl
+cdklabs.generative-ai-cdk-constructs @ file:///home/scoschre/github.com/awslabs/generative-ai-cdk-constructs/dist/python/cdklabs.generative_ai_cdk_constructs-0.0.0-py3-none-any.whl
+
 #cdklabs.generative-ai-cdk-constructs @ file:///Users/scoschre/github.com/awslabs/generative-ai-cdk-constructs/dist/python/cdklabs.generative_ai_cdk_constructs-0.0.0-py3-none-any.whl
 #cdklabs.generative-ai-cdk-constructs @ file:///Users/scoschre/github.com/awslabs/generative-ai-cdk-constructs/dist/python/cdklabs.generative_ai_cdk_constructs-0.0.0-py3-none-any.whl#sha256=03ebff25a204e0a767f8cce0370e419ddad225e9a8ff5b603aab5952032ba7dd
