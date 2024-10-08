@@ -1,69 +1,114 @@
 # LlamaIndex Data Loader
 
-This is a blank project for CDK development with Python.
+This example can be used to sample the `LlamaIndexDataLoader` directly from the [Generative AI CDK Constructs](https://github.com/awslabs/generative-ai-cdk-constructs) package. It demonstrates the [S3 File or Directory Loader](https://github.com/run-llama/llama_index/tree/main/llama-index-integrations/readers/llama-index-readers-s3), and can be extended for other [LlamaHub Readers](https://llamahub.ai/?tab=readers).
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+_See more information at [LlamaIndex](https://llamaindex.ai/)_
 
-This project is set up like a standard Python project.  The initialization
-process also creates a virtualenv within this project, stored under the `.venv`
-directory.  To create the virtualenv it assumes that there is a `python3`
-(or `python` for Windows) executable in your path with access to the `venv`
-package. If for any reason the automatic creation of the virtualenv fails,
-you can create the virtualenv manually.
+## Overview
 
-To manually create a virtualenv on MacOS and Linux:
+
+
+
+## Architecture
+
+There are five main resources for the sample:
+
+1. The "raw" input Amazon S3 bucket
+1. The "event" Amazon SNS topic receiving create events from the "raw" bucket
+1. The "process" Amazon SQS queue to process each object
+1. The "reader" Amazon ECS Fargate task that auto-scales in or out based on the queue's backlog
+1. The "output" Amazon S3 bucket to hold each object's [LlamaIndex Document]() with optional metadata
+
+![architecture diagram](docs/llamaindex-basic-data-loader.png)
+
+A couple resources are also noted:
+* The "circuit breaker" Amazon System Manager Parameter can 'pause' processing the queue
+* The "container" Amazon ECR image that runs the code and loads the requirements for the reader
+
+## Setup
+
+This project uses the CDK with Python
+and assumes the `python` (or `python3`) executable is
+in your path with access to the `venv` package.
+
+To manually create a virtualenv on MacOS and Linux if it doesn't exist:
 
 ```bash
-$ python3 -m venv .venv
+python -m venv .venv
 ```
 
-After the init process completes and the virtualenv is created, you can use the following
-step to activate your virtualenv.
+1. Activate your virtualenv.
 
-```
-$ source .venv/bin/activate
+```bash
+source .venv/bin/activate
 ```
 
 If you are a Windows platform, you would activate the virtualenv like this:
 
-```
-% .venv\Scripts\activate.bat
-```
-
-Once the virtualenv is activated, you can install the required dependencies.
-
-```
-$ pip install -r requirements.txt
+```cmd
+.venv\Scripts\activate.bat
 ```
 
-At this point you can now synthesize the CloudFormation template for this code.
+1. Once the virtualenv is activated, you can install the required dependencies.
 
 ```shell
-$ cdk synth
+pip install -r requirements.txt
 ```
 
-To add additional dependencies, for example other CDK libraries, just add
-them to your `setup.py` file and rerun the `pip install -r requirements.txt`
-command.
+1. At this point you can now synthesize the CloudFormation template for this code.
 
-## Useful commands
+```shell
+cdk synth
+```
 
-* `cdk ls`          list all stacks in the app
-* `cdk synth`       emits the synthesized CloudFormation template
-* `cdk deploy`      deploy this stack to your default AWS account/region
-* `cdk diff`        compare deployed stack with current state
-* `cdk docs`        open CDK documentation
+## Test
 
-Enjoy!
+1. Install the development dependencies if not alreay loaded
+
+```shell
+pip install -r requirements-dev.txt
+```
+
+1. To run the unit tests
+
+```shell
+python -m pytest
+```
+
+## Deploy
+
+1. At this point you can now synthesize the CloudFormation template for this code.
+
+```shell
+cdk deploy
+```
+
+> **NOTE:** building on ARM (like M2 or M3) may require setting extra environmental variables to explicitely use `x86_64` images and packages:
+> 
+> ```shell
+> BUILDX_NO_DEFAULT_ATTESTATIONS=1 DOCKER_DEFAULT_PLATFORM=linux/amd64 BUILDPLATFORM=linux/amd64 cdk deploy --require-approval=never
+> ```
 
 ## Pre-release testing
 
-1. Build the Generative AI CDK Constructs library
+If using the [Generative AI CDK Constructs](https://github.com/awslabs/generative-ai-cdk-constructs) directly, follow these instructions:
 
-> assumming that the build is relative:
+1. Build the Generative AI CDK Constructs library from your repository
 
-```bash
-cp ../../../../awslabs/generative-ai-cdk-constructs/dist/pythocdklabs*generative_ai_cdk_constructs-0.0.0* .
+```shell
+git clone https://github.com/awslabs/generative-ai-cdk-constructs.git
+cd generative-ai-cdk-constructs
+npx projen install && npx projen compile && npx projen package:python
+```
+
+1. The above outputs the `python` directory within the `dist` folder 
+
+> adjust the `requirements.txt` to use the local build instead of the distributed package:
+
+```requirements.txt
+# COMMENTED OUT DISTRIBUTED PACKAGE cdklabs.generative-ai-cdk-constructs>=0.1.XXX
+# For pre-release testing replace with your updated path below:
+cdklabs.generative-ai-cdk-constructs @ file:///home/${USER}/generative-ai-cdk-constructs/dist/python/cdklabs.generative_ai_cdk_constructs-0.0.0-py3-none-any.whl
 ```
 
 1. Uninstall and reinstall
@@ -73,13 +118,41 @@ pip uninstall --yes cdklabs.generative_ai_cdk_constructs
 pip install -r requirements.txt
 ```
 
-1. Check python
+1. (Optionally) Check that python loads
 
 ```python
 >>> from cdklabs.generative_ai_cdk_constructs import ( LlamaIndexDataLoader )
 ```
 
-### Building on ARM like (M2)
+### Testing the Docker locally
+
+```bash
+cd docker
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+# Fill in the `.env` file or pass in on the command line
+$(cat .env | sed -e 's/^/export /g')
+./runner.sh ./sqs_consumer.py
+```
+
+### Building on ARM (like M2 or M3)
 ```
 BUILDX_NO_DEFAULT_ATTESTATIONS=1 DOCKER_DEFAULT_PLATFORM=linux/amd64 BUILDPLATFORM=linux/amd64 cdk deploy --require-approval=never
 ```
+
+## Excerise
+
+1. Upload object that LlamaIndex's [SimpleDirectoryReader](https://docs.llamaindex.ai/en/stable/module_guides/loading/simpledirectoryreader/#supported-file-types) can read to the "raw" bucket
+
+```shell
+aws s3 cp somefile.pdf s3://YOUR_RAW_BUCKET_NAME/
+```
+
+1. A prefix with the same filename will appear after processing in the "output"
+
+```shell
+aws s3 ls s3://YOUR_OUTPUT_BUCKET_NAME/somefile.pdf/
+```
+
+_The ECS service tasks may have scaled in to zero if there are no messages in the queue, so it may take five minutes for the service to scale out as messages start to arrive_

@@ -1,0 +1,6 @@
+.venv
+.env
+.dockerignore
+.gitignore
+Dockerfile
+pid
