@@ -1,0 +1,14 @@
+*.swp
+package-lock.json
+__pycache__
+.pytest_cache
+.venv
+*.egg-info
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+
+# Local development
+cdklabs_generative_ai_cdk_constructs-0.0.0.tar.gz
+cdklabs.generative_ai_cdk_constructs-0.0.0-py3-none-any.whl
