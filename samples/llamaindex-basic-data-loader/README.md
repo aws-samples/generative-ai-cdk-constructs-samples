@@ -6,18 +6,24 @@ _See more information at [LlamaIndex](https://llamaindex.ai/)_
 
 ## Overview
 
+When objects are uploaded into the input S3 bucket,
+it triggers a topic with a subscribed queue.
+The container long polls off the queue
+to loads the text and metadata to the output S3 bucket.
 
-
+To customize for other data readers, create the dependent resources
+as well as the logic within a Dockerfile container
+for the DockerImageAssetDocker asset to be used.
 
 ## Architecture
 
-There are five main resources for the sample:
+There are five main resources from the default sample:
 
 1. The "raw" input Amazon S3 bucket
 1. The "event" Amazon SNS topic receiving create events from the "raw" bucket
 1. The "process" Amazon SQS queue to process each object
 1. The "reader" Amazon ECS Fargate task that auto-scales in or out based on the queue's backlog
-1. The "output" Amazon S3 bucket to hold each object's [LlamaIndex Document]() with optional metadata
+1. The "output" Amazon S3 bucket to hold each object's [LlamaIndex Document](https://docs.llamaindex.ai/en/stable/module_guides/loading/documents_and_nodes/) with optional metadata
 
 ![architecture diagram](docs/llamaindex-basic-data-loader.png)
 
