@@ -25,10 +25,13 @@ export class GenerateContentStack extends cdk.Stack {
   public readonly identityPool: cognito.CfnIdentityPool;
   public readonly authenticatedRole: iam.Role;
   public readonly generatedAssetsBucket: s3.Bucket;
+  public readonly privateSubnets: string[];
 
   constructor(scope: Construct, id: string, props: GenerateContentStackProps) {
     super(scope, id, props);
   
+    console.log(`Deploying to account ${this.account} in region ${this.region}`);
+
   //---------------------------------------------------------------------
         // VPC
   //---------------------------------------------------------------------
@@ -53,6 +56,7 @@ export class GenerateContentStack extends cdk.Stack {
           ],
           ipAddresses: ec2.IpAddresses.cidr('10.0.0.0/16'),
           natGateways: props.natGateways,
+          
       });
 
       //---------------------------------------------------------------------
@@ -71,7 +75,20 @@ export class GenerateContentStack extends cdk.Stack {
       // Gateway VPC endpoint for S3
       //---------------------------------------------------------------------
       vpc.addGatewayEndpoint("S3GatewayEndpoint", {service: ec2.GatewayVpcEndpointAwsService.S3});
-
+      vpc.addInterfaceEndpoint("comprehendInterfaceEndpoint",
+        {service: ec2.InterfaceVpcEndpointAwsService.COMPREHEND,
+          lookupSupportedAzs:true,
+        subnets:{ subnetType: ec2.SubnetType.PRIVATE_ISOLATED}})
+      vpc.addInterfaceEndpoint("bedrockInterfaceEndpoint",
+        {service: ec2.InterfaceVpcEndpointAwsService.BEDROCK_RUNTIME})
+      // vpc.addInterfaceEndpoint("appsyncInterfaceEndpoint",
+      //   {service: ec2.InterfaceVpcEndpointAwsService.APP_SYNC,
+      //     privateDnsEnabled: true,
+      //     subnets:{ subnetType: ec2.SubnetType.PRIVATE_ISOLATED}
+          
+      //   })
+      vpc.addInterfaceEndpoint("rekogntionInterfaceEndpoint",
+        {service: ec2.InterfaceVpcEndpointAwsService.REKOGNITION})
       //---------------------------------------------------------------------
         // Security Group
         //---------------------------------------------------------------------
@@ -86,6 +103,10 @@ export class GenerateContentStack extends cdk.Stack {
       securityGroups[0].addIngressRule(securityGroups[0], ec2.Port.tcp(443), 'allow https within sg');
 
 
+      //---------------------------------------------------------------------
+        // Private Subnets
+        //---------------------------------------------------------------------
+        this.privateSubnets = vpc.privateSubnets.map(subnet => subnet.subnetId);
   //---------------------------------------------------------------------
     // S3 - Input Generated Logs
     //---------------------------------------------------------------------
@@ -270,7 +291,7 @@ export class GenerateContentStack extends cdk.Stack {
     });
 
 
-    new cdk.CfnOutput(this, "S3ProcessedBucket", {
+    new cdk.CfnOutput(this, "generatedAssetsBucket", {
       value: this.generatedAssetsBucket.bucketName
     });
 
@@ -278,11 +299,8 @@ export class GenerateContentStack extends cdk.Stack {
       value: imageGeneration.graphqlApi.graphqlUrl,
     });
 
-    // The code that defines your stack goes here
-
-    // example resource
-    // const queue = new sqs.Queue(this, 'GenerateContentQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    new cdk.CfnOutput(this, "ClientSecret", {
+      value: this.cognitoClient.userPoolClientSecret.unsafeUnwrap(),
+    });
   }
 }

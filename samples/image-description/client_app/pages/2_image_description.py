@@ -16,7 +16,6 @@ import os
 import base64
 import streamlit as st
 from dotenv import load_dotenv
-from st_pages import add_indentation
 import boto3
 # Local imports
 from common.cognito_helper import CognitoHelper
@@ -180,10 +179,6 @@ def display_image(key):
 
 
 # Streamlit page configuration
-st.set_page_config(page_title="Summary", page_icon="🏷️",
-                   layout="wide", initial_sidebar_state="expanded")
-add_indentation()
-
 hide_deploy_button()
 
 # Check if user is authenticated and display login/logout buttons

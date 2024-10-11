@@ -189,6 +189,10 @@ export class ImageDescriptionStack extends cdk.Stack {
     new cdk.CfnOutput(this, "S3ProcessedBucket", {
       value: summarization.processedAssetBucket.bucketName,
     });
+    
+    new cdk.CfnOutput(this, "ClientSecret", {
+      value: this.cognitoClient.userPoolClientSecret.unsafeUnwrap(),
+    });
 
     // CDK- NAG suppressions
     NagSuppressions.addResourceSuppressions(
@@ -199,8 +203,8 @@ export class ImageDescriptionStack extends cdk.Stack {
           reason: "ESLogGroupPolicy managed by aws-cdk.",
           appliesTo: [
             "Resource::*",
-            "Resource::<ImageSummarizationprocessedassetsbucketdevimagedesstackiesummarizationb66b14bb8A565D3C.Arn>/*",
-            "Resource::<ImageSummarizationinputassetsbucketdevimagedesstackimagesummarizationb66b14bb41BB5AF5.Arn>/*",
+            "Resource::<ImageSummarizationprocessedAssetsSummaryBucketDEVAA9F30E3.Arn>/*",
+            "Resource::<ImageSummarizationinputAssetsSummaryBucketDEV184F81EF.Arn>/*",
             "Resource::<ImageSummarizationsummarygeneratordevimagedesstackimagesummarizationb66b14bb0F1908FB.Arn>:*",
             "Resource::<ImageSummarizationinputValidatorLambdaDEV5B95C05A.Arn>:*",
             "Resource::<ImageSummarizationdocumentReaderLambdaDEV8B4FAE2D.Arn>:*",

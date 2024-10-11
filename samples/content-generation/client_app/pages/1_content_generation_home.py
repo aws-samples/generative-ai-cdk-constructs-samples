@@ -15,16 +15,12 @@ import streamlit as st
 # Local imports
 from common.cognito_helper import CognitoHelper
 from common.streamlit_utils import hide_deploy_button
-from streamlit_option_menu import option_menu
-
-from st_pages import show_pages,Section, Page, hide_pages,add_indentation
 
 
 #========================================================================================
 # [View] Render UI components  
 #========================================================================================
 # Streamlit page configuration
-add_indentation() 
 # Check if user is authenticated and display login/logout buttons
 auth = CognitoHelper() 
 auth.set_session_state()
