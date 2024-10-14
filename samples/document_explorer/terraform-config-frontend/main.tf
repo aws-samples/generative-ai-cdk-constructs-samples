@@ -28,9 +28,9 @@ resource "aws_cognito_user_pool_client" "update_client" {
 resource "aws_cognito_identity_pool" "update_pool" {
   identity_pool_name = var.client_name
   allow_classic_flow = true
- cognito_identity_providers {
+  cognito_identity_providers {
     client_id               = var.client_id
-    provider_name           = "cognito-idp.us-east-1.amazonaws.com/${var.user_pool_id}"
+    provider_name           = "cognito-idp.${var.region}.amazonaws.com/${var.user_pool_id}"
     server_side_token_check = false
   }
 }
