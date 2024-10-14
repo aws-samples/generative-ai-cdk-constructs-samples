@@ -27,7 +27,6 @@ from graphql.graphql_subscription_client import GraphQLSubscriptionClient
 from graphql.mutations import Mutations
 from graphql.subscriptions import Subscriptions
 import boto3
-from st_pages import show_pages,Section, Page, hide_pages,add_indentation
 
 #========================================================================================
 # [Model] Load configuration and environment variables
@@ -188,10 +187,10 @@ def subscribe_to_imagegen_updates():
 #========================================================================================
 # Streamlit page configuration
 
-st.set_page_config(page_title="Image Generation", page_icon=":camera:",
-                    layout="wide",initial_sidebar_state="expanded")
-add_indentation() 
-st.session_state['selected_nav_index']=1
+# st.set_page_config(page_title="Image Generation", page_icon=":camera:",
+#                     layout="wide",initial_sidebar_state="expanded")
+
+# st.session_state['selected_nav_index']=1
 
 hide_deploy_button()
 
@@ -251,7 +250,7 @@ elif not auth.is_authenticated():
 #########################
 
 # sidebar
-MODEL_ID_OPTIONS=['stability.stable-diffusion-xl','amazon.titan-image-generator-v1']
+MODEL_ID_OPTIONS=['stability.stable-diffusion-xl-v1','amazon.titan-image-generator-v1']
 MODEL_ID_PROVIDER=['Bedrock','Sagemaker Endpoint',]
 STYLE_PRESET_OPTIONS=['photographic', 'digital-art', 'cinematic']
 CLIP_GUIDANCE_PRESET_OPTIONS=['FAST_BLUE', 'FAST_GREEN', 'NONE', 'SIMPLE SLOW', 'SLOWER SLOWEST']

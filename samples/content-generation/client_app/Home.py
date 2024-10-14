@@ -15,26 +15,25 @@ import streamlit as st
 # Local imports
 from common.cognito_helper import CognitoHelper
 from common.streamlit_utils import hide_deploy_button
-from streamlit_option_menu import option_menu
 
-from st_pages import show_pages,Section, Page, hide_pages,add_indentation
+from st_pages import  get_nav_from_toml
 
 
 #========================================================================================
 # [View] Render UI components  
 #========================================================================================
 # Streamlit page configuration
-add_indentation() 
 
-show_pages(
-    [
-    
-        Section(name="Content Generation", icon="🎨"),
-        Page("pages/1_content_generation_home.py", "Home", "🏠",in_section=True),
-        Page("pages/2_Image_Generation.py", "Generate Image", "📸",in_section=True),
+st.set_page_config(
+    page_title="Generative AI CDK Constructs Samples", page_icon="🤖")
 
-    ]
+#sections = st.sidebar.toggle("Sections", value=True, key="use_sections")
+
+nav = get_nav_from_toml(
+    "pages/pages_sections.toml" 
 )
+pg = st.navigation(nav)
+pg.run()
 
 auth = CognitoHelper() 
 auth.set_session_state()
@@ -44,6 +43,5 @@ if auth.is_authenticated():
         
         hide_deploy_button()
 else:
-    hide_pages(["Home","Image Generation"])
     st.info("Please login!")
     st.stop()
