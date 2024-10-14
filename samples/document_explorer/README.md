@@ -228,7 +228,7 @@ ENV CLIENT_NAME = "<Output.ClientName>"
 
 
 3. Run `terraform init`
-4. Run `terraform import aws_cognito_user_pool_client.update_client {user-pool-id}/{client-id}` and make sure to update the `user-pool-id` and `client-id` values. In the `terraform.tfvars` folder, add the values for the `user_pool_id`, `client_name`, `client_id`, `region`.
+4. Run `terraform import aws_cognito_user_pool_client.update_client {user-pool-id}/{client-id}` and make sure to update the `user-pool-id` and `client-id` values. In the `terraform.tfvars` folder, add the values for the `user_pool_id`, `client_name`, `client_id`, and `region`.
 5. Run `terraform import aws_cognito_identity_pool.update_pool {identity-pool-id}`.
 5. Deploy the Terraform by running `terraform apply`
 6. Now that you have the CloudFront URL, go back to your `client_app/Dockerfile` and paste in the value of your Cloudfront URL like `https://XXXXXXXXXXXXXX.cloudfront.net/` for your APP_URI. Save the Dockerfile and run `terraform apply` again. 
