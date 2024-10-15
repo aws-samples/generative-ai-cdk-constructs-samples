@@ -143,7 +143,8 @@ $(cat .env | sed -e 's/^/export /g')
 ```
 
 ### Building on ARM (like M2 or M3)
-```
+
+```shell
 BUILDX_NO_DEFAULT_ATTESTATIONS=1 DOCKER_DEFAULT_PLATFORM=linux/amd64 BUILDPLATFORM=linux/amd64 cdk deploy --require-approval=never
 ```
 
