@@ -28,6 +28,7 @@ There are five main resources from the default sample:
 ![architecture diagram](docs/llamaindex-basic-data-loader.png)
 
 A couple resources are also noted:
+
 * The "circuit breaker" Amazon System Manager Parameter can 'pause' processing the queue
 * The "container" Amazon ECR image that runs the code and loads the requirements for the reader
 
@@ -37,63 +38,79 @@ This project uses the CDK with Python
 and assumes the `python` (or `python3`) executable is
 in your path with access to the `venv` package.
 
+### Prerequisites
+
+    - An AWS account. We recommend you deploy this solution in a new account.
+    - [AWS CLI](https://aws.amazon.com/cli/): configure your credentials
+
+    ```shell
+    aws configure --profile [your-profile]
+    AWS Access Key ID [None]: xxxxxx
+    AWS Secret Access Key [None]:yyyyyyyyyy
+    Default region name [None]: us-east-1
+    Default output format [None]: json
+    ```
+
+    - Node.js: v18.12.1
+    - [AWS CDK](https://github.com/aws/aws-cdk/releases/tag/v2.162.1): 2.162.1
+
 To manually create a virtualenv on MacOS and Linux if it doesn't exist:
 
-```bash
-python -m venv .venv
-```
+    ```bash
+    python -m venv .venv
+    ```
 
 1. Activate your virtualenv.
 
-```bash
-source .venv/bin/activate
-```
+        ```bash
+        source .venv/bin/activate
+        ```
 
 If you are a Windows platform, you would activate the virtualenv like this:
 
-```cmd
-.venv\Scripts\activate.bat
-```
+    ```cmd
+    .venv\Scripts\activate.bat
+    ```
 
 1. Once the virtualenv is activated, you can install the required dependencies.
 
-```shell
-pip install -r requirements.txt
-```
+        ```shell
+        pip install -r requirements.txt
+        ```
 
 1. At this point you can now synthesize the CloudFormation template for this code.
 
-```shell
-cdk synth
-```
+        ```shell
+        cdk synth
+        ```
 
 ## Test
 
 1. Install the development dependencies if not alreay loaded
 
-```shell
-pip install -r requirements-dev.txt
-```
+        ```shell
+        pip install -r requirements-dev.txt
+        ```
 
 1. To run the unit tests
 
-```shell
-python -m pytest
-```
+        ```shell
+        python -m pytest
+        ```
 
 ## Deploy
 
 1. At this point you can now synthesize the CloudFormation template for this code.
 
-```shell
-cdk deploy
-```
+        ```shell
+        cdk deploy
+        ```
 
 > **NOTE:** building on ARM (like M2 or M3) may require setting extra environmental variables to explicitely use `x86_64` images and packages:
-> 
-> ```shell
-> BUILDX_NO_DEFAULT_ATTESTATIONS=1 DOCKER_DEFAULT_PLATFORM=linux/amd64 BUILDPLATFORM=linux/amd64 cdk deploy --require-approval=never
-> ```
+>
+    > ```shell
+    > BUILDX_NO_DEFAULT_ATTESTATIONS=1 DOCKER_DEFAULT_PLATFORM=linux/amd64 BUILDPLATFORM=linux/amd64 cdk deploy --require-approval=never
+    > ```
 
 ## Pre-release testing
 
@@ -101,65 +118,65 @@ If using the [Generative AI CDK Constructs](https://github.com/awslabs/generativ
 
 1. Build the Generative AI CDK Constructs library from your repository
 
-```shell
-git clone https://github.com/awslabs/generative-ai-cdk-constructs.git
-cd generative-ai-cdk-constructs
-npx projen install && npx projen compile && npx projen package:python
-```
+        ```shell
+        git clone https://github.com/awslabs/generative-ai-cdk-constructs.git
+        cd generative-ai-cdk-constructs
+        npx projen install && npx projen compile && npx projen package:python
+        ```
 
-1. The above outputs the `python` directory within the `dist` folder 
+1. The above outputs the `python` directory within the `dist` folder
 
 > adjust the `requirements.txt` to use the local build instead of the distributed package:
 
-```requirements.txt
-# COMMENTED OUT DISTRIBUTED PACKAGE cdklabs.generative-ai-cdk-constructs>=0.1.XXX
-# For pre-release testing replace with your updated path below:
-cdklabs.generative-ai-cdk-constructs @ file:///home/${USER}/generative-ai-cdk-constructs/dist/python/cdklabs.generative_ai_cdk_constructs-0.0.0-py3-none-any.whl
-```
+    ```requirements.txt
+    # COMMENTED OUT DISTRIBUTED PACKAGE cdklabs.generative-ai-cdk-constructs>=0.1.274
+    # For pre-release testing replace with your updated path below:
+    cdklabs.generative-ai-cdk-constructs @ file:///home/${USER}/generative-ai-cdk-constructs/dist/python/cdklabs.generative_ai_cdk_constructs-0.0.0-py3-none-any.whl
+    ```
 
 1. Uninstall and reinstall
 
-```bash
-pip uninstall --yes cdklabs.generative_ai_cdk_constructs
-pip install -r requirements.txt
-```
+        ```bash
+        pip uninstall --yes cdklabs.generative_ai_cdk_constructs
+        pip install -r requirements.txt
+        ```
 
 1. (Optionally) Check that python loads
 
-```python
->>> from cdklabs.generative_ai_cdk_constructs import ( LlamaIndexDataLoader )
-```
+        ```python
+        >>> from cdklabs.generative_ai_cdk_constructs import ( LlamaIndexDataLoader )
+        ```
 
 ### Testing the Docker locally
 
-```bash
-cd docker
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-# Fill in the `.env` file or pass in on the command line
-$(cat .env | sed -e 's/^/export /g')
-./runner.sh ./sqs_consumer.py
-```
+    ```bash
+    cd docker
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+    # Fill in the `.env` file or pass in on the command line
+    $(cat .env | sed -e 's/^/export /g')
+    ./runner.sh ./sqs_consumer.py
+    ```
 
 ### Building on ARM (like M2 or M3)
 
-```shell
-BUILDX_NO_DEFAULT_ATTESTATIONS=1 DOCKER_DEFAULT_PLATFORM=linux/amd64 BUILDPLATFORM=linux/amd64 cdk deploy --require-approval=never
-```
+    ```shell
+    BUILDX_NO_DEFAULT_ATTESTATIONS=1 DOCKER_DEFAULT_PLATFORM=linux/amd64 BUILDPLATFORM=linux/amd64 cdk deploy --require-approval=never
+    ```
 
 ## Excerise
 
 1. Upload object that LlamaIndex's [SimpleDirectoryReader](https://docs.llamaindex.ai/en/stable/module_guides/loading/simpledirectoryreader/#supported-file-types) can read to the "raw" bucket
 
-```shell
-aws s3 cp somefile.pdf s3://YOUR_RAW_BUCKET_NAME/
-```
+        ```shell
+        aws s3 cp somefile.pdf s3://YOUR_RAW_BUCKET_NAME/
+        ```
 
 1. A prefix with the same filename will appear after processing in the "output"
 
-```shell
-aws s3 ls s3://YOUR_OUTPUT_BUCKET_NAME/somefile.pdf/
-```
+        ```shell
+        aws s3 ls s3://YOUR_OUTPUT_BUCKET_NAME/somefile.pdf/
+        ```
 
-_The ECS service tasks may have scaled in to zero if there are no messages in the queue, so it may take five minutes for the service to scale out as messages start to arrive_
+    _The ECS service tasks may have scaled in to zero if there are no messages in the queue, so it may take up to five minutes for the service to scale out as messages start to arrive_
