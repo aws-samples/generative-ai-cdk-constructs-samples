@@ -11,3 +11,7 @@ variable "client_id" {
   description = "The id of the Cognito user pool client"
   type        = string
 }
+variable "region" {
+  description = "The AWS region"
+  type        = string
+}
