@@ -166,10 +166,11 @@ Note: the CDK Front End deployment was adapted from [this blog](https://kawsaur.
     ENV GRAPHQL_ENDPOINT = "<ApiStack.GraphQLEndpoint>"
     ENV S3_INPUT_BUCKET = "<PersistenceStack.InputsAssetsBucket>"
     ENV S3_PROCESSED_BUCKET = "<PersistenceStack.processedAssetsBucket>"
-    ENV CLIENT_NAME = "<ApiStack.ClientName>"
+    ENV CLIENT_NAME = "CLIENT_NAME"
 
   ```
   Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved from the AWS Console. Go to the [Amazon Cognito page](https://console.aws.amazon.com/cognito/home) in the AWS console, then select the created user pool. Under App integration, select App client settings. Then, select Show Details and copy the value of the App client secret.
+  For ```CLIENT_NAME```, go to the Amazon Cognito page, select your user pool. Under App integration scroll down and at the bottom under App clients and analytics copy the value of App client name.
 
 3. Create a virtual environment and install dependencies by running 
 ```shell
