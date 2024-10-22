@@ -27,9 +27,9 @@ from graphql.graphql_subscription_client import GraphQLSubscriptionClient
 from graphql.mutations import Mutations
 from graphql.subscriptions import Subscriptions
 import boto3
-from streamlit_option_menu import option_menu
-from st_pages import show_pages,Section, Page, hide_pages,add_indentation
-from streamlit_extras.switch_page_button import switch_page
+# from streamlit_option_menu import option_menu
+# from st_pages import show_pages,Section, Page, hide_pages,add_indentation
+# from streamlit_extras.switch_page_button import switch_page
 
 #========================================================================================
 # [Model] Load configuration and environment variables
@@ -224,12 +224,12 @@ def subscribe_to_answering_updates():
 #========================================================================================
 # Streamlit page configuration
 
-st.set_page_config(page_title="Q&A", page_icon="💬", layout="wide",initial_sidebar_state="expanded") 
-add_indentation() 
-st.session_state['selected_nav_index']=0
+# st.set_page_config(page_title="Q&A", page_icon="💬", layout="wide",initial_sidebar_state="expanded") 
+# add_indentation() 
+# st.session_state['selected_nav_index']=0
 
 
-hide_deploy_button()
+# hide_deploy_button()
 
 # Check if user is authenticated and display login/logout buttons
 auth = CognitoHelper() 

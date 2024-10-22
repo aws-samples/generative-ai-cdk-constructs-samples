@@ -14,10 +14,10 @@
 import streamlit as st
 # Local imports
 from common.cognito_helper import CognitoHelper
-from common.streamlit_utils import hide_deploy_button
-from streamlit_option_menu import option_menu
+# from common.streamlit_utils import hide_deploy_button
+# from streamlit_option_menu import option_menu
 
-from st_pages import show_pages,Section, Page, hide_pages,add_indentation
+# from st_pages import show_pages,Section, Page, hide_pages,add_indentation
 
 
 #========================================================================================
@@ -25,7 +25,7 @@ from st_pages import show_pages,Section, Page, hide_pages,add_indentation
 #========================================================================================
 # Streamlit page configuration
 #pages = ["1_📁_Select_Document", "2_🏷️_Summary", "3_💬_Q&A","4_:camera:_Image_Generation"]
-add_indentation() 
+#add_indentation() 
 
 #with st.sidebar:
 # Check if user is authenticated and display login/logout buttons
@@ -36,7 +36,7 @@ auth.print_login_logout_buttons()
 if auth.is_authenticated():
    
        
-        hide_deploy_button()
+        #hide_deploy_button()
 
         # Guest user UI 
         st.write("# Welcome to Document Explorer!")
