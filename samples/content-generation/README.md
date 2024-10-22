@@ -114,7 +114,7 @@ IDENTITY_POOL_ID="<IdentityPoolId>"
 APP_URI="http://localhost:8501/"
 AUTHENTICATED_ROLE_ARN="<AuthenticatedRoleArn>"
 GRAPHQL_ENDPOINT = "<GraphQLEndpoint>"
-S3_PROCESSED_BUCKET = "<generatedAssetsBucket>"
+S3_GENERATED_BUCKET = "<generatedAssetsBucket>"
 
 ```
 
