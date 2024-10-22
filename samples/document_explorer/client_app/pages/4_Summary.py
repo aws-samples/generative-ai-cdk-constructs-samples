@@ -26,9 +26,9 @@ from graphql.graphql_mutation_client import GraphQLMutationClient
 from graphql.graphql_subscription_client import GraphQLSubscriptionClient
 from graphql.mutations import Mutations
 from graphql.subscriptions import Subscriptions
-from streamlit_option_menu import option_menu
-from st_pages import show_pages,Section, Page, hide_pages,add_indentation
-from streamlit_extras.switch_page_button import switch_page
+# from streamlit_option_menu import option_menu
+# from st_pages import show_pages,Section, Page, hide_pages,add_indentation
+# from streamlit_extras.switch_page_button import switch_page
 
 #========================================================================================
 # [Model] Load configuration and environment variables
@@ -206,10 +206,10 @@ def display_image(key):
 
 # Streamlit page configuration
 
-st.set_page_config(page_title="Summary", page_icon="🏷️", layout="wide", initial_sidebar_state="expanded")
-add_indentation() 
+# st.set_page_config(page_title="Summary", page_icon="🏷️", layout="wide", initial_sidebar_state="expanded")
+# add_indentation() 
 
-hide_deploy_button()
+# hide_deploy_button()
 
 # Check if user is authenticated and display login/logout buttons
 auth = CognitoHelper() 
@@ -245,8 +245,10 @@ if auth.is_authenticated() and selected_file:
 
         with col2:
             # Display summary widget
-            text_width = int(st_javascript("window.innerWidth", key="text_width") - 20)
-            text_height = int(text_width * 3/4)
+            # Use these dimensions for the summary widget
+           
+            text_width = pdf_width
+            text_height = pdf_height + 10
 
             summary_widget = st.empty()
             if('file_processed' not in st.session_state): 
@@ -258,7 +260,8 @@ if auth.is_authenticated() and selected_file:
                 summary_widget.text_area(f"Summary for **{selected_file}**", height=text_height)
                 st.session_state['summary_widget'] = summary_widget
                 st.session_state['summary_widget_height'] = text_height
-                
+
+
             if st.button("Generate Summary",type="primary"):
                 with st.spinner('Processing...'):
                     if (st.session_state['file_processed']==selected_file):
