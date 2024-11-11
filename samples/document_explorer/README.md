@@ -225,7 +225,7 @@ ENV S3_PROCESSED_BUCKET = "<Output.ProcessedAssetsBucket>"
 ENV CLIENT_NAME = "<Output.ClientName>"
   ```
 
-  Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved from the AWS Console. Go to the [Amazon Cognito page](https://console.aws.amazon.com/cognito/home) in the AWS console, then select the created user pool. Under App integration, select App client settings. Then, select Show Details and copy the value of the App client secret. 
+  Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved from the AWS Console. Go to the [Amazon Cognito page](https://console.aws.amazon.com/cognito/home) in the AWS console, then select the created user pool. Under App integration, select the corresponding app client. This will navigate you to a new page where the secret can be unhidden, and you will want to copy the value of the App client secret. 
 
 
 3. Run `terraform init`
