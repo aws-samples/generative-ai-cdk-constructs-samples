@@ -194,7 +194,7 @@ SHOW TABLES;
   and expected query. This is used by the LLM to generate accurate query.
 
 ```cd text-to-sql
-aws s3 cp ./config_files s3://config-bucket-name/ --recursive
+aws s3 cp ./config_files s3://config-bucket-name/config/ --recursive
 ```
 
 ## Run the Streamlit UI
