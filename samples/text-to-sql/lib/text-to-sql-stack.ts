@@ -164,6 +164,7 @@ export class TextToSqlStack extends cdk.Stack {
       dbName: emergingTech.DbName.MYSQL,
       metadataSource: emergingTech.MetatdataSource.CONFIG_FILE,
       stage: stage,
+      dbPort: 3306
     });
 
     this.createAuroraCluster(
@@ -327,6 +328,10 @@ export class TextToSqlStack extends cdk.Stack {
     });
     new cdk.CfnOutput(this, "ClientId", {
       value: this.cognitoClient.userPoolClientId,
+    });
+
+    new cdk.CfnOutput(this, "REGION", {
+      value: Aws.REGION,
     });
 
     new cdk.CfnOutput(this, "AppUri", {

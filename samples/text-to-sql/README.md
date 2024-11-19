@@ -194,7 +194,7 @@ SHOW TABLES;
   and expected query. This is used by the LLM to generate accurate query.
 
 ```cd text-to-sql
-aws s3 cp ./config_files s3://config-bucket-name/ --recursive
+aws s3 cp ./config_files s3://config-bucket-name/config/ --recursive
 ```
 
 ## Run the Streamlit UI
@@ -212,7 +212,7 @@ Still within the /client_app directory, create an ```.env``` file with the follo
 
 ```
 COGNITO_DOMAIN="<TextToSqlStack.CognitoDomain>"
-REGION="<TextToSqlStack.Region>"
+REGION="<TextToSqlStack.REGION>"
 USER_POOL_ID="<TextToSqlStack.UserPoolId>"
 CLIENT_ID="<TextToSqlStack.ClientId>"
 CLIENT_SECRET="COGNITO_CLIENT_SECRET"
@@ -223,7 +223,7 @@ FEEDBACK_QUEUE ="<TextToSqlStack.FEEDBACK_QUEUE>"
 RESULT_QUEUE = "<TextToSqlStack.RESULT_QUEUE>"
 FEEDBACK_ENDPOINT="<TextToSqlStack.FEEDBACK_ENDPOINT>"
 CONFIG_BUCKET="<TextToSqlStack.CONFIG_BUCKET>"
-
+API_ENDPOINT="<TextToSqlStack.API_ENDPOINT>"
 ```
 
 Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved from the AWS Console. Go to the [Amazon Cognito page](https://console.aws.amazon.com/cognito/home) in the AWS console, then select the created user pool. Under App integration, select App client settings. Then, select Show Details and copy the value of the App client secret.
