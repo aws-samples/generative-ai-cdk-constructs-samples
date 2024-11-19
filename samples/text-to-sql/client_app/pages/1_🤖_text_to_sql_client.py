@@ -50,7 +50,7 @@ st.session_state["start_next_question"] = start_next_question
 reformulated_ques_key = "REFORMULATED_Q "
 generated_query_key = "GENERATED_Q "
 
-sqs = boto3.client('sqs')
+sqs = boto3.client('sqs', region_name=os.environ.get("REGION", "us-east-1"))
 # ========================================================================================
 # [Response]: Long Polling
 # ========================================================================================
