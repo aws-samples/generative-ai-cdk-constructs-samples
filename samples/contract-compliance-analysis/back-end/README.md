@@ -1,5 +1,14 @@
 # Contract Compliance Analysis - Back-end
 
+## Table of contents
+
+- [Basic setup](#basic-setup)
+    - [Local environment or Cloud9](#local-environment-or-cloud9)
+    - [Cloud9 environment (optional)](#cloud9-setup-optional)
+    - [Setup steps](#setup-steps)
+- [How to customize contract analysis according to your use case](#how-to-customize-contract-analysis-according-to-your-use-case)
+- [How to use a different Amazon Bedrock model](#how-to-use-a-different-amazon-bedrock-model)
+
 ## Basic setup
 
 ### Local environment or Cloud9
@@ -137,7 +146,7 @@ Click the **Enable specific models** button and enable the checkbox for Anthropi
 
 Click **Next** and **Submit** buttons
 
-## How to customize contract analysis accordding to your use case  
+## How to customize contract analysis according to your use case  
 
 This solution was designed to support analysis of contracts of different types and of different languages, based on the assumption that the contracts establish an agreement between two parties: a given company and another party. The solution already comes pre-configured to analyze service contract contracts in English for the company *AnyCompany*, together with an example of guidelines.
 
@@ -164,3 +173,15 @@ The recommended sequence of steps:
     ```shell
     python load_guidelines.py --guidelines_file_path <custom_guidelines_file_path>
     ```
+
+## How to use a different Amazon Bedrock FM
+
+By default, the application uses Anthropic Claude 3 Haiku v1. Here are steps explaining how to update the model to use. For this example, we will use [Amazon Nova Pro v1](https://aws.amazon.com/blogs/aws/introducing-amazon-nova-frontier-intelligence-and-industry-leading-price-performance/):
+
+- Open the [app_properties.yaml](./app_properties.yaml) file and update the field ```claude_model_id``` to use the model you selected. In this case, we update the field to ```us.amazon.nova-pro-v1:0```. Replace it with the model id you want to use. The list of model ids available through Amazon Bedrock is available in the [documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html). Ensure the model you are selecting is enabled in the Amazon Bedrock -> Model access and available in your region.
+- Depending on the model selected, you might need to update some hardcoded values regarding the max number of new tokens generated. For instance, Amazon Nova Pro v1 supports 5000 output tokens, which doesn't require any modifications. However, some models like have a max output tokens of 3000, which requires some changes in the sample. Update the following lines if required:
+    - In file [fn-preprocess-contract/index.py](./stack/sfn/preprocessing/fn-preprocess-contract/index.py), update line 96 to change the chunks size to a value smaller than the max tokens output for your model, as well as line 107 to match your model's max output tokens.
+    - In file [scripts/utils/llm.py](./scripts/utils/llm.py), update the max tokens output line 28.
+    - In file [common-layer/llm.py](./stack/sfn/common-layer/llm.py) update the max tokens output line 30.
+    - In file [fn-classify-clauses/index.py](.stack/sfn/classification/fn-classify-clauses/index.py), update line 182 the max tokens output for your model
+- Re-deploy the solution as described in previous sections
