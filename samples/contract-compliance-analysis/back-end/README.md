@@ -7,7 +7,7 @@
     - [Cloud9 environment (optional)](#cloud9-setup-optional)
     - [Setup steps](#setup-steps)
 - [How to customize contract analysis according to your use case](#how-to-customize-contract-analysis-according-to-your-use-case)
-- [How to use a different Amazon Bedrock model](#how-to-use-a-different-amazon-bedrock-model)
+- [How to use a different Amazon Bedrock FM](#how-to-use-a-different-amazon-bedrock-fm)
 
 ## Basic setup
 
@@ -17,8 +17,6 @@ You have the option of running the setup from a local workspace or from a Cloud9
 
 In case you opt for Cloud9, you have to setup a Cloud9 environment in the same AWS Account where this Backend will
 be installed.
-
-If your local workspace has a non-x86 processor architecture (for instance ARM, like the M processor from Macbooks), it's strongly recommended to perform the setup steps from a Cloud9 environment, to avoid bundling issues of Lambda function dependencies (see [ticket](https://github.com/awslabs/generative-ai-cdk-constructs/issues/541)). Otherwise, set the `DOCKER_DEFAULT_PLATFORM` environmental variable to `linux/amd64` to build `x86_64` packages.
 
 #### Cloud9 setup (optional)
 
@@ -97,15 +95,11 @@ cdk bootstrap
     cdk deploy --require-approval=never
     ```
 
-    > Use `DOCKER_DEFAULT_PLATFORM=linux/amd64 cdk deploy --require-approval=never` on macOS
-
 2. Any modifications made to the code can be applied to the deployed stack by running the same command again.
 
     ```shell
     cdk deploy --require-approval=never
     ```
-
-    > Use `DOCKER_DEFAULT_PLATFORM=linux/amd64 cdk deploy --require-approval=never` on macOS
 
 #### Populate Guidelines table
 
@@ -179,7 +173,7 @@ The recommended sequence of steps:
 By default, the application uses Anthropic Claude 3 Haiku v1. Here are steps explaining how to update the model to use. For this example, we will use [Amazon Nova Pro v1](https://aws.amazon.com/blogs/aws/introducing-amazon-nova-frontier-intelligence-and-industry-leading-price-performance/):
 
 - Open the [app_properties.yaml](./app_properties.yaml) file and update the field ```claude_model_id``` to use the model you selected. In this case, we update the field to ```us.amazon.nova-pro-v1:0```. Replace it with the model id you want to use. The list of model ids available through Amazon Bedrock is available in the [documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html). Ensure the model you are selecting is enabled in the Amazon Bedrock -> Model access and available in your region.
-- Depending on the model selected, you might need to update some hardcoded values regarding the max number of new tokens generated. For instance, Amazon Nova Pro v1 supports 5000 output tokens, which doesn't require any modifications. However, some models like have a max output tokens of 3000, which requires some changes in the sample. Update the following lines if required:
+- Depending on the model selected, you might need to update some hardcoded values regarding the max number of new tokens generated. For instance, Amazon Nova Pro v1 supports 5000 output tokens, which doesn't require any modifications. However, some models might have a max output tokens of 3000, which requires some changes in the sample. Update the following lines if required:
     - In file [fn-preprocess-contract/index.py](./stack/sfn/preprocessing/fn-preprocess-contract/index.py), update line 96 to change the chunks size to a value smaller than the max tokens output for your model, as well as line 107 to match your model's max output tokens.
     - In file [scripts/utils/llm.py](./scripts/utils/llm.py), update the max tokens output line 28.
     - In file [common-layer/llm.py](./stack/sfn/common-layer/llm.py) update the max tokens output line 30.
