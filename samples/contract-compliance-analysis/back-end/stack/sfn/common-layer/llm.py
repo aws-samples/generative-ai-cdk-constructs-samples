@@ -69,7 +69,7 @@ def invoke_llm(prompt, model_id, temperature=0.5, top_k=None, top_p=0.8, max_new
     elif('amazon.nova' in model_id):
         usage_data = response.usage_metadata 
         stop_reason = response.response_metadata['stopReason']
-        
+
     if verbose:
         logger.info(f"Model response: {content}")
         logger.info(f"Model usage: {usage_data}")
