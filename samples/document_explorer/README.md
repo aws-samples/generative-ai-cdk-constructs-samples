@@ -4,6 +4,8 @@
 
 The "Document Explorer" sample generative AI application demonstrates how to build end-to-end solutions leveraging AWS services and [AWS Generative AI CDK Constructs](https://github.com/awslabs/generative-ai-cdk-constructs).
 
+> Note: This sample can also be deployed through Terraform ! Please refer to the [Terraform sample code](https://github.com/aws-samples/aws-generative-ai-terraform-samples/tree/main/samples/document-explorer) for more details.
+
 It includes examples of key components needed in generative AI applications:
 
 - [Data Ingestion Pipeline](https://github.com/awslabs/generative-ai-cdk-constructs/tree/main/src/patterns/gen-ai/aws-rag-appsync-stepfn-opensearch): Ingests documents, converts them to text, and stores them in a knowledge base for retrieval. This enables long context window approaches.
@@ -45,17 +47,6 @@ samples/document_explorer
 ├── cdk-config-frontend
 │   └── frontend_stack.py                        # Frontend - CDK app
 │
-├── terraform-config-frontend                    # Frontend – Terraform
-│   │
-│   ├── main.tf                                  # Terraform resources 
-│   ├── outputs.tf                               # Outputs definition
-│   ├── variables.tf                             # Variables defintion
-│   └── terraform.tfvars                         # Variables values
-│
-├── terraform-config-backend                    # Backend – Terraform
-│   │
-│   ├── main.tf                                  # Terraform resources 
-│   └── outputs.tf                               # Outputs definition
 │
 ├── bin
 │   └── document_explorer.ts                     # Backend - CDK app
@@ -153,7 +144,7 @@ Note: the CDK Front End deployment was adapted from [this blog](https://kawsaur.
     ```shell
         cd cdk-config-frontend
     ```
-2. Configure your environment variables in `client_app/Dockerfile`. Replace the property values with the values retrieved from the stack outputs/console. You will leave `APP_URI` as a placeholder for now because the URI will be the Cloudfront URL output from your Terraform deployment. 
+2. Configure your environment variables in `client_app/Dockerfile`. Replace the property values with the values retrieved from the stack outputs/console. You will leave `APP_URI` as a placeholder for now because the URI will be the Cloudfront URL output from your CDK deployment. 
 
   ```
     ENV COGNITO_DOMAIN = "<ApiStack.CognitoDomain>"
@@ -185,58 +176,6 @@ Note: the CDK Front End deployment was adapted from [this blog](https://kawsaur.
 8. Once your changes have been applied, open your browser to the outputted URL. It may take a few moments for the webapp to become available.
 
 </details>
-
-
-
- ### Deploy with Terraform
- <details><summary>Terraform Instructions</summary> 
-
- #### Deploy the Backend
- 1. Open the `/terraform-config-backend` folder
-    ```shell
-        cd terraform-config-backend
-    ```
- 2. Run `terraform init`
- 3. Make sure you have Docker running and deploy the Terraform by running `terraform apply`
- 4. When prompted with `Do you want to perform these actions?` enter `yes` and wait for the backend to be deployed.
-
-
-
-#### Deploy the Front End
-
-
-
-1. Open the `/terraform-config-frontend` folder
-    ```shell
-        cd ../terraform-config-frontend
-    ```
-2. Configure your environment variables in `client_app/Dockerfile`. Replace the property values with the values the were outputted from the backend Terraform deployment in your terminal. You will leave `APP_URI` as a placeholder for now because the URI will be the Cloudfront URL output from your Front End Terraform deployment. 
-  ```
-ENV COGNITO_DOMAIN = "<Output.CognitoDomain>"
-ENV REGION = "<Output.Region>"
-ENV USER_POOL_ID = "<Output.UserPoolId>"
-ENV CLIENT_ID = "<Output.ClientId>"
-ENV CLIENT_SECRET = "<COGNITO_CLIENT_SECRET>"
-ENV IDENTITY_POOL_ID = "<Output.IdentityPoolId>"
-ENV AUTHENTICATED_ROLE_ARN = "<Output.AuthenticatedRoleArn>"
-ENV GRAPHQL_ENDPOINT = "<Output.GraphQLEndpoint>"
-ENV S3_INPUT_BUCKET = "<Output.InputsAssetsBucket>"
-ENV S3_PROCESSED_BUCKET = "<Output.ProcessedAssetsBucket>"
-ENV CLIENT_NAME = "<Output.ClientName>"
-  ```
-
-  Note: The ```COGNITO_CLIENT_SECRET``` is a secret value that can be retrieved from the AWS Console. Go to the [Amazon Cognito page](https://console.aws.amazon.com/cognito/home) in the AWS console, then select the created user pool. Under App integration, select the corresponding app client. This will navigate you to a new page where the secret can be unhidden, and you will want to copy the value of the App client secret. 
-
-
-3. Run `terraform init`
-4. Run `terraform import aws_cognito_user_pool_client.update_client {user-pool-id}/{client-id}` and make sure to update the `user-pool-id` and `client-id` values. In the `terraform.tfvars` folder, add the values for the `user_pool_id`, `client_name`, `client_id`, and `region`.
-5. Run `terraform import aws_cognito_identity_pool.update_pool {identity-pool-id}`.
-5. Deploy the Terraform by running `terraform apply`
-6. Now that you have the CloudFront URL, go back to your `client_app/Dockerfile` and paste in the value of your Cloudfront URL like `https://XXXXXXXXXXXXXX.cloudfront.net/` for your APP_URI. Save the Dockerfile and run `terraform apply` again. 
-7. Once your changes have been applied, open your browser to the outputted URL. It may take a few moments for the webapp to become available.
-</details>
-
-
 
 ### Deploy the Front End Locally
 
@@ -400,12 +339,6 @@ First make sure to remove all data from the Amazon Simple Storage Service (Amazo
 
 ```shell
     $ cdk destroy --all
-```
-
-Or if you deployed with Terraform: 
-
-```shell
-    $ terraform destroy
 ```
 
 Then in the AWS Console delete the S3 buckets.
