@@ -32,9 +32,6 @@ from .classification import ClassificationStep
 from .evaluation import EvaluationStep
 from .risk import RiskStep
 
-from cdklabs.generative_ai_cdk_constructs import LangchainCommonDepsLayer
-
-
 class StepFunctionsStack(NestedStack):
 
     def __init__(
@@ -50,12 +47,13 @@ class StepFunctionsStack(NestedStack):
     ):
         super().__init__(scope, id, **kwargs)
 
-        self.langchain_deps_layer = LangchainCommonDepsLayer(
+        self.langchain_deps_layer = lambda_python.PythonLayerVersion(
             self,
-            "LangChainDependenciesLayer",
-            runtime=lambda_.Runtime.PYTHON_3_12,
-            architecture=lambda_.Architecture.X86_64
-        ).layer
+            'LangChainDependenciesLayer',
+            entry=os.path.join(os.path.dirname(__file__), "langchain-deps-layer"),
+            compatible_architectures=[lambda_.Architecture.X86_64],
+            compatible_runtimes=[lambda_.Runtime.PYTHON_3_12],
+        )
 
         self.common_layer = lambda_python.PythonLayerVersion(
             self,

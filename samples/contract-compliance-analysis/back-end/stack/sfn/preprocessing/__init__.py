@@ -15,6 +15,7 @@ import os
 from constructs import Construct
 from aws_cdk import (
     Duration,
+    Aws,
     aws_lambda as lambda_,
     aws_stepfunctions as sfn,
     aws_stepfunctions_tasks as tasks,
@@ -85,7 +86,8 @@ class PreprocessingStep(Construct):
                 "bedrock:InvokeModel",
             ],
             resources=[
-                "arn:aws:bedrock:*::foundation-model/anthropic*"
+                "arn:aws:bedrock:*::foundation-model/*",
+                "arn:aws:bedrock:*:"+Aws.ACCOUNT_ID+":inference-profile/*",
             ]
         ))
 

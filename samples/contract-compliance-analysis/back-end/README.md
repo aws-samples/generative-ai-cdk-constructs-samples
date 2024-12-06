@@ -1,5 +1,14 @@
 # Contract Compliance Analysis - Back-end
 
+## Table of contents
+
+- [Basic setup](#basic-setup)
+    - [Local environment or Cloud9](#local-environment-or-cloud9)
+    - [Cloud9 environment (optional)](#cloud9-setup-optional)
+    - [Setup steps](#setup-steps)
+- [How to customize contract analysis according to your use case](#how-to-customize-contract-analysis-according-to-your-use-case)
+- [How to use a different Amazon Bedrock FM](#how-to-use-a-different-amazon-bedrock-fm)
+
 ## Basic setup
 
 ### Local environment or Cloud9
@@ -8,8 +17,6 @@ You have the option of running the setup from a local workspace or from a Cloud9
 
 In case you opt for Cloud9, you have to setup a Cloud9 environment in the same AWS Account where this Backend will
 be installed.
-
-If your local workspace has a non-x86 processor architecture (for instance ARM, like the M processor from Macbooks), it's strongly recommended to perform the setup steps from a Cloud9 environment, to avoid bundling issues of Lambda function dependencies (see [ticket](https://github.com/awslabs/generative-ai-cdk-constructs/issues/541)). Otherwise, set the `DOCKER_DEFAULT_PLATFORM` environmental variable to `linux/amd64` to build `x86_64` packages.
 
 #### Cloud9 setup (optional)
 
@@ -88,15 +95,11 @@ cdk bootstrap
     cdk deploy --require-approval=never
     ```
 
-    > Use `DOCKER_DEFAULT_PLATFORM=linux/amd64 cdk deploy --require-approval=never` on macOS
-
 2. Any modifications made to the code can be applied to the deployed stack by running the same command again.
 
     ```shell
     cdk deploy --require-approval=never
     ```
-
-    > Use `DOCKER_DEFAULT_PLATFORM=linux/amd64 cdk deploy --require-approval=never` on macOS
 
 #### Populate Guidelines table
 
@@ -137,7 +140,7 @@ Click the **Enable specific models** button and enable the checkbox for Anthropi
 
 Click **Next** and **Submit** buttons
 
-## How to customize contract analysis accordding to your use case  
+## How to customize contract analysis according to your use case  
 
 This solution was designed to support analysis of contracts of different types and of different languages, based on the assumption that the contracts establish an agreement between two parties: a given company and another party. The solution already comes pre-configured to analyze service contract contracts in English for the company *AnyCompany*, together with an example of guidelines.
 
@@ -164,3 +167,49 @@ The recommended sequence of steps:
     ```shell
     python load_guidelines.py --guidelines_file_path <custom_guidelines_file_path>
     ```
+
+## How to use a different Amazon Bedrock FM
+
+By default, the application uses Anthropic Claude 3 Haiku v1. Here are steps explaining how to update the model to use. For this example, we will use [Amazon Nova Pro v1](https://aws.amazon.com/blogs/aws/introducing-amazon-nova-frontier-intelligence-and-industry-leading-price-performance/):
+
+- Open the [app_properties.yaml](./app_properties.yaml) file and update the field ```claude_model_id``` to use the model you selected. In this case, we update the field to ```us.amazon.nova-pro-v1:0```. Replace it with the model id you want to use. The list of model ids available through Amazon Bedrock is available in the [documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html). Ensure the model you are selecting is enabled in the console (Amazon Bedrock -> Model access) and available in your region.
+- Depending on the model selected, you might need to update some hardcoded values regarding the max number of new tokens generated. For instance, Amazon Nova Pro v1 supports 5000 output tokens, which doesn't require any modifications. However, some models might have a max output tokens of 3000, which requires some changes in the sample. Update the following lines if required:
+    - In file [fn-preprocess-contract/index.py](./stack/sfn/preprocessing/fn-preprocess-contract/index.py), update line 96 to change the chunks size to a value smaller than the max tokens output for your model, as well as line 107 to match your model's max output tokens.
+    - In file [scripts/utils/llm.py](./scripts/utils/llm.py), update the max tokens output line 28.
+    - In file [common-layer/llm.py](./stack/sfn/common-layer/llm.py) update the max tokens output line 30.
+    - In file [fn-classify-clauses/index.py](.stack/sfn/classification/fn-classify-clauses/index.py), update line 182 the max tokens output for your model
+- Re-deploy the solution as described in previous sections
+
+### Troubleshooting
+
+#### KeyError in step X
+
+If you change the model, it is possible that you face an error in the step function run. This can be due to the parsing of the LLM response.
+In that case, identify the failing lambda function from the step functions logs, and update the dedicated lambda function code to enable verbose messaging. For instance, if the failing lambda function is ```PreprocessingStepPreproc```, open the file [fn-preprocess-contract/index.py](./stack/sfn/preprocessing/fn-preprocess-contract/index.py) and update the invoke_llm code:
+
+```python
+llm_response, model_usage, stop_reason = invoke_llm(
+    prompt=PROMPT_TEMPLATE.format(CONTRACT_EXCERPT=contract_excerpt),
+    model_id=prompt_vars_dict.get("claude_model_id", ''),
+    temperature=0.0,
+    top_p=0.999,
+    max_new_tokens=4096,
+    verbose=True # <- turn on verbose mode
+)
+```
+
+Then, modify the file [common-layer/llm.py](./stack/sfn/common-layer/llm.py) and print the response from the runnable invocation:
+
+```python
+response = chain.invoke({})
+logger.info(f"Model response: {response}") # <- log the response
+content = response.content
+```
+
+Re-deploy the solution, and verify in the logs the structure of the response. Depending on the model used, it is possible that the schema of the reponse is different, thus the ```usage``` and ```stop reason``` values might require to be parsed differently. In that case, add the correct code in the file [common-layer/llm.py](./stack/sfn/common-layer/llm.py):
+
+```python
+if ('mymodel' in model_id):
+        usage_data = response.XXX # <- specify how to parse usage data
+        stop_reason = response.XXX # <- specify how to parse stop reason
+```

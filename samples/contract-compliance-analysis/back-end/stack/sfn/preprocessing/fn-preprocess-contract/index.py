@@ -156,7 +156,7 @@ def handler(event, context):
         ))
         # Merge the contracts, accepting only the inclusion of separators
         merged_contract = "".join([
-            diff[2:] if diff.startswith("  ") or diff.startswith("- ") or diff.startswith(f"+ {CLAUSE_SEPARATOR}\n") else ""
+            diff[2:] if diff.startswith("  ") or diff.startswith("- ") or diff.startswith(f"+ {CLAUSE_SEPARATOR}\n") or diff.startswith(f"+ {CLAUSE_SEPARATOR} \n") else ""
             for diff in diffs
         ])
         # Get each individual clause and insert into table
