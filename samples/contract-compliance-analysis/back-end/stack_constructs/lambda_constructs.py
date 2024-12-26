@@ -15,6 +15,7 @@ from aws_cdk import (
     aws_lambda_python_alpha as lambda_python,
     aws_lambda as lambda_,
     aws_iam as iam,
+    Stack
 )
 from constructs import Construct
 from cdk_nag import NagSuppressions, NagPackSuppression
@@ -39,8 +40,11 @@ class PythonFunctionConstruct(lambda_python.PythonFunction):
             role=role,
             **kwargs,
         )
-        role.attach_inline_policy(_lambda_basic_policy(scope, construct_id))
-        role.attach_inline_policy(_lambda_vpc_policy(scope, construct_id))
+
+        # Get the actual function name after initialization
+        function_name = self.function_name
+
+        role.attach_inline_policy(_lambda_basic_policy(scope, construct_id, function_name))
 
 
 class DockerImageFunctionConstruct(lambda_.DockerImageFunction):
@@ -62,14 +66,21 @@ class DockerImageFunctionConstruct(lambda_.DockerImageFunction):
             role=role,
             **kwargs,
         )
-        role.attach_inline_policy(_lambda_basic_policy(scope, construct_id))
-        role.attach_inline_policy(_lambda_vpc_policy(scope, construct_id))
+
+        # Get the actual function name after initialization
+        function_name = self.function_name
+
+        role.attach_inline_policy(_lambda_basic_policy(scope, construct_id, function_name))
 
 
 def _lambda_basic_policy(
         scope: Construct,
         construct_id: str,
+        function_name: str
 ):
+    region = Stack.of(scope).region
+    account = Stack.of(scope).account
+
     policy = iam.Policy(
         scope,
         f"{construct_id}LambdaBasicExecPolicy",
@@ -81,40 +92,16 @@ def _lambda_basic_policy(
                     "logs:CreateLogStream",
                     "logs:PutLogEvents",
                 ],
-                resources=["*"],
-            ),
-        ],
-    )
-    NagSuppressions.add_resource_suppressions(
-        construct=policy,
-        suppressions=[NagPackSuppression(id="AwsSolutions-IAM5", reason="AWSLambdaBasicExecutionRole")],
-    )
-    return policy
-
-
-def _lambda_vpc_policy(
-        scope: Construct,
-        construct_id: str,
-):
-    policy = iam.Policy(
-        scope,
-        f"{construct_id}LambdaVPCExecPolicy",
-        statements=[
-            iam.PolicyStatement(
-                effect=iam.Effect.ALLOW,
-                actions=[
-                    "ec2:CreateNetworkInterface",
-                    "ec2:DescribeNetworkInterfaces",
-                    "ec2:DeleteNetworkInterface",
-                    "ec2:AssignPrivateIpAddresses",
-                    "ec2:UnassignPrivateIpAddresses",
+                resources=[
+                    f"arn:aws:logs:{region}:{account}:log-group:/aws/lambda/{function_name}",
+                    f"arn:aws:logs:{region}:{account}:log-group:/aws/lambda/{function_name}:*"
                 ],
-                resources=["*"],
             ),
         ],
     )
     NagSuppressions.add_resource_suppressions(
         construct=policy,
-        suppressions=[NagPackSuppression(id="AwsSolutions-IAM5", reason="AWSLambdaVPCAccessExecutionRole")],
+        suppressions=[NagPackSuppression(id="AwsSolutions-IAM5", reason="CloudWatch log groups")],
     )
     return policy
+
