@@ -154,12 +154,14 @@ class StepFunctionsStack(NestedStack):
             tracing_enabled=True,
         )
 
+        # Not all X-Ray actions support resource-level permissions
+        # Reference: https://docs.aws.amazon.com/xray/latest/devguide/security_iam_service-with-iam.html
         NagSuppressions.add_resource_suppressions(
             construct=self.state_machine.role,
             suppressions=[
                 NagPackSuppression(
                     id="AwsSolutions-IAM5",
-                    reason="Wildcard used because to support multiple function versions",
+                    reason="Not all X-Ray / CloudWatch actions support resource-level permissions",
                 ),
             ],
             apply_to_children=True,
