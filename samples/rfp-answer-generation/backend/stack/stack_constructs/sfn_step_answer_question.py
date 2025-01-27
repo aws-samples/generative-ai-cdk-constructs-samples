@@ -67,6 +67,7 @@ class AnswerQuestionStep(Construct):
                 ],
                 resources=[
                     f"arn:aws:bedrock:{Stack.of(self).region}::foundation-model/anthropic.claude-3-5-sonnet-20240620-v1:0",
+                    f"arn:aws:bedrock:{Stack.of(self).region}::foundation-model/anthropic.claude-3-haiku-20240307-v1:0",
                 ],
             )
         )

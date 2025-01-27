@@ -14,6 +14,8 @@ The project is powered by Large Language Models (LLM) available on Amazon Bedroc
 
 The solution is divided into 2 stacks: Ingestion and Inference. Additionally, this project provides you with a sample front-end application that allows you to upload and process new RFPs, and interact with the answers provided by the LLM: you can edit, approve and download the answers as a new XLSX file.
 
+You can also inspect the solution [data flow](docs/images/data-flow.png).
+
 ### Ingestion stack
 
 The ingestion stack uses the [Generative AI CDK Constructs](https://github.com/awslabs/generative-ai-cdk-constructs) Knowledge Bases and OpenSearch Serverless L2 constructs to deploy a fully-managed data ingestion pipeline powered by Anthropic Claude LLMs.

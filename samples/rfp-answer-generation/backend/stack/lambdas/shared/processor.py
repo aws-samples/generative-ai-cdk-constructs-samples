@@ -11,7 +11,9 @@
 # and limitations under the License.
 #
 
+import logging
 import numpy as np
+import os
 import pandas as pd
 
 from botocore.config import Config
@@ -19,6 +21,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import TypedDict
 
 from .utils import extract_items_from_tagged_list, get_bedrock_runtime
+
+logger = logging.getLogger()
+logger.setLevel(os.getenv("LOG_LEVEL", "INFO"))
 
 PROMPT_TEMPLATE = """
 You have received a previously answered Request For Proposal (RFP) document. Your task is to extract, ipsis literis, ALL of the questions and answers from every sheet in the document. Provide your answer enclosed by <rfp></rfp> tags.
@@ -35,13 +40,13 @@ Follow these steps:
 
 3. If the document contains instructions from the requester, do not extract them.
 
-4. Identify each group of questions in the RFP and the topic name for the group. The document format can very, and the topic can be specified in a column beside the question or in a single cell before a group of questions. Identify the topic name with <topic_name></topic_name> tags.
+4. Identify each group of questions in the RFP and the topic name for the group. The document format can very, and the topic can be specified in a column beside the question or in a single cell before a group of questions. If the topic name is specified in a column alongside the question and the answer, group questions with the same topics together. Identify the topic name with <topic_name></topic_name> tags.
 
 5. Identify each question and its answer.
 
 6. Under the <topic></topic> tags, enclose the question in <question></question> tags.
 
-7. Under the <topic></topic> tags, enclose the answer in <answer></answer> tags.
+7. Under the <topic></topic> tags, enclose the answer in <answer></answer> tags. If there is no answer to the question, add an empty <answer></answer> tag.
 
 Output Example:
 <rfp>
@@ -49,6 +54,15 @@ Output Example:
 <topic_name>Company Information</topic_name>
 <question>Company Name</question>
 <answer>Oktank LDTA</answer>
+</topic>
+</rfp>
+
+Output Example:
+<rfp>
+<topic>
+<topic_name>Company Information</topic_name>
+<question>Total number of employees</question>
+<answer></answer>
 </topic>
 </rfp>
 """
@@ -71,7 +85,7 @@ class BedrockKBProcessor:
     def __init__(
         self,
         model_id="anthropic.claude-3-5-sonnet-20240620-v1:0",
-        separator=",",
+        separator=";",
     ):
         self.model_id: str = model_id
         self.separator: str = separator
@@ -100,10 +114,9 @@ class BedrockKBProcessor:
                         "date": file_date,
                     }
                     for q, a in zip(questions, answers)
-                    if a
                 ]
 
-                print(f"Extracted: {len(extracted_qa)} QA pairs.")
+                logger.info(f"Extracted: {len(extracted_qa)} QA pairs.")
 
                 rfp_chunks += extracted_qa
 
@@ -160,13 +173,13 @@ class BedrockKBProcessor:
             return [r.result() for r in as_completed(futures)]
 
     def __load_file_in_sections(self, filename: str) -> list[pd.DataFrame]:
-        print(filename)
+        logger.info(filename)
         extension: str = filename.split(".")[-1].upper()
-        print(f"File extension: {extension}")
+        logger.info(f"File extension: {extension}")
         sections: list[pd.DataFrame] = []
 
         if extension == "XLSX":
-            print("Loaded XLSX")
+            logger.info("Loaded XLSX")
             sheets_dict = pd.read_excel(
                 filename, sheet_name=None, header=None, engine="openpyxl"
             )
@@ -175,10 +188,10 @@ class BedrockKBProcessor:
                 sections += np.split(sheet, sheet[sheet.isnull().all(1)].index)
 
         else:
-            print("Loaded CSV")
-            sheet = pd.read_csv(filename, header=None, sep=self.separator)
+            logger.info("Loaded CSV")
+            sheet = pd.read_csv(filename, header=0, sep=self.separator)
             sections += np.split(sheet, sheet[sheet.isnull().all(1)].index)
 
-        print(f"Loaded {len(sections)} sheets")
+        logger.info(f"Loaded {len(sections)} sheets")
 
         return sections

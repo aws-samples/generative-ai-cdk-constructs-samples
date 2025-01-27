@@ -96,4 +96,19 @@ To deploy the `Inference` stack directly into your AWS account:
    ```shell
    $ cdk deploy RFPAnswers-InferenceStack --require-approval=never --verbose
    ```
-   
+
+## Clean up
+
+Do not forget to delete the stack to avoid unexpected charges.
+
+First make sure to remove all data from the Amazon Simple Storage Service (Amazon S3) Buckets.
+
+```shell
+    $ cdk destroy RFPAnswers-IngestionStack
+```
+
+```shell
+    $ cdk destroy RFPAnswers-InferenceStack
+```
+
+Delete all the associated logs created by the different services in Amazon CloudWatch logs. 
