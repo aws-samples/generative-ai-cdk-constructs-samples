@@ -62,7 +62,7 @@ processing is preferred for its superior cost-efficiency and throughput capabili
 
 You are responsible for the cost of the AWS services used while running this prototype. As of this revision, the cost
 for running this prototype with the default settings in the US East (N. Virginia) Region is approximately $2,068.96 per
-month with 100 rules and 100 repositories evaluated per month use Amazon Bedrock Batch Inference.
+month with 100 rules and 100 repositories evaluated per month using Amazon Bedrock Batch Inference.
 
 The costs shown represent pricing without consideration of AWS free tier benefits.
 
