@@ -13,6 +13,7 @@ app = cdk.App()
 env = cdk.Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'), 
                         region=os.getenv('CDK_DEFAULT_REGION'))
 
+
 #---------------------------------------------------------------------------
 # Bedrock knowledge base with OpenSearch
 #---------------------------------------------------------------------------
@@ -23,6 +24,7 @@ BedrockOpensearchStack(app, "BedrockOpensearchStack"+os.getenv('SUFFIX',''),
 
 #---------------------------------------------------------------------------
 # Bedrock knowledge base with Amazon RDS Aurora PostgreSQL
+# uncomment this if you want to deploy Amazon RDS Aurora PostgreSQL 
 #---------------------------------------------------------------------------
     
 
@@ -30,6 +32,16 @@ BedrockOpensearchStack(app, "BedrockOpensearchStack"+os.getenv('SUFFIX',''),
 #     env=env
 #     )
 
+
+#---------------------------------------------------------------------------
+# Bedrock knowledge base with Pinecone
+# uncomment this if you want to deploy Pinecone
+#---------------------------------------------------------------------------
+    
+
+# BedrockPineconeStack(app, "BedrockPineconeStack",
+#     env=env
+#     )
 
 
 app.synth()
