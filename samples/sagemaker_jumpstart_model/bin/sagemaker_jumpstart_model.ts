@@ -20,7 +20,7 @@ new SagemakerJumpstartModelStack(app, 'SagemakerJumpstartModelStack', {
   env: {
     region: 'us-east-1'
   },
-  description: '(uksb-1tupboc43) Sagemaker Jumpstart Model Stack'
+  description: '(uksb-1tupboc43) (tag: Sagemaker Jumpstart Model Stack)'
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */

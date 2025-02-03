@@ -18,7 +18,7 @@ const app = new cdk.App();
 new GenerateContentStack(app, 'GenerateContentStack', {
   natGateways: 1,
   clientUrl:env.clientUrl,
-  description: '(uksb-1tupboc43) Image generation stack',
+  description: '(uksb-1tupboc43) (tag: Image generation stack)',
 env: { account: process.env.CDK_DEFAULT_ACCOUNT,
     region: process.env.CDK_DEFAULT_REGION },
   /* If you don't specify 'env', this stack will be environment-agnostic.

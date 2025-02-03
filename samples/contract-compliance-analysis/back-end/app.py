@@ -25,7 +25,7 @@ app = cdk.App()
 stack_name = os.environ.get('STACK_NAME', "MainBackendStack")
 
 main_backend_stack = BackendStack(
-    app, stack_name, description=f'{(USAGE_METRIC)} (version:{VERSION}) (tag:{SOLUTION_NAME})'
+    app, stack_name, description=f'({USAGE_METRIC})(tag: {SOLUTION_NAME})'
 )
 
 cdk.Aspects.of(app).add(AwsSolutionsChecks())

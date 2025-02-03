@@ -81,7 +81,6 @@ class PromptManagementStack(Stack):
                 "maxTokens": 2000,
             }
         )
-
         prompt.add_variant(variant2)
 
         

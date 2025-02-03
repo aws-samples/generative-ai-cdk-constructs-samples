@@ -20,7 +20,7 @@ new SagemakerHuggingfaceModelStack(app, 'SagemakerHuggingfaceModelStack', {
   env: {
     region: 'us-east-1'
   },
-  description: '(uksb-1tupboc43) Sagemaker Hugging face model Stack'
+  description: '(uksb-1tupboc43) (tag: Sagemaker Hugging face model Stack)'
 
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,

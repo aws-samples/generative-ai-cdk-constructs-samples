@@ -8,7 +8,7 @@ new SagemakerHuggingfaceModelLlavaStack(app, 'SagemakerHuggingfaceModelLlavaStac
   env: {
     region: 'us-east-1'
   },
-  description: '(uksb-1tupboc43) Sagemaker Custom Hugging Face Endpoint Stack'
+  description: '(uksb-1tupboc43) (tag: Sagemaker Custom Hugging Face Endpoint Stack)'
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */
