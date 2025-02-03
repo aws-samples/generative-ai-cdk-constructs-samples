@@ -1,5 +1,8 @@
 # Overview
 
+> [!WARNING] 
+> This code sample is deprecated: it is no longer maintained and will not receive further updates. This sample will be removed in an upcoming release.
+
 The "Image Description" generative AI application showcases the capability of generating accurate and detailed multilingual textual descriptions for multiple images by leveraging the power of AWS services and the [AWS Generative AI Cloud Development Kit (CDK) Constructs](https://github.com/awslabs/generative-ai-cdk-constructs/blob/main/src/patterns/gen-ai/aws-summarization-appsync-stepfn/README.md). This application harnesses the potential of state-of-the-art generative AI models to provide users with valuable insights and a comprehensive understanding of visual data.
 
 The application features a user-friendly Streamlit interface, enabling users to authenticate securely via Amazon Cognito, a robust and highly scalable identity management service. Upon successful authentication, users can seamlessly upload images, and the application will generate descriptive text for the uploaded visual data. The description can be generated in different languages by selecting the desired language option in the sidebar. Multiple images can be uploaded simultaneously, and the application will generate descriptions for all of them.
