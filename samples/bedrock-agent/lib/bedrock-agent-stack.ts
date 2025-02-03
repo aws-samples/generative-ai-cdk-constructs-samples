@@ -65,10 +65,10 @@ export class BedrockAgentStack extends cdk.Stack {
     });
 
     const agent = new bedrock.Agent(this, 'Agent', {
-      foundationModel: bedrock.BedrockFoundationModel.ANTHROPIC_CLAUDE_INSTANT_V1_2,
+      foundationModel: bedrock.BedrockFoundationModel.ANTHROPIC_CLAUDE_3_5_SONNET_V1_0,
       instruction: 'You are a helpful and friendly agent that answers questions about literature.',
       knowledgeBases: [kb],
-      enableUserInput: true,
+      userInputEnabled: true,
       shouldPrepareAgent:true
     });
 
@@ -79,23 +79,35 @@ export class BedrockAgentStack extends cdk.Stack {
       timeout:cdk.Duration.minutes(2)
     });
 
-    const actionGroup = new AgentActionGroup(this,'MyActionGroup',{
-      actionGroupName: 'query-library',
+    const actionGroup = new AgentActionGroup({
+      name: 'query-library',
       description: 'Use these functions to get information about the books in the library.',
-      actionGroupExecutor: {
-        lambda: actionGroupFunction
-      },
-      actionGroupState: "ENABLED",
-      apiSchema: bedrock.ApiSchema.fromAsset(path.join(__dirname, 'action-group.yaml')),
+      executor: bedrock.ActionGroupExecutor.fromlambdaFunction(actionGroupFunction),
+      enabled: true,
+      apiSchema: bedrock.ApiSchema.fromLocalAsset(path.join(__dirname, 'action-group.yaml')),
     });
 
-    agent.addActionGroups([actionGroup])
+    agent.addActionGroup(actionGroup);
 
-    agent.addAlias({
+    const agentAlias2 = new bedrock.AgentAlias(this, 'myalias2', {
       aliasName: 'my-agent-alias',
-      description:'alias for my agent'
-      
-    })
+      agent: agent,
+      description: 'alias for my agent'
+    });
+
+    // Add NAG suppression for the Agent's role policy
+    NagSuppressions.addResourceSuppressionsByPath(
+      this,
+      `/${this.node.path}/Agent/Role/DefaultPolicy/Resource`,
+      [
+        {
+          id: 'AwsSolutions-IAM5',
+          reason: 'The Agent requires permissions to invoke the action group Lambda function',
+          appliesTo: ['Resource::<ActionGroupFunctionFE14D1CB.Arn>:*'],
+        },
+      ],
+      true
+    );
   
     new cdk.CfnOutput(this, 'AgentId', {value: agent.agentId});
     new cdk.CfnOutput(this, 'KnowledgeBaseId', {value: kb.knowledgeBaseId});
@@ -108,7 +120,26 @@ export class BedrockAgentStack extends cdk.Stack {
         {
           id: 'AwsSolutions-IAM4',
           reason: 'ActionGroup Lambda uses the AWSLambdaBasicExecutionRole AWS Managed Policy.',
+        },
+        {
+          id: 'AwsSolutions-L1',
+          reason: 'Using Python 3.12 as the latest runtime version for Lambda.',
         }
+      ],
+      true,
+    );
+    NagSuppressions.addResourceSuppressionsByPath(
+      this,
+      `/${this.node.path}/Agent/Role/DefaultPolicy`,
+      [
+        {
+          id: 'AwsSolutions-IAM5',
+          reason: 'The Lambda function requires broad permissions for logging and invocation.',
+          appliesTo: [
+            'Action::lambda:InvokeFunction',
+            'Action::logs:*'
+          ],
+        },
       ],
       true,
     );

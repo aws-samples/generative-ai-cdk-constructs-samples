@@ -34,25 +34,26 @@ class BedrockPineconeStack(Stack):
 
         )
 
-        kb = bedrock.KnowledgeBase(self, 'KnowledgeBase-pinecone', 
+        kb = bedrock.KnowledgeBase(self, 'KnowledgeBase-Aurora', 
                     vector_store= pineconevs,
                     embeddings_model= bedrock.BedrockFoundationModel.COHERE_EMBED_ENGLISH_V3,
-                    instruction=  'Use this knowledge base to answer questions about books.It contains the full text of novels.',    
-                    description= 'Pinecone knowledge base.'
+                    instruction=  'Use this knowledge base to answer questions about books. ' +
+            'It contains the full text of novels.'                     
                 )
 
-        docBucket = s3.Bucket(self, 'DockBucket-pinecone')
+        docBucket = s3.Bucket(self, 'DockBucket-Aurora')
 
-        dataSource = bedrock.S3DataSource(self, 'DataSource-pinecone',
+        dataSource= bedrock.S3DataSource(self, 'DataSource-Aurora',
             bucket= docBucket,
             knowledge_base=kb,
             data_source_name='books',
-            chunking_strategy= bedrock.ChunkingStrategy.FIXED_SIZE,
-            max_tokens=500,
-            overlap_percentage=20   
+            chunking_strategy= bedrock.ChunkingStrategy.fixed_size(
+                max_tokens=500,
+                overlap_percentage=20 
+            )
         )
 
-        ## action group
+         ## action group
         action_group_function = PythonFunction(
             self,
             "LambdaFunction",
@@ -60,29 +61,25 @@ class BedrockPineconeStack(Stack):
             entry= os.path.join(os.path.dirname(__file__), '../lambda/action-group/'),
             layers= [_lambda.LayerVersion.from_layer_version_arn(self, 'PowerToolsLayer', f'arn:aws:lambda:{self.region}:017000801446:layer:AWSLambdaPowertoolsPythonV2:60')],
             timeout= Duration.minutes(2),
-            bundling = BundlingOptions(build_args={"POETRY_VERSION": "1.7.0"}),
         )       
-
+        
         ag = bedrock.AgentActionGroup(
-                self, 
-                'ActionGroup',
-                action_group_name='query-library',
+                name='query-library',
                 description= 'Use these functions to get information about the books in the library.',
-                action_group_executor=bedrock.ActionGroupExecutor(
-                  lambda_=action_group_function,
+                executor=bedrock.ActionGroupExecutor.fromlambda_function(
+                  action_group_function,
                 ),
-                action_group_state= 'ENABLED',
-                api_schema= bedrock.ApiSchema.from_asset(os.path.join(os.path.dirname(__file__), 'action-group.yaml'))
-                ) 
+                enabled= True,
+                api_schema= bedrock.ApiSchema.from_local_asset("./python_samples/action-group.yaml")                ) 
 
      ## agent 
         agent = bedrock.Agent(
             self,
             "Agent",
-            foundation_model=bedrock.BedrockFoundationModel.ANTHROPIC_CLAUDE_V2_1,
+            foundation_model=bedrock.BedrockFoundationModel.AMAZON_NOVA_MICRO_V1,
             instruction="You are a helpful and friendly agent that answers questions about insurance claims.",
             knowledge_bases=[kb],
-            enable_user_input= True,
+            user_input_enabled= True,
             should_prepare_agent=True
             )
        
@@ -90,13 +87,17 @@ class BedrockPineconeStack(Stack):
         agent.add_action_group(ag)   
         
      ## agent alias
-        agent.add_alias(
-        alias_name= 'pinecone-agent-alias',
-        description='alias for my agent'
-        )
-    
+        agent_alias= bedrock.AgentAlias(self, 
+                                        'AgentAlias',
+                                        description='alias for my agent',
+                                        agent=agent)
+
+        
 
         CfnOutput(self, "KnowledgeBaseId", value=kb.knowledge_base_id)
         CfnOutput(self, 'agentid', value= agent.agent_id)
         CfnOutput(self, 'DataSourceId', value= dataSource.data_source_id)
         CfnOutput(self, 'DocumentBucket', value= docBucket.bucket_name)
+        CfnOutput(self, 'agent_alias', value= agent_alias.alias_name)
+
+
