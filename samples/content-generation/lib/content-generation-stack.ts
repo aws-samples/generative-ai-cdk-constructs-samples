@@ -30,6 +30,10 @@ export class GenerateContentStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: GenerateContentStackProps) {
     super(scope, id, props);
   
+    const key=  '(uksb-1tupboc43)'
+    const tag = ' Image generation stack'
+
+
     console.log(`Deploying to account ${this.account} in region ${this.region}`);
 
   //---------------------------------------------------------------------
@@ -246,6 +250,9 @@ export class GenerateContentStack extends cdk.Stack {
       existingGeneratedAssetsBucketObj: this.generatedAssetsBucket,
       observability: true,
     });
+
+    this.templateOptions.description = `Description: ${key}  (tag:${ tag}) `
+  
    
     NagSuppressions.addResourceSuppressions(grapdhQLApiRole, [{id: 'AwsSolutions-IAM5', reason: '* used after ARN prefix'}], true)
 

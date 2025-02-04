@@ -25,5 +25,5 @@ const imageDescStack = new ImageDescriptionStack(app, "ImageDesStack", {
     account: process.env.CDK_DEFAULT_ACCOUNT,
     region: process.env.CDK_DEFAULT_REGION,
   },
-  description: "(uksb-1tupboc43) (tag: GenAI Image Description Stack)",
+  
 });

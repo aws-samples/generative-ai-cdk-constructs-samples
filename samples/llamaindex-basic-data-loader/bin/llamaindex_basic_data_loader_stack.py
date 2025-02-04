@@ -37,3 +37,5 @@ class LlamaindexBasicDataLoaderStack(Stack):
             # docker_image_asset_directory=path.dirname(__file__) + path.sep + ".." + path.sep + "docker",
             container_logging_level="DEBUG",
         )
+
+        self.template_options.description= "Description: (uksb-1tupboc43) (tag: llamaindex data loader sample)",

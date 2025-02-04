@@ -10,5 +10,4 @@ const app = new cdk.App();
 cdk.Tags.of(app).add("app", "generative-ai-cdk-constructs-samples");
 cdk.Aspects.of(app).add(new AwsSolutionsChecks({verbose: true}));
 new SagemakerHuggingfaceModelSvdStack(app, 'SagemakerHuggingfaceModelSvdStack', {
-  description: '(uksb-1tupboc43) (tag: Custom Async Endpoint Layer stack)',
 });
