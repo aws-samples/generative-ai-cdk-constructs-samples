@@ -271,6 +271,9 @@ export class ApiStack extends Stack {
         `${this.mergedApi.attrArn}/sourceApiAssociations/*`,
       ]
     }));
+
+    this.templateOptions.description = `Description: (uksb-1tupboc43) (tag: document explorer)`
+
     NagSuppressions.addResourceSuppressions(mergedApiRole, [{id: 'AwsSolutions-IAM5', reason: '* used after ARN prefix'}], true)
 
     // Add Source API

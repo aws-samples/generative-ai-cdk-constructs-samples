@@ -72,7 +72,6 @@ class BedrockOpensearchStack(Stack):
             user_input_enabled= True,
             should_prepare_agent=True
             )
-       
      ## associate action group  with agent
         agent.add_action_group(ag)   
         
@@ -82,7 +81,8 @@ class BedrockOpensearchStack(Stack):
                                         description='alias for my agent',
                                         agent=agent)
        
-
+        self.template_options.description='Description: (uksb-1tupboc43) (tag: python bedrock sample)'
+        
         CfnOutput(self, "KnowledgeBaseId", value=kb.knowledge_base_id)
         CfnOutput(self, 'agentid', value= agent.agent_id)
         CfnOutput(self, 'DataSourceId', value= dataSource.data_source_id)

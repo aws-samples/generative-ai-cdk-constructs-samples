@@ -40,6 +40,8 @@ export class SagemakerCustomEndpointStack extends cdk.Stack {
       volumeSizeInGb: 100
     });
 
+    this.templateOptions.description= 'Description: (uksb-1tupboc43) (tag: Sagemaker Custom Endpoint Stack)'
+
     customEndpoint.addToRolePolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
