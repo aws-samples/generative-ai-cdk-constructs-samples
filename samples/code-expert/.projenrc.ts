@@ -126,6 +126,7 @@ const infra = new InfrastructureTsProject({
     `@aws/pdk@^${pdkVersion}`,
     "cdk-nag",
     `@aws-cdk/aws-lambda-python-alpha@^${cdkVersion}-alpha.0`,
+    "@cdklabs/generative-ai-cdk-constructs@^0.1.291",
   ],
   context: { ...context },
   prettier: true,

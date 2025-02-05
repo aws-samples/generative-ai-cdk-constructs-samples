@@ -4,6 +4,7 @@
 !/.projen/deps.json
 !/.projen/files.json
 !/package.json
+!/LICENSE
 !/.npmignore
 logs
 *.log
@@ -50,7 +51,6 @@ mermaid-filter.err
 !.nx/plugins
 !/nx.json
 !/.nxignore
-!/LICENSE
 !/pnpm-workspace.yaml
 !/.syncpackrc.json
 !/.projenrc.ts

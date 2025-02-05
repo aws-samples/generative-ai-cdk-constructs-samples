@@ -84,6 +84,11 @@
       "type": "runtime"
     },
     {
+      "name": "@cdklabs/generative-ai-cdk-constructs",
+      "version": "^0.1.291",
+      "type": "runtime"
+    },
+    {
       "name": "aws-cdk-lib",
       "version": "^2.173.2",
       "type": "runtime"

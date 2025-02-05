@@ -43,7 +43,7 @@
   "dependencies": {
     "@aws-cdk/aws-lambda-python-alpha": "^2.173.2-alpha.0",
     "@aws/pdk": "^0.25.13",
-    "@cdklabs/generative-ai-cdk-constructs": "file:../../../../../generative-ai-cdk-constructs/dist/js/generative-ai-cdk-constructs@0.0.0.jsii.tgz",
+    "@cdklabs/generative-ai-cdk-constructs": "^0.1.291",
     "aws-cdk-lib": "^2.173.2",
     "cdk-nag": "^2.34.23",
     "constructs": "^10.0.5"

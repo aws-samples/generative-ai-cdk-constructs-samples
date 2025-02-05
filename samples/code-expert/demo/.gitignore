@@ -81,5 +81,4 @@ dmypy.json
 .pyre/
 .pytype/
 cython_debug/
-!/LICENSE
 !/project.json

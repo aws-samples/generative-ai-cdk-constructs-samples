@@ -143,7 +143,7 @@
       "name": "postinstall",
       "steps": [
         {
-          "exec": "pnpm exec nx run-many --target=install --output-style=stream --parallel=1 --nx-bail --projects=amzn-code-expert-code-expert,amzn-code-expert-notebooks,amzn-code-expert-demo"
+          "exec": "pnpm exec nx run-many --target=install --output-style=stream --parallel=1 --nx-bail --projects=amzn-code-expert-code-expert,amzn-code-expert-demo"
         }
       ]
     },
@@ -206,11 +206,11 @@
       "description": "Upgrade dependencies in the monorepo for all affected projects",
       "steps": [
         {
-          "exec": "pnpm exec nx run-many --target=upgrade --output-style=stream --nx-bail --projects=amzn-code-expert-code-expert,amzn-code-expert-notebooks,amzn-code-expert-demo",
+          "exec": "pnpm exec nx run-many --target=upgrade --output-style=stream --nx-bail --projects=amzn-code-expert-code-expert,amzn-code-expert-demo",
           "receiveArgs": true
         },
         {
-          "exec": "pnpm exec nx run-many --target=install --output-style=stream --nx-bail --projects=amzn-code-expert-code-expert,amzn-code-expert-notebooks,amzn-code-expert-demo",
+          "exec": "pnpm exec nx run-many --target=install --output-style=stream --nx-bail --projects=amzn-code-expert-code-expert,amzn-code-expert-demo",
           "receiveArgs": true
         },
         {
