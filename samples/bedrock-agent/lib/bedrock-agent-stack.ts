@@ -48,7 +48,7 @@ export class BedrockAgentStack extends cdk.Stack {
       serverAccessLogsBucket: accesslogBucket,
       serverAccessLogsPrefix: 'inputsAssetsBucketLogs/',
     });
-    const kb = new bedrock.KnowledgeBase(this, 'KB', {
+    const kb = new bedrock.VectorKnowledgeBase(this, 'KB', {
       embeddingsModel: bedrock.BedrockFoundationModel.TITAN_EMBED_TEXT_V1,
       instruction: 'Use this knowledge base to answer questions about books. ' +
         'It contains the full text of novels. Please quote the books to explain your answers.',
