@@ -1,5 +1,8 @@
 # Text To SQL
 
+> [!WARNING] 
+> This code sample is deprecated: it is no longer maintained and will not receive further updates. This sample will be removed in an upcoming release.
+
 The "Text To SQL" generative AI sample application is a cutting-edge solution that enables users to interact with databases through natural language queries, eliminating the need for extensive SQL knowledge. This application leverages the powerful Anthropic Claude 3 model, hosted on Amazon Bedrock, to translate natural language queries into executable SQL statements seamlessly.
 
 At the core of the application lies a sophisticated query interpretation process. The application first analyzes the user's natural language query, disambiguating any ambiguities by reformulating the question based on the database schema. This crucial step ensures that the query is accurately interpreted and aligned with the underlying data structure, ensuring precise and relevant results.

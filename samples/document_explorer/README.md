@@ -1,5 +1,8 @@
 # Document Explorer
 
+> [!WARNING] 
+> This code sample is deprecated: it is no longer maintained and will not receive further updates. This sample will be removed in an upcoming release.
+
 ## Overview
 
 The "Document Explorer" sample generative AI application demonstrates how to build end-to-end solutions leveraging AWS services and [AWS Generative AI CDK Constructs](https://github.com/awslabs/generative-ai-cdk-constructs).

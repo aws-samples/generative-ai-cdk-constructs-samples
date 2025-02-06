@@ -1,5 +1,8 @@
 # LlamaIndex Data Loader
 
+> [!WARNING] 
+> This code sample is deprecated: it is no longer maintained and will not receive further updates. This sample will be removed in an upcoming release.
+
 This example can be used to sample the `LlamaIndexDataLoader` directly from the [Generative AI CDK Constructs](https://github.com/awslabs/generative-ai-cdk-constructs) package. It demonstrates the [S3 File or Directory Loader](https://github.com/run-llama/llama_index/tree/main/llama-index-integrations/readers/llama-index-readers-s3), and can be extended for other [LlamaHub Readers](https://llamahub.ai/?tab=readers).
 
 _See more information at [LlamaIndex](https://llamaindex.ai/)_
