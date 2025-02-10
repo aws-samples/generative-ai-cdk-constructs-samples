@@ -41,6 +41,8 @@ export class SagemakerHuggingfaceInferentiaStack extends cdk.Stack {
       endpointName: SG_ENDPOINT_NAME
     });
 
+    this.templateOptions.description= 'Description: (uksb-1tupboc43) (tag: Sagemaker hugging face infrentia Stack)'
+
     // Lambda request handler used to interact with the SageMaker endpoint
     const requestHandler = new lambda.Function(this, 'DemoRequestHandlerHuggingFaceInferentia', {
       code: lambda.Code.fromAsset(

@@ -20,7 +20,6 @@ new SagemakerCustomEndpointStack(app, 'SagemakerCustomEndpointStack', {
   env: {
     region: 'us-east-2'
   },
-  description: '(uksb-1tupboc43) Sagemaker Custom Endpoint Stack'
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
    * but a single synthesized template can be deployed anywhere. */

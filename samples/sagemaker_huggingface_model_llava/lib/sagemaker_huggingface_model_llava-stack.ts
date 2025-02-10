@@ -41,6 +41,8 @@ export class SagemakerHuggingfaceModelLlavaStack extends cdk.Stack {
       modelDataDownloadTimeoutInSeconds: 900,
     });
 
+    this.templateOptions.description = 'Description: (uksb-1tupboc43) (tag: Sagemaker Hugging Face llava Sample)'
+
     CustomHuggingFaceEndpoint.addToRolePolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,

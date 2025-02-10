@@ -59,7 +59,6 @@ cdk.Tags.of(persistence).add("stack", "persistence");
 //-----------------------------------------------------------------------------
 const api = new ApiStack(app, 'ApiStack', {
   env: env,
-  description: '(uksb-1tupboc43) API Layer stack',
   existingOpensearchServerlessCollection: persistence.opensearchCollection,
   existingVpc: network.vpc,
   existingSecurityGroup: network.securityGroups[0],

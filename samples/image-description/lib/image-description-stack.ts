@@ -140,6 +140,7 @@ export class ImageDescriptionStack extends cdk.Stack {
       }
     );
 
+    this.templateOptions.description =  "Description: (uksb-1tupboc43) (tag: Image Description sample)",
 
     summarization.inputAssetBucket.grantReadWrite(this.authenticatedRole);
     summarization.processedAssetBucket.grantRead(this.authenticatedRole);

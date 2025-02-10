@@ -242,6 +242,9 @@ class IngestionStack(Stack):
             ),
         )
 
+        self.template_options.description='Description: (uksb-1tupboc43) (tag: rfp answer generation sample)'
+
+
         NagSuppressions.add_resource_suppressions(
             construct=self.faq_custom_transformation_function.role,
             suppressions=[
