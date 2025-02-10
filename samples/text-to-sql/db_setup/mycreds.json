@@ -1,8 +1,0 @@
-{
-    "engine": "mysql",
-    "username": "<username>",
-    "password": "<password>",
-    "host": "<db host>",
-    "dbname": "Chinook",
-    "port": "<db port>"
-}
