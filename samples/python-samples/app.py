@@ -7,20 +7,30 @@ from python_samples.bedrock_opensearch_stack import BedrockOpensearchStack
 from python_samples.bedrock_aurora_stack import BedrockAuroraStack
 from python_samples.bedrock_pinecone_stack import BedrockPineconeStack
 from python_samples.opensearch_vectorindex import OpensearchVectorIndex
-
-
+from python_samples.prompt_management import PromptManagementStack
+from python_samples.bedrock_data_automation_stack import BedrockDataAutomationStack
+from python_samples.bedrock_data_automation_stack_eb import BedrockDataAutomationStack as BedrockDataAutomationStackEB  
 app = cdk.App()
 env = cdk.Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'), 
                         region=os.getenv('CDK_DEFAULT_REGION'))
 
 
+
+BedrockDataAutomationStack(app, "bdaAPI"+os.getenv('SUFFIX',''),
+     env=env
+     )
+
+BedrockDataAutomationStackEB(app, "bdaEB"+os.getenv('SUFFIX',''),
+     env=env
+     )
+
 #---------------------------------------------------------------------------
 # Bedrock knowledge base with OpenSearch
 #---------------------------------------------------------------------------
 
-BedrockOpensearchStack(app, "BedrockOpensearchStack"+os.getenv('SUFFIX',''),
-    env=env
-    )
+# BedrockOpensearchStack(app, "BedrockOpensearchStack"+os.getenv('SUFFIX',''),
+#     env=env
+#     )
 
 #---------------------------------------------------------------------------
 # Bedrock knowledge base with Amazon RDS Aurora PostgreSQL
@@ -43,6 +53,13 @@ BedrockOpensearchStack(app, "BedrockOpensearchStack"+os.getenv('SUFFIX',''),
 #     env=env
 #     )
 
+
+#---------------------------------------------------------------------------
+# Prompt Management stack
+#---------------------------------------------------------------------------
+# PromptManagementStack(app, "PromptManagementStack"+os.getenv('SUFFIX', ''),
+#     env=env
+#    )
 
 app.synth()
 
