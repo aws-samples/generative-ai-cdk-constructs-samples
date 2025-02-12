@@ -1,0 +1,10 @@
+{
+    "Entries": [
+        {
+            "Source": "custom.bedrock.blueprint",
+            "DetailType": "Bedrock Result Status",
+            "Detail": "{\"invocation_arn\":\"arn:aws:bedrock:us-west-2:551246883740:data-automation-invocation/e61e57dd-a6da-4c90-8585-d1ffff79e9fb\"}",
+            "EventBusName": "default"
+        }
+    ]
+}

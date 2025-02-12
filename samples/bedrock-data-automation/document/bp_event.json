@@ -1,0 +1,10 @@
+{
+    "Entries": [
+        {
+            "Source": "custom.bedrock.blueprint",
+            "DetailType": "Bedrock Blueprint Request",
+            "Detail": "{\"blueprint_name\":\"noa_bp_34\",\"blueprint_type\":\"DOCUMENT\",\"blueprint_stage\":\"LIVE\",\"operation\":\"CREATE\",\"schema_fields\":[{\"name\":\"Total income\",\"description\":\"Please analyze the following Notice of assesment report and extract information about Total income.\",\"alias\":\"Total income\"},{\"name\":\"Taxable Income\",\"description\":\"Please analyze the following Notice of assesment report and extract information about Taxable income.\",\"alias\":\"Taxable Income\"},{\"name\":\"Tax payable\",\"description\":\"Please analyze the following Notice of assesment report and extract information about Tax payable.\",\"alias\":\"Tax payable\"}]}",
+            "EventBusName": "default"
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "Entries": [
+        {
+            "Source": "custom.bedrock.blueprint",
+            "DetailType": "Bedrock Project Request",
+            "Detail": "{\"operation\":\"delete\",\"projectArn\":\"arn:aws:bedrock:us-west-2:551246883740:data-automation-project/e6b1c25ec5aa\"}"
+        }
+    ]
+}
+
+
+
+
+
+
+

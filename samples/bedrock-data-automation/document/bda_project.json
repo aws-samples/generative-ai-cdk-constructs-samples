@@ -1,0 +1,16 @@
+{
+    "Entries": [
+        {
+            "Source": "custom.bedrock.blueprint",
+            "DetailType": "Bedrock Project Request",
+            "Detail": "{\"operation\":\"create\",\"projectName\":\"bp_project_eb\",\"projectDescription\":\"sampledescription\",\"projectStage\":\"LIVE\",\"customOutputConfiguration\":{\"blueprints\":[{\"blueprintArn\":\"arn:aws:bedrock:us-west-2:551246883740:blueprint/7966fd852869\",\"blueprintStage\":\"LIVE\"}]}}"
+        }
+    ]
+}
+
+
+
+
+
+
+

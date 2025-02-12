@@ -1,0 +1,9 @@
+{
+    "Entries": [
+        {
+            "Source": "custom.bedrock.blueprint",
+            "DetailType": "Bedrock Invoke Request",
+            "Detail": "{\"input_filename\":\"noa.pdf\",\"output_filename\":\"noa_2.csv\",\"blueprints\":[{\"blueprint_arn\":\"arn:aws:bedrock:us-west-2:551246883740:blueprint/a55789f6bd81\",\"stage\":\"LIVE\"}]}"
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "Entries": [
+        {
+            "Source": "custom.bedrock.blueprint",
+            "DetailType": "Bedrock Project Request",
+            "Detail": "{\"operation\":\"update\",\"projectArn\":\"arn:aws:bedrock:us-west-2:551246883740:data-automation-project/a2c4b11e123e\",\"projectName\":\"bp_project_1\",\"projectDescription\":\"sampledescription 2\",\"projectStage\":\"LIVE\",\"customOutputConfiguration\":{\"blueprints\":[{\"blueprintArn\":\"arn:aws:bedrock:us-west-2:551246883740:blueprint/7966fd852869\",\"blueprintStage\":\"LIVE\"}]}}"
+        }
+    ]
+}
+
+
+
+
+
+
+
