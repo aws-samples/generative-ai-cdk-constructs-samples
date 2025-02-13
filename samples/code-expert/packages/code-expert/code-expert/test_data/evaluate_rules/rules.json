@@ -1,0 +1,47 @@
+{
+  "languages": [
+    {
+      "name": "python",
+      "defaultPatterns": [
+        "*.py"
+      ],
+      "defaultExcludePatterns": [
+        "test_*.py"
+      ]
+    }
+  ],
+  "categories": [
+    {
+      "name": "test-python",
+      "languages": [
+        "python"
+      ],
+      "exists": [
+        "src/__init__.py"
+      ]
+    }
+  ],
+  "rules": [
+    {
+      "rule": "python-1",
+      "category": "test-python",
+      "language": "python",
+      "ruleDesc": "Avoid Large Classes. Classes should follow Single Responsibility Principle. A class should not have more than 10 methods. Methods should be cohesive and related to the class's primary purpose"
+    },
+    {
+      "rule": "python-2",
+      "category": "test-python",
+      "language": "python",
+      "ruleDesc": "Exception Handling Anti-pattern. Avoid bare except clauses. Always catch specific exceptions. Don't silently pass exceptions."
+    },
+    {
+      "rule": "python-3",
+      "category": "test-python",
+      "language": "python",
+      "ruleDesc": "This test rule requires additional context from other files.",
+      "contextPatterns": [
+        "**/*_manager.py"
+      ]
+    }
+  ]
+}

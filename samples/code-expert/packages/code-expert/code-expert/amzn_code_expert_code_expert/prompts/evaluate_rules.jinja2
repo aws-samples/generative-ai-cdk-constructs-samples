@@ -1,0 +1,42 @@
+{% if relevant_context %}
+    ## BEGIN Context information ##
+    {% for context_file in relevant_context %}
+        ### BEGIN {{ context_file.filename }} ###
+        {{ context_file.content }}
+        ### END {{ context_file.filename }} ###
+    {% endfor %}
+    ## END Context information ##
+{% endif %}
+
+You are a principal software developer responsible for maintaining high code quality across the organization.
+Evaluate the following file against the given rule{{ 's' if rules|length > 1 else '' }}.
+{% if relevant_context %}
+    Use the context information from relevant files in your evaluation.
+{% endif %}
+Focus only on identifying and reporting violations of the rule{{ 's' if rules|length > 1 else '' }}.
+Do not include findings for compliant code.
+
+{% for rule in rules %}
+    Rule ID: {{ rule.rule }}
+    Rule: {{ rule.description }}
+
+{% endfor -%}
+
+File: {{ filename }}
+
+## BEGIN {{ filename }} ##
+{{ content }}
+## END {{ filename }} ##
+
+IMPORTANT: Follow these steps in your analysis and response:
+
+1. Think through your evaluation step-by-step. In your response, clearly show your reasoning process ("chain of thought") including:
+a. How you interpret the rule{{ 's' if rules|length > 1 else '' }} in the context of this file
+b. Your analysis of both compliant and non-compliant parts
+c. Any considerations or assumptions you're making
+
+2. After completing your step-by-step analysis, provide your final evaluation.
+
+Remember, you must show your step-by-step thinking process first, then provide your final evaluation. Output your thinking and findings following the JSON schema.
+
+{{ schema }}
