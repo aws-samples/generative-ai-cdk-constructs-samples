@@ -109,6 +109,9 @@ class InferenceStack(Stack):
             self.sfn.state_machine,
         )
 
+        self.template_options.description='Description: (uksb-1tupboc43) (tag: rfp answer generation sample)'
+
+
         NagSuppressions.add_resource_suppressions_by_path(
             stack=self,
             path=f"/{Stack.of(self).stack_name}/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/Resource",
