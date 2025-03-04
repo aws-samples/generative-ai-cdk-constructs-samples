@@ -159,6 +159,17 @@ The same hierarchy applies for exclude patterns.
       "defaultExcludePatterns": [
         "**/test/**"
       ]
+    },
+    {
+      "name": "python",
+      "defaultPatterns": [
+        "**/*.py"
+      ],
+      "defaultExcludePatterns": [
+        "**/test/**",
+        "**/venv/**",
+        "**/__pycache__/**"
+      ]
     }
   ],
   "categories": [
@@ -185,6 +196,18 @@ The same hierarchy applies for exclude patterns.
       "defaultPatterns": [
         "**/*.java"
       ]
+    },
+        {
+      "name": "HexagonalArchitecture",
+      "languages": [
+        "python"
+      ],
+      "exists": [
+        "**/domain/**/*.py"
+      ],
+      "defaultPatterns": [
+        "**/*.py"
+      ]
     }
   ],
   "rules": [
@@ -204,6 +227,76 @@ The same hierarchy applies for exclude patterns.
       "language": "java",
       "contextPatterns": [
         "**/pom.xml"
+      ]
+    },
+        {
+      "rule": "HEX001",
+      "ruleDesc": "Domain entities should not have dependencies on external frameworks or libraries",
+      "category": "HexagonalArchitecture",
+      "language": "python",
+      "patterns": [
+        "**/domain/model/**/*.py"
+      ]
+    },
+    {
+      "rule": "HEX002",
+      "ruleDesc": "Port interfaces (protocols) should be defined using abstract base classes or Protocol classes",
+      "category": "HexagonalArchitecture",
+      "language": "python",
+      "patterns": [
+        "**/domain/ports/**/*.py"
+      ]
+    },
+    {
+      "rule": "HEX003",
+      "ruleDesc": "Adapters should implement exactly one port interface",
+      "category": "HexagonalArchitecture",
+      "language": "python",
+      "patterns": [
+        "**/adapters/**/*.py"
+      ],
+      "contextPatterns": [
+        "**/domain/ports/**/*.py"
+      ]
+    },
+    {
+      "rule": "HEX004",
+      "ruleDesc": "Domain services should only depend on domain entities and port interfaces",
+      "category": "HexagonalArchitecture",
+      "language": "python",
+      "patterns": [
+        "**/domain/services/**/*.py"
+      ],
+      "contextPatterns": [
+        "**/domain/model/**/*.py",
+        "**/domain/ports/**/*.py"
+      ]
+    },
+    {
+      "rule": "HEX005",
+      "ruleDesc": "Application services should not bypass ports by directly using adapters",
+      "category": "HexagonalArchitecture",
+      "language": "python",
+      "patterns": [
+        "**/application/**/*.py"
+      ]
+    },
+    {
+      "rule": "HEX006",
+      "ruleDesc": "Domain entities should use value objects for primitive obsession prevention",
+      "category": "HexagonalArchitecture",
+      "language": "python",
+      "patterns": [
+        "**/domain/model/**/*.py"
+      ]
+    },
+    {
+      "rule": "HEX007",
+      "ruleDesc": "Adapters should not expose their implementation details to the domain",
+      "category": "HexagonalArchitecture",
+      "language": "python",
+      "patterns": [
+        "**/adapters/**/*.py"
       ]
     }
   ]
