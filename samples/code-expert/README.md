@@ -169,23 +169,6 @@ If you choose to
 use [Cross-Region Inference](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html) for
 increased throughput, you will need to activate the models in each region that will be used.
 
-### Configure Rules
-
-Prepare your rules file according to the [format](documentation/rules.md#code-expert-rules-configuration-format).
-
-Upload your **rules.json** file to the configuration bucket in **ConfigBucketName** from the deployment output.
-
-```shell
-aws s3 cp rules.json s3://<ConfigBucketName>/rules.json
-```
-
-### Demo
-
-You are now ready to perform code reviews!
-
-To run the [demo](demo/README.md#code-expert-demo-app), you will need the **InputBucketName** and **StateMachineArn**
-outputs from the CDK deployment.
-
 ### Development
 
 #### Modify project
@@ -216,6 +199,30 @@ You may have logged in to `public.ecr.aws` with Docker and the credentials have 
 ```shell
 docker logout public.ecr.aws
 ```
+
+## Usage
+
+### Configure Rules
+
+Prepare your rules file according to the [format](documentation/rules.md#code-expert-rules-configuration-format).
+
+Upload your **rules.json** file to the configuration bucket in **ConfigBucketName** from the deployment output.
+
+```shell
+aws s3 cp rules.json s3://<ConfigBucketName>/rules.json
+```
+
+### Demo
+
+You are now ready to perform code reviews!
+
+To run the [demo](demo/README.md#code-expert-demo-app), you will need the **InputBucketName** and **StateMachineArn**
+outputs from the CDK deployment.
+
+### Running Code Reviews
+
+See the [usage instructions](documentation/usage.md) for details on how to perform code reviews. You will need the *
+*InputBucketName**, **OutputBucketName**, and **StateMachineArn** outputs from the CDK deployment.
 
 ## Cleanup
 
