@@ -1,0 +1,7 @@
+stack_name: capsule-os  # Name of your main stack, will be used as stack name and prefix for resources
+
+# ID and Alias of your agent. If left empty - a testing agent will be created, see infra/example_bedrock_agent
+agent_id:    
+agent_alias_id: 
+
+deploy_on_fargate: true # Set to false to deploy locally

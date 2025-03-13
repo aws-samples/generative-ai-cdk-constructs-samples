@@ -1,0 +1,7 @@
+streamlit
+boto3
+gql
+requests
+requests-toolbelt
+aws-requests-auth
+websockets
