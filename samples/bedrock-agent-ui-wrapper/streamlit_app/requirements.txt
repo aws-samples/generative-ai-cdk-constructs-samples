@@ -1,7 +1,5 @@
-streamlit
-boto3
-gql
-requests
-requests-toolbelt
-aws-requests-auth
-websockets
+streamlit==1.43.2
+requests==2.32.3
+requests-toolbelt==1.0.0
+aws-requests-auth==0.4.3
+websockets==15.0.1
