@@ -1,0 +1,45 @@
+schema {
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
+}
+
+type Query {
+    # Required placeholder query
+    noop: String
+}
+
+enum StreamStatus {
+    STARTED
+    STREAMING
+    COMPLETED
+    ERROR
+}
+
+type Mutation {
+    askAgent(
+        question: String!
+        sessionId: String!
+    ): AgentResponse!
+    publishAgentUpdate(
+        sessionId: String!
+        content: String
+        status: StreamStatus!
+    ): AgentStreamResponse @aws_iam
+}
+
+type Subscription {
+    onAgentResponse(sessionId: String!): AgentStreamResponse
+        @aws_subscribe(mutations: ["publishAgentUpdate"])
+}
+
+type AgentResponse {
+    sessionId: String!
+    status: StreamStatus!
+}
+
+type AgentStreamResponse {
+    sessionId: String! @aws_iam
+    content: String @aws_iam
+    status: StreamStatus! @aws_iam
+}

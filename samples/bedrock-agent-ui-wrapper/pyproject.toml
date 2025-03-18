@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "capsule"
+version = "0.1.0"
+description = "Set of CDK stacks to wrap Bedrock Agents for simple applications"
+authors = ["Natalie Tarasova <natltar@amazon.com>"]
+license = "Amazon Software License"
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.12"
+aws-cdk-lib = "^2.173.4"
+constructs = "^10.4.2"
+boto3 = "^1.35.90"
+aws-lambda-powertools = "^3.4.0"
+bs4 = "^0.0.2"
+cdk-nag = "^2.34.23"
+cdklabs-generative-ai-cdk-constructs = "^0.1.296"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.4"
+jupyter = "^1.1.1"
+ipykernel = "^6.29.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
