@@ -1,0 +1,29 @@
+{
+  "name": "self-hosted-langfuse-tracing",
+  "version": "0.1.0",
+  "bin": {
+    "app": "bin/app.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.8",
+    "@types/node": "^20.9.0",
+    "aws-cdk": "^2.181.1",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
+  },
+  "dependencies": {
+    "@cdklabs/generative-ai-cdk-constructs": "file://../../../generative-ai-cdk-constructs",
+    "aws-cdk-lib": "^2.181.1",
+    "cdk-nag": "^2.35.46",
+    "constructs": "^10.3.0",
+    "source-map-support": "^0.5.21"
+  }
+}
