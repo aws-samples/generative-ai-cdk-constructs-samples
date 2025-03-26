@@ -77,7 +77,7 @@ export class DemoInvokers extends Construct {
     ]);
 
     new cdk.CfnOutput(this, "LangfuseKeyPairSecret", {
-      value: this.keySecret.secretId,
+      value: this.keySecret.secretName,
     });
 
     this.invokeRole = new iam.Role(this, "InvokeRole", {
@@ -180,7 +180,7 @@ export class DemoInvokers extends Construct {
     }
 
     new cdk.CfnOutput(this, "LangchainInvokeFn", {
-      value: langchainInvokeFn.arn,
+      value: langchainInvokeFn.functionName,
     });
   }
 }
