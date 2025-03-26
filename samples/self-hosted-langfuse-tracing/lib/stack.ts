@@ -56,12 +56,23 @@ export class LangfuseDemoStack extends cdk.Stack {
 
     new cdk.CfnOutput(this, "LangfuseUrl", {
       value: langfuseStack.langfuse.url,
+      description: "URL to access the deployed Langfuse environment",
     });
 
     // Example Lambda function(s) for invoking Bedrock and logging traces to Langfuse:
-    new DemoInvokers(this, "DemoInvokers", {
+    const demoInvokers = new DemoInvokers(this, "DemoInvokers", {
       langfuseUrl: langfuseStack.langfuse.url,
       tags,
+    });
+    
+    new cdk.CfnOutput(this, "TraceDemoLangfuseKeyPairSecret", {
+      value: demoInvokers.keySecret.secretName,
+      description: "Secret to configure your Langfuse API keys for demo Lambda functions",
+    });
+    new cdk.CfnOutput(this, "TraceDemoLambdaLangchain", {
+      value: demoInvokers.langchainInvokeFn.functionName,
+      description:
+        "Example Lambda function to invoke Bedrock via Langchain and log traces to Langfuse",
     });
   }
 }

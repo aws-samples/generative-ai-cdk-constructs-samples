@@ -61,12 +61,17 @@ Once the deployment is complete and your `LangfuseDemo` Stack is ready, you can 
 ### Get your Langfuse credentials
 
 1. Find your deployed `LangfuseUrl` from the *"Outputs"* tab of your `LangfuseDemo` Stack in the [AWS CloudFormation Console](https://console.aws.amazon.com/cloudformation/home). It should look something like: `https://1234567890abcd.cloudfront.net`
+
+![](./docs/CFn-Outputs.png "Screenshot of CloudFormation console showing 'Outputs' tab with stack outputs including 'LangfuseUrl', 'TraceDemoLangfuseKeyPairSecret', and 'TraceDemoLambdaLangchain'")
+
 2. Open the URL in your browser and select **"Sign up"** to create a new user account. You'll need to enter your email address and choose a password.
 3. Once signed up and logged in, you may be prompted to **create an organization** in Langfuse if you don't have one already - choose a name that's good for you. You can add multiple Langfuse users to your organization to share logged data.
 4. Within your organization you'll then need to **create a project**: Again, choose an appropriate name for you.
 5. When your project's created, you may *either*
     1. See an API key pair (like `sk-lf-....` and `pk-lf-....`) are created automatically for you - save these secret values somewhere safe. *OR*
     2. Open the project's settings in the UI and create a new API key pair for yourself.
+
+![](./docs/Langfuse-Keys-Setup.png "Screenshot of Langfuse web UI project settings page, showing existing API key pair and the option to create a new one.")
 
 You should now:
 - Know your Langfuse "host" URL (the https://... CloudFront one)
@@ -78,7 +83,7 @@ You should now:
 
 The demo stack creates a (shared) AWS Secrets Manager Secret from which the invocation Lambdas will access your Langfuse API keys, so you'll need to update this secret with the keys you created above:
 
-1. Find the `LangfuseKeyPairSecret` name from the *"Outputs"* tab of your `LangfuseDemo` Stack in the [AWS CloudFormation Console](https://console.aws.amazon.com/cloudformation/home).
+1. Find the `TraceDemoLangfuseKeyPairSecret` name from the *"Outputs"* tab of your `LangfuseDemo` Stack in the [AWS CloudFormation Console](https://console.aws.amazon.com/cloudformation/home).
 2. Open the [AWS Secrets Manager Console](https://console.aws.amazon.com/secretsmanager/listsecrets) and find this secret from the list
     - ⚠️ **Warning:** There are multiple Langfuse-related secrets in this list - check you choose the right one!
 3. Click through to the detail page for your Secret, and then click **Retrieve secret value** button.
@@ -86,6 +91,8 @@ The demo stack creates a (shared) AWS Secrets Manager Secret from which the invo
 4. Once you've retrieved the secret value, you should see an **Edit** button in the same place. Click it, and paste the Langfuse public and secret key pair you generated earlier into the two fields.
 
 > Note that access to this secret value is controlled by AWS IAM configurations in your account: Other Users may be able to view and edit your keys if they've been granted permissions for the Secrets Manager service.
+
+![](./docs/Secrets-Manager-Update.png "Screenshot of AWS Secrets Manager console showing Langfuse key pair secret configured with 'edit' option visible.")
 
 
 ## Configure and test your Lambda function(s)
@@ -109,6 +116,10 @@ The function takes a JSON payload in the format `{"inputText": "{your message}"}
 
 If all's correctly configured, the function should return successfully with the response from the Foundation Model. If not, you can click *View CloudWatch Logs* in the *Monitor* tab to find more details on what might have gone wrong.
 
+![](./docs/Testing-Langchain-Demo-Lambda.png "Screenshot of AWS Lambda console 'test' tab, with a successful invocation of the example Lambda function.")
+
 ▶️ After a successful execution, go to the Langfuse web UI and check the **Traces** panel. You should see a new trace recorded in Langfuse from your Lambda execution!
+
+![](./docs/Langfuse-Langchain-Trace.png "Screenshot of Langfuse web UI showing an ingested trace from the demo Lambda function, including metadata like timing and request/response text from the model.")
 
 This example shows a very minimal setup for running LangChain-based LLM orchestrations serverlessly on AWS Lambda, using models on Amazon Bedrock, and logging traces to Langfuse for further inspection and analysis.

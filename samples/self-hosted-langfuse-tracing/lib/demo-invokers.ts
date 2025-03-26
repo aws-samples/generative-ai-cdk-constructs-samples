@@ -29,7 +29,7 @@ export interface IDemoInvokersProps {
    * 
    * @default "https://cloud.langfuse.com" Langfuse public cloud (US)
    */
-  langfuseUrl: string;
+  langfuseUrl?: string;
   /**
    * Optional tags to apply to created resources
    */
@@ -53,6 +53,10 @@ export class DemoInvokers extends Construct {
    * Langfuse UI.
    */
   public readonly keySecret: secretsmanager.Secret;
+  /**
+   * Example Lambda function to invoke Bedrock via Langchain and log traces to Langfuse
+   */
+  public readonly langchainInvokeFn: PythonFunction;
 
   constructor(scope: Construct, id: string, props: IDemoInvokersProps) {
     super(scope, id);
@@ -75,10 +79,6 @@ export class DemoInvokers extends Construct {
         reason: "Rotation requires manual action in Langfuse UI",
       },
     ]);
-
-    new cdk.CfnOutput(this, "LangfuseKeyPairSecret", {
-      value: this.keySecret.secretName,
-    });
 
     this.invokeRole = new iam.Role(this, "InvokeRole", {
       assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
@@ -143,11 +143,11 @@ export class DemoInvokers extends Construct {
       true,
     );
 
-    const langchainInvokeFn = new PythonFunction(this, "LcLfInvoke", {
+    this.langchainInvokeFn = new PythonFunction(this, "LcLfInvoke", {
       runtime: lambda.Runtime.PYTHON_3_13,
       entry: path.join(__dirname, "..", "assets", "functions", "invoke-langchain"),
       environment: {
-        LANGFUSE_HOST: props.langfuseUrl,
+        LANGFUSE_HOST: langfuseUrl,
         LANGFUSE_SECRET_ID: this.keySecret.secretArn,
       },
       paramsAndSecrets: lambda.ParamsAndSecretsLayerVersion.fromVersion(
@@ -166,7 +166,7 @@ export class DemoInvokers extends Construct {
     // A tracing Policy gets auto-created as a child of the PythonFunction construct, separate from
     // the invokeRole we created and configured cdk-nag for above:
     NagSuppressions.addResourceSuppressions(
-      langchainInvokeFn,
+      this.langchainInvokeFn,
       [
         {
           id: "AwsSolutions-IAM5",
@@ -176,11 +176,7 @@ export class DemoInvokers extends Construct {
       true,
     );
     if (props.tags) {
-      props.tags.forEach((tag) => cdk.Tags.of(langchainInvokeFn).add(tag.key, tag.value));
+      props.tags.forEach((tag) => cdk.Tags.of(this.langchainInvokeFn).add(tag.key, tag.value));
     }
-
-    new cdk.CfnOutput(this, "LangchainInvokeFn", {
-      value: langchainInvokeFn.functionName,
-    });
   }
 }
