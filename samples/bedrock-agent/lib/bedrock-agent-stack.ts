@@ -137,7 +137,8 @@ export class BedrockAgentStack extends cdk.Stack {
           reason: 'The Lambda function requires broad permissions for logging and invocation.',
           appliesTo: [
             'Action::lambda:InvokeFunction',
-            'Action::logs:*'
+            'Action::logs:*',
+            'Action::bedrock:InvokeModel*'
           ],
         },
       ],
