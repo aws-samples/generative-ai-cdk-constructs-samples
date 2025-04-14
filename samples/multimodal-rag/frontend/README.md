@@ -37,7 +37,7 @@ Welcome to the demo frontend application. With this, you'll be able to upload an
 2. Enter the frontend directory
 
    ```shell
-   cd samples/bedrock-bda-media-solution/frontend
+   cd samples/multimodal-rag/frontend
    ```
 
 3. After successfully deploying your back-end stack, you can easily find the information required for the next step by inspecting to Amazon API Gateway and/or Amazon CloudFormation console.
