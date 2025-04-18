@@ -43,7 +43,7 @@ git clone https://github.com/aws-samples/generative-ai-cdk-constructs-samples.gi
 Enter the backend directory
 
 ```shell
-cd samples/bedrock-bda-media-solution/backend
+cd samples/multimodal-rag/backend
 ```
 
 ### Create Python virtual environment
