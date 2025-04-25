@@ -1,6 +1,6 @@
-aws-cdk-lib==2.188.0
+aws-cdk-lib==2.189.0
 aws_cdk.aws_lambda_python_alpha==2.188.0a0
 constructs>=10.0.0,<11.0.0
-cdk_nag==2.35.62
+cdk_nag==2.35.79
 aws_solutions_constructs.aws_eventbridge_lambda==2.81.0
-cdklabs.generative-ai-cdk-constructs==0.1.300
+cdklabs.generative-ai-cdk-constructs==0.1.306

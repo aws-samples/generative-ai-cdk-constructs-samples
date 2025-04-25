@@ -449,8 +449,8 @@ export async function createProject(projectData: ProjectCreateRequest) {
         ...defaultRestInput.options,
         body: {
           operation: projectData.operation,
-          projectName: projectData.projectName,
-          projectStage: projectData.projectStage,
+          project_name: projectData.projectName,
+          project_stage: projectData.projectStage,
           blueprint_arn: projectData.blueprint_arn,
           modality: projectData.modality,
           description: projectData.description,

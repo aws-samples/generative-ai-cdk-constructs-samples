@@ -10,18 +10,7 @@ interface QATabProps {
 }
 
 const models = [
-  {
-    id: "anthropic.claude-3-5-sonnet-20241022-v2:0",
-    name: "Claude 3 Sonnet (Oct 2024) - On Demand"
-  },
-  {
-    id: "amazon.nova-pro-v1:0",
-    name: "Amazon Nova Pro - On Demand"
-  },
-  {
-    id: "anthropic.claude-3-7-sonnet-20250219-v1:0",
-    name: "Claude 3.7 Sonnet (Feb 2025) - On Demand"
-  },
+
   {
     id: "us.anthropic.claude-3-5-sonnet-20241022-v2:0",
     name: "Claude 3 Sonnet (Oct 2024) - CRIS US"
