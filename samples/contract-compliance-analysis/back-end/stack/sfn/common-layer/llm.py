@@ -15,6 +15,9 @@ import boto3
 import logging
 import os
 
+from retrying import retry
+from botocore.config import Config
+from botocore.exceptions import ClientError
 from langchain_aws import ChatBedrock
 from langchain_core.messages import HumanMessage
 from langchain_core.prompts import ChatPromptTemplate
@@ -24,8 +27,45 @@ CLAUDE_MODEL_ID = "anthropic.claude-3-sonnet-20240229-v1:0"
 logger = logging.getLogger()
 logger.setLevel(os.getenv("LOG_LEVEL", "INFO"))
 
-bedrock_client = boto3.client('bedrock-runtime')
+bedrock_client = boto3.client('bedrock-runtime', config=Config(
+    connect_timeout=180,
+    read_timeout=180,
+    retries={
+        "max_attempts": 50,
+        "mode": "adaptive",
+    },
+))
 
+class BedrockRetryableError(Exception):
+    """Custom exception for retryable Bedrock errors"""
+    pass
+
+@retry(
+    wait_fixed=10000,  # 10 seconds between retries
+    stop_max_attempt_number=None,  # Keep retrying indefinitely
+    retry_on_exception=lambda ex: isinstance(ex, BedrockRetryableError),
+)
+def invoke_chain_with_retry(chain):
+    """Invoke Bedrock with retry logic for throttling"""
+    try:
+        return chain.invoke({})
+    except ClientError as exc:
+        logger.warning(f"Bedrock ClientError: {exc}")
+
+        if exc.response["Error"]["Code"] == "ThrottlingException":
+            logger.warning("Bedrock throttling. Retrying...")
+            raise BedrockRetryableError(str(exc))
+        elif exc.response["Error"]["Code"] == "ModelTimeoutException":
+            logger.warning("Bedrock ModelTimeoutException. Retrying...")
+            raise BedrockRetryableError(str(exc))
+        else:
+            raise
+    except bedrock_client.exceptions.ThrottlingException as throttlingExc:
+        logger.warning("Bedrock ThrottlingException. Retrying...")
+        raise BedrockRetryableError(str(throttlingExc))
+    except bedrock_client.exceptions.ModelTimeoutException as timeoutExc:
+        logger.warning("Bedrock ModelTimeoutException. Retrying...")
+        raise BedrockRetryableError(str(timeoutExc))
 
 def invoke_llm(prompt, model_id, temperature=0.5, top_k=None, top_p=0.8, max_new_tokens=4096, verbose=False):
     model_id = (model_id or CLAUDE_MODEL_ID)
@@ -57,7 +97,7 @@ def invoke_llm(prompt, model_id, temperature=0.5, top_k=None, top_p=0.8, max_new
     ])
     chain = prompt | chat
 
-    response = chain.invoke({})
+    response = invoke_chain_with_retry(chain)
     content = response.content
 
     usage_data = None
