@@ -18,10 +18,16 @@ from cdk_nag import AwsSolutionsChecks
 
 from stack import IngestionStack, InferenceStack
 
+USAGE_METRIC = 'uksb-1tupboc45'
+VERSION = '0.0.1'
+SOLUTION_NAME = "GenAI RFP Answers"
 
 app = cdk.App()
 
-ingestion_stack = IngestionStack(app, "RFPAnswers-IngestionStack")
+ingestion_stack = IngestionStack(
+    app, 
+    "RFPAnswers-IngestionStack",
+    description=f'({USAGE_METRIC})(tag: {SOLUTION_NAME})')
 
 inference_stack = InferenceStack(
     app,
