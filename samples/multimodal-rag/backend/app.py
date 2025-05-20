@@ -17,13 +17,13 @@ from cdk_nag import AwsSolutionsChecks
 from stack import BackendStack
 
 USAGE_METRIC = 'uksb-1tupboc45'
-SOLUTION_NAME = "Bedrock BDA Media Solution"
+SOLUTION_NAME = "bedrock-bda-media-solution"
 
 app = cdk.App()
 BackendStack(
     app, 
     "BDAMediaSolutionBackendStack",
-    description=f'({USAGE_METRIC})(tag: {SOLUTION_NAME})'
+    description=f'({USAGE_METRIC})(tag:{SOLUTION_NAME})'
 )
 
 cdk.Aspects.of(app).add(AwsSolutionsChecks())

@@ -18,14 +18,14 @@ from stack import BackendStack
 
 USAGE_METRIC = 'uksb-1tupboc45'
 VERSION = '0.0.1'
-SOLUTION_NAME = "GenAI Contract Compliance Analysis"
+SOLUTION_NAME = "contract-compliance-analysis"
 
 app = cdk.App()
 
 stack_name = os.environ.get('STACK_NAME', "MainBackendStack")
 
 main_backend_stack = BackendStack(
-    app, stack_name, description=f'({USAGE_METRIC})(tag: {SOLUTION_NAME})'
+    app, stack_name, description=f'({USAGE_METRIC})(tag:{SOLUTION_NAME})'
 )
 
 cdk.Aspects.of(app).add(AwsSolutionsChecks())

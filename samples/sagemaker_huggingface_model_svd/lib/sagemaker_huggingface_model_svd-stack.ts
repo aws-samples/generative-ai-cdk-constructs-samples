@@ -57,7 +57,7 @@ export class SagemakerHuggingfaceModelSvdStack extends cdk.Stack {
     });
 
 
-    this.templateOptions.description= 'Description: (uksb-1tupboc43) (tag: Custom Async Endpoint Layer stack)',
+    this.templateOptions.description= 'Description: (uksb-1tupboc43) (tag:custom-async-endpoint-layer-stack)',
 
 
     CustomHuggingFaceEndpoint.addToRolePolicy(

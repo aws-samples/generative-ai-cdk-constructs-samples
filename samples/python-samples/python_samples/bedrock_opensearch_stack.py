@@ -81,7 +81,7 @@ class BedrockOpensearchStack(Stack):
                                         description='alias for my agent',
                                         agent=agent)
        
-        self.template_options.description='Description: (uksb-1tupboc43) (tag: python bedrock sample)'
+        self.template_options.description='Description: (uksb-1tupboc43) (tag:python-bedrock-sample)'
         
         CfnOutput(self, "KnowledgeBaseId", value=kb.knowledge_base_id)
         CfnOutput(self, 'agentid', value= agent.agent_id)
