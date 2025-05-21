@@ -82,7 +82,7 @@ class PromptManagementStack(Stack):
             }
         )
         
-        self.template_options.description='Description: (uksb-1tupboc43) (tag: python prompt management sample)'
+        self.template_options.description='Description: (uksb-1tupboc43) (tag:python-prompt-management-sample)'
 
         prompt.add_variant(variant2)
 

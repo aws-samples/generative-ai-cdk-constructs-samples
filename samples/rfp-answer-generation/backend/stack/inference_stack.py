@@ -109,7 +109,7 @@ class InferenceStack(Stack):
             self.sfn.state_machine,
         )
 
-        self.template_options.description='Description: (uksb-1tupboc43) (tag: rfp answer generation sample)'
+        self.template_options.description='Description: (uksb-1tupboc43) (tag:rfp-answer-generation)'
 
 
         NagSuppressions.add_resource_suppressions_by_path(
