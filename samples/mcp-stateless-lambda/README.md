@@ -49,7 +49,7 @@ Default output format [None]: json
 ```
 
 - Node.js: v18.12.1
-- [AWS CDK](https://github.com/aws/aws-cdk/releases/tag/v2.114.0): 2.114.0
+- [AWS CDK](https://github.com/aws/aws-cdk/releases/tag/v2.189.1): 2.189.1
 - jq: jq-1.6
 
 ### Deploy the solution
