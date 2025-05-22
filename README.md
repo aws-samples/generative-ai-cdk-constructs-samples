@@ -22,6 +22,8 @@ This repo provides samples to demonstrate how to build your own Generative AI so
 | [Code Expert](samples/code-expert/)                                                          | This project addresses the scalability limitations of manual code reviews by leveraging artificial intelligence to perform expert code reviews automatically. It leverages the [Bedrock Batch Step Functions CDK construct](https://github.com/awslabs/generative-ai-cdk-constructs/blob/main/src/patterns/gen-ai/aws-bedrock-batch-stepfn/README.md). | Backend            | Python for Backend and Demo, TypeScript for CDK     |
 |[Bedrock Agent UI Wrapper](samples/bedrock-agent-ui-wrapper/)| This sample provides a CDK construct that creates an API layer and frontend application for Amazon Bedrock Agents. It includes authentication with Amazon Cognito, agent trace streaming, and can be deployed locally or on ECS Fargate. | API layer + Frontend | Python|
 |[Stateless MCP Server on AWS Lambda](samples/mcp-stateless-lambda/)| Sample MCP Server running natively on AWS Lambda and API Gateway without any extra bridging components or custom transports and a test MCP client. | API layer | TypeScript |
+|[Stateless MCP Server on ECS](samples/mcp-stateless-ecs/)| Sample stateless MCP Server running natively on ECS Fargate and ALB without any extra bridging components or custom transports and a test MCP client. | API layer | TypeScript |
+|[Stateful MCP Server on ECS](samples/mcp-stateful-ecs/)| Sample stateful MCP Server running natively on ECS Fargate and ALB without any extra bridging components or custom transports and a test MCP client. | API layer | TypeScript |
 
 ## Contributing
 
