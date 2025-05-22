@@ -79,8 +79,8 @@ This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.am
 4. Install the dependencies
 
     ```shell
-   (cd src/mcpclient && npm install)
-   (cd src/mcpserver && npm install)
+   (cd mcp_client && npm install)
+   (cd mcp_server && npm install)
    ```
 
 5. Boostrap AWS CDK resources on the AWS account.
@@ -113,7 +113,7 @@ To protect you against unintended changes that affect your security posture, the
     $ aws cloudformation describe-stacks --stack-name McpStatelessEcsStack --query "Stacks[0].Outputs[?contains(OutputKey, 'McpServerEndpoint')].OutputValue"
 
     [
-        "OutputValue": "http://<endpoint>/dev/mcp"
+        "OutputValue": "http://<endpoint>.us-east-1.elb/mcp"
     ]
     ```
 
