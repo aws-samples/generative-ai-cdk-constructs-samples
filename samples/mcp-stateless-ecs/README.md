@@ -4,7 +4,7 @@ This is a sample MCP Server running natively on on ECS Fargate and ALB without a
 
 The solution provides the CDK code to deploy the server on AWS, as well as a sample client to test the deployed server.
 
-The original Terraform version of this sample is available [here](https://github.com/aws-samples/sample-serverless-mcp-servers/tree/main/stateless-mcp-on-lambda-nodejs)
+The original Terraform version of this sample is available [here](https://github.com/aws-samples/sample-serverless-mcp-servers/tree/main/stateless-mcp-on-ecs-nodejs)
 
 ## Overview
 
@@ -12,25 +12,27 @@ MCP Server can run in two modes - stateless and stateful. This repo demonstrates
 
 In stateless mode, clients do not establish persistent SSE connections to MCP Server. This means clients will not receive proactive notifications from the server. On the other hand, stateless mode allows you to scale your server horizontally.
 
-This sample implements simple authorization demo with API Gateway Custom Authorizer.
+By default, this sample uses the default ALB endpoint, which is HTTP only. See [this](https://github.com/awslabs/aws-solutions-constructs/tree/main/source/patterns/%40aws-solutions-constructs/aws-alb-fargate) to configure the code to use HTTPS.
+
+Only use HTTP for testing purposes ONLY!!! NEVER expose ANYTHING via plain HTTP, always use HTTPS!!!
 
 ![Architecture Diagram](./doc/architecture.png)
 
 ## Folder Structure
 
-This sample application codebase is organized into folders : the backend code lives in ```bin/mcp-stateless-lambda.ts``` and uses the AWS CDK resources defined in the ```lib``` folder.
+This sample application codebase is organized into folders : the backend code lives in ```bin/mcp-stateless-ecs.ts``` and uses the AWS CDK resources defined in the ```lib``` folder.
 
 The key folders are:
 
 ```
-samples/mcp-stateless-lambda
+samples/mcp-stateless-ecs
 │
 ├── bin
-│   └── mcp-stateless-lambda.ts               # Backend - CDK app
+│   └── mcp-stateless-ecs.ts               # Backend - CDK app
 ├── lib                                       # CDK Stacks
-│   ├── mcp-stateless-lambda-stack.ts         # Stack deploying the resources
+│   ├── mcp-stateless-ecs-stack.ts         # Stack deploying the resources
 ├── mcp_client                                # test mcp client to connect to the remote server
-├── lambdas                                   # lambda functions
+├── mcp_server                                # mcp server implementation
 ```
 
 ## Getting started
@@ -65,7 +67,7 @@ This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.am
 2. Enter the code sample backend directory.
 
     ```shell
-    cd samples/mcp-stateless-lambda
+    cd samples/mcp-stateless-ecs
     ```
 
 3. Install packages
@@ -87,6 +89,14 @@ This project is built using the [AWS Cloud Development Kit (CDK)](https://aws.am
     cdk bootstrap aws://ACCOUNT_ID/REGION
     ```
 
+(optional) If needed, update the region in [mcp-stateless-ecs.ts](./bin/mcp-stateless-ecs.ts). Default is `us-east-1`
+
+  ```
+  env: {
+      region: 'us-east-1'
+    },
+  ```
+
 6. Deploy the sample in your account.
 
     ```shell
@@ -100,10 +110,10 @@ To protect you against unintended changes that affect your security posture, the
 7. Retrieve the value of the CfnOutput related to your remote MCP server endpoint from the stack
 
     ```shell
-    $ aws cloudformation describe-stacks --stack-name McpStatelessLambdaStack --query "Stacks[0].Outputs[?contains(OutputKey, 'McpServerEndpoint')].OutputValue"
+    $ aws cloudformation describe-stacks --stack-name McpStatelessEcsStack --query "Stacks[0].Outputs[?contains(OutputKey, 'McpServerEndpoint')].OutputValue"
 
     [
-        "OutputValue": "https://<endpoint>/dev/mcp"
+        "OutputValue": "http://<endpoint>/dev/mcp"
     ]
     ```
 
@@ -124,14 +134,14 @@ node mcp_client/index.js
 Observe the response:
 
 ```
-Connecting ENDPOINT_URL=XXXXXXXX.amazonaws.com/dev/mcp
+Connecting ENDPOINT_URL=http://XXXXXXXX.us-east-1.elb/mcp
 connected
 listTools response:  { tools: [ { name: 'ping', inputSchema: [Object] } ] }
 callTool:ping response:  {
   content: [
     {
       type: 'text',
-      text: 'pong! logStream=2025/05/06/[$LATEST]7037eebd7f314fa18d6320801a54a50f v=0.0.12 d=49'
+      text: 'pong! taskId=task/McpStatelessEcsStack-AlbToFargateclusterC8F84258-uYsPRhnSCgeG/b181d8eb08a34bc78723ef7022262305 v=0.0.14 d=99'
     }
   ]
 }
@@ -139,7 +149,7 @@ callTool:ping response:  {
   content: [
     {
       type: 'text',
-      text: 'pong! logStream=2025/05/06/[$LATEST]7037eebd7f314fa18d6320801a54a50f v=0.0.12 d=101'
+      text: 'pong! taskId=task/McpStatelessEcsStack-AlbToFargateclusterC8F84258-uYsPRhnSCgeG/b181d8eb08a34bc78723ef7022262305 v=0.0.14 d=51'
     }
   ]
 }
