@@ -233,3 +233,31 @@ artillery report report.json
 3. Document infrastructure changes
 4. Update load tests as needed
 5. Create detailed pull requests
+
+## Clean up
+
+Before destroying the stack, perform these cleanup steps in order:
+
+1. Remove all data from the Amazon Simple Storage Service (Amazon S3) buckets:
+   - Frontend static assets bucket
+   - Access logging bucket
+   - Any other S3 buckets created by the stack
+
+2. Delete CloudWatch logs:
+   - Navigate to CloudWatch in the AWS Console
+   - Find and delete the following log groups:
+     - `/aws/fargate/nova-sonic` (WebSocket server logs)
+     - `/aws/lambda/*` (any Lambda function logs)
+     - `/aws/cloudfront/*` (CloudFront access logs)
+     - Any other log groups created during testing
+
+3. Destroy the stack:
+   ```shell
+   cdk destroy
+   ```
+
+4. After stack deletion, verify:
+   - All CloudWatch log groups are deleted
+   - All S3 buckets are removed
+   - All ECR repositories are cleaned up
+   - No orphaned resources remain in your AWS account

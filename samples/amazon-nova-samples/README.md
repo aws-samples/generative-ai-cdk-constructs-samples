@@ -106,3 +106,11 @@ https://$CLOUDFRONT_URL/
 3. Commit your changes
 4. Push to the branch
 5. Create a Pull Request
+
+## Clean Up
+
+To clean up and remove all resources deployed by this solution:
+
+1. Follow the [backend cleanup instructions](backend/README.md#clean-up) to remove backend resources
+2. Delete any additional CloudWatch log groups created during testing
+3. Ensure all S3 buckets are emptied before deletion

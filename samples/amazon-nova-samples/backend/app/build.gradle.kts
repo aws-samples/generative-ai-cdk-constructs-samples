@@ -21,11 +21,11 @@ dependencies {
     implementation("software.amazon.awssdk:regions")
 
     // Jetty WebSocket dependencies
-    implementation("org.eclipse.jetty:jetty-server:11.0.15")
-    implementation("org.eclipse.jetty:jetty-servlet:11.0.15")
-    implementation("org.eclipse.jetty.websocket:websocket-jetty-server:11.0.15")
-    implementation("org.eclipse.jetty.websocket:websocket-jetty-client:11.0.15")
-    implementation("org.eclipse.jetty.websocket:websocket-jetty-api:11.0.15")
+    implementation("org.eclipse.jetty:jetty-server:11.0.16")
+    implementation("org.eclipse.jetty:jetty-servlet:11.0.16")
+    implementation("org.eclipse.jetty.websocket:websocket-jetty-server:11.0.16")
+    implementation("org.eclipse.jetty.websocket:websocket-jetty-client:11.0.16")
+    implementation("org.eclipse.jetty.websocket:websocket-jetty-api:11.0.16")
     implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
 
     // Jackson for JSON handling
@@ -52,7 +52,8 @@ dependencies {
 
     // Logging
     implementation("org.slf4j:slf4j-api:2.0.7")
-    implementation("ch.qos.logback:logback-classic:1.4.11")
+    implementation("ch.qos.logback:logback-classic:1.4.12")
+    implementation("ch.qos.logback:logback-core:1.4.12")
 
     // Testing
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.2")

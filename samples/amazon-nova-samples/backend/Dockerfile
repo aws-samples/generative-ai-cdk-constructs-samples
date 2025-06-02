@@ -1,17 +1,23 @@
-FROM gradle:7.6-jdk21 AS build
+FROM gradle:8.6.0-jdk21 AS build
 
 WORKDIR /app
 COPY . .
 # Ensure we build a proper executable JAR with manifest
 RUN gradle build --no-daemon
 
-FROM openjdk:21-slim
+FROM eclipse-temurin:21.0.2_13-jre-jammy
 
 # Create a non-root user
 RUN groupadd -r appuser && useradd -r -g appuser appuser
 
 WORKDIR /app
 COPY --from=build /app/app/build/libs/*.jar app.jar
+
+# Update system packages to fix vulnerabilities
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Set environment variables
 ENV AWS_REGION=us-east-1
