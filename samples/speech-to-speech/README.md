@@ -88,9 +88,9 @@ The solution consists of three main components:
 
    Install dependencies:
 
-      ```shell
-      $ npm install
-      ```
+   ```shell
+   $ npm install
+   ```
 
    Build the web application
 
@@ -98,7 +98,7 @@ The solution consists of three main components:
    $ npm run build
    ```
 
-The build output in `dist/` directory will be automatically deployed by the backend CDK stack to S3 and served through CloudFront. The environment variables are automatically configured by the `custom_resource_construct.py` in the CDK stack, which updates the frontend configuration during deployment.
+The build output in `frontend/dist/` directory will be automatically deployed by the backend CDK stack to S3 and served through CloudFront. The environment variables are automatically configured by the `custom_resource_construct.py` in the CDK stack, which updates the frontend configuration during deployment.
 
 4. Go to the backend directory:
 
