@@ -4,7 +4,7 @@ A real-time speech-to-speech communication platform powered by Amazon Bedrock's 
 
 ## Architecture Overview
 
-![Architecture Diagram](images/architecture.png)
+![Architecture Diagram](docs/images/architecture.png)
 
 The solution consists of three main components:
 

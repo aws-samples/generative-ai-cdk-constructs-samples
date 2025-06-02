@@ -4,7 +4,7 @@ The frontend application for the Nova Sonic Solution, built with React, TypeScri
 
 ## Application Interface
 
-![Speech to Speech Interface](../images/speechToSpeech_sample.png)
+![Speech to Speech Interface](../docs/images/speechToSpeech_sample.png)
 
 ## Project Structure
 
