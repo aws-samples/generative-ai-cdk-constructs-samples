@@ -11,6 +11,8 @@
 - [Usage](#usage)
 - [Load testing](#load-testing)
 - [Clean Up](#clean-up)
+- [Content Security Legal Disclaimer](#content-security-legal-disclaimer)
+- [Operational Metrics Collection](#operational-metrics-collection)
 
 ## Overview
 
@@ -60,7 +62,14 @@ The solution consists of three main components:
 - [Git](https://git-scm.com/downloads)
 - [AWS CDK Toolkit](https://docs.aws.amazon.com/cdk/v2/guide/cli.html)
 - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
-- Node.js 16.x or higher
+```
+aws configure --profile [your-profile] 
+AWS Access Key ID [None]: xxxxxx
+AWS Secret Access Key [None]:yyyyyyyyyy
+Default region name [None]: us-east-1 
+Default output format [None]: json
+```
+- Node.js: v18.12.1 or higher
 - npm 8.x or higher
 - Ensure you enable model access to Amazon Nova Sonic in the [Bedrock console](https://us-east-1.console.aws.amazon.com/bedrock/home?region=us-east-1#/modelaccess) in the region you intend to deploy this sample. For an up to date list of supported regions for Amazon Nova Sonic, please refer to the [documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/models-regions.html)
 - Chrome, Safari, or Edge browser environment (Firefox is currently not supported)
@@ -149,6 +158,8 @@ The build output in `frontend/dist/` directory will be automatically deployed by
    cdk deploy --require-approval=never
    ```
 
+The command above will deploy one stack in your account. With the default configuration of this sample, the observed deployment time was ~646 seconds (10.5 minutes).
+
 Get the CloudFront domain name:
 
 ```shell
@@ -158,7 +169,7 @@ aws cloudformation describe-stacks \
   --output text
 ```
 
-The frontend can be accessed at the domain name above.
+The frontend can be accessed at the domain name above (XXXX.cloudfront.net).
 
 ## User creation
 
@@ -179,8 +190,8 @@ $ aws cloudformation describe-stacks --stack-name NovaSonicSolutionBackendStack 
 
 ## Usage
 
-1. Go to the application URL - `https://$CLOUDFRONT_URL/` (CloudFront domain from CDK outputs)
-2. Click on "Speech to Speech" in the navigation menu.
+1. Open your browser and go to the application URL (CloudFront domain from CDK outputs) previously recovered.
+2. Click on "Speech to Speech" in the sidebar navigation menu.
 3. Click the "Start Streaming" button. When prompted, allow access to your microphone.
 4. Begin speaking - you should see your speech being transcribed in real-time on the UI
 5. The assistant will automatically process your message and respond through speech
@@ -225,3 +236,11 @@ cdk destroy NovaSonicSolutionBackendStack
 Delete the associated logs created by the different services in Amazon CloudWatch logs.
 
 Ensure S3 buckets are emptied before deletion.
+
+## Content Security Legal Disclaimer
+
+The sample code; software libraries; command line tools; proofs of concept; templates; or other related technology (including any of the foregoing that are provided by our personnel) is provided to you as AWS Content under the AWS Customer Agreement, or the relevant written agreement between you and AWS (whichever applies). You should not use this AWS Content in your production accounts, or on production or other critical data. You are responsible for testing, securing, and optimizing the AWS Content, such as sample code, as appropriate for production grade use based on your specific quality control practices and standards. Deploying AWS Content may incur AWS charges for creating or using AWS chargeable resources, such as running Amazon EC2 instances or using Amazon S3 storage.
+
+## Operational Metrics Collection
+
+This solution collects anonymous operational metrics to help AWS improve the quality and features of the solution. Data collection is subject to the AWS Privacy Policy (https://aws.amazon.com/privacy/). To opt out of this feature, simply remove the tag(s) starting with “uksb-” or “SO” from the description(s) in any CloudFormation templates or CDK TemplateOptions.
