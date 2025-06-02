@@ -37,8 +37,6 @@ import SpeechToSpeechPage from "./routes/SpeechToSpeechPage";
 // If the window object is not set, use the import.meta.env object (local development)
 const env = window.APP_CONFIG || import.meta.env;
 
-console.log(env);
-
 // Configure Amplify
 Amplify.configure({
   Auth: {
