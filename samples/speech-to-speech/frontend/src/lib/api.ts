@@ -12,8 +12,6 @@
 //
 
 import { Amplify } from "aws-amplify";
-import { fetchAuthSession } from "aws-amplify/auth";
-import { getErrorMessage } from "./utils";
 
 // Get the environment variables from the window object or the import.meta.env object
 // Window object is set by the custom resource in the backend stack
@@ -43,33 +41,3 @@ Amplify.configure({
     },
   },
 });
-
-const authToken = (await fetchAuthSession()).tokens?.idToken?.toString();
-
-interface QARequest {
-  jobId: string;
-  model: string;
-  question: string;
-}
-
-export async function askQuestion(data: QARequest): Promise<Response> {
-  try {
-    const response = await fetch(`${env.VITE_API_GATEWAY_REST_API_ENDPOINT}/qa`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authToken}`,
-      },
-      body: JSON.stringify(data)
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to get response from Q&A endpoint');
-    }
-
-    return response;
-  } catch (e: unknown) {
-    console.error("Q&A request failed:", getErrorMessage(e));
-    throw e;
-  }
-}

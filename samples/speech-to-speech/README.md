@@ -187,7 +187,6 @@ $ aws cloudformation describe-stacks --stack-name NovaSonicSolutionBackendStack 
 6. Click "Stop Streaming" when you're done
 
 ![Speech to Speech Interface](docs/images/speechToSpeech_home.png)
-
    
 > Note: Ensure your microphone is properly connected and working before testing. The browser may require you to grant microphone permissions the first time you use the feature.
 
