@@ -53,9 +53,6 @@ The solution consists of three main components:
    ```bash
    # Clone from GitHub
    git clone https://github.com/aws-samples/generative-ai-cdk-constructs-samples.git
-
-   # Or clone from GitLab
-   git clone git@ssh.gitlab.aws.dev:envision-engineering-amer/industry-accelerators/NovaSonicSolution.git
    ```
 
 2. Configure AWS CLI with your credentials and region:
