@@ -24,6 +24,7 @@ This repo provides samples to demonstrate how to build your own Generative AI so
 |[Stateless MCP Server on AWS Lambda](samples/mcp-stateless-lambda/)| Sample MCP Server running natively on AWS Lambda and API Gateway without any extra bridging components or custom transports and a test MCP client. | API layer | TypeScript |
 |[Stateless MCP Server on ECS](samples/mcp-stateless-ecs/)| Sample stateless MCP Server running natively on ECS Fargate and ALB without any extra bridging components or custom transports and a test MCP client. | API layer | TypeScript |
 |[Stateful MCP Server on ECS](samples/mcp-stateful-ecs/)| Sample stateful MCP Server running natively on ECS Fargate and ALB without any extra bridging components or custom transports and a test MCP client. | API layer | TypeScript |
+|[Speech to speech](samples/speech-to-speech/)| Real-time Speech to Speech solution with Amazon Nova Sonic, featuring a Java WebSocket server and React frontend. | Backend + Frontend | Python for Backend, TypeScript (React) for Frontend |
 
 ## Contributing
 

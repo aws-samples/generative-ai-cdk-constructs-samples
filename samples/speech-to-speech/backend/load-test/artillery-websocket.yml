@@ -1,0 +1,119 @@
+config:
+  target: "{{ $processEnvironment.WS_URL }}"  
+  plugins:
+    ensure: {}
+    metrics-by-endpoint: {}  # Enable per-endpoint metrics
+  environments:
+    production:
+      target: "{{ $processEnvironment.WS_URL }}"
+      plugins:
+        apdex: # Add Apdex score for response times
+          threshold: 100
+        metrics-by-endpoint: {}
+        expect: {}
+  phases:
+   #  Warm-up Phase (5 users)
+    # - duration: 20  # Allow more time for natural conversation flow
+    #   arrivalRate: 1   # 1 user per second
+    #   maxVusers: 20
+    #   name: "Warm-up"
+
+    # # Medium Load (20 users)
+    # - duration: 60  # Allow more time for natural conversation flow
+    #   arrivalRate: 5   # 2 users per second
+    #   maxVusers: 20
+    #   name: "Medium load"
+
+    # Peak Load (20 users)
+    - duration: 60  # duration for which the users will be created at arrival rate ,ex- 5 users X 60 duration = 300 Users
+      arrivalRate: 5   # 5 users per second
+      maxVusers: 100 # Maximum concurrent user at one time
+      name: "Peak load"
+
+  ws:
+    # Enable verbose WebSocket logging
+    debug: true
+    # Increase timeouts to match frontend configuration
+    handshakeTimeout: 60000  # 60 seconds for initial handshake
+    timeout: 600000  # 10 minutes to match frontend session length
+    # Connection settings
+    rejectUnauthorized: false
+    subprotocols: []
+    # Retry settings
+    reconnectInterval: 1000  # 1 second between retries
+    reconnectCount: 3  # Maximum 3 reconnection attempts
+  processor: "./functions.js"
+  ensure:
+    maxErrorRate: 1    # Stricter error rate - fail if exceeds 1%
+    maxLatency: 15000  # 15s to account for audio processing and reconnection attempts
+  reporting:
+    - type: json
+      output: report.json
+      metrics:
+        - http.request_rate
+        - http.response_time
+        - http.responses
+        - ws.messages_sent
+        - ws.messages_received
+        - ws.connection_time
+        - ws.response_time
+
+scenarios:
+  - name: "Multi-user test"
+    engine: "ws"
+    flow:
+      # Step 1: Get auth token
+      - log: "Step 1: Getting auth token"
+      - function: "setAuthToken"
+      - log: "Auth token obtained"
+
+      # Step 2: Connect WebSocket with auth header
+      - log: "Step 2: Connecting WebSocket with auth header"
+      # Generate WebSocket key
+      - function: "generateWebSocketKey"
+      - connect:
+          headers:
+            Connection: "Upgrade"
+            Upgrade: "websocket"
+            Sec-WebSocket-Version: "13"
+            Sec-WebSocket-Key: "{{ wsKey }}"
+            Origin: "https://d18skbn47dn34g.cloudfront.net"
+            Authorization: "Bearer {{ token }}"  # Auth token in header
+      - log: "WebSocket connected"
+
+      # Step 3: Initialize conversation
+      - log: "Step 3: Starting conversation"
+      - function: "sendSessionStart"
+      - function: "generatePromptName"
+      - function: "sendPromptStart"
+      - function: "generateContentName"
+      - function: "sendSystemPrompt"
+      - function: "checkServerResponse"
+      - log: "Conversation initialized"
+
+      # Step 4: Conversation Flow
+      # 1. Say "Hello"
+      - function: "generateContentName"
+      - function: "startAudioContent"
+      - function: "sendAudioMessage"  # Will say "Hello"
+      - function: "checkServerResponse"  # Wait for assistant's greeting
+
+      # 2. Ask about the date
+      - function: "generateContentName"
+      - function: "startAudioContent"
+      - function: "sendAudioMessage"  # Will ask about date
+      - function: "checkServerResponse"  # Wait for date response
+
+      # 3. Ask about the weather
+      - function: "generateContentName"
+      - function: "startAudioContent"
+      - function: "sendAudioMessage"  # Will ask about weather
+      - function: "checkServerResponse"  # Wait for weather response
+
+      # 4. Say "Thank you"
+      - function: "generateContentName"
+      - function: "startAudioContent"
+      - function: "sendAudioMessage"  # Will say thank you
+      - function: "checkServerResponse"  # Wait for final response
+
+      - log: "Test completed successfully"

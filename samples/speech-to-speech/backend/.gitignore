@@ -1,0 +1,26 @@
+*.swp
+package-lock.json
+__pycache__
+.pytest_cache
+.venv
+*.egg-info
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+
+### macOS ###
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+# Gradle files
+.gradle/
+**/.gradle/
+*/build/
+build
+# Java class files
+*.class
+**/*.class
+
+cdk.context.json
