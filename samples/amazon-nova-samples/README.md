@@ -79,6 +79,8 @@ The solution consists of three main components:
 https://$CLOUDFRONT_URL/
 ```
 
+Follow these steps for [Application Testing](frontend/README.md#application-testing)
+
  
 ## Security Features
 
