@@ -8,4 +8,4 @@ aiohttp>=3.8.0
 boto3==1.38.2
 
 # Utility libraries
-requests==2.31.0
+requests==2.32.2
