@@ -1,5 +1,5 @@
 /**
- * Speech-to-Speech component for the NovaSonicSolution frontend
+ * Speech-to-Speech component for the CDK sample
  */
 
 import { useEffect, useRef, useState } from "react";
@@ -7,6 +7,7 @@ import { WebSocketEventManager } from "../../lib/speech-to-speech/WebSocketEvent
 import config from "../../lib/speech-to-speech/config";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
+import { SpeechToSpeechSettings, SpeechSettings, getDefaultSettings } from "./SpeechToSpeechSettings";
 import "../../styles/speech-to-speech.css";
 
 interface WebSocketEvent {
@@ -44,9 +45,7 @@ export function SpeechToSpeech({ websocketUrl = config.websocketUrl }: SpeechToS
   const [statusClass, setStatusClass] = useState("disconnected");
   const [isInitializing, setIsInitializing] = useState(false);
   const [disconnected, setDisconnected] = useState(false);
-  const [systemPrompt, setSystemPrompt] = useState(
-    "You are a friend. The user and you will engage in a spoken dialog exchanging the transcripts of a natural real-time conversation. Keep your responses short, generally two or three sentences for chatty scenarios."
-  );
+  const [settings, setSettings] = useState<SpeechSettings>(getDefaultSettings());
   interface MessageWithId extends ChatMessage {
     id: string;
   }
@@ -108,7 +107,16 @@ export function SpeechToSpeech({ websocketUrl = config.websocketUrl }: SpeechToS
     
     // Use the WebSocket URL from the config file
     const wsUrl = websocketUrl + '/interact-s2s';
-    wsManagerRef.current = new WebSocketEventManager(wsUrl, handleDisconnect, handleConnect, systemPrompt);
+    wsManagerRef.current = new WebSocketEventManager(
+      wsUrl, 
+      handleDisconnect, 
+      handleConnect, 
+      settings.systemPrompt,
+      settings.voiceId,
+      settings.toolConfiguration,
+      settings.chatHistory,
+      settings.includeChatHistory
+    );
 
     // Start inactivity timer
     if (inputTimeoutRef.current) clearTimeout(inputTimeoutRef.current);
@@ -401,14 +409,10 @@ export function SpeechToSpeech({ websocketUrl = config.websocketUrl }: SpeechToS
         {disconnected && (
           <div className="text-red-600 font-semibold mt-2">Connection lost. Please click "Start Streaming" to reconnect.</div>
         )}
-        <div className="mt-4">
-          <label htmlFor="system-prompt" className="block text-sm font-medium mb-1">System Prompt:</label>
-          <textarea
-            id="system-prompt"
-            className="w-full border rounded p-2 text-sm"
-            rows={3}
-            value={systemPrompt}
-            onChange={e => setSystemPrompt(e.target.value)}
+        <div className="mt-4 flex justify-end">
+          <SpeechToSpeechSettings
+            settings={settings}
+            onSettingsChange={setSettings}
             disabled={isStreaming || isInitializing}
           />
         </div>

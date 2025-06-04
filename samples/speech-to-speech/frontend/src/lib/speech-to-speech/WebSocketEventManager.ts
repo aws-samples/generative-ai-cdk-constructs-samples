@@ -158,11 +158,29 @@ export class WebSocketEventManager {
   private audioContext: AudioContext | null = null;
   private audioStream: MediaStream | null = null;
 
-  constructor(wsUrl: string, onDisconnect?: () => void, onConnect?: () => void, systemPrompt?: string) {
+  private voiceId: string;
+  private toolConfiguration: string;
+  private chatHistory: string;
+  private includeChatHistory: boolean;
+
+  constructor(
+    wsUrl: string, 
+    onDisconnect?: () => void, 
+    onConnect?: () => void, 
+    systemPrompt?: string,
+    voiceId?: string,
+    toolConfiguration?: string,
+    chatHistory?: string,
+    includeChatHistory?: boolean
+  ) {
     this.wsUrl = wsUrl;
     this.onDisconnectCallback = onDisconnect || null;
     this.onConnectCallback = onConnect || null;
     this.systemPrompt = systemPrompt || "You are a friend. The user and you will engage in a spoken dialog exchanging the transcripts of a natural real-time conversation. Keep your responses short, generally two or three sentences for chatty scenarios.";
+    this.voiceId = voiceId || "matthew";
+    this.toolConfiguration = toolConfiguration || "{}";
+    this.chatHistory = chatHistory || "[]";
+    this.includeChatHistory = includeChatHistory || false;
     console.log("WebSocket URL:", this.wsUrl);
     this.connect();
   }
@@ -565,26 +583,28 @@ export class WebSocketEventManager {
     const promptName = crypto.randomUUID();
     this.promptName = promptName;
 
-    const getDefaultToolSchema = JSON.stringify({
-      "type": "object",
-      "properties": {},
-      "required": []
-    });
-
-    const getWeatherToolSchema = JSON.stringify({
-      "type": "object",
-      "properties": {
-        "latitude": {
-          "type": "string",
-          "description": "Geographical WGS84 latitude of the location."
-        },
-        "longitude": {
-          "type": "string",
-          "description": "Geographical WGS84 longitude of the location."
-        }
-      },
-      "required": ["latitude", "longitude"]
-    });
+    // Parse tool configuration from settings
+    let toolConfiguration;
+    try {
+      toolConfiguration = JSON.parse(this.toolConfiguration);
+    } catch (e) {
+      console.error("Invalid tool configuration JSON, using default:", e);
+      toolConfiguration = {
+        tools: [{
+          toolSpec: {
+            name: "getDateAndTimeTool",
+            description: "get information about the current date and current time",
+            inputSchema: {
+              json: JSON.stringify({
+                "type": "object",
+                "properties": {},
+                "required": []
+              })
+            }
+          }
+        }]
+      };
+    }
 
     const promptStartEvent = {
       event: {
@@ -598,33 +618,14 @@ export class WebSocketEventManager {
             sampleRateHertz: 24000,
             sampleSizeBits: 16,
             channelCount: 1,
-            voiceId: "matthew",
+            voiceId: this.voiceId,
             encoding: "base64",
             audioType: "SPEECH"
           },
           toolUseOutputConfiguration: {
             mediaType: "application/json"
           },
-          toolConfiguration: {
-            tools: [{
-              toolSpec: {
-                name: "getDateAndTimeTool",
-                description: "get information about the current date and current time",
-                inputSchema: {
-                  json: getDefaultToolSchema
-                }
-              }
-            },
-            {
-              toolSpec: {
-                name: "getWeatherTool",
-                description: "Get the current weather for a given location, based on its WGS84 coordinates.",
-                inputSchema: {
-                  json: getWeatherToolSchema
-                }
-              }
-            }]
-          }
+          toolConfiguration: toolConfiguration
         }
       }
     };
@@ -635,6 +636,7 @@ export class WebSocketEventManager {
   sendSystemPrompt(): void {
     if (!this.promptName) return;
 
+    // Send system prompt
     const systemContentName = crypto.randomUUID();
     const contentStartEvent = {
       event: {
@@ -672,7 +674,93 @@ export class WebSocketEventManager {
       }
     };
     this.sendEvent(contentEndEvent);
-    this.startAudioContent();
+
+    // Send chat history if enabled
+    if (this.includeChatHistory) {
+      this.sendChatHistory();
+    } else {
+      this.startAudioContent();
+    }
+  }
+
+  private sendChatHistory(): void {
+    if (!this.promptName) return;
+
+    let chatHistory;
+    try {
+      chatHistory = JSON.parse(this.chatHistory);
+    } catch (e) {
+      console.error("Invalid chat history JSON, skipping:", e);
+      this.startAudioContent();
+      return;
+    }
+
+    if (!Array.isArray(chatHistory) || chatHistory.length === 0) {
+      console.log("No chat history to send");
+      this.startAudioContent();
+      return;
+    }
+
+    // Send each message in the chat history
+    const sendNextMessage = (index: number) => {
+      if (index >= chatHistory.length) {
+        this.startAudioContent();
+        return;
+      }
+
+      const message = chatHistory[index];
+      if (!message.role || !message.content || !this.promptName) {
+        console.warn("Invalid message in chat history or no prompt name:", message);
+        sendNextMessage(index + 1);
+        return;
+      }
+
+      const messageContentName = crypto.randomUUID();
+      const role = message.role.toUpperCase();
+
+      const contentStartEvent = {
+        event: {
+          contentStart: {
+            promptName: this.promptName,
+            contentName: messageContentName,
+            type: "TEXT",
+            role: role,
+            interactive: true,
+            textInputConfiguration: {
+              mediaType: "text/plain"
+            }
+          }
+        }
+      };
+      this.sendEvent(contentStartEvent);
+
+      const textInputEvent = {
+        event: {
+          textInput: {
+            promptName: this.promptName,
+            contentName: messageContentName,
+            content: message.content
+          }
+        }
+      };
+      this.sendEvent(textInputEvent);
+
+      const contentEndEvent = {
+        event: {
+          contentEnd: {
+            promptName: this.promptName,
+            contentName: messageContentName
+          }
+        }
+      };
+      this.sendEvent(contentEndEvent);
+
+      // Send next message after a small delay
+      setTimeout(() => sendNextMessage(index + 1), 10);
+    };
+
+    console.log(`Sending ${chatHistory.length} chat history messages`);
+    sendNextMessage(0);
   }
 
   private pauseAudioProcessing(): void {
