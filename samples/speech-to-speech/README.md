@@ -2,17 +2,23 @@
 
 ## Table of Contents
 
-- [Overview](#overview)
-- [Architecture](#architecture)
-- [Project Structure](#project-structure)
-- [Prerequisites](#prerequisites)
-- [Deployment](#deployment)
-- [User creation](#user-creation)
-- [Usage](#usage)
-- [Load testing](#load-testing)
-- [Clean Up](#clean-up)
-- [Content Security Legal Disclaimer](#content-security-legal-disclaimer)
-- [Operational Metrics Collection](#operational-metrics-collection)
+- [Nova Sonic Solution](#nova-sonic-solution)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+  - [Architecture](#architecture)
+  - [Project Structure](#project-structure)
+    - [Backend Implementation Options](#backend-implementation-options)
+      - [Java WebSocket Server (Default)](#java-websocket-server-default)
+      - [Python WebSocket Server](#python-websocket-server)
+    - [Language Selection](#language-selection)
+  - [Prerequisites](#prerequisites)
+  - [Deployment](#deployment)
+  - [User creation](#user-creation)
+  - [Usage](#usage)
+  - [Load testing](#load-testing)
+  - [Clean Up](#clean-up)
+  - [Content Security Legal Disclaimer](#content-security-legal-disclaimer)
+  - [Operational Metrics Collection](#operational-metrics-collection)
 
 ## Overview
 
@@ -49,10 +55,38 @@ The solution consists of three main components:
 ├── frontend/           # React + TypeScript frontend application
 ├── backend/           # AWS CDK infrastructure and Java WebSocket server
 │   ├── app/          # Java WebSocket server implementation
+│   ├── python_app/   # Python WebSocket server implementation
 │   ├── stack/        # CDK infrastructure code
 │   └── load-test/    # WebSocket load testing suite
 └── images/           # Architecture diagrams and documentation images
 ```
+
+### Backend Implementation Options
+
+The solution supports two backend implementations with identical functionality:
+
+#### Java WebSocket Server (Default)
+- Java-based WebSocket server implementation
+- Production-ready with comprehensive error handling
+- Jetty WebSocket server with connection pooling
+- Real-time speech-to-speech communication
+- Cognito token validation
+- Connection management and logging
+
+#### Python WebSocket Server
+- Python-based alternative implementation
+- AWS Bedrock integration with `aws_sdk_bedrock_runtime` beta SDK
+- Equivalent functionality to Java implementation
+- **Python AWS SDK Notice**: This implementation uses the experimental AWS SDK for Python async clients. The SDK is in early development and may see rapid iteration with potential breaking changes between minor versions. For more details about the experimental AWS SDK, see: https://github.com/awslabs/aws-sdk-python/tree/develop
+
+### Language Selection
+
+The CDK deployment supports backend language selection:
+
+- **Java (default)**: `cdk deploy`
+- **Python**: `cdk deploy --context custom:backendLanguage=python`
+
+The `cdk.json` file contains the context parameter `custom:backendLanguage` (set to "python" for Python deployment).
 
 ## Prerequisites
 

@@ -1,0 +1,11 @@
+# Core dependencies
+aws_sdk_bedrock_runtime==0.0.2
+smithy-aws-core==0.0.1
+python-dotenv>=1.1.0
+aiohttp>=3.8.0
+
+# AWS SDK
+boto3==1.38.2
+
+# Utility libraries
+requests==2.31.0
