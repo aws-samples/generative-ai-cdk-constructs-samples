@@ -15,9 +15,10 @@ from .stack_constructs import (
     DockerImageAssetConstruct,
     VPCConstruct,
     FargateNLBConstruct,
-    CustomResourceConstruct
+    CustomResourceConstruct,
+    get_backend_language,
+    BackendLanguage
 )
-
 class BackendStack(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
@@ -26,6 +27,9 @@ class BackendStack(Stack):
         # Get the path to the frontend directory
         # need to npm run build and push the build folder to the frontend directory first
         frontend_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "frontend/dist")
+    
+        # Get backend language from context
+        backend_language = get_backend_language(self.node.root)
     
         #######################
         ### BUCKET RESOURCES ##
@@ -61,14 +65,23 @@ class BackendStack(Stack):
         #######################
         
         # Create Docker image asset from the local Dockerfile
-        docker_image_asset = DockerImageAssetConstruct(
-            self,
-            "WebSocketJavaImage",
-            directory=os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-            file="Dockerfile",
-            platform=ecr_assets.Platform.LINUX_ARM64
-        )
-
+        # Set image name and dockerfile based on backend language
+        if backend_language == BackendLanguage.PYTHON:
+            docker_image_asset = DockerImageAssetConstruct(
+                self,
+                "WebSocketPythonImage",
+                directory=os.path.dirname(os.path.dirname(os.path.abspath(__file__))) + "/python_app",
+                file="Dockerfile",
+                platform=ecr_assets.Platform.LINUX_ARM64
+            )
+        else:
+            docker_image_asset = DockerImageAssetConstruct(
+                self,
+                "WebSocketJavaImage",
+                directory=os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                file="Dockerfile",
+                platform=ecr_assets.Platform.LINUX_ARM64
+            )
         #######################
         ### FARGATE SERVICE ###
         #######################
