@@ -90,7 +90,7 @@ The `cdk.json` file contains the context parameter `custom:backendLanguage` (set
 
 ## Prerequisites
 
-- [Python](https://www.python.org/downloads/) 3.11 or higher
+- [Python](https://www.python.org/downloads/) 3.12 or higher
 - [Docker Desktop](https://docs.docker.com/desktop/install/)
 - [Gradle](https://gradle.org/install/) 7.x or higher
 - [Git](https://git-scm.com/downloads)
