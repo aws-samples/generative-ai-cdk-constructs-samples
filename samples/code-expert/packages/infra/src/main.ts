@@ -24,6 +24,9 @@ import { ApplicationStack } from "./stacks/application-stack";
     nagPacks: [new AwsSolutionsChecks()],
   });
 
+  const usageMetric = "uksb-1tupboc45";
+  const solutionName = "code-expert"
+
   // Use this to deploy your own sandbox environment (assumes your CLI credentials)
   new ApplicationStack(app, "CodeExpert", {
     env: {
@@ -31,7 +34,7 @@ import { ApplicationStack } from "./stacks/application-stack";
       region: process.env.CDK_DEFAULT_REGION,
     },
     description:
-      "The Code Expert sample leverages the BedrockBatchSfn construct to perform expert code reviews cost effectively at scale.(uksb-1tupboc43)",
+      `The Code Expert sample leverages the BedrockBatchSfn construct to perform expert code reviews cost effectively at scale.(${usageMetric})(tag:${solutionName})`,
   });
 
   const graph = new CdkGraph(app, {
