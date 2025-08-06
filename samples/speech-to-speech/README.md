@@ -109,6 +109,33 @@ Default output format [None]: json
 - Chrome, Safari, or Edge browser environment (Firefox is currently not supported)
 - Microphone and speakers
 
+## Regional Access Configuration
+
+⚠️ **Important**: By default, this solution restricts CloudFront access to **US and Canada only**. International users will be blocked and see access denied errors.
+
+To modify regional access for your deployment, edit the following file:
+**File**: `backend/stack/stack_constructs/cloudfront_constructs.py`
+**Line**: ~108
+
+### Configuration Options:
+
+**Current Default (US & Canada only):**
+```python
+geo_restriction=cloudfront.GeoRestriction.allowlist("US", "CA"),
+```
+
+**Allow Worldwide Access:**
+```python
+geo_restriction=cloudfront.GeoRestriction.allowlist(),  # Empty allowlist = worldwide access
+```
+
+**Allow Specific Countries (example: US, Canada, UK, Germany):**
+```python
+geo_restriction=cloudfront.GeoRestriction.allowlist("US", "CA", "GB", "DE"),
+```
+
+> **Note**: Use [ISO 3166-1 alpha-2 country codes](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) (e.g., "US", "CA", "GB", "DE", "JP", "AU").
+
 ## Deployment
 
 1. If not done already, clone this repository:
