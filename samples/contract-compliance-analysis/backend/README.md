@@ -129,7 +129,7 @@ Steps:
 
 ![Bedrock Model Access](images/bedrock-model-access.png)
 
-- Click the **Enable specific models** button and enable the checkbox for Anthropic Claude models
+- Click the **Enable specific models** button and enable the checkbox for the models used by the application
 
 - Click **Next** and **Submit** buttons
 
@@ -147,7 +147,7 @@ The recommended sequence of steps:
 
 1. Customize App Properties.
 2. Deploy the Backend stack again.
-3. Create a custom guidelines worksheet. Using the example worksheet (`guidelines_example.xslx`) as reference, you can create your own, preserving the same tab/column naming. Apart from what is defined in the example in terms of naming, you can create additional tabs/columns. The content of each column can be in any language that is supported by Anthropic Claude model - just make sure the content language is same as the `language` value defined in the App Properties.
+3. Create a custom guidelines worksheet. Using the example worksheet (`guidelines_example.xslx`) as reference, you can create your own, preserving the same tab/column naming. Apart from what is defined in the example in terms of naming, you can create additional tabs/columns. The content of each column can be in any language that is supported by the LLM - just make sure the content language is same as the `language` value defined in the App Properties.
 4. Generate evaluation questions for the guidelines. From the `scripts` folder:
 
     ```shell

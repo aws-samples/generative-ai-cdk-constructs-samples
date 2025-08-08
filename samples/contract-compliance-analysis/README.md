@@ -8,7 +8,7 @@ The project is powered by Large Language Models (LLM) available on Amazon Bedroc
 
 ## Architecture
 
-The core of this solution is the contract analysis workflow, which leverages the Claude Large Language Models to perform advanced natural language tasks to evaluate clauses against predefined guidelines. 
+The core of this solution is the contract analysis workflow, which leverages Large Language Models to perform advanced natural language tasks to evaluate clauses against predefined guidelines. 
 Different storage components are used for the input, intermediate steps, analysis output, and the guidelines information. Additionally, there are components for the user interface, comprising web application hosting, authentication, and integration services.
 
 ![High Level Architecture](./images/high-level-architecture.png)
