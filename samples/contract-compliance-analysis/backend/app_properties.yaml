@@ -14,7 +14,13 @@ language: English
 
 # Claude Model ID (Global configuration). To switch to a smaller Language Model for cost savings).
 # Disabling the property will let each prompt execution to its default model id
-claude_model_id: us.anthropic.claude-3-haiku-20240307-v1:0
+llm_model_id: amazon.nova-lite-v1:0
+#llm_model_id: amazon.nova-pro-v1:0
+#llm_model_id: amazon.nova-premier-v1:0
+#llm_model_id: anthropic.claude-3-5-haiku-20241022-v1:0
+#llm_model_id: anthropic.claude-3-5-sonnet-20241022-v2:0
+#llm_model_id: anthropic.claude-3-7-sonnet-20250219-v1:0
+
 
 # Thresholds determine the maximum number of clauses with risk that a contract can have without requiring human review,
 # per risk level

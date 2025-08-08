@@ -11,7 +11,6 @@
 # and limitations under the License.
 #
 
-import logging
 import os
 import boto3
 from boto3.dynamodb.conditions import Key
@@ -19,9 +18,13 @@ from collections import defaultdict
 from llm import invoke_llm
 from util import get_prompt_vars_dict, extract_first_item_from_tagged_list, extract_items_from_tagged_list
 
-CLAUSE_EVALUATION_PROMPT_TEMPLATE = """
+# Import Powertools
+from aws_lambda_powertools import Logger
 
-Human: You are a Senior Specialist in Law, very skilled in understanding of contracts, and you work for company {company_name}.
+# Initialize Powertools logger
+logger = Logger(service="contract-compliance-analysis")
+
+CLAUSE_EVALUATION_PROMPT_TEMPLATE = """You are a Senior Specialist in Law, very skilled in understanding of contracts, and you work for company {company_name}.
 You are carefully reading a contract ({contract_type}), having as parties involved the {other_party_type} and company {company_name} ({company_party_type}).
 
 Rules of thought process:
@@ -65,13 +68,9 @@ For each question, follow these steps:
 - Take a deep breath and think step by step on the answer to the question, following the rules of thought process (the content between <rules_of_thought_process> tags). The answer must be fully grounded in the contract clause (the content between <clause> tags) and complemented if needed with the context from ascendings clause in the contract. Write your thoughts in {language} between <reasoning> tags.
 - Write between <answer_english> tags your answer as "Not sure", "Yes" or "No" (always in English)
 - Write between <answer_translated> tags your answer translated to {language} (always in {language}) 
-
-Assistant:"""
+"""
 
 PROMPT_VARS = os.environ.get('PROMPT_VARS', "")
-
-logger = logging.getLogger()
-logger.setLevel(os.getenv("LOG_LEVEL", "INFO"))
 
 clauses_table = boto3.resource('dynamodb').Table(os.environ['CLAUSES_TABLE_NAME'])
 guidelines_table = boto3.resource('dynamodb').Table(os.environ['GUIDELINES_TABLE_NAME'])
@@ -150,10 +149,8 @@ def run_evaluation(clause, clause_context, rule, prompt_vars_dict):
 
     llm_response, model_usage, stop_reason = invoke_llm(
         prompt=evaluation_prompt,
-        model_id=prompt_vars_dict.get("claude_model_id", ''),
+        model_id=prompt_vars_dict.get("llm_model_id", ''),
         temperature=0.01,
-        top_k=100,
-        top_p=0.5,
         max_new_tokens=2000,
         verbose=True
     )
@@ -197,12 +194,17 @@ def update_clause(clause):
     )
 
 
+@logger.inject_lambda_context(log_event=True)
 def handler(event, context):
     """Lambda to evaluate contract clauses against guidelines rules
     """
-    logger.info("Received event %s", event)
+    # Extract Step Functions execution name and set as correlation ID
+    job_id = event.get("JobId", "unknown")
+    logger.set_correlation_id(job_id)  # Use JobId as correlation ID (which is the execution name)
+    
+    logger.info("Received event", extra={"event": event})
     clause = get_clause(event["JobId"], event["ClauseNumber"])
-    logger.info("Clause %s", clause)
+    logger.info("Retrieved clause", extra={"clause_number": event["ClauseNumber"], "has_types": "types" in clause})
     request_id = context.aws_request_id
 
     prompt_vars_dict = get_prompt_vars_dict(PROMPT_VARS)
@@ -217,19 +219,19 @@ def handler(event, context):
         type_id = type_["type_id"]
         try:
             rule = get_guidelines_rule(type_id)
-            logger.info("Rule %s", rule)
+            logger.info("Processing rule", extra={"type_id": type_id, "rule_name": rule.get("name", "unknown")})
         except ValueError:
             continue  # rule not found, skip it.
 
         eval_result = run_evaluation(clause, clause_context, rule, prompt_vars_dict)
-        logger.info("Evaluation result %s", eval_result)
+        logger.info("Evaluation completed", extra={"type_id": type_id, "compliant": eval_result["compliant"]})
         type_["compliant"] = eval_result["compliant"]
         type_["analysis"] = eval_result["analysis"]
         type_["level"] = rule["level"]
         type_["evaluation_request_id"] = request_id
 
     update_clause(clause)
-    logger.info("Clause %s", clause)
+    logger.info("Clause evaluation completed", extra={"clause_number": event["ClauseNumber"]})
 
     return {
         "Status": "OK"

@@ -11,7 +11,6 @@
 # and limitations under the License.
 #
 
-import logging
 import tempfile
 import re
 import os
@@ -24,18 +23,20 @@ from langchain.text_splitter import TokenTextSplitter
 from llm import invoke_llm
 from util import get_prompt_vars_dict
 
+# Import Powertools
+from aws_lambda_powertools import Logger
 
-logger = logging.getLogger()
-logger.setLevel(os.getenv("LOG_LEVEL", "INFO"))
+# Initialize Powertools logger
+logger = Logger(service="contract-compliance-analysis")
 
 clauses_table_name = os.environ["CLAUSES_TABLE_NAME"]
 
-PROMPT_VARS = os.environ.get('PROMPT_VARS', "")
+PROMPT_VARS = os.environ.get("PROMPT_VARS", "")
 
 s3_client = boto3.client("s3")
 dynamodb_client = boto3.resource("dynamodb")
 clauses_table = dynamodb_client.Table(clauses_table_name)
-bedrock_client = boto3.client('bedrock-runtime')
+bedrock_client = boto3.client("bedrock-runtime")
 
 CLAUSE_SEPARATOR = "|||||"
 
@@ -101,10 +102,10 @@ def separate_clauses(contract_excerpt):
     prompt_vars_dict = get_prompt_vars_dict(PROMPT_VARS)
     llm_response, model_usage, stop_reason = invoke_llm(
         prompt=PROMPT_TEMPLATE.format(CONTRACT_EXCERPT=contract_excerpt),
-        model_id=prompt_vars_dict.get("claude_model_id", ''),
-        temperature=0.0,
-        top_p=0.999,
+        model_id=prompt_vars_dict.get("llm_model_id", ""),
+        temperature=0.01,
         max_new_tokens=4096,
+        verbose=True,
     )
     return llm_response
 
@@ -116,7 +117,9 @@ def parse_event(event):
     else:
         raise MalformedRequest("Unknown event structure")
 
-    logger.info(f"Got document_s3_path and execution_name from event: {document_s3_path} {execution_name}")
+    logger.info(
+        f"Got document_s3_path and execution_name from event: {document_s3_path} {execution_name}"
+    )
 
     match = re.match("s3://(.+?)/(.+)", document_s3_path)
 
@@ -129,10 +132,14 @@ def parse_event(event):
         raise MalformedRequest(f"Invalid S3 URI: {document_s3_path}")
 
 
+@logger.inject_lambda_context(log_event=True)
 def handler(event, context):
-    """Lambda to preprocess a contract document
-    """
-    logger.info("Received event %s", event)
+    """Lambda to preprocess a contract document"""
+    # Extract Step Functions execution name and set as correlation ID
+    execution_name = event.get("ExecutionName")
+    logger.set_correlation_id(execution_name)
+
+    logger.info("Received event", extra={"event": event})
 
     bucket, key, execution_name = parse_event(event)
 
@@ -145,28 +152,47 @@ def handler(event, context):
 
         # Split text in chunks of less than 4000 tokens
         chunks = split_chunks(contract)
+        logger.info(f"Split contract into {len(chunks)} chunks")
+
         # Separate each chunk, including separators between clauses
-        separated_contract = "".join([
-            separate_clauses(chunk) for chunk in chunks
-        ])
+        separated_contract = "".join([separate_clauses(chunk) for chunk in chunks])
         # Get the diff between the original contract and the separated contract
-        diffs = list(Differ().compare(
-            contract.splitlines(keepends=True),
-            separated_contract.splitlines(keepends=True)
-        ))
+        diffs = list(
+            Differ().compare(
+                contract.splitlines(keepends=True),
+                separated_contract.splitlines(keepends=True),
+            )
+        )
         # Merge the contracts, accepting only the inclusion of separators
-        merged_contract = "".join([
-            diff[2:] if diff.startswith("  ") or diff.startswith("- ") or diff.startswith(f"+ {CLAUSE_SEPARATOR}\n") or diff.startswith(f"+ {CLAUSE_SEPARATOR} \n") else ""
-            for diff in diffs
-        ])
+        merged_contract = "".join(
+            [
+                diff[2:]
+                if diff.startswith("  ")
+                or diff.startswith("- ")
+                or diff.startswith(f"+ {CLAUSE_SEPARATOR}\n")
+                or diff.startswith(f"+ {CLAUSE_SEPARATOR} \n")
+                else ""
+                for diff in diffs
+            ]
+        )
         # Get each individual clause and insert into table
-        clauses = list(filter(None, [clause.strip() for clause in merged_contract.split(CLAUSE_SEPARATOR)]))
+        clauses = list(
+            filter(
+                None,
+                [clause.strip() for clause in merged_contract.split(CLAUSE_SEPARATOR)],
+            )
+        )
+
+        logger.info(f"Extracted {len(clauses)} clauses from contract")
+
         for i, clause in enumerate(clauses):
-            clauses_table.put_item(Item={
-                'job_id': execution_name,
-                'clause_number': i,
-                'text': clause.strip(),
-            })
+            clauses_table.put_item(
+                Item={
+                    "job_id": execution_name,
+                    "clause_number": i,
+                    "text": clause.strip(),
+                }
+            )
 
     return {
         "JobId": execution_name,

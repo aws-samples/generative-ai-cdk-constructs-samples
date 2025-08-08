@@ -166,3 +166,21 @@ class StepFunctionsStack(NestedStack):
             ],
             apply_to_children=True,
         )
+
+        # Suppress CDK-nag errors for LogRetention constructs
+        # These are automatically created by CDK for Lambda functions
+        NagSuppressions.add_stack_suppressions(
+            stack=self,
+            suppressions=[
+                NagPackSuppression(
+                    id="AwsSolutions-IAM4",
+                    reason="LogRetention construct requires AWSLambdaBasicExecutionRole managed policy for CloudWatch log operations",
+                    applies_to=["Policy::arn:<AWS::Partition>:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"],
+                ),
+                NagPackSuppression(
+                    id="AwsSolutions-IAM5",
+                    reason="LogRetention construct requires wildcard permissions for CloudWatch log group operations across different log groups",
+                    applies_to=["Resource::*"],
+                ),
+            ],
+        )

@@ -58,7 +58,7 @@ class EvaluationStep(Construct):
             runtime=lambda_.Runtime.PYTHON_3_12,
             architecture=lambda_.Architecture.X86_64,
             timeout=Duration.minutes(15),
-            memory_size=128,
+            memory_size=512,
             environment={
                 "LOG_LEVEL": "INFO",
                 "CLAUSES_TABLE_NAME": clauses_table.table_name,

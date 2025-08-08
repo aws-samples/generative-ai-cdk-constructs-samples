@@ -17,6 +17,49 @@ Zooming in to the contract analysis workflow:
 
 ![High Level Architecture](./images/contract-analysis-architecture.png)
 
+## Cost Analysis and Pricing
+
+This solution demonstrates significant cost savings by using Amazon Nova models compared to traditional Claude models. The following analysis is based on processing the **sample contract included with this solution** using the default guidelines.
+
+### Model Cost Comparison
+
+The following analysis shows token usage and costs for processing the included sample contract. Some of the scenarios have [Amazon Bedrock prompt caching](https://docs.aws.amazon.com/bedrock/latest/userguide/prompt-caching.html) enabled.
+
+#### Claude 3.5 Haiku and Amazon Nova Lite
+| Model | Input Tokens | Output Tokens | Cache Read Tokens | Cache Write Tokens | **Total Cost** |
+|-------|-------------|---------------|-------------------|-------------------|---------------|
+| **Claude 3.5 Haiku** | 98,166<br>$0.08 | 40,570<br>$0.16 | 570,255<br>$0.05 | 16,293<br>$0.02 | **$0.30** |
+| **Amazon Nova Lite** | 89,140<br>$0.07 | 45,733<br>$0.11 | 534,275<br>$0.11 | 15,265<br>$0.00 | **$0.02** |
+| | | | | **Savings:** | **🟢 92%** |
+
+#### Claude 3.5 Sonnet v2 and Amazon Nova Pro (without prompt caching)
+| Model | Input Tokens | Output Tokens | **Total Cost** |
+|-------|-------------|---------------|---------------|
+| **Claude 3.5 Sonnet v2** | 684,737<br>$2.05 | 65,927<br>$0.99 | **$3.04** |
+| **Amazon Nova Pro** | 625,677<br>$0.50 | 33,493<br>$0.11 | **$0.61** |
+| | | **Savings:** | **🟢 80%** |
+
+#### Claude 3.7 Sonnet and Amazon Nova Premier
+| Model | Input Tokens | Output Tokens | Cache Read Tokens | Cache Write Tokens | **Total Cost** |
+|-------|-------------|---------------|-------------------|-------------------|---------------|
+| **Claude 3.7 Sonnet** | 98,189<br>$0.29 | 65,927<br>$0.99 | 586,548<br>$0.18 | 16,293<br>$0.06 | **$1.52** |
+| **Amazon Nova Premier** | 92,706<br>$0.23 | 53,539<br>$0.69 | 541,100<br>$0.34 | 15,460<br>$0.00 | **$1.26** |
+| | | | | **Savings:** | **🟢 17%** |
+
+
+### Cost Factors
+
+Actual costs depend on several factors:
+- **Guidelines complexity**: More detailed guidelines require more tokens
+- **Contract size**: Larger contracts consume more input tokens
+- **Selected LLM**: Different models have different pricing structures
+
+### Pricing Reference
+
+For the most up-to-date pricing information, refer to the [Amazon Bedrock Pricing](https://aws.amazon.com/bedrock/pricing/) page.
+
+> **Note**: The cost analysis above is based on processing the sample contract included with this solution using the default guidelines. Your actual costs may vary depending on your specific contract sizes, guidelines complexity, and usage patterns.
+
 ## Folder Structure
 
 This sample application codebase is organized into these key folders:
@@ -24,8 +67,8 @@ This sample application codebase is organized into these key folders:
 ```
 samples/contract-compliance-analysis
 │
-├── back-end                                        # Back-end
-├── front-end                                       # Front-end
+├── backend                                        # Backend
+├── frontend                                       # Frontend
 ```
 
 ## Getting started
@@ -37,7 +80,7 @@ samples/contract-compliance-analysis
 
 > You are also responsible for making your own independent assessment of the third-party GAI models that you use, including their outputs and how third-party GAI model providers use any data that might be transmitted to them based on your deployment configuration. AWS does not make any representations, warranties, or guarantees regarding the third-party GAI models, which are “Third-Party Content” under your agreement with AWS. This sample is offered to you as “AWS Content” under your agreement with AWS.
 
-To deploy this project, follow the instructions available in the README files located at the **back-end** and **front-end** folders, in that sequence.
+To deploy this project, follow the instructions available in the README files located at the **backend** and **frontend** folders, in that sequence.
 
 
 # Content Security Legal Disclaimer

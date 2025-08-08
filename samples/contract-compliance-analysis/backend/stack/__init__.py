@@ -71,6 +71,12 @@ class BackendStack(Stack):
             sort_key=dynamodb.Attribute(name="clause_number", type=dynamodb.AttributeType.NUMBER)
         )
 
+        CfnOutput(
+            self,
+            "ClausesTableName",
+            value=self.clauses_table.table_name,
+        )
+
         # Jobs DynamoDB table
         self.jobs_table = stack_constructs.TableConstruct(
             self,
@@ -217,6 +223,28 @@ class BackendStack(Stack):
             "RegionName",
             value=self.region,
             export_name=f"{Stack.of(self).stack_name}RegionName",
+        )
+
+        # Log group outputs for token usage tracking
+        CfnOutput(
+            self,
+            "PreprocessingLogGroup",
+            value=self.sfn_stack.preprocessing_step.preprocess_contract_fn.log_group.log_group_name,
+            description="CloudWatch log group for the preprocessing Lambda function"
+        )
+
+        CfnOutput(
+            self,
+            "ClassificationLogGroup", 
+            value=self.sfn_stack.classification.classify_clauses_fn.log_group.log_group_name,
+            description="CloudWatch log group for the classification Lambda function"
+        )
+
+        CfnOutput(
+            self,
+            "EvaluationLogGroup",
+            value=self.sfn_stack.evaluation_step.evaluate_clauses_fn.log_group.log_group_name,
+            description="CloudWatch log group for the evaluation Lambda function"
         )
 
         # cdk-nag suppressions

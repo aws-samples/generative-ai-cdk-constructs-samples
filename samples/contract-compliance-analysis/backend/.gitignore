@@ -7,10 +7,12 @@ __pycache__
 ~*.*
 drafts
 evaluation_questions.xlsx
+.DS_Store
 
 # CDK asset staging directory
 .cdk.staging
 cdk.out
+/cdk.context.json
 
 ### JetBrains+all ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
@@ -214,6 +216,7 @@ __pypackages__/
 
 
 ### VisualStudioCode ###
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json

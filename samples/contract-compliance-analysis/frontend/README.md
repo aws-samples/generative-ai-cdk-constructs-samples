@@ -1,6 +1,6 @@
-# Contract Compliance Analysis - Front-end
+# Contract Compliance Analysis - Frontend
 
-Welcome to the demo front-end application. With this, you'll be able to upload and review contracts processed by the back-end application.
+Welcome to the demo frontend application. With this, you'll be able to upload and review contracts processed by the backend application.
 
 
 ## Technologies
@@ -13,12 +13,12 @@ Welcome to the demo front-end application. With this, you'll be able to upload a
 ## Prerequisites
 
 - Node/npm
-- The deployed back-end.
+- The deployed backend.
 - At least one user added on the appropriate Amazon Cognito User Pool (required for authenticated API calls).
 
 ## Setup and run
 
-1. After successfully deploying your back-end stack, you can easily find the information required for the next step by inspecting to Amazon API Gateway and/or Amazon CloudFormation console.
+1. After successfully deploying your backend stack, you can easily find the information required for the next step by inspecting to Amazon API Gateway and/or Amazon CloudFormation console.
 
 2. Create a `.env` file by duplicating the included `example.env` and replace the property values with the values retrieved from MainBackendStack outputs.
 
@@ -49,7 +49,7 @@ Once you open the web application in your browser, click the **Browse** button n
 
 ![Main page](images/main-webapp-page.png)
 
-For ready-to-use examples, refer to the **back-end/samples** folder.
+For ready-to-use examples, refer to the **backend/samples** folder.
 
 Once the file is selected, the contract analysis processing task starts and a new entry is added to the page. 
 
@@ -58,7 +58,7 @@ The processing will take a couple of minutes. A click to the refresh button disp
 
 ## Warning about hosting
 
-It is definitely recommended to perform a thorough security testing, including pen-tests, before hosting this Front-end 
+It is definitely recommended to perform a thorough security testing, including pen-tests, before hosting this Frontend 
 application publicly. The work is provided “AS IS” without warranties or conditions of any kind, either express or 
 implied, including warranties or conditions of merchantability.
 

@@ -3,27 +3,16 @@
 ## Table of contents
 
 - [Basic setup](#basic-setup)
-    - [Local environment or Cloud9](#local-environment-or-cloud9)
-    - [Cloud9 environment (optional)](#cloud9-setup-optional)
+    - [Local environment](#local-environment)
     - [Setup steps](#setup-steps)
 - [How to customize contract analysis according to your use case](#how-to-customize-contract-analysis-according-to-your-use-case)
 - [How to use a different Amazon Bedrock FM](#how-to-use-a-different-amazon-bedrock-fm)
 
 ## Basic setup
 
-### Local environment or Cloud9
+### Local environment
 
-You have the option of running the setup from a local workspace or from a Cloud9 environment
-
-In case you opt for Cloud9, you have to setup a Cloud9 environment in the same AWS Account where this Backend will
-be installed.
-
-#### Cloud9 setup (optional)
-
-1. Follow the steps on [https://docs.aws.amazon.com/cloud9/latest/user-guide/setting-up.html](https://docs.aws.amazon.com/cloud9/latest/user-guide/setting-up.html)
-2. Resize the EBS volume to 40 Gb, by following the steps on [https://docs.aws.amazon.com/cloud9/latest/user-guide/move-environment.html#move-environment-resize](https://docs.aws.amazon.com/cloud9/latest/user-guide/move-environment.html#move-environment-resize)
-3. Download the artifacts in the Cloud9 environment
-4. Proceed with the steps below
+You can run the setup from a local workspace.
 
 ### Setup steps  
 
@@ -130,7 +119,7 @@ You can then go the Amazon Cognito page at the AWS Console, search for the User 
 Models are not enabled by default on Amazon Bedrock, so if this is the first time you are going to use Amazon Bedrock, 
 it is recommended to first check if the access is already enabled. 
 
-The default model is Anthropic Claude 3 Haiku v1, being used in [cross-region inference](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html) mode. Please ensure this model is enabled in the regions listed in the  **US Anthropic Claude 3 Haiku** section from the [Supported Regions and models for inference profiles](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html) page.
+The default model is Amazon Nova Lite. Please ensure this model is enabled in the AWS Console (Amazon Bedrock -> Model access).
 
 Steps:
 
@@ -175,14 +164,14 @@ The recommended sequence of steps:
 
 ## How to use a different Amazon Bedrock FM
 
-By default, the application uses Anthropic Claude 3 Haiku v1. Here are steps explaining how to update the model to use. For this example, we will use [Amazon Nova Pro v1](https://aws.amazon.com/blogs/aws/introducing-amazon-nova-frontier-intelligence-and-industry-leading-price-performance/):
+By default, the application uses Amazon Nova Lite. Here are steps explaining how to update the model to use a different one. For this example, we will use [Anthropic Claude 3.5 Haiku](https://aws.amazon.com/about-aws/whats-new/2024/11/anthropics-claude-3-5-haiku-model-amazon-bedrock/):
 
-- Open the [app_properties.yaml](./app_properties.yaml) file and update the field ```claude_model_id``` to use the model you selected. In this case, we update the field to ```us.amazon.nova-pro-v1:0```. Replace it with the model id you want to use. The list of model ids available through Amazon Bedrock is available in the [documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html). Ensure the model you are selecting is enabled in the console (Amazon Bedrock -> Model access) and available in your region. In case of using a predefined Inference Profile to use a model in a cross-region fashion, consult [documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html) of all regions that needs to have model access enabled. 
-- Depending on the model selected, you might need to update some hardcoded values regarding the max number of new tokens generated. For instance, Amazon Nova Pro v1 supports 5000 output tokens, which doesn't require any modifications. However, some models might have a max output tokens of 3000, which requires some changes in the sample. Update the following lines if required:
-    - In file [fn-preprocess-contract/index.py](./stack/sfn/preprocessing/fn-preprocess-contract/index.py), update line 96 to change the chunks size to a value smaller than the max tokens output for your model, as well as line 107 to match your model's max output tokens.
+- Open the [app_properties.yaml](./app_properties.yaml) file and update the field ```llm_model_id``` to use the model you selected. In this case, we update the field to ```us.anthropic.claude-3-5-haiku-20241022-v1:0```. Replace it with the model id you want to use. The list of model ids available through Amazon Bedrock is available in the [documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html). Ensure the model you are selecting is enabled in the console (Amazon Bedrock -> Model access) and available in your region. In case of using a predefined Inference Profile to use a model in a cross-region fashion, consult [documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html) of all regions that needs to have model access enabled. 
+- Depending on the model selected, you might need to update some hardcoded values regarding the max number of new tokens generated. For instance, all Amazon Nova models (including Nova Lite) support 5000 output tokens, which doesn't require any modifications. However, some models might have a max output tokens of 3000, which requires some changes in the sample. Update the following lines if required:
+    - In file [fn-preprocess-contract/index.py](./stack/sfn/preprocessing/fn-preprocess-contract/index.py), update line 98 to change the chunks size to a value smaller than the max tokens output for your model, as well as line 108 to match your model's max output tokens.
     - In file [scripts/utils/llm.py](./scripts/utils/llm.py), update the max tokens output line 28.
-    - In file [common-layer/llm.py](./stack/sfn/common-layer/llm.py) update the max tokens output line 30.
-    - In file [fn-classify-clauses/index.py](.stack/sfn/classification/fn-classify-clauses/index.py), update line 182 the max tokens output for your model
+    - In file [common-layer/llm.py](./stack/sfn/common-layer/llm.py) update the max tokens output line 80.
+    - In file [fn-classify-clauses/index.py](./stack/sfn/classification/fn-classify-clauses/index.py), update line 173 the max tokens output for your model
 - Re-deploy the solution as described in previous sections
 
 ### Troubleshooting
@@ -195,7 +184,7 @@ In that case, identify the failing lambda function from the step functions logs,
 ```python
 llm_response, model_usage, stop_reason = invoke_llm(
     prompt=PROMPT_TEMPLATE.format(CONTRACT_EXCERPT=contract_excerpt),
-    model_id=prompt_vars_dict.get("claude_model_id", ''),
+    model_id=prompt_vars_dict.get("llm_model_id", ''),
     temperature=0.0,
     top_p=0.999,
     max_new_tokens=4096,
@@ -217,4 +206,16 @@ Re-deploy the solution, and verify in the logs the structure of the response. De
 if ('mymodel' in model_id):
         usage_data = response.XXX # <- specify how to parse usage data
         stop_reason = response.XXX # <- specify how to parse stop reason
+```
+
+## Token Usage Tracking
+
+Track LLM token consumption for workflow executions:
+
+```bash
+# Query specific job token usage
+python scripts/workflow_token_usage.py --job-id <job-id>
+
+# Query all token usage in last 24 hours
+python scripts/workflow_token_usage.py --hours 24
 ```

@@ -11,7 +11,6 @@
 # and limitations under the License.
 #
 
-import logging
 import boto3
 import json
 import concurrent.futures
@@ -21,12 +20,45 @@ from collections import defaultdict
 from more_itertools import divide, unique_everseen
 import difflib
 
-from llm import invoke_llm
+from llm import invoke_llm, supports_prompt_caching
+
+SYSTEM_PROMPT_TEMPLATE = """You are a Senior Specialist in Law, very skilled in understanding of contracts, and you work for company {company_name}.
+You are carefully reading a contract ({contract_type}), having as parties involved the {other_party_type} and company {company_name} ({company_party_type}).
+
+You task is to say whether any of the following possible types is highly applicable to the clause: 
+<possible_types>
+{possible_types}
+</possible_types>
+
+Rules of thought process:
+<rules_of_thought_process>
+- Making deductions is forbidden
+- Proposing premises is forbidden.
+- Making generalizations is forbidden. 
+- Making implications/deductions about implicit content is forbidden.
+</rules_of_thought_process>
+
+Examples:
+<examples>
+{examples}
+</examples>
+
+Follow these steps:
+- Replicate between <clause_replica> tags the original text of the clause you are reading (the content between <current_clause> tags)
+- For each possible type, look at the corresponding examples (the content between <examples> tags) and distill them into a definition for the clause type. Write all type / distillation pairs between a single <distilled_type_definition></distilled_type_definition> tag pair.  
+- Thinking step by step and following the rules of thought process (the content between <rules_of_thought_process> tags), look at all possible types (the content between <possible_types> tags) one by one, together with each corresponding distilled type definition, and determine if a type is highly applicable for the clause you are reading (the content between <current_clause> tags). Write all your thoughts, in full, between <thinking> tags. 
+- For your answer, write each highly applicable type between separate <type></type> tags, including an attribute 'reason' having the reason (write in {language}) of why you selected the type. For example: <type reason="reason for selecting the type">a type</type>. If none of the possible types is highly applicable, then write <no_highly_applicable_types/>
+"""
+
 from util import get_prompt_vars_dict, extract_first_item_from_tagged_list, extract_items_and_attributes_from_tagged_list
 
-logger = logging.getLogger()
-logger.setLevel(os.getenv("LOG_LEVEL", "INFO"))
+# Import Powertools
+from aws_lambda_powertools import Logger
 
+# Initialize Powertools logger
+logger = Logger(service="contract-compliance-analysis")
+
+VERBOSE_LLM = True
 BEDROCK_MAX_CONCURRENCY = int(os.environ.get('BEDROCK_MAX_CONCURRENCY', 10))
 PROMPT_VARS = os.environ.get('PROMPT_VARS', "")
 
@@ -80,45 +112,6 @@ def generate_prompt(prompt_template, inputs):
     return prompt_template.format_map(defaultdict(str, **inputs))
 
 
-# In onder to help you remember of some context, this is a segment of the contract where the clause you are reading right now is included:
-# <contract_segment>
-# {context}
-# </contract_segment>
-GROUP_CLASSIFICATION_PROMPT_TEMPLATE = """
-
-Human: You are a Senior Specialist in Law, very skilled in understanding of contracts, and you work for company {company_name}.
-You are carefully reading a contract ({contract_type}), having as parties involved the {other_party_type} and company {company_name} ({company_party_type}).
-
-This is the clause you are reading right now:
-<current_clause>
-{clause}
-</current_clause>
-
-Rules of thought process:
-<rules_of_thought_process>
-- Making deductions is forbidden
-- Proposing premises is forbidden.
-- Making generalizations is forbidden. 
-- Making implications/deductions about implicit content is forbidden.
-</rules_of_thought_process>
-
-You task is to say whether any of the following possible types is highly applicable to the clause: 
-<possible_types>
-{possible_types}
-<possible_types>
-
-Examples:
-<examples>
-{examples}
-</examples>
-
-Follow these steps:
-- Replicate between <clause_replica> tags the original text of the clause you are reading (the content between <current_clause> tags)
-- Thinking step by step and following the rules of thought process (the content between <rules_of_thought_process> tags), look at all possible types (the content between <possible_types> tags) one by one and determine if any is highly applicable for the clause you are reading (the content between <current_clause> tags). Write all your thoughts, in full, between <thinking> tags. 
-- For your answer, write each highly applicable type between separate <type></type> tags, including an attribute 'reason' having the reason (write in {language}) of why you selected the type. For example: <type reason="reason for selecting the type">a type</type>. If none of the possible types is highly applicable, then write <no_highly_applicable_types/>
-
-Assistant: """
-
 ANSWER_TYPE_TAG = 'type'
 ANSWER_REASON_ATTR = 'reason'
 
@@ -126,7 +119,7 @@ ANSWER_REASON_ATTR = 'reason'
 def build_tagged_examples_string(clause_types):
     examples_str = ""
 
-    template = """<example><current_clause>{clause}</current_clause><type>{type}</type></example>\n"""
+    template = """<example><current_clause>{clause}</current_clause><corresponding_type>{type}</corresponding_type></example>\n"""
 
     for clause_type in clause_types:
         for example in clause_type['examples']:
@@ -141,7 +134,7 @@ def classify_clause(clause, request_id, number_of_classification_prompts=1):
 
     clause_types = get_guidelines_clauses()
 
-    prompt_template = GROUP_CLASSIFICATION_PROMPT_TEMPLATE
+    # prompt_template = GROUP_CLASSIFICATION_PROMPT_TEMPLATE
 
     clause_type_name_to_id = {clause_type['name']: clause_type['type_id'] for clause_type in clause_types}
 
@@ -166,20 +159,19 @@ def classify_clause(clause, request_id, number_of_classification_prompts=1):
 
             possible_types_str = "\n".join([f"- {clause_type['name']}" for clause_type in clause_types_group])
 
-            binary_clause_classification_prompt = generate_prompt(prompt_template, {
-                'possible_types': possible_types_str,
-                'examples': examples_str,
-                'clause': clause,
-                'language': prompt_vars_dict.get('language', 'English'),
-                'company_name': prompt_vars_dict.get('company_name', ''),
-                'contract_type': prompt_vars_dict.get('contract_type', ''),
-                'company_party_type': prompt_vars_dict.get('company_party_type', ''),
-                'other_party_type': prompt_vars_dict.get('other_party_type', '')
-            })
+            # Always build system prompt (guidelines) and user prompt (clause analysis)
+            system_prompt = _build_system_prompt(
+                possible_types_str, examples_str, prompt_vars_dict
+            )
+            user_prompt = _build_user_prompt(clause)
+            
+            # Enable caching only if model supports it
+            enable_caching = supports_prompt_caching(prompt_vars_dict.get("llm_model_id", ''))
 
             futures.append(
-                executor.submit(invoke_llm, prompt=binary_clause_classification_prompt, temperature=0.01,
-                                max_new_tokens=4096, model_id=prompt_vars_dict.get("claude_model_id", ''), verbose=True)
+                executor.submit(invoke_llm, prompt=user_prompt, temperature=0.01,
+                                max_new_tokens=4096, model_id=prompt_vars_dict.get("llm_model_id", ''), 
+                                verbose=VERBOSE_LLM, system_prompt=system_prompt, enable_caching=enable_caching)
             )
 
         llm_output_limit_detected = False
@@ -249,8 +241,34 @@ def classify_clause(clause, request_id, number_of_classification_prompts=1):
             return ddb_values, yes_answers
 
 
+def _build_system_prompt(possible_types_str, examples_str, prompt_vars_dict):
+    """Build the system prompt with guidelines and examples (cacheable)."""
+    return generate_prompt(SYSTEM_PROMPT_TEMPLATE, {
+        'possible_types': possible_types_str,
+        'examples': examples_str,
+        'language': prompt_vars_dict.get('language', 'English'),
+        'company_name': prompt_vars_dict.get('company_name', ''),
+        'contract_type': prompt_vars_dict.get('contract_type', ''),
+        'company_party_type': prompt_vars_dict.get('company_party_type', ''),
+        'other_party_type': prompt_vars_dict.get('other_party_type', '')
+    })
+
+
+def _build_user_prompt(clause):
+    """Build the user prompt with the specific clause to analyze."""
+    return f"""This is the clause you are reading right now:
+<current_clause>
+{clause}
+</current_clause>"""
+
+
+@logger.inject_lambda_context(log_event=True)
 def handler(event, context):
-    logger.info(f"Received event {event}")
+    # Extract Step Functions execution name and set as correlation ID
+    job_id = event.get("JobId", "unknown")
+    logger.set_correlation_id(job_id)  # Use JobId as correlation ID (which is the execution name)
+    
+    logger.info("Received event", extra={"event": event})
 
     job_id, clause_number = parse_event(event)
     request_id = context.aws_request_id
@@ -275,6 +293,6 @@ def handler(event, context):
 
     ddb_response = clauses_table.put_item(Item=clause_record)
 
-    logger.info("DynamoDB update response: %s", ddb_response)
+    logger.info("DynamoDB update response", extra={"ddb_response": ddb_response})
 
     return "OK"

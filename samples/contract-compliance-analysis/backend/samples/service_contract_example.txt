@@ -64,7 +64,7 @@ Neither Party shall be liable for any delay or failure to perform its obligation
 Each Party shall comply with all applicable anti-corruption laws, including, but not limited to, the U.S. Foreign Corrupt Practices Act and the UK Bribery Act, and shall not engage in any form of bribery, kickbacks, or other corrupt practices in connection with this Agreement.
 
 20. Corporate Social Responsibility
-Each Party shall comply with all applicable laws and regulations related to corporate social responsibility, including, but not limited to, environmental protection, labor practices, and human rights.
+Each Party shall comply with corporate social responsibility laws and standards specific to environmental protection, labor practices, and human rights, and shall implement policies promoting sustainable operations, ethical employment practices, and community welfare.
 
 21. Key Personnel and Resource Allocation
 Service Provider shall assign qualified and experienced personnel to perform the Services, and shall ensure that sufficient resources are allocated to meet the requirements and timelines set forth in the Statement of Work.
@@ -90,7 +90,7 @@ Company shall have the right, upon reasonable notice and during regular business
 
 28. Dispute Resolution
 a. Negotiation: In the event of any dispute or disagreement arising out of or relating to this Agreement, the Parties shall first attempt to resolve the dispute through good faith negotiations.
-b. Mediation: If the Parties are unable to resolve the dispute through negotiations within 30 days, the Parties shall submit the dispute to non-binding mediation in accordance with the rules of [Mediation Service Provider].
+b. Mediation: If the Parties are unable to resolve the dispute through negotiations within 30 days, the Parties shall submit the dispute to non-binding mediation in accordance with the rules of International Mediation Institute.
 c. Arbitration or Litigation: If the dispute cannot be resolved through mediation, either Party may pursue binding arbitration in accordance with the rules of American Arbitration Association (AAA), or, if the Parties mutually agree, may pursue litigation in a court of competent jurisdiction.
 
 29. Notices
