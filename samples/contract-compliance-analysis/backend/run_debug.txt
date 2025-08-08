@@ -1,0 +1,14 @@
+INFO:utils.llm:LLM token usage: {'model_id': 'us.amazon.nova-lite-v1:0', 'input_tokens': 0, 'output_tokens': 0, 'cache_read_tokens': 0, 'cache_write_tokens': 0}
+Traceback (most recent call last):
+  File "/Users/gdalves/dev/aee/ifood/blueprint_v2/backend/scripts/generate_evaluation_questions.py", line 152, in <module>
+    generate_questions(args.guidelines_file_path, app_properties)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/gdalves/dev/aee/ifood/blueprint_v2/backend/scripts/generate_evaluation_questions.py", line 115, in generate_questions
+    questions_list = extract_items_from_tagged_list(llm_output, "question")
+  File "/Users/gdalves/dev/aee/ifood/blueprint_v2/backend/scripts/utils/llm.py", line 183, in extract_items_from_tagged_list
+    for match in re.finditer(regex, text, re.IGNORECASE | re.DOTALL):
+                 ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.5/Frameworks/Python.framework/Versions/3.13/lib/python3.13/re/__init__.py", line 285, in finditer
+    return _compile(pattern, flags).finditer(string)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+TypeError: expected string or bytes-like object, got 'tuple'

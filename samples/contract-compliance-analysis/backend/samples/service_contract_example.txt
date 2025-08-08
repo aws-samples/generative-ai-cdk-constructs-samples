@@ -1,0 +1,134 @@
+Service Contract
+
+1. Relationship of the Parties
+The relationship between the Parties is that of independent contractors. Nothing in this Agreement shall be construed as creating an employer-employee relationship, partnership, joint venture, or agency relationship between the Parties.
+
+2. Entire Agreement and Amendments
+This Agreement, together with the Statement of Work and any other exhibits or attachments, constitutes the entire agreement between the Parties with respect to the subject matter hereof and supersedes all prior agreements, understandings, and negotiations, both written and oral, between the Parties with respect to the subject matter of this Agreement. This Agreement may be amended or modified only by a written instrument duly executed by authorized representatives of both Parties.
+
+3. Governing Law and Jurisdiction
+This Agreement shall be governed by and construed in accordance with the laws of District of Columbia, without regard to its conflict of laws principles. The Parties hereby submit to the exclusive jurisdiction of the courts located in District of Columbia for any legal proceedings arising out of or relating to this Agreement.
+
+4. Performance Standards
+Service Provider shall perform the Services in a professional, timely, and workmanlike manner, consistent with industry standards and best practices, and in accordance with the specifications and requirements set forth in the Statement of Work.
+
+5. Deliverables
+Service Provider shall provide the deliverables specified in the Statement of Work (the "Deliverables") in accordance with the agreed-upon timelines and milestones.
+
+6. Acceptance Criteria
+Company shall have the right to review and test the Deliverables to ensure they conform to the acceptance criteria set forth in the Statement of Work. If any Deliverable fails to meet the acceptance criteria, Company may reject such Deliverable, and Service Provider shall promptly remedy the deficiencies at no additional cost to Company.
+
+7. Service Transition and Implementation
+Service Provider shall cooperate with Company and any third-party service providers to ensure a smooth transition and implementation of the Services, including, but not limited to, providing necessary training, documentation, and knowledge transfer.
+
+8. Term and Termination
+a. Term: This Agreement shall commence on the Effective Date and shall continue for the term specified in the Statement of Work, unless earlier terminated in accordance with this Section.
+b. Termination for Convenience: Either Party may terminate this Agreement for convenience upon 30 days' prior written notice to the other Party.
+c. Termination for Cause: Either Party may terminate this Agreement for cause if the other Party materially breaches this Agreement and fails to cure such breach within 15 days after receiving written notice thereof.
+d. Effect of Termination: Upon termination of this Agreement, Service Provider shall promptly deliver to Company all Deliverables and work in progress, and Company shall pay Service Provider for all Services performed and accepted up to the effective date of termination.
+
+9. Renewal and Extension
+This Agreement may be renewed or extended by mutual written agreement of the Parties, subject to the same terms and conditions or such other terms and conditions as may be agreed upon by the Parties.
+
+10. Payment Terms (Fees, Invoicing, Expenses)
+a. Fees: Company shall pay Service Provider the fees specified in the Statement of Work in accordance with the payment schedule set forth therein.
+b. Invoicing: Service Provider shall submit invoices to Company in accordance with the invoicing instructions provided in the Statement of Work. Company shall pay all undisputed invoices within 10 days of receipt.
+c. Expenses: Unless otherwise specified in the Statement of Work, Service Provider shall be responsible for all expenses incurred in performing the Services. If reimbursement of expenses is permitted, Service Provider shall provide detailed documentation and receipts for all reimbursable expenses, and Company shall reimburse such expenses in accordance with its expense reimbursement policies.
+
+11. Taxes
+Each Party shall be responsible for paying any applicable taxes, fees, or other charges imposed by any governmental authority in connection with the performance of this Agreement. If Service Provider is required to collect or remit any taxes on behalf of Company, Service Provider shall separately state such taxes on its invoices, and Company shall pay such taxes in addition to the fees for the Services.
+
+12. Service Credits and Service Level Rebates
+If Service Provider fails to meet the service levels or performance standards specified in the Statement of Work, Company shall be entitled to the service credits or service level rebates set forth therein.
+
+13. Background Intellectual Property
+Each Party shall retain ownership of its respective pre-existing intellectual property rights, including, but not limited to, patents, copyrights, trademarks, and trade secrets. Any new intellectual property developed in the course of performing the Services shall be owned by Company, unless otherwise specified in the Statement of Work.
+
+14. Confidentiality and Non-Disclosure
+a. Confidential Information: Each Party may disclose to the other Party certain non-public information relating to its business, products, services, or operations ("Confidential Information"). Confidential Information shall not include information that: (i) is or becomes publicly available through no fault of the receiving Party; (ii) is rightfully received by the receiving Party from a third party without breach of any confidentiality obligation; (iii) is independently developed by the receiving Party without use of the disclosing Party's Confidential Information; or (iv) was already known to the receiving Party prior to disclosure by the disclosing Party, as evidenced by written records.
+b. Non-Disclosure: The receiving Party shall: (i) use the same degree of care to protect the Confidential Information as it uses to protect its own confidential information of a similar nature, but in no event less than reasonable care; (ii) not use the Confidential Information for any purpose other than to perform its obligations under this Agreement; and (iii) not disclose the Confidential Information to any third party, except to its employees, agents, or contractors who have a need to know and are bound by confidentiality obligations at least as protective as those set forth herein.
+
+15. Representations and Warranties
+Service Provider Representations and Warranties: Service Provider represents and warrants that: (i) it has the necessary skills, qualifications, and expertise to perform the Services; (ii) the Services will be performed in a professional and workmanlike manner; (iii) the Deliverables will conform to the specifications and requirements set forth in the Statement of Work; and (iv) the Deliverables will not infringe upon any third-party intellectual property rights.
+
+16. Indemnification
+Service Provider shall indemnify, defend, and hold harmless Company, its affiliates, and their respective officers, directors, employees, and agents from and against any and all claims, demands, suits, actions, proceedings, losses, liabilities, damages, costs, and expenses (including reasonable attorneys' fees) arising out of or relating to: (i) any breach of this Agreement by Service Provider; (ii) any negligent or willful act or omission by Service Provider or its employees, agents, or subcontractors in the performance of the Services; or (iii) any allegation that the Deliverables or Services infringe upon any third-party intellectual property rights.
+
+17. Limitation of Liability
+EXCEPT FOR CLAIMS ARISING OUT OF A PARTY'S INDEMNIFICATION OBLIGATIONS, GROSS NEGLIGENCE, OR WILLFUL MISCONDUCT, IN NO EVENT SHALL EITHER PARTY BE LIABLE TO THE OTHER PARTY FOR ANY INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES, INCLUDING, BUT NOT LIMITED TO, LOST PROFITS, LOST REVENUE, OR BUSINESS INTERRUPTION, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+18. Force Majeure
+Neither Party shall be liable for any delay or failure to perform its obligations under this Agreement due to causes beyond its reasonable control, including, but not limited to, acts of God, acts of civil or military authority, fires, floods, earthquakes, riots, wars, terrorist acts, epidemics, or governmental restrictions ("Force Majeure Event"). In the event of a Force Majeure Event, the affected Party shall promptly notify the other Party, and the Parties shall work together in good faith to mitigate the effects of the Force Majeure Event and, if necessary, amend or terminate this Agreement.
+
+19. Ethical Conduct and Anti-Corruption
+Each Party shall comply with all applicable anti-corruption laws, including, but not limited to, the U.S. Foreign Corrupt Practices Act and the UK Bribery Act, and shall not engage in any form of bribery, kickbacks, or other corrupt practices in connection with this Agreement.
+
+20. Corporate Social Responsibility
+Each Party shall comply with corporate social responsibility laws and standards specific to environmental protection, labor practices, and human rights, and shall implement policies promoting sustainable operations, ethical employment practices, and community welfare.
+
+21. Key Personnel and Resource Allocation
+Service Provider shall assign qualified and experienced personnel to perform the Services, and shall ensure that sufficient resources are allocated to meet the requirements and timelines set forth in the Statement of Work.
+
+22. Replacement of Personnel
+If Company reasonably objects to the performance or conduct of any of Service Provider's personnel assigned to perform the Services, Service Provider shall promptly replace such personnel with qualified and experienced replacements acceptable to Company.
+
+23. Background Checks and Security Clearances
+Service Provider shall ensure that all of its employees, agents, and subcontractors assigned to perform Services under this Agreement have successfully completed background checks and obtained any necessary security clearances as required by Company or applicable laws and regulations.
+
+24. Assignment and Subcontracting
+a. Assignment: Neither Party may assign or transfer this Agreement or any of its rights or obligations hereunder without the prior written consent of the other Party, which shall not be unreasonably withheld or delayed.
+b. Subcontracting: Service Provider may engage subcontractors to perform certain Services, provided that Service Provider shall remain responsible for the performance of such subcontractors and shall ensure that such subcontractors comply with the terms and conditions of this Agreement.
+
+25. Exclusivity or Non-Exclusivity
+If the Statement of Work specifies that the Services are to be provided on an exclusive basis, Service Provider shall not provide similar services to any third party during the term of this Agreement without Company's prior written consent.
+
+26. Non-Circumvention
+During the term of this Agreement and for a period of 3 years thereafter, neither Party shall circumvent or attempt to circumvent the other Party's business relationships or contractual arrangements with third parties.
+
+27. Audit Rights
+Company shall have the right, upon reasonable notice and during regular business hours, to audit Service Provider's records and facilities to verify compliance with this Agreement.
+
+28. Dispute Resolution
+a. Negotiation: In the event of any dispute or disagreement arising out of or relating to this Agreement, the Parties shall first attempt to resolve the dispute through good faith negotiations.
+b. Mediation: If the Parties are unable to resolve the dispute through negotiations within 30 days, the Parties shall submit the dispute to non-binding mediation in accordance with the rules of International Mediation Institute.
+c. Arbitration or Litigation: If the dispute cannot be resolved through mediation, either Party may pursue binding arbitration in accordance with the rules of American Arbitration Association (AAA), or, if the Parties mutually agree, may pursue litigation in a court of competent jurisdiction.
+
+29. Notices
+All notices, requests, consents, claims, demands, waivers, and other communications under this Agreement shall be in writing and shall be deemed to have been duly given: (a) when delivered by hand (with written confirmation of receipt); (b) when received by the addressee if sent by a nationally recognized overnight courier (receipt requested); (c) on the date sent by email (with confirmation of transmission) if sent during normal business hours of the recipient, and on the next business day if sent after normal business hours of the recipient; or (d) on the third day after the date mailed, by certified or registered mail, return receipt requested, postage prepaid.
+
+30. Severability
+If any provision of this Agreement is held to be invalid, illegal, or unenforceable, the validity, legality, and enforceability of the remaining provisions shall not in any way be affected or impaired thereby.
+
+31. Waiver
+No waiver by either Party of any breach of this Agreement shall be deemed a waiver of any preceding or succeeding breach of the same or any other provision hereof. No waiver shall be effective unless made in writing and signed by an authorized representative of the waiving Party.
+
+32. Non-Disparagement
+During the term of this Agreement and for a period of 5 years thereafter, neither Party shall make any disparaging or defamatory statements, whether written or oral, regarding the other Party or its products, services, employees, or business practices.
+
+33. Publicity and Marketing Rights
+Neither Party shall use the other Party's name, logo, or trademarks in any publicity, advertising, or marketing materials without the prior written consent of the other Party.
+
+34. Most Favored Customer/Nation
+If specified in the Statement of Work, Service Provider shall ensure that the fees and terms offered to Company are at least as favorable as those offered to any other customer or nation for similar services.
+
+35. Cooperation and Assistance
+Each Party shall cooperate with and provide reasonable assistance to the other Party in connection with the performance of its obligations under this Agreement.
+
+IN WITNESS WHEREOF, the Parties have executed this Agreement as of the Effective Date.
+
+AnyCompany
+
+By: ______________________________
+Name: Jane Doe
+Title: Chief Executive Office
+
+AnyServiceProvider
+
+By: ______________________________
+Name: John Doe
+Title: President and Chief Operating Officer
+
+
+
+
+
