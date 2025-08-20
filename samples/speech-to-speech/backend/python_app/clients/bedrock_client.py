@@ -117,47 +117,6 @@ class BedrockInteractClient:
             )
             return False
 
-    async def refresh_credentials_immediately(self):
-        """Refresh credentials immediately by calling the container metadata endpoint"""
-        try:
-            logger.info("Refreshing credentials due to ExpiredToken...")
-            # Get credentials from ECS container metadata endpoint
-            uri = os.environ.get('AWS_CONTAINER_CREDENTIALS_RELATIVE_URI')
-            if not uri:
-                logger.error("AWS_CONTAINER_CREDENTIALS_RELATIVE_URI not found in environment")
-                return False
-                
-            import aiohttp
-            try:
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(f"http://169.254.170.2{uri}", timeout=2) as response:
-                        if not response.ok:
-                            logger.error(f"Failed to fetch credentials: {response.status}")
-                            return False
-                        
-                        creds = await response.json()
-            except ImportError:
-                # Fall back to requests if aiohttp is not available
-                import requests
-                response = requests.get(f"http://169.254.170.2{uri}", timeout=2)
-                if not response.ok:
-                    logger.error(f"Failed to fetch credentials: {response.status_code}")
-                    return False
-                    
-                creds = response.json()
-                
-            os.environ['AWS_ACCESS_KEY_ID'] = creds['AccessKeyId']
-            os.environ['AWS_SECRET_ACCESS_KEY'] = creds['SecretAccessKey']
-            os.environ['AWS_SESSION_TOKEN'] = creds['Token']
-            
-            logger.info(f"Successfully refreshed credentials, new key ends with: ...{creds['AccessKeyId'][-4:]}")
-            
-            # Force client recreation on next use
-            self.bedrock_client = None
-            return True
-        except Exception as e:
-            logger.error(f"Error refreshing credentials: {str(e)}")
-            return False
     
     async def create_stream(self):
         """Create a bidirectional stream with Bedrock.
@@ -180,14 +139,6 @@ class BedrockInteractClient:
             if "ExpiredToken" in str(e):
                 current_key = os.environ.get('AWS_ACCESS_KEY_ID', '')
                 logger.warning(f"ExpiredToken error occurred with credential ending: ...{current_key[-4:] if len(current_key) >= 4 else 'NONE'}")
-                
-                # Try to refresh and retry
-                if await self.refresh_credentials_immediately():
-                    logger.info("Retrying stream creation with new credentials")
-                    # Recursive retry once
-                    return await self.create_stream()
-                    
-            logger.error(f"Failed to initialize stream: {str(e)}", exc_info=True)
             raise
 
     async def send_event(self, stream, event_data):
