@@ -29,10 +29,11 @@ from aws_sdk_bedrock_runtime.config import (
     HTTPAuthSchemeResolver,
     SigV4AuthScheme,
 )
-from smithy_aws_core.credentials_resolvers.environment import (
-    EnvironmentCredentialsResolver,
+from smithy_aws_core.credentials_resolvers.static import (
+    StaticCredentialsResolver,
 )
-
+from smithy_aws_core.identity import AWSCredentialsIdentity
+import boto3
 # Configure logging
 logger = logging.getLogger(__name__)
 
@@ -85,16 +86,29 @@ class BedrockInteractClient:
             
         logger.info(f"Initializing Bedrock client for region {self.region}")
         try:
+            # Get credentials from boto3 session (handles ECS task role properly)
+            session = boto3.Session()
+            credentials = session.get_credentials()
+            
+            # Create AWSCredentialsIdentity object
+            aws_credentials = AWSCredentialsIdentity(
+                access_key_id=credentials.access_key,
+                secret_access_key=credentials.secret_key,
+                session_token=credentials.token
+            )
+
             config = Config(
                 endpoint_uri=f"https://bedrock-runtime.{self.region}.amazonaws.com",
                 region=self.region,
-                aws_credentials_identity_resolver=EnvironmentCredentialsResolver(),
+                aws_credentials_identity_resolver=StaticCredentialsResolver(
+                    credentials=aws_credentials
+                ),
                 http_auth_scheme_resolver=HTTPAuthSchemeResolver(),
                 http_auth_schemes={"aws.auth#sigv4": SigV4AuthScheme()},
             )
             self.bedrock_client = BedrockRuntimeClient(config=config)
             logger.info(
-                "Bedrock client initialized successfully with EnvironmentCredentialsResolver"
+                "Bedrock client initialized successfully with StaticCredentialsResolver"
             )
             return True
         except Exception as e:

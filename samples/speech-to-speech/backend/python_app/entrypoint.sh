@@ -12,24 +12,11 @@ is_running_in_ecs() {
   fi
 }
 
-# Function to fetch initial credentials
-fetch_initial_credentials() {
-  # Get credentials from ECS container metadata endpoint
-  CREDS=$(curl -s 169.254.170.2$AWS_CONTAINER_CREDENTIALS_RELATIVE_URI)
-  
-  if [ -z "$CREDS" ]; then
-    echo "ERROR: Failed to fetch credentials from ECS metadata endpoint"
-    return 1
-  fi
+# Function to fetch region
+fetch_region() {
 
-  # Extract credentials and set as environment variables
-  export AWS_ACCESS_KEY_ID=$(echo $CREDS | jq -r '.AccessKeyId')
-  export AWS_SECRET_ACCESS_KEY=$(echo $CREDS | jq -r '.SecretAccessKey')
-  export AWS_SESSION_TOKEN=$(echo $CREDS | jq -r '.Token')
+  #Set region as var environment
   export AWS_REGION=$(curl -s 169.254.169.254/latest/meta-data/placement/region || echo "us-east-1")
-
-  # Show the credentials we got
-  echo "Initial credentials set, access key ends with: ...${AWS_ACCESS_KEY_ID: -4}"
 }
 
 # Function to cleanup processes
@@ -49,7 +36,7 @@ echo "Starting Nova Sonic WebSocket Server"
 # Check if running in ECS and fetch initial credentials if so
 if is_running_in_ecs; then
   # Initial startup - just set initial credentials
-  fetch_initial_credentials
+  fetch_region
   echo "Using on-demand credential refresh (triggered by ExpiredToken errors)"
 else
   echo "Skipping credential refresh - not in ECS environment"
