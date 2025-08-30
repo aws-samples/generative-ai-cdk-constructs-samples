@@ -32,6 +32,8 @@ from aws_sdk_bedrock_runtime.config import (
 from smithy_aws_core.credentials_resolvers.environment import (
     EnvironmentCredentialsResolver,
 )
+from smithy_aws_core.credentials_resolvers.container import ContainerCredentialsResolver
+from smithy_http.aio.aiohttp import AIOHTTPClient, AIOHTTPClientConfig
 
 # Configure logging
 logger = logging.getLogger(__name__)
@@ -85,16 +87,25 @@ class BedrockInteractClient:
             
         logger.info(f"Initializing Bedrock client for region {self.region}")
         try:
+            resolver = EnvironmentCredentialsResolver()
+            uri = os.environ.get('AWS_CONTAINER_CREDENTIALS_RELATIVE_URI', "")
+            if len(uri) > 0:
+                logger.info("Initializes Bedrock client with ContainerCredentialsResolver")
+                client_config = AIOHTTPClientConfig()
+                # Create an HTTP client with the configuration
+                http_client = AIOHTTPClient(client_config=client_config)
+                resolver = ContainerCredentialsResolver(http_client)
+
             config = Config(
                 endpoint_uri=f"https://bedrock-runtime.{self.region}.amazonaws.com",
                 region=self.region,
-                aws_credentials_identity_resolver=EnvironmentCredentialsResolver(),
+                aws_credentials_identity_resolver=resolver,
                 http_auth_scheme_resolver=HTTPAuthSchemeResolver(),
                 http_auth_schemes={"aws.auth#sigv4": SigV4AuthScheme()},
             )
             self.bedrock_client = BedrockRuntimeClient(config=config)
             logger.info(
-                "Bedrock client initialized successfully with EnvironmentCredentialsResolver"
+                f"Bedrock client initialized successfully with {type(resolver).__name__}"
             )
             return True
         except Exception as e:
