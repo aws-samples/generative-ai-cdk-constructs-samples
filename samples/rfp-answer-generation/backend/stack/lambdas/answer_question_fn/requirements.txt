@@ -1,6 +1,6 @@
 langchain==0.3.6
 langchain-aws==0.2.10
-langchain-community==0.3.4
+langchain-community==0.3.27
 opensearch-py==2.5.0
 # requests-aws4auth==1.2.3
 retrying==1.3.4
