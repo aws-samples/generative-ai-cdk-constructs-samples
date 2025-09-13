@@ -34,7 +34,7 @@ Components deployed by this stack include:
 
 ### Inference stack
 
-The inference stack configures a workflow for processing new, incoming RFPs. It breaks the RFP down into questions, then prompts the LLM to use context from the Knowledge Base (deployed in the inference stack) to answer each question.
+The inference stack configures a workflow for processing new, incoming RFPs. It breaks the RFP down into questions, then prompts the LLM to use context from the Knowledge Base (which is deployed in the ingestion stack) to answer each question.
 
 The generated answer and the original question are saved into an Amazon DynamoDB table.
 
