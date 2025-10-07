@@ -24,6 +24,8 @@
 
 A real-time speech-to-speech communication platform powered by Amazon Bedrock's Nova model for advanced language processing and AWS real-time messaging capabilities, featuring a Java WebSocket server and React frontend. Nova enables natural, context-aware speech-to-speech conversations through its state-of-the-art language understanding and generation capabilities.
 
+> **📘 Alternative Deployment**: This project now includes an **Amazon EKS with Fargate** deployment option as an alternative to the default ECS Fargate deployment. See [README_EKS.md](README_EKS.md) for EKS deployment instructions.
+
 ## Architecture
 
 ![Architecture Diagram](docs/images/architecture.png)

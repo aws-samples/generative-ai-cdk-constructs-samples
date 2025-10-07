@@ -40,7 +40,7 @@ class S2sEvent:
         "sampleRateHertz": 24000,
         "sampleSizeBits": 16,
         "channelCount": 1,
-        "voiceId": "matthew",
+        "voiceId": "amy",
         "encoding": "base64",
         "audioType": "SPEECH",
     }

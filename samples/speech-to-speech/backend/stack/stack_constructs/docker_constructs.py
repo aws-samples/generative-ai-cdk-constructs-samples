@@ -22,7 +22,7 @@ class DockerImageAssetConstruct(Construct):
     A construct that creates a Docker container image from a local Dockerfile.
     
     This construct builds a Docker image from a local directory and makes it
-    available for use in ECS tasks using aws_ecs.ContainerImage.
+    available for use in both ECS tasks and EKS deployments.
     
     Parameters:
     - scope (Construct): The scope in which this construct is defined.
@@ -41,9 +41,14 @@ class DockerImageAssetConstruct(Construct):
     ):
         super().__init__(scope, construct_id)
         
-        # Create container image from local asset
-        self.image = ecs.ContainerImage.from_asset(
+        # Create Docker image asset
+        self.asset = ecr_assets.DockerImageAsset(
+            self,
+            "DockerAsset",
             directory=directory,
             file=file,
             platform=platform,
         )
+        
+        # For backward compatibility with ECS
+        self.image = ecs.ContainerImage.from_docker_image_asset(self.asset)
