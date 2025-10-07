@@ -4,6 +4,67 @@
 
 import ObjectExt from "./ObjectsExt";
 
+// AudioPlayerProcessor worklet code as a string
+const audioPlayerProcessorCode = `
+class AudioPlayerProcessor extends AudioWorkletProcessor {
+  constructor() {
+    super();
+    this.buffer = [];
+    this.isPlaying = false;
+    this.port.onmessage = this.handleMessage.bind(this);
+  }
+
+  handleMessage(event) {
+    const data = event.data;
+    switch (data.type) {
+      case "audio":
+        this.buffer.push(...data.audioData);
+        if (!this.isPlaying) {
+          this.isPlaying = true;
+        }
+        break;
+      case "barge-in":
+        this.buffer = [];
+        this.isPlaying = false;
+        break;
+      case "initial-buffer-length":
+        // Optional: Set initial buffer length
+        break;
+      default:
+        console.error("Unknown message type:", data.type);
+    }
+  }
+
+  process(inputs, outputs) {
+    const output = outputs[0];
+    const channel = output[0];
+    
+    if (this.isPlaying && this.buffer.length > 0) {
+      const samplesToProcess = Math.min(channel.length, this.buffer.length);
+      
+      for (let i = 0; i < samplesToProcess; i++) {
+        channel[i] = this.buffer.shift();
+      }
+      
+      // Fill remaining samples with silence if buffer is depleted
+      if (samplesToProcess < channel.length) {
+        for (let i = samplesToProcess; i < channel.length; i++) {
+          channel[i] = 0;
+        }
+      }
+    } else {
+      // Output silence when not playing
+      for (let i = 0; i < channel.length; i++) {
+        channel[i] = 0;
+      }
+    }
+    
+    return true;
+  }
+}
+
+registerProcessor("audio-player-processor", AudioPlayerProcessor);
+`;
 
 export default class AudioPlayer {
   private audioContext: AudioContext | null = null;
@@ -33,34 +94,39 @@ export default class AudioPlayer {
     this.analyser = this.audioContext.createAnalyser();
     this.analyser.fftSize = 512;
 
+    // Create a Blob URL for the worklet code
+    const blob = new Blob([audioPlayerProcessorCode], { type: 'application/javascript' });
+    const workletUrl = URL.createObjectURL(blob);
 
-    const workletUrl = new URL('./AudioPlayerProcessor.worklet.js', import.meta.url);
-    // Register the audio worklet
-    await this.audioContext.audioWorklet.addModule(workletUrl);
-    
-    // Create and connect nodes
-    this.workletNode = new AudioWorkletNode(this.audioContext, "audio-player-processor");
-    // Create recorder node for monitoring audio output
-    this.recorderNode = this.audioContext.createScriptProcessor(512, 1, 1);
-
-    this.workletNode.connect(this.analyser);
-    this.analyser.connect(this.recorderNode);
-    this.recorderNode.connect(this.audioContext.destination);
-
-    this.recorderNode.onaudioprocess = (event) => {
-      // Pass the input along as-is
-      const inputData = event.inputBuffer.getChannelData(0);
-      const outputData = event.outputBuffer.getChannelData(0);
-      outputData.set(inputData);
+    try {
+      // Register the audio worklet
+      await this.audioContext.audioWorklet.addModule(workletUrl);
       
-      // Notify listeners that the audio was played
-      const samples = new Float32Array(outputData.length);
-      samples.set(outputData);
-      this.onAudioPlayedListeners.forEach(listener => listener(samples));
-    };
+      // Create and connect nodes
+      this.workletNode = new AudioWorkletNode(this.audioContext, "audio-player-processor");
+      this.workletNode.connect(this.analyser);
+      this.analyser.connect(this.audioContext.destination);
       
-    this.maybeOverrideInitialBufferLength();
-    this.initialized = true;
+      // Create recorder node for monitoring audio output
+      this.recorderNode = this.audioContext.createScriptProcessor(512, 1, 1);
+      this.recorderNode.onaudioprocess = (event) => {
+        // Pass the input along as-is
+        const inputData = event.inputBuffer.getChannelData(0);
+        const outputData = event.outputBuffer.getChannelData(0);
+        outputData.set(inputData);
+        
+        // Notify listeners that the audio was played
+        const samples = new Float32Array(outputData.length);
+        samples.set(outputData);
+        this.onAudioPlayedListeners.forEach(listener => listener(samples));
+      };
+      
+      this.maybeOverrideInitialBufferLength();
+      this.initialized = true;
+    } finally {
+      // Clean up the Blob URL
+      URL.revokeObjectURL(workletUrl);
+    }
   }
 
   bargeIn(): void {
