@@ -15,7 +15,6 @@ import json
 import logging
 import warnings
 import os
-import time
 from aws_sdk_bedrock_runtime.client import (
     BedrockRuntimeClient,
     InvokeModelWithBidirectionalStreamOperationInput,
@@ -24,15 +23,10 @@ from aws_sdk_bedrock_runtime.models import (
     InvokeModelWithBidirectionalStreamInputChunk,
     BidirectionalInputPayloadPart,
 )
-from aws_sdk_bedrock_runtime.config import (
-    Config,
-    HTTPAuthSchemeResolver,
-    SigV4AuthScheme,
-)
-from smithy_aws_core.credentials_resolvers.environment import (
-    EnvironmentCredentialsResolver,
-)
-from smithy_aws_core.credentials_resolvers.container import ContainerCredentialsResolver
+from aws_sdk_bedrock_runtime.config import Config
+from smithy_aws_core.auth.sigv4 import SigV4AuthScheme
+from smithy_aws_core.identity.environment import EnvironmentCredentialsResolver
+from smithy_aws_core.identity.container import ContainerCredentialsResolver
 from smithy_http.aio.aiohttp import AIOHTTPClient, AIOHTTPClientConfig
 
 # Configure logging
@@ -100,8 +94,7 @@ class BedrockInteractClient:
                 endpoint_uri=f"https://bedrock-runtime.{self.region}.amazonaws.com",
                 region=self.region,
                 aws_credentials_identity_resolver=resolver,
-                http_auth_scheme_resolver=HTTPAuthSchemeResolver(),
-                http_auth_schemes={"aws.auth#sigv4": SigV4AuthScheme()},
+                auth_schemes={"aws.auth#sigv4": SigV4AuthScheme(service="bedrock")},
             )
             self.bedrock_client = BedrockRuntimeClient(config=config)
             logger.info(

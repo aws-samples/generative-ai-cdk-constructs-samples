@@ -123,11 +123,11 @@ class WebSocketHandler:
             # Start audio processor
             await self.audio_processor.start(self.bedrock_client, self.stream)
 
-            # Start response processing task
-            self.response_task = asyncio.create_task(self._process_responses(websocket))
-
             # Register message handlers
             self._register_message_handlers()
+
+            # Start response processing task AFTER setup is complete 
+            self.response_task = asyncio.create_task(self._process_responses(websocket))
 
             # Main message processing loop
             async for message in websocket:
@@ -235,14 +235,42 @@ class WebSocketHandler:
                 list(data.get("event", {}).keys())[0] if "event" in data else None
             )
 
-            # Store session information
-            if event_type == "promptStart":
-                self.prompt_name = data["event"]["promptStart"]["promptName"]
-            elif (
-                event_type == "contentStart"
-                and data["event"]["contentStart"].get("type") == "AUDIO"
-            ):
-                self.audio_content_name = data["event"]["contentStart"]["contentName"]
+            # Event sequence tracking (reduced verbosity)
+            if event_type:
+                if event_type == "sessionStart":
+                    self.logger.info("Session started")
+                elif event_type == "promptStart":
+                    self.prompt_name = data["event"]["promptStart"]["promptName"]
+                    self.logger.debug("Prompt started")
+                elif event_type == "contentStart":
+                    content_type = data["event"]["contentStart"].get("type")
+                    role = data["event"]["contentStart"].get("role", "UNSPECIFIED")
+                    content_name = data["event"]["contentStart"].get("contentName")
+                    
+                    # Only log at debug level for routine content
+                    self.logger.debug(f"Content start: type={content_type}, role={role}")
+                    
+                    # Validate first content block has SYSTEM role
+                    if not hasattr(self, '_first_content_received'):
+                        self._first_content_received = True
+                        if role != "SYSTEM":
+                            self.logger.error(f"First content block must have SYSTEM role, received {role}")
+                            await websocket.send(json.dumps({
+                                "type": "error",
+                                "message": f"First content block must have SYSTEM role, received {role}"
+                            }))
+                    
+                    # Store audio content name
+                    if content_type == "AUDIO":
+                        self.audio_content_name = content_name
+                        if role != "USER":
+                            self.logger.warning(f"Audio content should have USER role, received {role}")
+                            
+                elif event_type == "sessionEnd":
+                    self.logger.info("Session ended")
+                # Other events logged at debug level only
+                elif event_type in ["textInput", "contentEnd", "promptEnd"]:
+                    self.logger.debug(f"Event: {event_type}")
 
             # Send event to Bedrock
             await self.bedrock_client.send_event(self.stream, data)
