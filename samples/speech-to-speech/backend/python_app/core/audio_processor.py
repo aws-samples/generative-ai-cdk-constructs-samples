@@ -83,6 +83,40 @@ class AudioProcessor:
             )
             return
 
+        # Add audio validation to detect silence
+        try:
+            import base64
+            audio_bytes = base64.b64decode(audio_base64)
+            
+            # Check if audio is silence (all zeros or very low values)
+            if len(audio_bytes) > 0:
+                # Convert bytes to 16-bit signed integers for analysis
+                import struct
+                num_samples = len(audio_bytes) // 2  # 16-bit samples
+                
+                if num_samples > 0:
+                    # Unpack first few samples to check for silence
+                    sample_check_count = min(100, num_samples)
+                    samples = struct.unpack(f'{sample_check_count}h', audio_bytes[:sample_check_count * 2])
+                    
+                    # Calculate max absolute value
+                    max_val = max(abs(s) for s in samples)
+                    
+                    # Threshold for silence detection (16-bit audio range is -32768 to 32767)
+                    # Only warn on truly silent audio (complete zeros)
+                    if max_val == 0:
+                        self.logger.warning(
+                            "Detected completely silent audio chunk (all zeros). "
+                            "Frontend may not be sending real microphone audio."
+                        )
+                    elif max_val < 50:
+                        # Very low audio - only log at debug level
+                        self.logger.debug(f"Very low audio level - max amplitude: {max_val}")
+                    # Normal audio - no logging needed (reduces verbosity)
+                        
+        except Exception as e:
+            self.logger.error(f"Error validating audio: {e}")
+
         # Use put_nowait() like original code to avoid blocking/timing delays
         self.audio_input_queue.put_nowait(
             {
