@@ -157,6 +157,7 @@ class S2sEvent:
                     "promptName": prompt_name,
                     "contentName": content_name,
                     "type": "AUDIO",
+                    "role": "USER",  # Required by Nova Sonic API
                     "interactive": True,
                     "audioInputConfiguration": audio_input_config,
                 }
