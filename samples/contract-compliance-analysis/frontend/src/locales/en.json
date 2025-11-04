@@ -1,0 +1,466 @@
+{
+  "nav": {
+    "user": {
+      "loggedInAs": "Logged in as {{username}}",
+      "logout": "Sign out"
+    },
+    "language": {
+      "label": "Language",
+      "changeLanguage": "Change language"
+    },
+    "menu": {
+      "openNavigation": "Open navigation menu",
+      "toggleMenu": "Toggle menu",
+      "navigation": "Navigation",
+      "navigationDescription": "Access different sections of the application",
+      "complianceAnalysis": "Compliance Analysis",
+      "contractTypes": "Contract Types",
+      "importContractType": "Import Contract Type"
+    }
+  },
+  "languages": {
+    "en": "English",
+    "es": "Spanish",
+    "pt_BR": "Portuguese (Brazil)"
+  },
+  "language": {
+    "label": "Language",
+    "changeLanguage": "Change language"
+  },
+  "home": {
+    "searchPlaceholder": "Search documents",
+    "status": {
+      "placeholder": "All statuses",
+      "all": "All statuses",
+      "label": "Status",
+      "RUNNING": "Processing",
+      "SUCCEEDED": "Finished",
+      "FAILED": "Failed",
+      "TIMED_OUT": "Failed (Timeout)",
+      "ABORTED": "Canceled"
+    },
+    "review": {
+      "placeholder": "All reviews",
+      "all": "All reviews",
+      "true": "Needs review",
+      "false": "Doesn't need review"
+    },
+    "contractType": {
+      "placeholder": "All contract types",
+      "all": "All contract types"
+    },
+    "header": "Compliance Analysis"
+  },
+  "errors": {
+    "title": "Oh no!",
+    "message": "Sorry, an unexpected error has occurred.",
+    "backHome": "Back to Home",
+    "built": "Built with ❤️ by AWS PACE",
+    "errorObject": "Error Object"
+  },
+  "aiDisclaimer": {
+    "text": "AI can make mistakes. All data should be reviewed before making decisions.",
+    "linkText": "AWS Responsible AI Policy"
+  },
+  "footer": {
+    "builtBy": "Built with ❤️ by AWS PACE",
+    "team": "Prototyping & Cloud Engineering"
+  },
+  "user": {
+    "loggedInAs": "Logged in as {{username}}",
+    "logout": "Sign out"
+  },
+  "theme": {
+    "darkMode": "Dark mode"
+  },
+  "table": {
+    "noResults": "No results.",
+    "showing": "Showing {{start}}-{{end}} of {{total}}",
+    "rowsPerPage": "Rows per page",
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {{page}} of {{total}}"
+  },
+  "jobs": {
+    "columns": {
+      "filename": "Filename",
+      "description": "Description",
+      "contractType": "Contract Type",
+      "createdAt": "Created At",
+      "finishedAt": "Finished At",
+      "status": "Status",
+      "guidelines": "Guidelines",
+      "legislation": "Legislation",
+      "needsReview": "Needs Review",
+      "compliant": "Compliant"
+    }
+  },
+  "common": {
+    "yes": "Yes",
+    "no": "No",
+    "none": "None",
+    "all": "All",
+    "allClauses": "All",
+    "occurrence_one": "occurrence",
+    "occurrence_other": "occurrences",
+    "occurrence": "{{count}} occurrence{{count, plural, one {} other {s}}}",
+    "needsReview": "Needs review",
+    "seemsCompliant": "Seems compliant",
+    "compliant": "Compliant",
+    "nonCompliant": "Non-compliant",
+    "missing": "Missing",
+    "cancel": "Cancel",
+    "active": "Active"
+  },
+  "job": {
+    "compliance": {
+      "matrixTitle": "Compliance matrix",
+      "matrixDescription": "Clause types compliance distribution by impact level",
+      "impact": "Impact",
+      "impactLevel": {
+        "low": "Low impact",
+        "medium": "Medium impact",
+        "high": "High impact"
+      },
+      "legend": "Matrix legend:",
+      "risk": "Risk",
+      "status": {
+        "compliant": "Compliant",
+        "non_compliant": "Non-compliant",
+        "missing": "Missing"
+      }
+    },
+    "risk": {
+      "title": "Risk assessment",
+      "description": "Grouping of occurrences to determine contract risk",
+      "tolerance": "Tolerance:",
+      "complianceStatusLabel": "Assessment result:",
+      "withinRiskTolerance": "Within risk tolerance",
+      "exceedsRiskTolerance": "Exceeds risk tolerance",
+      "resultLabel": "Risk assessment result:",
+      "level": {
+        "none": "No Risk",
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High"
+      }
+    },
+    "classification": {
+      "title": "Categorization overview",
+      "description": "Overall clause types distribution per guidelines alignment",
+      "guidelinesAlignment": "Guidelines alignment",
+      "totalClauses": "Total clauses in this contract",
+      "unknownClauses": "Clauses not matching any type from the guidelines",
+      "legislationCompliant": "Legislation checks"
+    },
+    "filters": {
+      "filterClauses": "Filter clauses:"
+    },
+    "clauses": {
+      "unknownType": "Does not match any type from the guidelines",
+      "analysis": "Analysis",
+      "complianceLabel": "Compliance:",
+      "whyFits": "Why does it fit this categorization?",
+      "complianceAnalysis": "Compliance analysis:",
+      "legislationCheck": "Legislation Compliance",
+      "compliantCount_one": "{{count}} compliant",
+      "compliantCount_other": "{{count}} compliant",
+      "nonCompliantCount_one": "{{count}} non-compliant",
+      "nonCompliantCount_other": "{{count}} non-compliant",
+      "legislationCompliant": "Legislation check: Compliant",
+      "legislationNonCompliant": "Legislation check: Non-compliant",
+      "legislationNotChecked": "Legislation check: Not performed"
+    },
+    "idLabel": "Job ID:"
+  },
+  "newAnalysis": {
+    "button": "New Analysis",
+    "title": "New Contract Analysis",
+    "description": "Create a new compliance analysis",
+    "create": "Create",
+    "creating": "Creating...",
+    "success": "Analysis created successfully",
+    "fields": {
+      "description": "Description",
+      "descriptionPlaceholder": "Enter a description for this analysis",
+      "file": "Contract Upload",
+      "fileTooltip": "Accepted formats: PDF, DOC, DOCX, TXT files",
+      "reportLanguage": "Report Language",
+      "legislationCheck": "Legislation Check",
+      "legislationCheckDescription": "Select legislation to verify contract compliance against specific laws and regulations",
+      "selectLegislation": "Select legislation (optional)",
+      "selectLegislationRequired": "Select legislation (required)",
+      "loadingLegislations": "Loading available legislations..."
+    }
+  },
+  "contractType": {
+    "label": "Contract Type",
+    "placeholder": "Select a contract type",
+    "loading": "Loading contract types...",
+    "loadError": "Failed to load contract types",
+    "noTypesAvailable": "No contract types are currently available",
+    "management": {
+      "title": "Contract Type Management",
+      "description": "Manage contract types and their settings",
+      "createNew": "Create New Type",
+      "edit": "Edit",
+      "delete": "Delete",
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "manageGuidelines": "Manage Guidelines",
+      "guidelinesColumn": "Guidelines",
+      "statusColumn": "Status",
+      "riskThresholdsColumn": "Risk Thresholds",
+      "actionsColumn": "Actions",
+      "noContractTypes": "No contract types found",
+      "dialog": {
+        "editTitle": "Edit Contract Type",
+        "editDescription": "Update the contract type details",
+        "createTitle": "Create New Contract Type",
+        "createDescription": "Create a new contract type with its settings",
+        "updateButton": "Update",
+        "createButton": "Create"
+      }
+    },
+    "form": {
+      "name": "Name",
+      "description": "Description",
+      "companyPartyType": "Company Party Type",
+      "otherPartyType": "Other Party Type",
+      "riskThresholds": "Risk Thresholds",
+      "highRisk": "High Risk Threshold",
+      "mediumRisk": "Medium Risk Threshold",
+      "lowRisk": "Low Risk Threshold",
+      "defaultLanguage": "Default Language",
+      "isActive": "Active",
+      "placeholders": {
+        "name": "e.g., Service Agreement",
+        "description": "Brief description of this contract type",
+        "companyPartyType": "e.g., Customer, Employer",
+        "otherPartyType": "e.g., Service Provider, Employee"
+      }
+    }
+  },
+  "upload": {
+    "button": "Upload File",
+    "uploading": "Uploading...",
+    "success": "Upload successful",
+    "error": "Upload failed",
+    "errorType": "Unsupported file type",
+    "errorUnknown": "An unexpected error occurred",
+    "errorNetwork": "Network error occurred",
+    "errorSize": "File size exceeds limit",
+    "errorAuth": "Authentication error",
+    "removeFile": "Remove file",
+    "downloadFile": "Download file"
+  },
+  "import": {
+    "button": "Import Contract Type",
+    "title": "Import Contract Type from Reference Document",
+    "description": "Upload a reference contract document to automatically generate a new contract type with basic guidelines",
+    "start": "Start Import",
+    "started": "Import started successfully",
+    "success": "Contract type imported successfully",
+    "error": "Import failed",
+    "errorNoFile": "Please upload a document first",
+    "errorNoName": "Please enter a name for the contract type",
+    "errorUnknown": "An unexpected error occurred during import",
+    "fields": {
+      "name": "Contract Type Name",
+      "namePlaceholder": "Enter a name for the contract type...",
+      "nameHint": "This will be the display name for the imported contract type",
+      "description": "Description (Optional)",
+      "descriptionPlaceholder": "Enter a description for this import...",
+      "descriptionHint": "This will help you identify the imported contract type later",
+      "file": "Reference Contract Document",
+      "fileHint": "Upload a high-quality reference contract document. Accepted formats: PDF, DOC, DOCX, TXT"
+    },
+    "processing": {
+      "title": "Processing Document",
+      "description": "Analyzing the document and generating contract type with guidelines...",
+      "progress": "Import Progress",
+      "steps": "Extracting contract information and clause types..."
+    },
+    "completed": {
+      "title": "Import Completed",
+      "description": "Your contract type has been created successfully. You can now review and complete the setup.",
+      "redirecting": "Automatically redirecting to contract type management...",
+      "continueNow": "Continue Now",
+      "editContractType": "Edit Contract Type",
+      "close": "Close"
+    },
+    "failed": {
+      "title": "Import Failed",
+      "retry": "Try Again"
+    }
+  },
+  "guidelines": {
+    "title": "Guidelines Management",
+    "description": "Manage compliance guidelines for contract types",
+    "guidelinesFor": "Guidelines for",
+    "createNew": "Create Guideline",
+    "noGuidelines": {
+      "title": "No Guidelines Found",
+      "description": "No guidelines have been created for this contract type yet. Click \"Create Guideline\" to add your first compliance guideline."
+    },
+    "table": {
+      "columns": {
+        "clauseType": "Clause Type",
+        "name": "Name",
+        "impactLevel": "Impact Level",
+        "questions": "Questions",
+        "examples": "Examples",
+        "updated": "Updated",
+        "actions": "Actions"
+      },
+      "questionCount_one": "{{count}} question",
+      "questionCount_other": "{{count}} questions",
+      "exampleCount_one": "{{count}} example",
+      "exampleCount_other": "{{count}} examples"
+    },
+    "form": {
+      "title": {
+        "create": "Create New Guideline",
+        "edit": "Edit Guideline"
+      },
+      "fields": {
+        "clauseTypeId": {
+          "label": "Clause Type ID",
+          "placeholder": "e.g., payment-terms, liability-clause",
+          "description": "Use lowercase letters, numbers, and hyphens only. This will be the unique identifier for this guideline."
+        },
+        "name": {
+          "label": "Name",
+          "placeholder": "e.g., Payment Terms, Liability Clause"
+        },
+        "standardWording": {
+          "label": "Standard Wording",
+          "placeholder": "Enter the standard wording or requirements for this clause type...",
+          "characterCount": "{{count}}/2000 characters"
+        },
+        "impactLevel": {
+          "label": "Impact Level",
+          "description": {
+            "high": "Critical impact on contract compliance",
+            "medium": "Important impact on contract compliance",
+            "low": "Minor impact on contract compliance"
+          }
+        },
+        "evaluationQuestions": {
+          "label": "Evaluation Questions",
+          "maxLabel": "(Max 10)",
+          "placeholder": "Enter an evaluation question...",
+          "addPlaceholder": "Add another evaluation question...",
+          "description": "Questions used to evaluate compliance with this guideline"
+        },
+        "examples": {
+          "label": "Examples",
+          "optionalLabel": "(Optional, Max 20)",
+          "placeholder": "Enter an example...",
+          "addPlaceholder": "Add an example...",
+          "description": "Example clauses or wording that demonstrate compliance"
+        }
+      },
+      "aiGeneration": {
+        "generateQuestions": {
+          "button": "Generate Questions",
+          "generating": "Generating...",
+          "tooltip": "Use AI to generate evaluation questions based on the standard wording"
+        },
+        "generateExamples": {
+          "button": "Generate Examples",
+          "generating": "Generating...",
+          "tooltip": "Use AI to generate alternative clause wording examples"
+        },
+        "reviewDialog": {
+          "title": "Review Generated Content",
+          "questionsTitle": "Generated Evaluation Questions",
+          "examplesTitle": "Generated Examples",
+          "description": "Review the AI-generated content below. You can edit, remove, or add items before applying them to your guideline.",
+          "actions": {
+            "apply": "Apply to Guideline",
+            "cancel": "Cancel",
+            "edit": "Edit item",
+            "remove": "Remove item"
+          },
+          "empty": "No content was generated. Please try again.",
+          "placeholder": "Edit this item..."
+        },
+        "errors": {
+          "generateQuestions": "Failed to generate evaluation questions. Please try again.",
+          "generateExamples": "Failed to generate examples. Please try again.",
+          "requiresStandardWording": "Please enter standard wording before generating content.",
+          "requiresContractType": "Contract type information is required for generation."
+        }
+      },
+      "actions": {
+        "cancel": "Cancel",
+        "create": "Create Guideline",
+        "update": "Update Guideline",
+        "creating": "Creating...",
+        "updating": "Updating..."
+      },
+      "validation": {
+        "required": "This field is required",
+        "clauseTypeIdFormat": "Clause type ID must contain only lowercase letters, numbers, and hyphens",
+        "clauseTypeIdLength": "Clause type ID must be 50 characters or less",
+        "nameLength": "Name must be 100 characters or less",
+        "standardWordingLength": "Standard wording must be 2000 characters or less",
+        "questionsRequired": "At least one evaluation question is required",
+        "questionsMax": "Maximum 10 evaluation questions allowed",
+        "questionLength": "Evaluation questions must be 500 characters or less",
+        "examplesMax": "Maximum 20 examples allowed",
+        "exampleLength": "Examples must be 1000 characters or less"
+      }
+    },
+    "filters": {
+      "contractType": {
+        "placeholder": "Select a contract type to manage guidelines"
+      },
+      "search": {
+        "placeholder": "Search guidelines by name, clause type, or wording..."
+      },
+      "level": {
+        "all": "All Levels",
+        "high": "High Impact",
+        "medium": "Medium Impact",
+        "low": "Low Impact"
+      },
+      "activeFilters": "Active filters:",
+      "clearFilters": "Clear Filters",
+      "filterCount_one": "{{count}} filter active",
+      "filterCount_other": "{{count}} filters active",
+      "searchFilter": "Search: \"{{term}}\"",
+      "levelFilter": "Level: {{level}}"
+    },
+    "actions": {
+      "edit": "Edit guideline {{name}}",
+      "delete": "Delete guideline {{name}}"
+    },
+    "delete": {
+      "title": "Delete Guideline",
+      "message": "Are you sure you want to delete this guideline? This action cannot be undone.",
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    },
+    "import": {
+      "status": {
+        "needsReview": "Needs Review",
+        "incomplete": "Incomplete",
+        "imported": "Imported",
+        "activate": "Activate Contract Type",
+        "activateDescription": "This contract type was imported from a reference document and is currently inactive. Review the guidelines below and activate the contract type when ready.",
+        "activateTitle": "Contract Type Needs Review",
+        "required": "Required"
+      },
+      "validation": {
+        "noGuidelines": "Cannot activate contract type: At least one guideline is required",
+        "incompleteGuidelines": "Cannot activate contract type: {{count}} guideline(s) are missing evaluation questions"
+      }
+    }
+  },
+  "mockData": {
+    "banner": "Simulated data for demonstration",
+    "tooltip": "Contract type for UI testing and validation"
+  }
+}

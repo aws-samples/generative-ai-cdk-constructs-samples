@@ -1,0 +1,466 @@
+{
+  "nav": {
+    "user": {
+      "loggedInAs": "Conectado como {{username}}",
+      "logout": "Cerrar sesión"
+    },
+    "language": {
+      "label": "Idioma",
+      "changeLanguage": "Cambiar idioma"
+    },
+    "menu": {
+      "openNavigation": "Abrir menú de navegación",
+      "toggleMenu": "Alternar menú",
+      "navigation": "Navegación",
+      "navigationDescription": "Acceder a diferentes secciones de la aplicación",
+      "complianceAnalysis": "Análisis de Cumplimiento",
+      "contractTypes": "Tipos de Contrato",
+      "importContractType": "Importar Tipo de Contrato"
+    }
+  },
+  "languages": {
+    "en": "Inglés",
+    "es": "Español",
+    "pt_BR": "Portugués (Brasil)"
+  },
+  "language": {
+    "label": "Idioma",
+    "changeLanguage": "Cambiar idioma"
+  },
+  "home": {
+    "searchPlaceholder": "Buscar documentos",
+    "status": {
+      "placeholder": "Todos los estados",
+      "all": "Todos los estados",
+      "label": "Estado",
+      "RUNNING": "Procesando",
+      "SUCCEEDED": "Finalizado",
+      "FAILED": "Falló",
+      "TIMED_OUT": "Falló (Timeout)",
+      "ABORTED": "Cancelado"
+    },
+    "review": {
+      "placeholder": "Todas las revisiones",
+      "all": "Todas las revisiones",
+      "true": "Necesita revisión",
+      "false": "No necesita revisión"
+    },
+    "contractType": {
+      "placeholder": "Todos los tipos de contrato",
+      "all": "Todos los tipos de contrato"
+    },
+    "header": "Análisis de Cumplimiento"
+  },
+  "errors": {
+    "title": "¡Oh no!",
+    "message": "Lo sentimos, ha ocurrido un error inesperado.",
+    "backHome": "Volver al Inicio",
+    "built": "Built con ❤️ por AWS PACE",
+    "errorObject": "Objeto de Error"
+  },
+  "aiDisclaimer": {
+    "text": "La IA puede cometer errores. Todos los datos deben ser revisados antes de tomar decisiones.",
+    "linkText": "Política de IA Responsable de AWS"
+  },
+  "footer": {
+    "builtBy": "Built con ❤️ por AWS PACE",
+    "team": "Prototyping & Cloud Engineering"
+  },
+  "user": {
+    "loggedInAs": "Conectado como {{username}}",
+    "logout": "Cerrar sesión"
+  },
+  "theme": {
+    "darkMode": "Modo oscuro"
+  },
+  "table": {
+    "noResults": "Sin resultados.",
+    "showing": "Mostrando {{start}}-{{end}} de {{total}}",
+    "rowsPerPage": "Filas por página",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "pageOf": "Página {{page}} de {{total}}"
+  },
+  "jobs": {
+    "columns": {
+      "filename": "Archivo",
+      "description": "Descripción",
+      "contractType": "Tipo de Contrato",
+      "createdAt": "Creado el",
+      "finishedAt": "Finalizado el",
+      "status": "Estado",
+      "guidelines": "Directrices",
+      "legislation": "Legislación",
+      "needsReview": "Requiere revisión",
+      "compliant": "Conforme"
+    }
+  },
+  "common": {
+    "yes": "Sí",
+    "no": "No",
+    "none": "Ninguno",
+    "all": "Todos",
+    "allClauses": "Todas",
+    "occurrence_one": "ocurrencia",
+    "occurrence_other": "ocurrencias",
+    "occurrence": "{{count}} ocurrencia{{count, plural, one {} other {s}}}",
+    "needsReview": "Requiere revisión",
+    "seemsCompliant": "Parece conforme",
+    "compliant": "Conforme",
+    "nonCompliant": "No conforme",
+    "missing": "Ausente",
+    "cancel": "Cancelar",
+    "active": "Activo"
+  },
+  "job": {
+    "compliance": {
+      "matrixTitle": "Matriz de conformidad",
+      "matrixDescription": "Distribución de conformidad por nivel de impacto",
+      "impact": "Impacto",
+      "impactLevel": {
+        "low": "Impacto bajo",
+        "medium": "Impacto medio",
+        "high": "Impacto alto"
+      },
+      "legend": "Leyenda de la matriz:",
+      "risk": "Riesgo",
+      "status": {
+        "compliant": "Conforme",
+        "non_compliant": "No conforme",
+        "missing": "Ausente"
+      }
+    },
+    "risk": {
+      "title": "Evaluación de riesgo",
+      "description": "Agrupación de ocurrencias para determinar el riesgo del contrato",
+      "tolerance": "Tolerancia:",
+      "complianceStatusLabel": "Resultado de la evaluación:",
+      "withinRiskTolerance": "Dentro de la tolerancia de riesgo",
+      "exceedsRiskTolerance": "Excede la tolerancia de riesgo",
+      "resultLabel": "Resultado de la evaluación de riesgo:",
+      "level": {
+        "none": "Sin Riesgo",
+        "low": "Bajo",
+        "medium": "Medio",
+        "high": "Alto"
+      }
+    },
+    "classification": {
+      "title": "Resumen de categorización",
+      "description": "Distribución general por alineación con las directrices",
+      "guidelinesAlignment": "Alineación con las directrices",
+      "totalClauses": "Total de cláusulas en este contrato",
+      "unknownClauses": "Cláusulas que no coinciden con ningún tipo directrices",
+      "legislationCompliant": "Verificaciones legislativas"
+    },
+    "filters": {
+      "filterClauses": "Filtrar cláusulas:"
+    },
+    "clauses": {
+      "unknownType": "No coincide con ningún tipo de las directrices",
+      "analysis": "Análisis",
+      "complianceLabel": "Cumplimiento:",
+      "whyFits": "¿Por qué encaja en esta categorización?",
+      "complianceAnalysis": "Análisis de cumplimiento:",
+      "legislationCheck": "Cumplimiento Legislativo",
+      "compliantCount_one": "{{count}} cumple",
+      "compliantCount_other": "{{count}} cumplen",
+      "nonCompliantCount_one": "{{count}} no cumple",
+      "nonCompliantCount_other": "{{count}} no cumplen",
+      "legislationCompliant": "Verificación legislativa: Conforme",
+      "legislationNonCompliant": "Verificación legislativa: No conforme",
+      "legislationNotChecked": "Verificación legislativa: No realizada"
+    },
+    "idLabel": "Job ID:"
+  },
+  "newAnalysis": {
+    "button": "Nuevo Análisis",
+    "title": "Nuevo Análisis de Contrato",
+    "description": "Crear un nuevo análisis de cumplimiento",
+    "create": "Crear",
+    "creating": "Creando...",
+    "success": "Análisis creado exitosamente",
+    "fields": {
+      "description": "Descripción",
+      "descriptionPlaceholder": "Ingrese una descripción para este análisis",
+      "file": "Subir Contrato",
+      "fileTooltip": "Formatos aceptados: PDF, DOC, DOCX, TXT",
+      "reportLanguage": "Idioma del Informe",
+      "legislationCheck": "Verificación de Legislación",
+      "legislationCheckDescription": "Seleccione legislación para verificar el cumplimiento del contrato con leyes y regulaciones específicas",
+      "selectLegislation": "Seleccionar legislación (opcional)",
+      "selectLegislationRequired": "Seleccionar legislación (obligatorio)",
+      "loadingLegislations": "Cargando legislaciones disponibles..."
+    }
+  },
+  "contractType": {
+    "label": "Tipo de Contrato",
+    "placeholder": "Seleccione un tipo de contrato",
+    "loading": "Cargando tipos de contrato...",
+    "loadError": "Error al cargar tipos de contrato",
+    "noTypesAvailable": "No hay tipos de contrato disponibles actualmente",
+    "management": {
+      "title": "Gestión de Tipos de Contrato",
+      "description": "Gestionar tipos de contrato y sus configuraciones",
+      "createNew": "Crear Nuevo Tipo",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "activate": "Activar",
+      "deactivate": "Desactivar",
+      "manageGuidelines": "Gestionar Directrices",
+      "guidelinesColumn": "Directrices",
+      "statusColumn": "Estado",
+      "riskThresholdsColumn": "Umbrales de Riesgo",
+      "actionsColumn": "Acciones",
+      "noContractTypes": "No se encontraron tipos de contrato",
+      "dialog": {
+        "editTitle": "Editar Tipo de Contrato",
+        "editDescription": "Actualizar los detalles del tipo de contrato",
+        "createTitle": "Crear Nuevo Tipo de Contrato",
+        "createDescription": "Crear un nuevo tipo de contrato con sus configuraciones",
+        "updateButton": "Actualizar",
+        "createButton": "Crear"
+      }
+    },
+    "form": {
+      "name": "Nombre",
+      "description": "Descripción",
+      "companyPartyType": "Tipo de Parte de la Empresa",
+      "otherPartyType": "Tipo de Otra Parte",
+      "riskThresholds": "Umbrales de Riesgo",
+      "highRisk": "Umbral de Alto Riesgo",
+      "mediumRisk": "Umbral de Riesgo Medio",
+      "lowRisk": "Umbral de Bajo Riesgo",
+      "defaultLanguage": "Idioma Predeterminado",
+      "isActive": "Activo",
+      "placeholders": {
+        "name": "ej: Contrato de Servicio",
+        "description": "Breve descripción de este tipo de contrato",
+        "companyPartyType": "ej: Cliente, Empleador",
+        "otherPartyType": "ej: Proveedor de Servicios, Empleado"
+      }
+    }
+  },
+  "import": {
+    "button": "Importar Tipo de Contrato",
+    "title": "Importar Tipo de Contrato desde Documento de Referencia",
+    "description": "Suba un documento de contrato de referencia para generar automáticamente un nuevo tipo de contrato con directrices básicas",
+    "start": "Iniciar Importación",
+    "started": "Importación iniciada exitosamente",
+    "success": "Tipo de contrato importado exitosamente",
+    "error": "Error en la importación",
+    "errorNoFile": "Por favor suba un documento primero",
+    "errorNoName": "Por favor ingrese un nombre para el tipo de contrato",
+    "errorUnknown": "Ocurrió un error inesperado durante la importación",
+    "fields": {
+      "name": "Nombre del Tipo de Contrato",
+      "namePlaceholder": "Ingrese un nombre para el tipo de contrato...",
+      "nameHint": "Este será el nombre de visualización para el tipo de contrato importado",
+      "description": "Descripción (Opcional)",
+      "descriptionPlaceholder": "Ingrese una descripción para esta importación...",
+      "descriptionHint": "Esto le ayudará a identificar el tipo de contrato importado más tarde",
+      "file": "Documento de Contrato de Referencia",
+      "fileHint": "Suba un documento de contrato de referencia de alta calidad. Formatos aceptados: PDF, DOC, DOCX, TXT"
+    },
+    "processing": {
+      "title": "Procesando Documento",
+      "description": "Analizando el documento y generando tipo de contrato con directrices...",
+      "progress": "Progreso de Importación",
+      "steps": "Extrayendo información del contrato y tipos de cláusulas..."
+    },
+    "completed": {
+      "title": "Importación Completada",
+      "description": "Su tipo de contrato ha sido creado exitosamente. Ahora puede revisar y completar la configuración.",
+      "redirecting": "Redirigiendo automáticamente a la gestión de tipos de contrato...",
+      "continueNow": "Continuar Ahora",
+      "editContractType": "Editar Tipo de Contrato",
+      "close": "Cerrar"
+    },
+    "failed": {
+      "title": "Importación Fallida",
+      "retry": "Intentar de Nuevo"
+    }
+  },
+  "upload": {
+    "button": "Subir Archivo",
+    "uploading": "Subiendo...",
+    "success": "Subida exitosa",
+    "error": "Error en la subida",
+    "errorType": "Tipo de archivo no soportado",
+    "errorUnknown": "Ocurrió un error inesperado",
+    "errorNetwork": "Ocurrió un error de red",
+    "errorSize": "El archivo excede el límite de tamaño",
+    "errorAuth": "Error de autenticación",
+    "removeFile": "Remover archivo",
+    "downloadFile": "Descargar archivo"
+  },
+  "guidelines": {
+    "title": "Gestión de Directrices",
+    "description": "Gestionar directrices de cumplimiento para tipos de contrato",
+    "guidelinesFor": "Directrices para",
+    "createNew": "Crear Directriz",
+    "noGuidelines": {
+      "title": "No se Encontraron Directrices",
+      "description": "Aún no se han creado directrices para este tipo de contrato. Haga clic en \"Crear Directriz\" para agregar su primera directriz de cumplimiento."
+    },
+    "table": {
+      "columns": {
+        "clauseType": "Tipo de Cláusula",
+        "name": "Nombre",
+        "impactLevel": "Nivel de Impacto",
+        "questions": "Preguntas",
+        "examples": "Ejemplos",
+        "updated": "Actualizado",
+        "actions": "Acciones"
+      },
+      "questionCount_one": "{{count}} pregunta",
+      "questionCount_other": "{{count}} preguntas",
+      "exampleCount_one": "{{count}} ejemplo",
+      "exampleCount_other": "{{count}} ejemplos"
+    },
+    "form": {
+      "title": {
+        "create": "Crear Nueva Directriz",
+        "edit": "Editar Directriz"
+      },
+      "fields": {
+        "clauseTypeId": {
+          "label": "ID del Tipo de Cláusula",
+          "placeholder": "ej., términos-pago, cláusula-responsabilidad",
+          "description": "Use solo letras minúsculas, números y guiones. Este será el identificador único para esta directriz."
+        },
+        "name": {
+          "label": "Nombre",
+          "placeholder": "ej., Términos de Pago, Cláusula de Responsabilidad"
+        },
+        "standardWording": {
+          "label": "Redacción Estándar",
+          "placeholder": "Ingrese la redacción estándar o requisitos para este tipo de cláusula...",
+          "characterCount": "{{count}}/2000 caracteres"
+        },
+        "impactLevel": {
+          "label": "Nivel de Impacto",
+          "description": {
+            "high": "Impacto crítico en el cumplimiento del contrato",
+            "medium": "Impacto importante en el cumplimiento del contrato",
+            "low": "Impacto menor en el cumplimiento del contrato"
+          }
+        },
+        "evaluationQuestions": {
+          "label": "Preguntas de Evaluación",
+          "maxLabel": "(Máx 10)",
+          "placeholder": "Ingrese una pregunta de evaluación...",
+          "addPlaceholder": "Agregar otra pregunta de evaluación...",
+          "description": "Preguntas utilizadas para evaluar el cumplimiento de esta directriz"
+        },
+        "examples": {
+          "label": "Ejemplos",
+          "optionalLabel": "(Opcional, Máx 20)",
+          "placeholder": "Ingrese un ejemplo...",
+          "addPlaceholder": "Agregar un ejemplo...",
+          "description": "Ejemplos de cláusulas o redacción que demuestran cumplimiento"
+        }
+      },
+      "aiGeneration": {
+        "generateQuestions": {
+          "button": "Generar Preguntas",
+          "generating": "Generando...",
+          "tooltip": "Usar IA para generar preguntas de evaluación basadas en la redacción estándar"
+        },
+        "generateExamples": {
+          "button": "Generar Ejemplos",
+          "generating": "Generando...",
+          "tooltip": "Usar IA para generar ejemplos alternativos de redacción de cláusulas"
+        },
+        "reviewDialog": {
+          "title": "Revisar Contenido Generado",
+          "questionsTitle": "Preguntas de Evaluación Generadas",
+          "examplesTitle": "Ejemplos Generados",
+          "description": "Revise el contenido generado por IA a continuación. Puede editar, eliminar o agregar elementos antes de aplicarlos a su directriz.",
+          "actions": {
+            "apply": "Aplicar a la Directriz",
+            "cancel": "Cancelar",
+            "edit": "Editar elemento",
+            "remove": "Eliminar elemento"
+          },
+          "empty": "No se generó contenido. Por favor, inténtelo de nuevo.",
+          "placeholder": "Editar este elemento..."
+        },
+        "errors": {
+          "generateQuestions": "Error al generar preguntas de evaluación. Por favor, inténtelo de nuevo.",
+          "generateExamples": "Error al generar ejemplos. Por favor, inténtelo de nuevo.",
+          "requiresStandardWording": "Por favor, ingrese la redacción estándar antes de generar contenido.",
+          "requiresContractType": "Se requiere información del tipo de contrato para la generación."
+        }
+      },
+      "actions": {
+        "cancel": "Cancelar",
+        "create": "Crear Directriz",
+        "update": "Actualizar Directriz",
+        "creating": "Creando...",
+        "updating": "Actualizando..."
+      },
+      "validation": {
+        "required": "Este campo es obligatorio",
+        "clauseTypeIdFormat": "El ID del tipo de cláusula debe contener solo letras minúsculas, números y guiones",
+        "clauseTypeIdLength": "El ID del tipo de cláusula debe tener 50 caracteres o menos",
+        "nameLength": "El nombre debe tener 100 caracteres o menos",
+        "standardWordingLength": "La redacción estándar debe tener 2000 caracteres o menos",
+        "questionsRequired": "Se requiere al menos una pregunta de evaluación",
+        "questionsMax": "Se permiten máximo 10 preguntas de evaluación",
+        "questionLength": "Las preguntas de evaluación deben tener 500 caracteres o menos",
+        "examplesMax": "Se permiten máximo 20 ejemplos",
+        "exampleLength": "Los ejemplos deben tener 1000 caracteres o menos"
+      }
+    },
+    "filters": {
+      "contractType": {
+        "placeholder": "Seleccione un tipo de contrato para gestionar directrices"
+      },
+      "search": {
+        "placeholder": "Buscar directrices por nombre, tipo de cláusula o redacción..."
+      },
+      "level": {
+        "all": "Todos los Niveles",
+        "high": "Alto Impacto",
+        "medium": "Impacto Medio",
+        "low": "Bajo Impacto"
+      },
+      "activeFilters": "Filtros activos:",
+      "clearFilters": "Limpiar Filtros",
+      "filterCount_one": "{{count}} filtro activo",
+      "filterCount_other": "{{count}} filtros activos",
+      "searchFilter": "Búsqueda: \"{{term}}\"",
+      "levelFilter": "Nivel: {{level}}"
+    },
+    "actions": {
+      "edit": "Editar directriz {{name}}",
+      "delete": "Eliminar directriz {{name}}"
+    },
+    "delete": {
+      "title": "Eliminar Directriz",
+      "message": "¿Está seguro de que desea eliminar esta directriz? Esta acción no se puede deshacer.",
+      "confirm": "Eliminar",
+      "cancel": "Cancelar"
+    },
+    "import": {
+      "status": {
+        "needsReview": "Necesita Revisión",
+        "incomplete": "Incompleto",
+        "imported": "Importado",
+        "activate": "Activar Tipo de Contrato",
+        "activateDescription": "Este tipo de contrato fue importado de un documento de referencia y actualmente está inactivo. Revise las directrices a continuación y active el tipo de contrato cuando esté listo.",
+        "activateTitle": "El Tipo de Contrato Necesita Revisión",
+        "required": "Requerido"
+      },
+      "validation": {
+        "noGuidelines": "No se puede activar el tipo de contrato: Se requiere al menos una directriz",
+        "incompleteGuidelines": "No se puede activar el tipo de contrato: {{count}} directriz(s) no tienen preguntas de evaluación"
+      }
+    }
+  },
+  "mockData": {
+    "banner": "Datos simulados para demostración",
+    "tooltip": "Tipo de contrato para pruebas de interfaz y validación"
+  }
+}

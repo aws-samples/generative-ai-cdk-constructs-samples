@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "boto-layer"
+version = "0.1.0"
+description = "Pinned boto3/botocore for Lambda"
+authors = ["PACE Latam"]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+boto3 = "==1.40.5"
+botocore = "==1.40.5"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

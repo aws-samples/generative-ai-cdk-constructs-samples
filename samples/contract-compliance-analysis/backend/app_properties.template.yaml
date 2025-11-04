@@ -1,0 +1,31 @@
+CompanyName: "AnyCompany"
+
+# Language Model ID (Global configuration)
+# Disabling the property will let each prompt execution use its default model id
+# Note: Ensure the model is enabled in Amazon Bedrock console (Model access) and available in your region.
+# In case of cross-Region inference, use predefined Inference Profiles and enable model access in all destination regions.
+LanguageModelId: "amazon.nova-pro-v1:0"
+
+# Some available Language models
+# LanguageModelId: "us.amazon.nova-lite-v1:0"
+# LanguageModelId: "us.amazon.nova-pro-v1:0"
+# LanguageModelId: "amazon.nova-premier-v1:0"
+# LanguageModelId: "anthropic.claude-3-5-haiku-20241022-v1:0"
+# LanguageModelId: "anthropic.claude-3-5-sonnet-20241022-v2:0"
+# LanguageModelId: "anthropic.claude-3-7-sonnet-20250219-v1:0"
+
+# Task-specific LLM model overrides - Contract Analysis workflow
+# ContractPreprocessing/LanguageModelId: "amazon.nova-pro-v1:0"
+# ContractClassification/LanguageModelId: "amazon.nova-pro-v1:0"
+# ContractEvaluation/LanguageModelId: "amazon.nova-pro-v1:0"
+
+# Task-specific LLM model overrides - Contract Import workflow
+# ContractTypeExtraction/LanguageModelId: "amazon.nova-pro-v1:0"
+# ExtractClauseTypes/LanguageModelId: "amazon.nova-pro-v1:0"
+
+# Task-specific LLM model overrides - Legislation check workflow
+LegislationCheck/LanguageModelId: "anthropic.claude-haiku-4-5-20251001-v1:0"
+
+# Task-specific LLM model overrides - Guidelines management
+# GenerateClauseExamples/LanguageModelId: "amazon.nova-pro-v1:0"
+# GenerateEvaluationQuestions/LanguageModelId: "amazon.nova-pro-v1:0"

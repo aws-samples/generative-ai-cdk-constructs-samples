@@ -1,0 +1,9 @@
+{
+    "JobId": "e8915388-855b-4c31-9442-b64be57432b4",
+    "ClauseNumber": 0,
+    "LegislationCheck": {
+        "legislationId": "cdc"
+    },
+    "OutputLanguage": "jp",
+    "ExecutionName": "manual-test-1"
+}

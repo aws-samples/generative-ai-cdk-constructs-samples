@@ -1,0 +1,777 @@
+{
+  "contract_types": {
+    "service-agreement-es": {
+      "name": "Acuerdo de Servicio",
+      "description": "Directrices para contratos de acuerdo de servicio",
+      "company_party_type": "Cliente",
+      "other_party_type": "Prestador de Servicios",
+      "high_risk_threshold": 0,
+      "medium_risk_threshold": 1,
+      "low_risk_threshold": 3,
+      "default_language": "es",
+      "is_active": true,
+      "guidelines": [
+        {
+          "clause_type_id": "1",
+          "name": "Estándares de Rendimiento",
+          "standard_wording": "El Prestador de Servicios ejecutará los Servicios de manera profesional, oportuna y diligente, consistente con los estándares de la industria y mejores prácticas, y de acuerdo con las especificaciones y requisitos establecidos en la Declaración de Trabajo.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula especifica que el Prestador de Servicios debe realizar los servicios de manera profesional?",
+            "¿La cláusula requiere que el Prestador de Servicios realice los servicios de manera oportuna?",
+            "¿La cláusula establece que el Prestador de Servicios debe realizar los servicios de manera diligente?",
+            "¿La cláusula indica que los servicios deben realizarse de acuerdo con los estándares de la industria?",
+            "¿La cláusula especifica que los servicios deben realizarse de acuerdo con las mejores prácticas?",
+            "¿La cláusula requiere que el Prestador de Servicios realice los servicios de acuerdo con las especificaciones establecidas en la Declaración de Trabajo?",
+            "¿La cláusula requiere que el Prestador de Servicios realice los servicios de acuerdo con los requisitos establecidos en la Declaración de Trabajo?"
+          ],
+          "examples": [
+            "El Prestador de Servicios desarrollará el sistema de software ERP de acuerdo con las especificaciones funcionales y técnicas descritas en la Declaración de Trabajo, adhiriéndose a las prácticas de codificación estándar de la industria, protocolos de seguridad y puntos de referencia de rendimiento.",
+            "El Prestador de Servicios ejecutará campañas de marketing y publicidad de manera profesional, utilizando mejores prácticas y estrategias probadas para maximizar el alcance y la efectividad de las campañas, según lo medido por los indicadores clave de rendimiento (KPI) especificados en la Declaración de Trabajo.",
+            "El Prestador de Servicios realizará servicios de gestión de instalaciones en cumplimiento con todas las leyes, regulaciones y estándares de la industria aplicables, asegurando que las instalaciones se mantengan en condiciones limpias, seguras y operativas en todo momento, cumpliendo con los requisitos de nivel de servicio descritos en la Declaración de Trabajo.",
+            "El Prestador de Servicios ejecutará los Servicios de manera profesional, oportuna y diligente, consistente con los estándares de la industria y mejores prácticas, y de acuerdo con las especificaciones y requisitos establecidos en la Declaración de Trabajo."
+          ]
+        },
+        {
+          "clause_type_id": "2",
+          "name": "Entregables",
+          "standard_wording": "El Prestador de Servicios proporcionará los entregables especificados en la Declaración de Trabajo (los \"Entregables\") de acuerdo con los cronogramas e hitos acordados.",
+          "level": "high",
+          "evaluation_questions": [
+            "¿La cláusula especifica que el Prestador de Servicios es responsable de proporcionar ciertos entregables?",
+            "¿La cláusula indica que los entregables a proporcionar están especificados en una Declaración de Trabajo?",
+            "¿La cláusula establece que el Prestador de Servicios debe proporcionar los entregables de acuerdo con los cronogramas acordados?",
+            "¿La cláusula establece que el Prestador de Servicios debe proporcionar los entregables de acuerdo con los hitos acordados?"
+          ],
+          "examples": [
+            "El Prestador de Servicios entregará los siguientes Entregables como parte del proyecto de desarrollo de software ERP: (a) Documentos detallados de diseño de software, (b) Código fuente y ejecutables compilados, (c) Manuales de usuario y documentación técnica, y (d) Scripts de prueba e informes.",
+            "El Prestador de Servicios entregará los siguientes Entregables como parte de la campaña de marketing y publicidad: (a) Estrategia y plan de marketing integral, (b) Activos creativos (por ejemplo, anuncios, videos, gráficos), (c) Informes detallados de rendimiento de campaña, y (d) Recomendaciones para la optimización futura de la campaña.",
+            "El Prestador de Servicios entregará los siguientes Entregables como parte de los servicios de gestión de instalaciones: (a) Informes de mantenimiento diarios, semanales y mensuales, (b) Informes de incidentes y documentación de resolución, (c) Informes de gestión de inventario y suministros, y (d) Evaluaciones periódicas del estado de las instalaciones.",
+            "El Prestador de Servicios proporcionará los Entregables especificados en la Declaración de Trabajo de acuerdo con los cronogramas e hitos acordados."
+          ]
+        },
+        {
+          "clause_type_id": "3",
+          "name": "Criterios de Aceptación",
+          "standard_wording": "La Empresa tendrá el derecho de revisar y probar los Entregables para asegurar que cumplan con los criterios de aceptación establecidos en la Declaración de Trabajo. Si cualquier Entregable no cumple con los criterios de aceptación, la Empresa puede rechazar dicho Entregable, y el Prestador de Servicios deberá remediar prontamente las deficiencias sin costo adicional para la Empresa.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula otorga a la empresa el derecho de revisar y probar los entregables?",
+            "¿La cláusula establece que la empresa puede rechazar entregables que no cumplan con los criterios de aceptación?",
+            "¿La cláusula requiere que el prestador de servicios remedie las deficiencias en los entregables rechazados sin costo adicional para la empresa?",
+            "¿La cláusula menciona que los criterios de aceptación están establecidos en una Declaración de Trabajo?"
+          ],
+          "examples": [
+            "El sistema de software ERP se considerará aceptado por la Empresa tras la finalización exitosa de las pruebas de aceptación del usuario, que incluirán la verificación de los requisitos funcionales, pruebas de rendimiento, pruebas de seguridad y pruebas de compatibilidad con los sistemas e infraestructura existentes de la Empresa.",
+            "Los Entregables de la campaña de marketing y publicidad se considerarán aceptados por la Empresa al cumplir con los KPI acordados, tales como tráfico del sitio web, generación de leads, tasas de conversión y objetivos de retorno de inversión (ROI) especificados en la Declaración de Trabajo.",
+            "Los servicios de gestión de instalaciones y los Entregables se considerarán aceptados por la Empresa tras una inspección satisfactoria y verificación de que los servicios se han realizado de acuerdo con los acuerdos de nivel de servicio, estándares de la industria y requisitos de la Empresa descritos en la Declaración de Trabajo.",
+            "La Empresa tendrá el derecho de revisar y probar los Entregables para asegurar que cumplan con los criterios de aceptación establecidos en la Declaración de Trabajo. Si cualquier Entregable no cumple con los criterios de aceptación, la Empresa puede rechazar dicho Entregable, y el Prestador de Servicios deberá remediar prontamente las deficiencias sin costo adicional para la Empresa."
+          ]
+        },
+        {
+          "clause_type_id": "4",
+          "name": "Transición e Implementación del Servicio",
+          "standard_wording": "El Prestador de Servicios cooperará con la Empresa y cualquier proveedor de servicios tercero para asegurar una transición e implementación fluida de los Servicios, incluyendo, pero no limitado a, proporcionar capacitación necesaria, documentación y transferencia de conocimiento.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula menciona que el Prestador de Servicios cooperará con la Empresa?",
+            "¿La cláusula menciona que el Prestador de Servicios cooperará con cualquier proveedor de servicios tercero?",
+            "¿La cláusula menciona que la cooperación es para asegurar una transición fluida de los Servicios?",
+            "¿La cláusula menciona que la cooperación es para asegurar una implementación fluida de los Servicios?",
+            "¿La cláusula menciona que la cooperación incluye proporcionar capacitación necesaria?",
+            "¿La cláusula menciona que la cooperación incluye proporcionar documentación necesaria?",
+            "¿La cláusula menciona que la cooperación incluye proporcionar transferencia de conocimiento necesaria?"
+          ],
+          "examples": [
+            "El Prestador de Servicios cooperará con el equipo de TI de la Empresa para asegurar una transición e implementación fluida del sistema de software ERP, incluyendo la realización de sesiones de capacitación, proporcionando documentación y asistiendo con actividades de migración de datos e integración de sistemas.",
+            "El Prestador de Servicios trabajará estrechamente con los equipos de marketing y ventas de la Empresa para asegurar una transición e implementación fluida de las campañas de marketing y publicidad, incluyendo compartir estrategias de campaña, proporcionar acceso a herramientas y plataformas de marketing, y coordinar la entrega de activos creativos y datos de campaña.",
+            "El Prestador de Servicios colaborará con el equipo de gestión de instalaciones de la Empresa y cualquier proveedor de servicios titular para asegurar una transición e implementación fluida de los servicios de gestión de instalaciones, incluyendo la realización de visitas al sitio, revisión de procedimientos y documentación existentes, y desarrollo de un plan de transición detallado.",
+            "El Prestador de Servicios cooperará con la Empresa y cualquier proveedor de servicios tercero para asegurar una transición e implementación fluida de los Servicios, incluyendo, pero no limitado a, proporcionar capacitación necesaria, documentación y transferencia de conocimiento."
+          ]
+        },
+        {
+          "clause_type_id": "5",
+          "name": "Plazo y Terminación",
+          "standard_wording": "a. Vigencia: Este Contrato entrará en vigor en la Fecha de Inicio y continuará por el plazo especificado en la Declaración de Trabajo, a menos que se termine antes de acuerdo con esta Sección. b. Terminación por Conveniencia: Cualquier Parte puede terminar este Contrato por conveniencia mediante aviso previo por escrito de 30 días naturales a la otra Parte. c. Terminación por Causa Justificada: Cualquier Parte puede terminar este Contrato por causa justificada si la otra Parte incumple materialmente este Contrato y no subsana dicho incumplimiento dentro de 15 días naturales después de recibir notificación escrita del mismo. d. Efecto de la Terminación: Al terminar este Contrato, el Prestador de Servicios entregará prontamente a la Empresa todos los Entregables y trabajo en progreso, y la Empresa pagará al Prestador de Servicios por todos los Servicios realizados y aceptados hasta la fecha efectiva de terminación.",
+          "level": "high",
+          "evaluation_questions": [
+            "¿La cláusula especifica cuándo comienza el contrato?",
+            "¿La cláusula menciona que el contrato continuará por un plazo especificado?",
+            "¿La cláusula indica que el contrato puede terminarse antes bajo ciertas condiciones?",
+            "¿La cláusula hace referencia a un documento separado llamado \"Declaración de Trabajo\" para especificar el plazo del contrato?"
+          ],
+          "examples": [
+            "Este Contrato comenzará en la Fecha de Inicio y permanecerá en vigor por un período de 12 meses, durante el cual el Prestador de Servicios completará el desarrollo e implementación del sistema de software ERP, a menos que se termine antes de acuerdo con las disposiciones de terminación descritas en este documento.",
+            "Este Contrato tendrá un plazo inicial de 3 años, durante el cual el Prestador de Servicios proporcionará servicios continuos de marketing y publicidad a la Empresa. Cualquier Parte puede terminar este Contrato por conveniencia mediante aviso previo por escrito de 90 días, o por causa justificada en caso de un incumplimiento material que permanezca sin subsanar después de 30 días de aviso por escrito.",
+            "Este Contrato será efectivo por un período de 5 años, con renovación automática por períodos sucesivos de 2 años a menos que cualquier Parte proporcione aviso por escrito de no renovación al menos 180 días antes de la expiración del plazo vigente. La Empresa puede terminar este Contrato por conveniencia mediante aviso previo por escrito de 120 días, sujeto al pago de cualquier tarifa de terminación anticipada aplicable.",
+            "a. Vigencia: Este Contrato entrará en vigor en la Fecha de Inicio y continuará por el plazo especificado en la Declaración de Trabajo, a menos que se termine antes de acuerdo con esta Sección.\nb. Terminación por Conveniencia: Cualquier Parte puede terminar este Contrato por conveniencia mediante aviso previo por escrito de [X] días a la otra Parte.\nc. Terminación por Causa Justificada: Cualquier Parte puede terminar este Contrato por causa justificada si la otra Parte incumple materialmente este Contrato y no subsana dicho incumplimiento dentro de [X] días después de recibir notificación escrita del mismo.\nd. Efecto de la Terminación: Al terminar este Contrato, el Prestador de Servicios entregará prontamente a la Empresa todos los Entregables y trabajo en progreso, y la Empresa pagará al Prestador de Servicios por todos los Servicios realizados y aceptados hasta la fecha efectiva de terminación."
+          ]
+        },
+        {
+          "clause_type_id": "6",
+          "name": "Renovación y Extensión",
+          "standard_wording": "Este Contrato puede ser renovado o prorrogado por acuerdo mutuo escrito de las Partes, sujeto a los mismos términos y condiciones u otros términos que puedan ser acordados por las Partes.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula menciona la posibilidad de renovar o prorrogar el contrato?",
+            "¿La cláusula establece que la renovación o prórroga requiere acuerdo mutuo por escrito entre las partes?",
+            "¿La cláusula indica que la renovación o prórroga estaría sujeta a los mismos términos y condiciones que el contrato actual?",
+            "¿La cláusula permite la posibilidad de diferentes términos y condiciones en la renovación o prórroga, si las partes lo acuerdan?"
+          ],
+          "examples": [
+            "Al completar el proyecto inicial de desarrollo de software ERP, este Contrato puede ser renovado o prorrogado por acuerdo mutuo escrito de las Partes para cubrir servicios adicionales de desarrollo de software o mantenimiento, sujeto a los mismos términos y condiciones u otros términos que puedan ser acordados por las Partes.",
+            "Este Contrato puede ser renovado por períodos adicionales de 2 años mediante acuerdo mutuo escrito de las Partes, siempre que el Prestador de Servicios ofrezca a la Empresa precios y términos que sean al menos tan favorables como los ofrecidos a cualquier otro cliente para servicios similares durante el período de renovación.",
+            "Si la Empresa desea extender el plazo de este Contrato más allá del período inicial de 5 años, las Partes negociarán de buena fe para acordar precios y términos revisados para el plazo extendido, tomando en consideración cualquier cambio en las condiciones del mercado, requisitos de servicio u otros factores relevantes.",
+            "Este Contrato puede ser renovado o prorrogado por acuerdo mutuo escrito de las Partes, sujeto a los mismos términos y condiciones u otros términos que puedan ser acordados por las Partes."
+          ]
+        },
+        {
+          "clause_type_id": "7",
+          "name": "Honorarios",
+          "standard_wording": "a. Honorarios: La Empresa pagará al Prestador de Servicios los honorarios especificados en la Declaración de Trabajo de acuerdo con el cronograma de pagos establecido en la misma. b. Facturación: El Prestador de Servicios presentará facturas a la Empresa de acuerdo con las instrucciones de facturación proporcionadas en la Declaración de Trabajo. La Empresa pagará todas las facturas no disputadas dentro de 30 días naturales de su recepción. c. Gastos: A menos que se especifique lo contrario en la Declaración de Trabajo, el Prestador de Servicios será responsable de todos los gastos incurridos en la realización de los Servicios. Si se permite el reembolso de gastos, el Prestador de Servicios proporcionará documentación detallada y comprobantes fiscales para todos los gastos reembolsables.",
+          "level": "high",
+          "evaluation_questions": [
+            "¿La cláusula especifica que la empresa pagará honorarios al prestador de servicios?",
+            "¿La cláusula menciona una declaración de trabajo que especifica los honorarios a pagar?",
+            "¿La cláusula indica que el cronograma de pagos está establecido en la declaración de trabajo?",
+            "¿La cláusula establece que la empresa pagará los honorarios de acuerdo con el cronograma de pagos?"
+          ],
+          "examples": [
+            "La Empresa pagará al Prestador de Servicios un honorario fijo de $500,000 por el desarrollo e implementación del sistema de software ERP, pagadero en 4 cuotas al lograr los hitos especificados en la Declaración de Trabajo.",
+            "El Prestador de Servicios será compensado sobre una base de comisión, recibiendo el 15% del gasto total de publicidad por cada campaña de marketing y publicidad ejecutada en nombre de la Empresa.",
+            "La Empresa pagará al Prestador de Servicios un honorario mensual de $75,000 por la provisión de servicios de gestión de instalaciones, sujeto a ajustes anuales basados en cambios en el Índice de Precios al Consumidor (IPC) u otros índices de precios acordados.",
+            "La Empresa pagará al Prestador de Servicios los honorarios especificados en la Declaración de Trabajo de acuerdo con el cronograma de pagos establecido en la misma."
+          ]
+        },
+        {
+          "clause_type_id": "8",
+          "name": "Facturación",
+          "standard_wording": "a. Honorarios: La Empresa pagará al Prestador de Servicios los honorarios especificados en la Declaración de Trabajo de acuerdo con el cronograma de pagos establecido en la misma. b. Facturación: El Prestador de Servicios presentará facturas a la Empresa de acuerdo con las instrucciones de facturación proporcionadas en la Declaración de Trabajo. La Empresa pagará todas las facturas no disputadas dentro de 30 días naturales de su recepción. c. Gastos: A menos que se especifique lo contrario en la Declaración de Trabajo, el Prestador de Servicios será responsable de todos los gastos incurridos en la realización de los Servicios. Si se permite el reembolso de gastos, el Prestador de Servicios proporcionará documentación detallada y comprobantes fiscales para todos los gastos reembolsables.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula especifica que el Prestador de Servicios presentará facturas a la Empresa?",
+            "¿La cláusula menciona que las facturas deben presentarse de acuerdo con las instrucciones de facturación proporcionadas en una Declaración de Trabajo?",
+            "¿La cláusula establece que la Empresa pagará las facturas no disputadas?",
+            "¿La cláusula especifica un período de tiempo dentro del cual la Empresa pagará las facturas no disputadas después de su recepción?"
+          ],
+          "examples": [
+            "El Prestador de Servicios presentará facturas a la Empresa al lograr cada hito especificado en la Declaración de Trabajo, y la Empresa realizará el pago dentro de 30 días de la recepción de una factura válida.",
+            "El Prestador de Servicios facturará a la Empresa mensualmente por los honorarios de comisión ganados durante el mes anterior, proporcionando informes detallados y documentación de respaldo para el gasto de publicidad y el rendimiento de la campaña. La Empresa realizará el pago dentro de 45 días de la recepción de una factura válida.",
+            "El Prestador de Servicios presentará facturas mensuales a la Empresa antes del día 5 de cada mes por los servicios de gestión de instalaciones prestados durante el mes anterior. La Empresa realizará el pago dentro de 60 días de la recepción de una factura válida.",
+            "El Prestador de Servicios presentará facturas a la Empresa de acuerdo con las instrucciones de facturación proporcionadas en la Declaración de Trabajo. La Empresa pagará todas las facturas no disputadas dentro de [X] días de su recepción."
+          ]
+        },
+        {
+          "clause_type_id": "9",
+          "name": "Gastos",
+          "standard_wording": "a. Honorarios: La Empresa pagará al Prestador de Servicios los honorarios especificados en la Declaración de Trabajo de acuerdo con el cronograma de pagos establecido en la misma. b. Facturación: El Prestador de Servicios presentará facturas a la Empresa de acuerdo con las instrucciones de facturación proporcionadas en la Declaración de Trabajo. La Empresa pagará todas las facturas no disputadas dentro de 30 días naturales de su recepción. c. Gastos: A menos que se especifique lo contrario en la Declaración de Trabajo, el Prestador de Servicios será responsable de todos los gastos incurridos en la realización de los Servicios. Si se permite el reembolso de gastos, el Prestador de Servicios proporcionará documentación detallada y comprobantes fiscales para todos los gastos reembolsables.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula especifica que el Prestador de Servicios es responsable de todos los gastos incurridos en la realización de los Servicios, a menos que se indique lo contrario en la Declaración de Trabajo?",
+            "¿La cláusula establece que si se permite el reembolso de gastos, el Prestador de Servicios debe proporcionar documentación detallada y comprobantes para todos los gastos reembolsables?"
+          ],
+          "examples": [
+            "El Prestador de Servicios será responsable de todos los gastos incurridos en la realización de los servicios de desarrollo de software, incluyendo pero no limitado a costos de personal, equipo, licencias de software y gastos de viaje, a menos que se acuerde lo contrario por escrito por las Partes.",
+            "La Empresa será responsable de todos los costos de publicidad de terceros, tales como compras de medios, patrocinios y materiales promocionales, mientras que el Prestador de Servicios será responsable de sus gastos internos relacionados con la planificación, ejecución y gestión de las campañas de marketing y publicidad.",
+            "El Prestador de Servicios será responsable de todos los gastos rutinarios asociados con la provisión de servicios de gestión de instalaciones, tales como costos laborales, suministros consumibles y mantenimiento de equipos. Cualquier gasto no rutinario o de capital que exceda $50,000 requerirá aprobación previa por escrito de la Empresa.",
+            "A menos que se especifique lo contrario en la Declaración de Trabajo, el Prestador de Servicios será responsable de todos los gastos incurridos en la realización de los Servicios. Si se permite el reembolso de gastos, el Prestador de Servicios proporcionará documentación detallada y comprobantes para todos los gastos reembolsables, y la Empresa reembolsará dichos gastos de acuerdo con sus políticas de reembolso de gastos."
+          ]
+        },
+        {
+          "clause_type_id": "10",
+          "name": "Impuestos",
+          "standard_wording": "Cada Parte será responsable de pagar cualquier impuesto aplicable, contribuciones u otros cargos impuestos por cualquier autoridad fiscal en conexión con la ejecución de este Contrato, incluyendo IVA, ISR, IEPS y demás contribuciones conforme al Código Fiscal de la Federación y demás legislación tributaria mexicana aplicable. El Prestador de Servicios debe emitir comprobantes fiscales digitales (CFDI) conforme a los requisitos del SAT.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula establece que cada parte es responsable de pagar los impuestos, contribuciones u otros cargos aplicables impuestos por cualquier autoridad gubernamental en conexión con la ejecución del contrato?",
+            "¿La cláusula menciona impuestos específicos aplicables según la legislación tributaria mexicana?",
+            "¿La cláusula requiere que el Prestador de Servicios emita comprobantes fiscales digitales conforme a los requisitos del SAT?"
+          ],
+          "examples": [
+            "Cada Parte será únicamente responsable de pagar cualquier impuesto, contribución u otro cargo aplicable impuesto por cualquier autoridad gubernamental en conexión con la ejecución de este Contrato, incluyendo pero no limitado a impuestos sobre la renta, impuestos sobre ventas e impuestos al valor agregado.",
+            "La Empresa será responsable de pagar cualquier impuesto sobre ventas, impuesto sobre el uso u otros impuestos basados en transacciones impuestos sobre el gasto de publicidad o servicios de marketing proporcionados por el Prestador de Servicios. El Prestador de Servicios será responsable de pagar cualquier impuesto sobre la renta u otros impuestos impuestos sobre sus ganancias bajo este Contrato.",
+            "El Prestador de Servicios será responsable de pagar todos los impuestos, contribuciones y cargos impuestos por cualquier autoridad gubernamental en conexión con la provisión de servicios de gestión de instalaciones, incluyendo pero no limitado a impuestos sobre nómina, impuestos sobre la renta e impuestos sobre la propiedad. La Empresa será responsable de pagar cualquier impuesto sobre ventas o impuesto sobre el uso aplicable impuesto sobre los servicios prestados por el Prestador de Servicios.",
+            "Cada Parte será responsable de pagar cualquier impuesto aplicable, contribuciones u otros cargos impuestos por cualquier autoridad gubernamental en conexión con la ejecución de este Contrato. Si el Prestador de Servicios está obligado a cobrar o remitir impuestos en nombre de la Empresa, el Prestador de Servicios indicará dichos impuestos por separado en sus facturas, y la Empresa pagará dichos impuestos además de los honorarios por los Servicios."
+          ]
+        },
+        {
+          "clause_type_id": "11",
+          "name": "Créditos de Servicio y Descuentos por Nivel de Servicio",
+          "standard_wording": "Si el Prestador de Servicios no logra cumplir con los niveles de servicio o estándares de rendimiento especificados en la Declaración de Trabajo, la Empresa tendrá derecho a los créditos de servicio o descuentos por nivel de servicio establecidos en la misma.",
+          "level": "high",
+          "evaluation_questions": [
+            "¿La cláusula menciona un Prestador de Servicios?",
+            "¿La cláusula menciona una Empresa?",
+            "¿La cláusula menciona niveles de servicio o estándares de rendimiento?",
+            "¿La cláusula menciona que la Empresa tiene derecho a créditos de servicio o descuentos por nivel de servicio si el Prestador de Servicios no cumple con los niveles de servicio o estándares de rendimiento especificados?",
+            "¿La cláusula especifica que los créditos de servicio o descuentos por nivel de servicio están establecidos en la Declaración de Trabajo?"
+          ],
+          "examples": [
+            "Si el sistema de software ERP no cumple con los requisitos de rendimiento o disponibilidad especificados en la Declaración de Trabajo, la Empresa tendrá derecho a créditos de servicio equivalentes al 5% de los honorarios mensuales de mantenimiento de software por cada 1% de tiempo de inactividad o degradación del rendimiento por debajo de los niveles de servicio acordados.",
+            "En el caso de que el Prestador de Servicios no logre los KPI o objetivos de rendimiento acordados para una campaña particular de marketing o publicidad, la Empresa tendrá derecho a un descuento por nivel de servicio equivalente al 10% de los honorarios de comisión ganados por el Prestador de Servicios para esa campaña.",
+            "Si el Prestador de Servicios no cumple con los requisitos de nivel de servicio descritos en la Declaración de Trabajo, tales como tiempos de respuesta para solicitudes de mantenimiento o estándares de limpieza de instalaciones, la Empresa tendrá derecho a créditos de servicio o descuentos calculados como el 3% de los honorarios mensuales de gestión de instalaciones, basados en la gravedad y duración del incumplimiento del nivel de servicio.",
+            "Si el Prestador de Servicios no logra cumplir con los niveles de servicio o estándares de rendimiento especificados en la Declaración de Trabajo, la Empresa tendrá derecho a los créditos de servicio o descuentos por nivel de servicio establecidos en la misma."
+          ]
+        },
+        {
+          "clause_type_id": "12",
+          "name": "Propiedad Intelectual Preexistente",
+          "standard_wording": "Cada Parte mantendrá la propiedad de sus respectivos derechos de propiedad intelectual preexistentes, incluyendo, pero no limitado a, patentes, derechos de autor, marcas y secretos industriales. Cualquier nueva propiedad intelectual desarrollada en el curso de realizar los Servicios será propiedad de la Empresa, a menos que se especifique lo contrario en la Declaración de Trabajo, conforme a la Ley Federal del Derecho de Autor y la Ley de la Propiedad Industrial.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula especifica que cada parte retiene la propiedad de sus derechos de propiedad intelectual preexistentes?",
+            "¿La cláusula menciona que los derechos de propiedad intelectual preexistentes incluyen patentes, derechos de autor, marcas y secretos industriales?",
+            "¿La cláusula establece que cualquier nueva propiedad intelectual desarrollada durante la realización de los servicios será propiedad de la empresa?",
+            "¿La cláusula permite excepciones a la propiedad de la nueva propiedad intelectual, si se especifica en una Declaración de Trabajo separada?"
+          ],
+          "examples": [
+            "Cualquier derecho de propiedad intelectual preexistente, incluyendo pero no limitado a software, herramientas, bibliotecas o metodologías, propiedad o licenciado por cualquier Parte antes de la Fecha de Inicio, permanecerá como propiedad única y exclusiva de esa Parte. Cualquier nueva propiedad intelectual desarrollada por el Prestador de Servicios en el curso de proporcionar los servicios de desarrollo de software será propiedad de la Empresa, a menos que se acuerde lo contrario por escrito por las Partes.",
+            "Cada Parte retendrá la propiedad de sus respectivos derechos de propiedad intelectual preexistentes, incluyendo pero no limitado a marcas, derechos de autor y secretos industriales. Cualquier nueva obra creativa o material de marketing desarrollado por el Prestador de Servicios específicamente para las campañas de marketing y publicidad de la Empresa se considerará \"obra por encargo\" y será propiedad de la Empresa.",
+            "El Prestador de Servicios retendrá la propiedad de cualquier derecho de propiedad intelectual preexistente relacionado con sus procesos, metodologías o tecnologías propietarias utilizadas en la provisión de servicios de gestión de instalaciones. Cualquier nueva propiedad intelectual desarrollada conjuntamente por las Partes en el curso de este Contrato será propiedad de la Empresa, a menos que se acuerde lo contrario por escrito.",
+            "Cada Parte retendrá la propiedad de sus respectivos derechos de propiedad intelectual preexistentes, incluyendo, pero no limitado a, patentes, derechos de autor, marcas y secretos industriales. Cualquier nueva propiedad intelectual desarrollada en el curso de realizar los Servicios será propiedad de la Empresa, a menos que se especifique lo contrario en la Declaración de Trabajo."
+          ]
+        },
+        {
+          "clause_type_id": "13",
+          "name": "Confidencialidad",
+          "standard_wording": "a. Información Confidencial: Cada Parte puede divulgar a la otra Parte cierta información no pública relacionada con su negocio, productos, servicios u operaciones (\"Información Confidencial\"). La Información Confidencial no incluirá información que: (i) es o se vuelve públicamente disponible sin culpa de la Parte receptora; (ii) es legítimamente recibida por la Parte receptora de un tercero sin violación de cualquier obligación de confidencialidad; (iii) es desarrollada independientemente por la Parte receptora sin uso de la Información Confidencial de la Parte divulgadora; o (iv) ya era conocida por la Parte receptora antes de la divulgación por la Parte divulgadora. b. No Divulgación: La Parte receptora deberá: (i) usar el mismo grado de cuidado para proteger la Información Confidencial que usa para proteger su propia información confidencial de naturaleza similar, pero en ningún caso menos que cuidado razonable; (ii) no usar la Información Confidencial para ningún propósito distinto al cumplimiento de sus obligaciones bajo este Contrato; y (iii) no divulgar la Información Confidencial a terceros, excepto a sus empleados, agentes o contratistas que tengan necesidad de conocer y estén obligados por obligaciones de confidencialidad al menos tan protectivas como las establecidas aquí.",
+          "level": "high",
+          "evaluation_questions": [
+            "¿La cláusula define qué constituye Información Confidencial?",
+            "¿La cláusula especifica que la Información Confidencial excluye información que es públicamente disponible sin culpa de la parte receptora?",
+            "¿La cláusula especifica que la Información Confidencial excluye información legítimamente recibida de un tercero sin violación de confidencialidad?",
+            "¿La cláusula especifica que la Información Confidencial excluye información desarrollada independientemente por la parte receptora sin usar la Información Confidencial de la parte divulgadora?",
+            "¿La cláusula especifica que la Información Confidencial excluye información ya conocida por la parte receptora antes de la divulgación por la parte divulgadora?"
+          ],
+          "examples": [
+            "Durante el curso de este Contrato, cada Parte puede divulgar a la otra Parte cierta Información Confidencial relacionada con su negocio, productos o servicios. La Parte receptora deberá: (a) usar la Información Confidencial únicamente para los propósitos de cumplir sus obligaciones bajo este Contrato; (b) proteger la Información Confidencial usando el mismo grado de cuidado que usa para proteger su propia información confidencial, pero en ningún caso menos que cuidado razonable; y (c) no divulgar la Información Confidencial a terceros sin el consentimiento previo por escrito de la Parte divulgadora, excepto según lo requerido por ley u orden judicial.",
+            "El Prestador de Servicios reconoce que, en el curso de proporcionar servicios de marketing y publicidad a la Empresa, puede tener acceso a la Información Confidencial de la Empresa, incluyendo pero no limitado a datos de clientes, estrategias de marketing e información financiera. El Prestador de Servicios mantendrá la confidencialidad de dicha información y no la divulgará ni usará para ningún propósito distinto al cumplimiento de sus obligaciones bajo este Contrato.",
+            "Cada Parte tratará como confidencial toda información no pública divulgada por la otra Parte en conexión con este Contrato, incluyendo pero no limitado a diseños de instalaciones, protocolos de seguridad y procesos propietarios. La Parte receptora usará dicha Información Confidencial únicamente para los propósitos de cumplir sus obligaciones bajo este Contrato y no la divulgará a terceros sin el consentimiento previo por escrito de la Parte divulgadora, excepto según lo requerido por ley u orden judicial.",
+            "Cada Parte puede divulgar a la otra Parte cierta información no pública relacionada con su negocio, productos, servicios u operaciones (\"Información Confidencial\"). La Información Confidencial no incluirá información que: (i) es o se vuelve públicamente disponible sin culpa de la Parte receptora; (ii) es legítimamente recibida por la Parte receptora de un tercero sin violación de cualquier obligación de confidencialidad; (iii) es desarrollada independientemente por la Parte receptora sin uso de la Información Confidencial de la Parte divulgadora; o (iv) ya era conocida por la Parte receptora antes de la divulgación por la Parte divulgadora, según lo evidenciado por registros escritos."
+          ]
+        },
+        {
+          "clause_type_id": "14",
+          "name": "No Divulgación",
+          "standard_wording": "a. Información Confidencial: Cada Parte puede divulgar a la otra Parte cierta información no pública relacionada con su negocio, productos, servicios u operaciones (\"Información Confidencial\"). La Información Confidencial no incluirá información que: (i) es o se vuelve públicamente disponible sin culpa de la Parte receptora; (ii) es legítimamente recibida por la Parte receptora de un tercero sin violación de cualquier obligación de confidencialidad; (iii) es desarrollada independientemente por la Parte receptora sin uso de la Información Confidencial de la Parte divulgadora; o (iv) ya era conocida por la Parte receptora antes de la divulgación por la Parte divulgadora. b. No Divulgación: La Parte receptora deberá: (i) usar el mismo grado de cuidado para proteger la Información Confidencial que usa para proteger su propia información confidencial de naturaleza similar, pero en ningún caso menos que cuidado razonable; (ii) no usar la Información Confidencial para ningún propósito distinto al cumplimiento de sus obligaciones bajo este Contrato; y (iii) no divulgar la Información Confidencial a terceros, excepto a sus empleados, agentes o contratistas que tengan necesidad de conocer y estén obligados por obligaciones de confidencialidad al menos tan protectivas como las establecidas aquí.",
+          "level": "high",
+          "evaluation_questions": [
+            "¿La cláusula requiere que la parte receptora use al menos cuidado razonable para proteger la información confidencial?",
+            "¿La cláusula prohíbe a la parte receptora usar la información confidencial para cualquier propósito distinto al cumplimiento de las obligaciones bajo el contrato?",
+            "¿La cláusula permite a la parte receptora divulgar la información confidencial a sus empleados, agentes o contratistas que tengan necesidad de conocer y estén obligados por obligaciones de confidencialidad al menos tan protectivas como las establecidas en la cláusula?"
+          ],
+          "examples": [
+            "Ninguna Parte divulgará ni usará la Información Confidencial de la otra Parte para ningún propósito distinto al necesario para cumplir sus obligaciones bajo este Contrato. La Parte receptora no divulgará la Información Confidencial a terceros, excepto a sus empleados, agentes o subcontratistas que tengan necesidad de conocer y estén obligados por obligaciones de confidencialidad al menos tan protectivas como las establecidas aquí.",
+            "El Prestador de Servicios no divulgará ni usará la Información Confidencial de la Empresa, incluyendo pero no limitado a datos de clientes, estrategias de marketing e información financiera, para ningún propósito distinto al cumplimiento de sus obligaciones bajo este Contrato. El Prestador de Servicios asegurará que sus empleados, agentes y subcontratistas que tengan acceso a dicha Información Confidencial estén obligados por obligaciones de confidencialidad al menos tan protectivas como las establecidas aquí.",
+            "Cada Parte no divulgará ni usará la Información Confidencial de la otra Parte, incluyendo pero no limitado a datos técnicos, información financiera, estrategias de negocio y datos de clientes, para ningún propósito distinto al cumplimiento de sus obligaciones bajo este Contrato. La Parte receptora asegurará que sus empleados, agentes y subcontratistas que tengan acceso a dicha Información Confidencial estén obligados por obligaciones de confidencialidad al menos tan protectivas como las establecidas aquí.",
+            "La Parte receptora deberá: (i) usar el mismo grado de cuidado para proteger la Información Confidencial que usa para proteger su propia información confidencial de naturaleza similar, pero en ningún caso menos que cuidado razonable; (ii) no usar la Información Confidencial para ningún propósito distinto al cumplimiento de sus obligaciones bajo este Contrato; y (iii) no divulgar la Información Confidencial a terceros, excepto a sus empleados, agentes o contratistas que tengan necesidad de conocer y estén obligados por obligaciones de confidencialidad al menos tan protectivas como las establecidas aquí."
+          ]
+        },
+        {
+          "clause_type_id": "15",
+          "name": "Declaraciones y Garantías",
+          "standard_wording": "Declaraciones y Garantías del Prestador de Servicios: El Prestador de Servicios declara y garantiza que: (i) tiene las habilidades, calificaciones y experiencia necesarias para realizar los Servicios; (ii) los Servicios se realizarán de manera profesional y diligente; (iii) los Entregables cumplirán con las especificaciones y requisitos establecidos en la Declaración de Trabajo; y (iv) los Entregables no infringirán ningún derecho de propiedad intelectual de terceros.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula establece que el Prestador de Servicios tiene las habilidades, calificaciones y experiencia necesarias para realizar los Servicios?",
+            "¿La cláusula establece que los Servicios se realizarán de manera profesional y diligente?",
+            "¿La cláusula establece que los Entregables cumplirán con las especificaciones y requisitos establecidos en la Declaración de Trabajo?",
+            "¿La cláusula establece que los Entregables no infringirán ningún derecho de propiedad intelectual de terceros?"
+          ],
+          "examples": [
+            "El Prestador de Servicios declara y garantiza que: (a) tiene las habilidades, experiencia y recursos necesarios para desarrollar e implementar el sistema de software ERP de acuerdo con las especificaciones y requisitos establecidos en la Declaración de Trabajo; (b) el software y los Entregables proporcionados bajo este Contrato estarán libres de defectos materiales y cumplirán con los estándares de la industria y mejores prácticas; y (c) el software y los Entregables no infringirán ningún derecho de propiedad intelectual de terceros.",
+            "El Prestador de Servicios declara y garantiza que: (a) tiene la experiencia, conocimiento y recursos necesarios para planificar, ejecutar y gestionar campañas efectivas de marketing y publicidad en nombre de la Empresa; (b) todas las obras creativas y materiales de marketing desarrollados por el Prestador de Servicios serán originales y no infringirán ningún derecho de propiedad intelectual de terceros; y (c) el Prestador de Servicios cumplirá con todas las leyes, regulaciones y estándares de la industria aplicables relacionados con prácticas de publicidad y marketing.",
+            "El Prestador de Servicios declara y garantiza que: (a) tiene las licencias, permisos y calificaciones necesarias para proporcionar servicios de gestión de instalaciones en cumplimiento con todas las leyes y regulaciones aplicables; (b) su personal está debidamente capacitado, calificado y experimentado para realizar los servicios de manera profesional y diligente; y (c) mantendrá cobertura de seguro adecuada, incluyendo pero no limitado a responsabilidad general, compensación de trabajadores y seguro de responsabilidad profesional, durante el plazo de este Contrato.",
+            "El Prestador de Servicios declara y garantiza que: (i) tiene las habilidades, calificaciones y experiencia necesarias para realizar los Servicios; (ii) los Servicios se realizarán de manera profesional y diligente; (iii) los Entregables cumplirán con las especificaciones y requisitos establecidos en la Declaración de Trabajo; y (iv) los Entregables no infringirán ningún derecho de propiedad intelectual de terceros."
+          ]
+        },
+        {
+          "clause_type_id": "16",
+          "name": "Indemnización",
+          "standard_wording": "El Prestador de Servicios indemnizará, defenderá y mantendrá en paz y a salvo a la Empresa, sus afiliadas y sus respectivos funcionarios, consejeros, empleados y agentes de y contra cualquier reclamación, demanda, juicio, acción, procedimiento, pérdida, responsabilidad, daño, costo y gasto (incluyendo honorarios razonables de abogados) que surja de o se relacione con: (i) cualquier incumplimiento de este Contrato por el Prestador de Servicios; (ii) cualquier acto u omisión negligente o dolosa por el Prestador de Servicios o sus empleados, agentes o subcontratistas en la realización de los Servicios; o (iii) cualquier alegación de que los Entregables o Servicios infringen derechos de propiedad intelectual de terceros.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula requiere que el Prestador de Servicios indemnice a la Empresa?",
+            "¿La cláusula requiere que el Prestador de Servicios defienda a la Empresa?",
+            "¿La cláusula requiere que el Prestador de Servicios mantenga en paz y a salvo a la Empresa?",
+            "¿La cláusula cubre a las afiliadas de la Empresa además de la Empresa misma?",
+            "¿La cláusula cubre a los funcionarios, consejeros, empleados y agentes de la Empresa y sus afiliadas?",
+            "¿La cláusula cubre reclamaciones, demandas, juicios, acciones, procedimientos, pérdidas, responsabilidades, daños, costos y gastos (incluyendo honorarios razonables de abogados)?",
+            "¿La cláusula cubre situaciones que surjan de o se relacionen con un incumplimiento del Contrato por el Prestador de Servicios?",
+            "¿La cláusula cubre situaciones que surjan de o se relacionen con cualquier acto u omisión negligente o dolosa por el Prestador de Servicios o sus empleados, agentes o subcontratistas en la realización de los Servicios?",
+            "¿La cláusula cubre situaciones que surjan de o se relacionen con cualquier alegación de que los Entregables o Servicios infringen derechos de propiedad intelectual de terceros?"
+          ],
+          "examples": [
+            "El Prestador de Servicios indemnizará, defenderá y mantendrá en paz y a salvo a la Empresa, sus afiliadas y sus respectivos funcionarios, consejeros, empleados y agentes de y contra cualquier reclamación, demanda, juicio, acción, procedimiento, pérdida, responsabilidad, daño, costo y gasto (incluyendo honorarios razonables de abogados) que surja de o se relacione con: (a) cualquier incumplimiento de este Contrato por el Prestador de Servicios; (b) cualquier acto u omisión negligente o dolosa por el Prestador de Servicios o su personal en la realización de los servicios de desarrollo de software; o (c) cualquier alegación de que el sistema de software ERP o los Entregables infringen derechos de propiedad intelectual de terceros.",
+            "La Empresa indemnizará, defenderá y mantendrá en paz y a salvo al Prestador de Servicios, sus afiliadas y sus respectivos funcionarios, consejeros, empleados y agentes de y contra cualquier reclamación, demanda, juicio, acción, procedimiento, pérdida, responsabilidad, daño, costo y gasto (incluyendo honorarios razonables de abogados) que surja de o se relacione con: (a) cualquier incumplimiento de este Contrato por la Empresa; (b) cualquier alegación de que los productos, servicios o marcas de la Empresa utilizados en las campañas de marketing y publicidad infringen derechos de propiedad intelectual de terceros; o (c) cualquier reclamación o acción presentada por terceros relacionada con el contenido o tema de las campañas de marketing y publicidad.",
+            "Cada Parte indemnizará, defenderá y mantendrá en paz y a salvo a la otra Parte, sus afiliadas y sus respectivos funcionarios, consejeros, empleados y agentes de y contra cualquier reclamación, demanda, juicio, acción, procedimiento, pérdida, responsabilidad, daño, costo y gasto (incluyendo honorarios razonables de abogados) que surja de o se relacione con: (a) cualquier incumplimiento de este Contrato por la Parte indemnizante; (b) cualquier acto u omisión negligente o dolosa por la Parte indemnizante o su personal en el cumplimiento de sus obligaciones bajo este Contrato; o (c) cualquier lesión corporal, daño a la propiedad u otras reclamaciones de terceros causadas por la Parte indemnizante o su personal en el curso de proporcionar o recibir los servicios de gestión de instalaciones.",
+            "El Prestador de Servicios indemnizará, defenderá y mantendrá en paz y a salvo a la Empresa, sus afiliadas y sus respectivos funcionarios, consejeros, empleados y agentes de y contra cualquier reclamación, demanda, juicio, acción, procedimiento, pérdida, responsabilidad, daño, costo y gasto (incluyendo honorarios razonables de abogados) que surja de o se relacione con: (i) cualquier incumplimiento de este Contrato por el Prestador de Servicios; (ii) cualquier acto u omisión negligente o dolosa por el Prestador de Servicios o sus empleados, agentes o subcontratistas en la realización de los Servicios; o (iii) cualquier alegación de que los Entregables o Servicios infringen derechos de propiedad intelectual de terceros."
+          ]
+        },
+        {
+          "clause_type_id": "17",
+          "name": "Limitación de Responsabilidad",
+          "standard_wording": "EXCEPTO POR RECLAMACIONES QUE SURJAN DE LAS OBLIGACIONES DE INDEMNIZACIÓN DE UNA PARTE, NEGLIGENCIA GRAVE O DOLO, EN NINGÚN EVENTO CUALQUIER PARTE SERÁ RESPONSABLE ANTE LA OTRA PARTE POR DAÑOS INDIRECTOS, INCIDENTALES, ESPECIALES, PUNITIVOS O CONSECUENCIALES, INCLUYENDO, PERO NO LIMITADO A, LUCRO CESANTE, PÉRDIDA DE INGRESOS O INTERRUPCIÓN DEL NEGOCIO, AUN SI SE LE ADVIRTIÓ DE LA POSIBILIDAD DE TALES DAÑOS.",
+          "level": "high",
+          "evaluation_questions": [
+            "¿La cláusula limita la responsabilidad de ambas partes por ciertos tipos de daños?",
+            "¿La cláusula excluye la responsabilidad por daños indirectos, incidentales, especiales, punitivos o consecuenciales?",
+            "¿La cláusula proporciona ejemplos de los tipos de daños excluidos, tales como lucro cesante, pérdida de ingresos o interrupción del negocio?",
+            "¿La cláusula hace una excepción para reclamaciones que surjan de las obligaciones de indemnización de una parte, negligencia grave o dolo?",
+            "¿La cláusula establece que la limitación de responsabilidad aplica incluso si se advirtió a una parte de la posibilidad de tales daños?"
+          ],
+          "examples": [
+            "EXCEPTO POR RECLAMACIONES QUE SURJAN DE LAS OBLIGACIONES DE INDEMNIZACIÓN DE UNA PARTE, NEGLIGENCIA GRAVE O DOLO, EN NINGÚN EVENTO CUALQUIER PARTE SERÁ RESPONSABLE ANTE LA OTRA PARTE POR DAÑOS INDIRECTOS, INCIDENTALES, ESPECIALES, PUNITIVOS O CONSECUENCIALES, INCLUYENDO, PERO NO LIMITADO A, LUCRO CESANTE, PÉRDIDA DE INGRESOS O INTERRUPCIÓN DEL NEGOCIO, AUN SI SE LE ADVIRTIÓ DE LA POSIBILIDAD DE TALES DAÑOS. LA RESPONSABILIDAD TOTAL DE LA EMPRESA ANTE EL PRESTADOR DE SERVICIOS POR CUALQUIER RECLAMACIÓN QUE SURJA DE O SE RELACIONE CON ESTE CONTRATO NO EXCEDERÁ LOS HONORARIOS TOTALES PAGADOS POR LA EMPRESA AL PRESTADOR DE SERVICIOS BAJO ESTE CONTRATO DURANTE LOS 12 MESES ANTERIORES AL EVENTO QUE DIO LUGAR A LA RECLAMACIÓN.",
+            "EXCEPTO POR RECLAMACIONES QUE SURJAN DE LAS OBLIGACIONES DE INDEMNIZACIÓN DE UNA PARTE, NEGLIGENCIA GRAVE O DOLO, EN NINGÚN EVENTO CUALQUIER PARTE SERÁ RESPONSABLE ANTE LA OTRA PARTE POR DAÑOS INDIRECTOS, INCIDENTALES, ESPECIALES, PUNITIVOS O CONSECUENCIALES, INCLUYENDO, PERO NO LIMITADO A, LUCRO CESANTE, PÉRDIDA DE INGRESOS O INTERRUPCIÓN DEL NEGOCIO, AUN SI SE LE ADVIRTIÓ DE LA POSIBILIDAD DE TALES DAÑOS. LA RESPONSABILIDAD TOTAL DEL PRESTADOR DE SERVICIOS ANTE LA EMPRESA POR CUALQUIER RECLAMACIÓN QUE SURJA DE O SE RELACIONE CON ESTE CONTRATO NO EXCEDERÁ LOS HONORARIOS DE COMISIÓN TOTALES GANADOS POR EL PRESTADOR DE SERVICIOS BAJO ESTE CONTRATO DURANTE LOS 6 MESES ANTERIORES AL EVENTO QUE DIO LUGAR A LA RECLAMACIÓN.",
+            "EXCEPTO POR RECLAMACIONES QUE SURJAN DE LAS OBLIGACIONES DE INDEMNIZACIÓN DE UNA PARTE, NEGLIGENCIA GRAVE O DOLO, EN NINGÚN EVENTO CUALQUIER PARTE SERÁ RESPONSABLE ANTE LA OTRA PARTE POR DAÑOS INDIRECTOS, INCIDENTALES, ESPECIALES, PUNITIVOS O CONSECUENCIALES, INCLUYENDO, PERO NO LIMITADO A, LUCRO CESANTE, PÉRDIDA DE INGRESOS O INTERRUPCIÓN DEL NEGOCIO, AUN SI SE LE ADVIRTIÓ DE LA POSIBILIDAD DE TALES DAÑOS. LA RESPONSABILIDAD TOTAL DE CADA PARTE ANTE LA OTRA PARTE POR CUALQUIER RECLAMACIÓN QUE SURJA DE O SE RELACIONE CON ESTE CONTRATO NO EXCEDERÁ 2 VECES LOS HONORARIOS TOTALES PAGADOS O POR PAGAR POR LA EMPRESA AL PRESTADOR DE SERVICIOS BAJO ESTE CONTRATO DURANTE LOS 12 MESES ANTERIORES AL EVENTO QUE DIO LUGAR A LA RECLAMACIÓN.",
+            "EXCEPTO POR RECLAMACIONES QUE SURJAN DE LAS OBLIGACIONES DE INDEMNIZACIÓN DE UNA PARTE, NEGLIGENCIA GRAVE O DOLO, EN NINGÚN EVENTO CUALQUIER PARTE SERÁ RESPONSABLE ANTE LA OTRA PARTE POR DAÑOS INDIRECTOS, INCIDENTALES, ESPECIALES, PUNITIVOS O CONSECUENCIALES, INCLUYENDO, PERO NO LIMITADO A, LUCRO CESANTE, PÉRDIDA DE INGRESOS O INTERRUPCIÓN DEL NEGOCIO, AUN SI SE LE ADVIRTIÓ DE LA POSIBILIDAD DE TALES DAÑOS."
+          ]
+        },
+        {
+          "clause_type_id": "18",
+          "name": "Fuerza Mayor",
+          "standard_wording": "Ninguna Parte será responsable por cualquier retraso o falla en cumplir sus obligaciones bajo este Contrato debido a causas de caso fortuito o fuerza mayor más allá de su control razonable, incluyendo, pero no limitado a, fenómenos naturales, actos de autoridad, incendios, inundaciones, sismos, disturbios, guerras, actos terroristas, epidemias o restricciones gubernamentales. En caso de un evento de caso fortuito o fuerza mayor, la Parte afectada notificará prontamente a la otra Parte, y las Partes trabajarán juntas de buena fe para mitigar los efectos del evento.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula menciona que ninguna parte es responsable por retrasos o fallas en cumplir obligaciones debido a causas más allá de su control razonable?",
+            "¿La cláusula proporciona ejemplos de tales causas, incluyendo fenómenos naturales, actos de autoridad civil o militar, incendios, inundaciones, sismos, disturbios, guerras, actos terroristas, epidemias o restricciones gubernamentales?",
+            "¿La cláusula se refiere a estas causas colectivamente como un \"Evento de Fuerza Mayor\"?",
+            "¿La cláusula requiere que la parte afectada notifique prontamente a la otra parte en caso de un Evento de Fuerza Mayor?",
+            "¿La cláusula establece que las partes trabajarán juntas de buena fe para mitigar los efectos del Evento de Fuerza Mayor?",
+            "¿La cláusula menciona que la parte afectada debe notificar prontamente a la otra parte en caso de un Evento de Fuerza Mayor?"
+          ],
+          "examples": [
+            "Ninguna Parte será responsable por cualquier retraso o falla en cumplir sus obligaciones bajo este Contrato debido a causas más allá de su control razonable, incluyendo, pero no limitado a, fenómenos naturales, actos de autoridad civil o militar, incendios, inundaciones, sismos, disturbios, guerras, actos terroristas, epidemias o restricciones gubernamentales (\"Evento de Fuerza Mayor\"). En caso de un Evento de Fuerza Mayor, la Parte afectada notificará prontamente a la otra Parte, y las Partes trabajarán juntas de buena fe para mitigar los efectos del Evento de Fuerza Mayor y, si es necesario, enmendar o terminar este Contrato.",
+            "Ninguna Parte será responsable por cualquier retraso o falla en cumplir sus obligaciones bajo este Contrato debido a causas más allá de su control razonable, incluyendo, pero no limitado a, fenómenos naturales, actos de autoridad civil o militar, incendios, inundaciones, sismos, disturbios, guerras, actos terroristas, epidemias o restricciones gubernamentales (\"Evento de Fuerza Mayor\"). En caso de un Evento de Fuerza Mayor, la Parte afectada notificará prontamente a la otra Parte, y las Partes trabajarán juntas de buena fe para mitigar los efectos del Evento de Fuerza Mayor, lo que puede incluir ajustar cronogramas de campaña, reasignar recursos o modificar el alcance de los servicios.",
+            "Ninguna Parte será responsable por cualquier retraso o falla en cumplir sus obligaciones bajo este Contrato debido a causas más allá de su control razonable, incluyendo, pero no limitado a, fenómenos naturales, actos de autoridad civil o militar, incendios, inundaciones, sismos, disturbios, guerras, actos terroristas, epidemias o restricciones gubernamentales (\"Evento de Fuerza Mayor\"). En caso de un Evento de Fuerza Mayor, la Parte afectada notificará prontamente a la otra Parte, y las Partes trabajarán juntas de buena fe para mitigar los efectos del Evento de Fuerza Mayor, lo que puede incluir implementar planes de contingencia, ajustar niveles de servicio o modificar el alcance de los servicios.",
+            "Ninguna Parte será responsable por cualquier retraso o falla en cumplir sus obligaciones bajo este Contrato debido a causas de caso fortuito o fuerza mayor más allá de su control razonable, incluyendo, pero no limitado a, fenómenos naturales, actos de autoridad, incendios, inundaciones, sismos, disturbios, guerras, actos terroristas, epidemias o restricciones gubernamentales. En caso de un evento de caso fortuito o fuerza mayor, la Parte afectada notificará prontamente a la otra Parte, y las Partes trabajarán juntas de buena fe para mitigar los efectos del evento."
+          ]
+        },
+        {
+          "clause_type_id": "19",
+          "name": "Conducta Ética y Anticorrupción",
+          "standard_wording": "Cada Parte cumplirá con todas las leyes anticorrupción aplicables, incluyendo, pero no limitado a, la Ley General de Responsabilidades Administrativas y el Código Penal Federal, y no se involucrará en ninguna forma de soborno, cohecho u otras prácticas corruptas en conexión con este Contrato.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula establece que cada parte cumplirá con todas las leyes anticorrupción aplicables?",
+            "¿La cláusula prohíbe involucrarse en cualquier forma de soborno?",
+            "¿La cláusula prohíbe involucrarse en cualquier forma de cohecho?",
+            "¿La cláusula prohíbe involucrarse en cualquier otra forma de prácticas corruptas en conexión con el contrato?",
+            "¿La cláusula menciona leyes anticorrupción específicas aplicables?"
+          ],
+          "examples": [
+            "Cada Parte conducirá sus actividades comerciales de manera ética y cumplirá con todas las leyes anticorrupción aplicables, incluyendo pero no limitado a la Ley de Prácticas Corruptas en el Extranjero de EE.UU. y la Ley de Soborno del Reino Unido. Ninguna Parte ofrecerá, dará o aceptará sobornos, cohecho u otros pagos o beneficios indebidos en conexión con este Contrato.",
+            "El Prestador de Servicios asegurará que todas las campañas de marketing y publicidad se conduzcan de manera ética y veraz, evitando cualquier práctica engañosa o engañosa. Ambas Partes cumplirán con todas las leyes anticorrupción aplicables y no se involucrarán en ninguna forma de soborno o influencia indebida en conexión con este Contrato.",
+            "Ambas Partes mantendrán altos estándares éticos y cumplirán con todas las leyes anticorrupción aplicables, incluyendo pero no limitado a la Ley de Prácticas Corruptas en el Extranjero de EE.UU. y la Ley de Soborno del Reino Unido. Ninguna Parte ofrecerá, dará o aceptará sobornos, cohecho u otros pagos o beneficios indebidos en conexión con la provisión o recepción de servicios de gestión de instalaciones.",
+            "Cada Parte cumplirá con todas las leyes anticorrupción aplicables, incluyendo, pero no limitado a, la Ley de Prácticas Corruptas en el Extranjero de EE.UU. y la Ley de Soborno del Reino Unido, y no se involucrará en ninguna forma de soborno, cohecho u otras prácticas corruptas en conexión con este Contrato."
+          ]
+        },
+        {
+          "clause_type_id": "20",
+          "name": "Responsabilidad Social Empresarial",
+          "standard_wording": "Cada Parte cumplirá con las leyes y estándares de responsabilidad social empresarial específicos para la protección ambiental, prácticas laborales y derechos humanos conforme a la Ley Federal del Trabajo, la Ley General del Equilibrio Ecológico y la Protección al Ambiente, y demás legislación aplicable, e implementará políticas que promuevan operaciones sustentables, prácticas de empleo éticas y bienestar comunitario.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula menciona que las partes deben cumplir con las leyes y regulaciones aplicables?",
+            "¿La cláusula especifica que las leyes y regulaciones se relacionan con la responsabilidad social empresarial?",
+            "¿La cláusula incluye la protección ambiental como una de las áreas cubiertas por la responsabilidad social empresarial?",
+            "¿La cláusula incluye las prácticas laborales como una de las áreas cubiertas por la responsabilidad social empresarial?",
+            "¿La cláusula incluye los derechos humanos como una de las áreas cubiertas por la responsabilidad social empresarial?"
+          ],
+          "examples": [
+            "El Prestador de Servicios cumplirá con todas las leyes y regulaciones aplicables relacionadas con la responsabilidad social empresarial, incluyendo pero no limitado a la protección ambiental, prácticas laborales y derechos humanos. El Prestador de Servicios hará esfuerzos razonables para minimizar el impacto ambiental de sus actividades de desarrollo de software y promover prácticas sustentables.",
+            "Ambas Partes conducirán sus actividades comerciales de manera socialmente responsable, promoviendo prácticas éticas y sustentables. El Prestador de Servicios asegurará que sus campañas de marketing y publicidad no promuevan ni respalden productos o servicios que sean dañinos para el medio ambiente o la sociedad.",
+            "El Prestador de Servicios implementará y mantendrá prácticas ambientalmente sustentables en la provisión de servicios de gestión de instalaciones, incluyendo pero no limitado a la conservación de energía, reducción de residuos y el uso de productos y materiales ecológicos. El Prestador de Servicios también cumplirá con todas las leyes laborales aplicables y promoverá condiciones de trabajo justas para sus empleados.",
+            "Cada Parte cumplirá con todas las leyes y regulaciones aplicables relacionadas con la responsabilidad social empresarial, incluyendo, pero no limitado a, la protección ambiental, prácticas laborales y derechos humanos."
+          ]
+        },
+        {
+          "clause_type_id": "21",
+          "name": "Personal Clave y Asignación de Recursos",
+          "standard_wording": "El Prestador de Servicios asignará personal calificado y experimentado para realizar los Servicios, y asegurará que se asignen recursos suficientes para cumplir con los requisitos y cronogramas establecidos en la Declaración de Trabajo.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula requiere que el Prestador de Servicios asigne personal para realizar los Servicios?",
+            "¿La cláusula especifica que el personal asignado debe ser calificado y experimentado?",
+            "¿La cláusula requiere que el Prestador de Servicios asigne recursos suficientes para cumplir con los requisitos y cronogramas establecidos en la Declaración de Trabajo?",
+            "¿La cláusula menciona una Declaración de Trabajo que establece requisitos y cronogramas?"
+          ],
+          "examples": [
+            "El Prestador de Servicios asignará un gerente de proyecto dedicado y un equipo de desarrolladores de software, diseñadores y personal de aseguramiento de calidad calificados y experimentados para realizar los servicios de desarrollo de software. El Prestador de Servicios asegurará que se asignen recursos suficientes para cumplir con los cronogramas del proyecto y los entregables especificados en la Declaración de Trabajo.",
+            "El Prestador de Servicios asignará un gerente de cuenta dedicado y un equipo de profesionales experimentados de marketing y publicidad, incluyendo pero no limitado a estrategas, creativos y analistas, para gestionar y ejecutar las campañas de marketing y publicidad de la Empresa. El Prestador de Servicios asegurará que se asignen recursos adecuados para cumplir con los objetivos de campaña y metas de rendimiento acordados.",
+            "El Prestador de Servicios asignará un gerente de instalaciones dedicado y un equipo de técnicos de mantenimiento, personal de limpieza y personal de seguridad calificados y experimentados para realizar los servicios de gestión de instalaciones. El Prestador de Servicios asegurará que se asignen recursos suficientes para cumplir con los requisitos de nivel de servicio y mantener las instalaciones en condiciones seguras y operativas.",
+            "El Prestador de Servicios asignará personal calificado y experimentado para realizar los Servicios, y asegurará que se asignen recursos suficientes para cumplir con los requisitos y cronogramas establecidos en la Declaración de Trabajo."
+          ]
+        },
+        {
+          "clause_type_id": "22",
+          "name": "Reemplazo de Personal",
+          "standard_wording": "Si la Empresa objeta razonablemente el rendimiento o conducta de cualquier personal del Prestador de Servicios asignado para realizar los Servicios, el Prestador de Servicios reemplazará prontamente a dicho personal con reemplazos calificados y experimentados aceptables para la Empresa.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula menciona que la Empresa tiene el derecho de objetar el rendimiento o conducta del personal del Prestador de Servicios?",
+            "¿La cláusula establece que si la Empresa objeta, el Prestador de Servicios debe reemplazar al personal en cuestión?",
+            "¿La cláusula especifica que los reemplazos del personal deben ser calificados y experimentados?",
+            "¿La cláusula requiere que los reemplazos sean aceptables para la Empresa?",
+            "¿La cláusula indica que el Prestador de Servicios debe reemplazar al personal prontamente si la Empresa objeta?"
+          ],
+          "examples": [
+            "Si la Empresa objeta razonablemente el rendimiento o conducta de cualquier personal del Prestador de Servicios asignado al proyecto de desarrollo de software, el Prestador de Servicios reemplazará prontamente a dicho personal con reemplazos calificados y experimentados aceptables para la Empresa.",
+            "Si la Empresa está insatisfecha con el rendimiento o conducta de cualquier personal del Prestador de Servicios asignado a las campañas de marketing y publicidad de la Empresa, el Prestador de Servicios reemplazará prontamente a dicho personal con reemplazos calificados y experimentados aceptables para la Empresa.",
+            "Si la Empresa objeta razonablemente el rendimiento o conducta de cualquier personal del Prestador de Servicios asignado a los servicios de gestión de instalaciones, el Prestador de Servicios reemplazará prontamente a dicho personal con reemplazos calificados y experimentados aceptables para la Empresa.",
+            "Si la Empresa objeta razonablemente el rendimiento o conducta de cualquier personal del Prestador de Servicios asignado para realizar los Servicios, el Prestador de Servicios reemplazará prontamente a dicho personal con reemplazos calificados y experimentados aceptables para la Empresa."
+          ]
+        },
+        {
+          "clause_type_id": "23",
+          "name": "Verificación de Antecedentes y Autorizaciones de Seguridad",
+          "standard_wording": "El Prestador de Servicios asegurará que todos sus empleados, agentes y subcontratistas asignados para realizar Servicios bajo este Contrato hayan completado exitosamente verificaciones de antecedentes y obtenido cualquier autorización de seguridad necesaria según lo requerido por la Empresa o las leyes y reglamentos aplicables.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula requiere que el Prestador de Servicios asegure que todos sus empleados, agentes y subcontratistas asignados para realizar Servicios bajo el Contrato hayan completado exitosamente verificaciones de antecedentes?",
+            "¿La cláusula requiere que el Prestador de Servicios asegure que todos sus empleados, agentes y subcontratistas asignados para realizar Servicios bajo el Contrato hayan obtenido cualquier autorización de seguridad necesaria?",
+            "¿La cláusula especifica que las verificaciones de antecedentes y autorizaciones de seguridad son requeridas por la Empresa o las leyes y reglamentos aplicables?",
+            "¿La cláusula aplica a los empleados, agentes y subcontratistas del Prestador de Servicios asignados para realizar Servicios bajo el Contrato?",
+            "¿La cláusula se relaciona con las obligaciones del Prestador de Servicios respecto a verificaciones de antecedentes y autorizaciones de seguridad para su personal asignado para realizar Servicios bajo el Contrato?"
+          ],
+          "examples": [
+            "El Prestador de Servicios asegurará que todos sus empleados, agentes y subcontratistas asignados para realizar servicios de desarrollo de software bajo este Contrato hayan completado exitosamente verificaciones de antecedentes y obtenido cualquier autorización de seguridad necesaria según lo requerido por la Empresa o las leyes y reglamentos aplicables, particularmente para proyectos que involucren datos sensibles o confidenciales.",
+            "Esta cláusula puede no ser aplicable o necesaria para servicios típicos de marketing y publicidad, a menos que las campañas involucren acceso a información sensible o confidencial, en cuyo caso el Prestador de Servicios asegurará que su personal haya sido sometido a verificaciones de antecedentes apropiadas y obtenido autorizaciones de seguridad necesarias.",
+            "El Prestador de Servicios asegurará que todos sus empleados, agentes y subcontratistas asignados para realizar servicios de gestión de instalaciones bajo este Contrato hayan completado exitosamente verificaciones de antecedentes y obtenido cualquier autorización de seguridad necesaria según lo requerido por la Empresa o las leyes y reglamentos aplicables, particularmente para instalaciones con requisitos de seguridad elevados o áreas sensibles.",
+            "El Prestador de Servicios asegurará que todos sus empleados, agentes y subcontratistas asignados para realizar Servicios bajo este Contrato hayan completado exitosamente verificaciones de antecedentes y obtenido cualquier autorización de seguridad necesaria según lo requerido por la Empresa o las leyes y reglamentos aplicables."
+          ]
+        },
+        {
+          "clause_type_id": "24",
+          "name": "Cesión",
+          "standard_wording": "a. Cesión: Ninguna Parte puede ceder o transferir este Contrato o cualquiera de sus derechos u obligaciones bajo el mismo sin el consentimiento previo por escrito de la otra Parte, el cual no será irrazonablemente negado o demorado. b. Subcontratación: El Prestador de Servicios puede contratar subcontratistas para realizar ciertos Servicios, siempre que el Prestador de Servicios permanezca responsable por el rendimiento de dichos subcontratistas y asegure que tales subcontratistas cumplan con los términos y condiciones de este Contrato.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula prohíbe a cualquier parte ceder o transferir el contrato sin el consentimiento de la otra parte?",
+            "¿La cláusula requiere que el consentimiento de la otra parte sea en forma escrita?",
+            "¿La cláusula establece que el consentimiento de la otra parte no debe ser irrazonablemente negado o demorado?",
+            "¿La cláusula aplica la restricción de cesión o transferencia a ambas partes por igual?",
+            "¿La cláusula aplica la restricción tanto a la cesión/transferencia del contrato mismo como a la cesión/transferencia de derechos u obligaciones bajo el contrato?"
+          ],
+          "examples": [
+            "Ninguna Parte puede ceder o transferir este Contrato o cualquiera de sus derechos u obligaciones bajo el mismo sin el consentimiento previo por escrito de la otra Parte, el cual no será irrazonablemente negado o demorado.",
+            "Ninguna Parte puede ceder o transferir este Contrato o cualquiera de sus derechos u obligaciones bajo el mismo sin el consentimiento previo por escrito de la otra Parte, el cual no será irrazonablemente negado o demorado."
+          ]
+        },
+        {
+          "clause_type_id": "25",
+          "name": "Subcontratación",
+          "standard_wording": "a. Cesión: Ninguna Parte puede ceder o transferir este Contrato o cualquiera de sus derechos u obligaciones bajo el mismo sin el consentimiento previo por escrito de la otra Parte, el cual no será irrazonablemente negado o demorado. b. Subcontratación: El Prestador de Servicios puede contratar subcontratistas para realizar ciertos Servicios, siempre que el Prestador de Servicios permanezca responsable por el rendimiento de dichos subcontratistas y asegure que tales subcontratistas cumplan con los términos y condiciones de este Contrato.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula permite al Prestador de Servicios contratar subcontratistas para realizar ciertos Servicios?",
+            "¿La cláusula establece que el Prestador de Servicios permanece responsable por el rendimiento de cualquier subcontratista contratado?",
+            "¿La cláusula requiere que cualquier subcontratista contratado por el Prestador de Servicios cumpla con los términos y condiciones del Contrato?"
+          ],
+          "examples": [
+            "El Prestador de Servicios puede contratar subcontratistas para realizar ciertas tareas de desarrollo de software, siempre que el Prestador de Servicios permanezca responsable por el rendimiento de dichos subcontratistas y asegure que tales subcontratistas cumplan con los términos y condiciones de este Contrato.",
+            "El Prestador de Servicios puede contratar subcontratistas o proveedores terceros para proporcionar ciertos servicios o recursos relacionados con las campañas de marketing y publicidad, siempre que el Prestador de Servicios permanezca responsable por el rendimiento de dichos subcontratistas y asegure que tales subcontratistas cumplan con los términos y condiciones de este Contrato.",
+            "El Prestador de Servicios puede contratar subcontratistas para realizar ciertas tareas de gestión de instalaciones, siempre que el Prestador de Servicios permanezca responsable por el rendimiento de dichos subcontratistas y asegure que tales subcontratistas cumplan con los términos y condiciones de este Contrato.",
+            "El Prestador de Servicios puede contratar subcontratistas para realizar ciertos Servicios, siempre que el Prestador de Servicios permanezca responsable por el rendimiento de dichos subcontratistas y asegure que tales subcontratistas cumplan con los términos y condiciones de este Contrato."
+          ]
+        },
+        {
+          "clause_type_id": "26",
+          "name": "Exclusividad",
+          "standard_wording": "Si la Declaración de Trabajo especifica que los Servicios deben proporcionarse en base exclusiva, el Prestador de Servicios no proporcionará servicios similares a terceros durante la vigencia de este Contrato sin el consentimiento previo por escrito de la Empresa.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula menciona que los servicios deben proporcionarse en base exclusiva si se especifica en la Declaración de Trabajo?",
+            "¿La cláusula prohíbe al Prestador de Servicios entregar servicios similares a terceros cuando la Declaración de Trabajo especifica exclusividad?",
+            "¿La cláusula especifica que proporcionar servicios similares a terceros requiere consentimiento previo por escrito de la Empresa?"
+          ],
+          "examples": [
+            "Este Contrato será no exclusivo, y el Prestador de Servicios tendrá el derecho de proporcionar servicios similares de desarrollo de software a otros clientes, siempre que el Prestador de Servicios no use ni divulgue la Información Confidencial de la Empresa ni infrinja los derechos de propiedad intelectual de la Empresa.",
+            "Este Contrato será exclusivo, y el Prestador de Servicios no proporcionará servicios similares de marketing y publicidad a ninguno de los competidores directos de la Empresa durante la vigencia de este Contrato sin el consentimiento previo por escrito de la Empresa.",
+            "Este Contrato será no exclusivo, y el Prestador de Servicios tendrá el derecho de proporcionar servicios similares de gestión de instalaciones a otros clientes, siempre que el Prestador de Servicios no divulgue ni use la Información Confidencial de la Empresa ni los procesos propietarios en la realización de servicios para otros clientes.",
+            "Si la Declaración de Trabajo especifica que los Servicios deben proporcionarse en base exclusiva, el Prestador de Servicios no proporcionará servicios similares a terceros durante la vigencia de este Contrato sin el consentimiento previo por escrito de la Empresa."
+          ]
+        },
+        {
+          "clause_type_id": "27",
+          "name": "No Elusión",
+          "standard_wording": "Durante la vigencia de este Contrato y por un período de 3 años después, ninguna Parte eludirá o intentará eludir las relaciones comerciales o arreglos contractuales de la otra Parte con terceros.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula especifica dos partes?",
+            "¿La cláusula prohíbe ciertas acciones por las partes durante la vigencia del contrato?",
+            "¿La cláusula prohíbe ciertas acciones por las partes por un período después de la vigencia del contrato?",
+            "¿La cláusula especifica una duración para el período después de la vigencia del contrato?",
+            "¿La cláusula prohíbe eludir o intentar eludir las relaciones comerciales de la otra parte?",
+            "¿La cláusula prohíbe eludir o intentar eludir los arreglos contractuales de la otra parte con terceros?"
+          ],
+          "examples": [
+            "Durante la vigencia de este Contrato y por un período de 3 años después, ninguna Parte eludirá o intentará eludir las relaciones comerciales o arreglos contractuales de la otra Parte con terceros relacionados con los servicios de desarrollo de software, incluyendo pero no limitado a proveedores, suministradores o clientes.",
+            "Durante la vigencia de este Contrato y por un período de 2 años después, ninguna Parte eludirá o intentará eludir las relaciones comerciales o arreglos contractuales de la otra Parte con terceros relacionados con los servicios de marketing y publicidad, incluyendo pero no limitado a medios de comunicación, influencers o plataformas de publicidad.",
+            "Durante la vigencia de este Contrato y por un período de 1 año después, ninguna Parte eludirá o intentará eludir las relaciones comerciales o arreglos contractuales de la otra Parte con terceros relacionados con los servicios de gestión de instalaciones, incluyendo pero no limitado a proveedores, vendedores o subcontratistas.",
+            "Durante la vigencia de este Contrato y por un período de [X] años después, ninguna Parte eludirá o intentará eludir las relaciones comerciales o arreglos contractuales de la otra Parte con terceros."
+          ]
+        },
+        {
+          "clause_type_id": "28",
+          "name": "Derechos de Auditoría",
+          "standard_wording": "La Empresa tendrá el derecho, con aviso razonable y durante horas hábiles, de auditar los registros e instalaciones del Prestador de Servicios para verificar el cumplimiento de este Contrato.",
+          "level": "high",
+          "evaluation_questions": [
+            "¿La cláusula menciona el derecho de la empresa de auditar los registros e instalaciones del prestador de servicios?",
+            "¿La cláusula especifica que la auditoría es para verificar el cumplimiento del contrato?",
+            "¿La cláusula establece que la empresa debe proporcionar aviso razonable antes de realizar la auditoría?",
+            "¿La cláusula indica que la auditoría solo puede realizarse durante horas hábiles?"
+          ],
+          "examples": [
+            "La Empresa tendrá el derecho, con aviso razonable y durante horas hábiles, de auditar los registros e instalaciones del Prestador de Servicios relacionados con los servicios de desarrollo de software para verificar el cumplimiento de este Contrato, incluyendo pero no limitado al cumplimiento de leyes y regulaciones aplicables, protocolos de seguridad y derechos de propiedad intelectual.",
+            "La Empresa tendrá el derecho, con aviso razonable y durante horas hábiles, de auditar los registros e instalaciones del Prestador de Servicios relacionados con los servicios de marketing y publicidad para verificar el cumplimiento de este Contrato, incluyendo pero no limitado al cumplimiento de leyes y regulaciones aplicables, estándares de publicidad y asignación adecuada del gasto de publicidad.",
+            "La Empresa tendrá el derecho, con aviso razonable y durante horas hábiles, de auditar los registros e instalaciones del Prestador de Servicios relacionados con los servicios de gestión de instalaciones para verificar el cumplimiento de este Contrato, incluyendo pero no limitado al cumplimiento de leyes y regulaciones aplicables, acuerdos de nivel de servicio y asignación adecuada de recursos y personal.",
+            "La Empresa tendrá el derecho, con aviso razonable y durante horas hábiles, de auditar los registros e instalaciones del Prestador de Servicios para verificar el cumplimiento de este Contrato."
+          ]
+        },
+        {
+          "clause_type_id": "29",
+          "name": "Negociación",
+          "standard_wording": "a. Negociación: En caso de cualquier controversia o desacuerdo que surja de o se relacione con este Contrato, las Partes primero intentarán resolver la controversia a través de negociaciones de buena fe. b. Mediación: Si las Partes no pueden resolver la controversia a través de negociaciones dentro de 30 días naturales, las Partes someterán la controversia a mediación no vinculante de acuerdo con las reglas del Centro de Mediación y Conciliación del Poder Judicial de la Federación. c. Arbitraje: Si la controversia no puede resolverse a través de mediación, cualquier Parte puede someter la controversia a arbitraje vinculante de acuerdo con las reglas de la Comisión Interamericana de Arbitraje Comercial (CIAC) o del Centro de Arbitraje de México (CAM), según acuerden las Partes.",
+          "level": "low",
+          "evaluation_questions": [
+            "¿La cláusula menciona que aplica en caso de cualquier controversia o desacuerdo relacionado con el contrato?",
+            "¿La cláusula establece que las partes involucradas deben primero intentar resolver la controversia?",
+            "¿La cláusula especifica que las partes deben intentar resolver la controversia a través de negociaciones de buena fe?"
+          ],
+          "examples": [
+            "En caso de cualquier controversia o desacuerdo que surja de o se relacione con este Contrato, las Partes primero intentarán resolver la controversia a través de negociaciones de buena fe entre sus respectivos representantes de nivel ejecutivo.",
+            "En caso de cualquier controversia o desacuerdo que surja de o se relacione con este Contrato, las Partes primero intentarán resolver la controversia a través de negociaciones de buena fe entre sus respectivos gerentes de proyecto o representantes designados.",
+            "En caso de cualquier controversia o desacuerdo que surja de o se relacione con este Contrato, las Partes primero intentarán resolver la controversia a través de negociaciones de buena fe entre sus respectivos representantes legales o asesores internos.",
+            "En caso de cualquier controversia o desacuerdo que surja de o se relacione con este Contrato, las Partes primero intentarán resolver la controversia a través de negociaciones de buena fe."
+          ]
+        },
+        {
+          "clause_type_id": "30",
+          "name": "Mediación",
+          "standard_wording": "a. Negociación: En caso de cualquier controversia o desacuerdo que surja de o se relacione con este Contrato, las Partes primero intentarán resolver la controversia a través de negociaciones de buena fe. b. Mediación: Si las Partes no pueden resolver la controversia a través de negociaciones dentro de 30 días naturales, las Partes someterán la controversia a mediación no vinculante de acuerdo con las reglas del Centro de Mediación y Conciliación del Poder Judicial de la Federación. c. Arbitraje: Si la controversia no puede resolverse a través de mediación, cualquier Parte puede someter la controversia a arbitraje vinculante de acuerdo con las reglas de la Comisión Interamericana de Arbitraje Comercial (CIAC) o del Centro de Arbitraje de México (CAM), según acuerden las Partes.",
+          "level": "low",
+          "evaluation_questions": [
+            "¿La cláusula menciona que las partes no pueden resolver una controversia a través de negociaciones?",
+            "¿La cláusula especifica un período de tiempo (en días) para que las partes intenten negociaciones antes de proceder más adelante?",
+            "¿La cláusula menciona que las partes someterán la controversia a mediación no vinculante si las negociaciones fallan?",
+            "¿La cláusula hace referencia a las reglas de un proveedor específico de servicios de mediación?"
+          ],
+          "examples": [
+            "Si las Partes no pueden resolver la controversia a través de negociaciones dentro de 60 días, las Partes someterán la controversia a mediación no vinculante de acuerdo con las reglas de la Asociación Americana de Arbitraje.",
+            "Si las Partes no pueden resolver la controversia a través de negociaciones dentro de 45 días, las Partes someterán la controversia a mediación no vinculante de acuerdo con las reglas del Instituto Internacional para la Prevención y Resolución de Conflictos.",
+            "Si las Partes no pueden resolver la controversia a través de negociaciones dentro de 30 días, las Partes someterán la controversia a mediación no vinculante de acuerdo con las reglas de la Asociación Americana de Arbitraje.",
+            "Si las Partes no pueden resolver la controversia a través de negociaciones dentro de [X] días, las Partes someterán la controversia a mediación no vinculante de acuerdo con las reglas de [Proveedor de Servicios de Mediación]."
+          ]
+        },
+        {
+          "clause_type_id": "31",
+          "name": "Arbitraje o Litigio",
+          "standard_wording": "a. Negociación: En caso de cualquier controversia o desacuerdo que surja de o se relacione con este Contrato, las Partes primero intentarán resolver la controversia a través de negociaciones de buena fe. b. Mediación: Si las Partes no pueden resolver la controversia a través de negociaciones dentro de 30 días naturales, las Partes someterán la controversia a mediación no vinculante de acuerdo con las reglas del Centro de Mediación y Conciliación del Poder Judicial de la Federación. c. Arbitraje: Si la controversia no puede resolverse a través de mediación, cualquier Parte puede someter la controversia a arbitraje vinculante de acuerdo con las reglas de la Comisión Interamericana de Arbitraje Comercial (CIAC) o del Centro de Arbitraje de México (CAM), según acuerden las Partes.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula menciona la mediación como un paso antes de proceder con arbitraje vinculante o litigio?",
+            "¿La cláusula establece que se puede proceder con arbitraje vinculante si la controversia no puede resolverse a través de mediación?",
+            "¿La cláusula especifica que el arbitraje vinculante debe ser de acuerdo con las reglas de una organización de arbitraje reconocida?",
+            "¿La cláusula menciona organizaciones o centros de arbitraje específicos para resolver la controversia?"
+          ],
+          "examples": [
+            "Si la controversia no puede resolverse a través de mediación, cualquier Parte puede proceder con arbitraje vinculante de acuerdo con las reglas de la Cámara de Comercio Internacional.",
+            "Si la controversia no puede resolverse a través de mediación, cualquier Parte puede proceder con litigio en un tribunal de jurisdicción competente.",
+            "Si la controversia no puede resolverse a través de mediación, cualquier Parte puede proceder con arbitraje vinculante de acuerdo con las reglas del Centro Internacional para la Resolución de Disputas, o, si las Partes acuerdan mutuamente, puede proceder con litigio en un tribunal de jurisdicción competente.",
+            "Si la controversia no puede resolverse a través de mediación, cualquier Parte puede proceder con arbitraje vinculante de acuerdo con las reglas de [Proveedor de Servicios de Arbitraje], o, si las Partes acuerdan mutuamente, puede proceder con litigio en un tribunal de jurisdicción competente."
+          ]
+        },
+        {
+          "clause_type_id": "32",
+          "name": "Notificaciones",
+          "standard_wording": "Todas las notificaciones, solicitudes, consentimientos, reclamaciones, demandas, renuncias y otras comunicaciones bajo este Contrato serán por escrito y se considerarán debidamente entregadas: (a) cuando se entreguen personalmente (con confirmación escrita de recepción); (b) cuando sean recibidas por el destinatario si se envían por servicio de mensajería reconocido; (c) en la fecha de envío por correo electrónico (con confirmación de transmisión) si se envía durante horas hábiles del destinatario; o (d) al tercer día hábil después de la fecha de envío, por correo certificado con acuse de recibo.",
+          "level": "low",
+          "evaluation_questions": [
+            "¿La cláusula especifica que todas las comunicaciones bajo el contrato deben ser por escrito?",
+            "¿La cláusula enumera los métodos aceptables para entregar comunicaciones escritas?",
+            "¿La cláusula incluye la entrega personal con confirmación escrita de recepción como un método aceptable?",
+            "¿La cláusula incluye la entrega por servicio de mensajería reconocido nacionalmente (con acuse de recibo solicitado) como un método aceptable?",
+            "¿La cláusula incluye la entrega por correo electrónico como un método aceptable?",
+            "¿La cláusula especifica condiciones para cuándo un correo electrónico se considera debidamente entregado según la hora en que fue enviado?",
+            "¿La cláusula incluye correo certificado o registrado (con acuse de recibo solicitado) como un método aceptable?",
+            "¿La cláusula especifica un plazo para cuándo una comunicación enviada por correo certificado o registrado se considera debidamente entregada?"
+          ],
+          "examples": [
+            "Todas las notificaciones, solicitudes, consentimientos, reclamaciones, demandas, renuncias y otras comunicaciones bajo este Contrato serán por escrito y se considerarán debidamente entregadas: (i) cuando se entreguen personalmente (con confirmación escrita de recepción); (ii) cuando sean recibidas por el destinatario si se envían por servicio de mensajería reconocido nacionalmente (con acuse de recibo solicitado); (iii) en la fecha de envío por correo electrónico (con confirmación de transmisión) si se envía durante horas hábiles del destinatario, y al siguiente día hábil si se envía después de horas hábiles del destinatario; o (iv) al tercer día después de la fecha de envío, por correo certificado o registrado, con acuse de recibo solicitado, porte pagado, a las respectivas direcciones de las Partes establecidas en este Contrato o cualquier otra dirección que pueda ser designada por una Parte de acuerdo con esta Sección.",
+            "Todas las notificaciones, solicitudes, consentimientos, reclamaciones, demandas, renuncias y otras comunicaciones bajo este Contrato serán por escrito y se considerarán debidamente entregadas: (i) cuando se entreguen en persona; (ii) cuando se envíen por transmisión de fax con confirmación de transmisión; (iii) cuando se envíen por correo electrónico con confirmación de recepción; o (iv) tres (3) días hábiles después de ser enviadas por servicio de mensajería reconocido nacionalmente, en cada caso a las respectivas direcciones o números de fax de las Partes establecidos en este Contrato o cualquier otra dirección o número de fax que pueda ser designado por una Parte de acuerdo con esta Sección.",
+            "Todas las notificaciones, solicitudes, consentimientos, reclamaciones, demandas, renuncias y otras comunicaciones bajo este Contrato serán por escrito y se considerarán debidamente entregadas: (i) cuando se entreguen personalmente o por servicio de mensajería reconocido nacionalmente (con confirmación escrita de recepción); (ii) cuando se envíen por correo certificado o registrado, con acuse de recibo solicitado, porte pagado; o (iii) cuando se envíen por correo electrónico (con confirmación de transmisión) si se envía durante horas hábiles del destinatario, y al siguiente día hábil si se envía después de horas hábiles del destinatario, en cada caso a las respectivas direcciones o direcciones de correo electrónico de las Partes establecidas en este Contrato o cualquier otra dirección o dirección de correo electrónico que pueda ser designada por una Parte de acuerdo con esta Sección.",
+            "Todas las notificaciones, solicitudes, consentimientos, reclamaciones, demandas, renuncias y otras comunicaciones bajo este Contrato serán por escrito y se considerarán debidamente entregadas: (a) cuando se entreguen personalmente (con confirmación escrita de recepción); (b) cuando sean recibidas por el destinatario si se envían por servicio de mensajería reconocido; (c) en la fecha de envío por correo electrónico (con confirmación de transmisión) si se envía durante horas hábiles del destinatario; o (d) al tercer día hábil después de la fecha de envío, por correo certificado con acuse de recibo."
+          ]
+        },
+        {
+          "clause_type_id": "33",
+          "name": "Divisibilidad",
+          "standard_wording": "Si cualquier disposición de este Contrato se considera inválida, ilegal o inejecutable, la validez, legalidad y ejecutabilidad de las disposiciones restantes no se verán afectadas o perjudicadas de ninguna manera.",
+          "level": "low",
+          "evaluation_questions": [
+            "¿La cláusula aborda la situación donde una o más disposiciones del contrato se consideran inválidas, ilegales o inejecuables?",
+            "¿La cláusula establece que la validez, legalidad y ejecutabilidad de las disposiciones restantes no se verán afectadas o perjudicadas si una o más disposiciones se consideran inválidas, ilegales o inejecuables?",
+            "¿La cláusula usa el término \"Contrato\" para referirse al contrato o acuerdo que se está discutiendo?",
+            "¿La cláusula evita hacer deducciones, proponer premisas, hacer generalizaciones o implicar/deducir contenido implícito?"
+          ],
+          "examples": [
+            "Si cualquier disposición de este Contrato se considera inválida, ilegal o inejecutable, la validez, legalidad y ejecutabilidad de las disposiciones restantes no se verán afectadas o perjudicadas de ninguna manera.",
+            "Si cualquier término o disposición de este Contrato se determina inválido, ilegal o inejecutable, dicho término o disposición se separará de este Contrato, y los términos y disposiciones restantes permanecerán en pleno vigor y efecto. En tal caso, las Partes negociarán de buena fe para enmendar este Contrato para reemplazar el término o disposición inválido, ilegal o inejecutable con un término o disposición válido, legal y ejecutable que, en la medida de lo posible, logre la intención original de las Partes.",
+            "En caso de que cualquier disposición de este Contrato se considere inválida, ilegal o inejecutable, dicha disposición se separará de este Contrato, y las disposiciones restantes permanecerán en pleno vigor y efecto. Las Partes harán sus mejores esfuerzos para negociar una disposición legalmente válida y ejecutable que sea lo más consistente posible con la intención original de la disposición separada.",
+            "Si cualquier disposición de este Contrato se considera inválida, ilegal o inejecutable, la validez, legalidad y ejecutabilidad de las disposiciones restantes no se verán afectadas o perjudicadas de ninguna manera."
+          ]
+        },
+        {
+          "clause_type_id": "34",
+          "name": "Renuncia",
+          "standard_wording": "Ninguna renuncia por cualquier Parte de cualquier incumplimiento de este Contrato se considerará una renuncia de cualquier incumplimiento anterior o posterior del mismo u otra disposición. Ninguna renuncia será efectiva a menos que se haga por escrito y sea firmada por un representante autorizado de la Parte que renuncia.",
+          "level": "low",
+          "evaluation_questions": [
+            "¿La cláusula menciona que ninguna renuncia de un incumplimiento se considera una renuncia de cualquier otro incumplimiento?",
+            "¿La cláusula establece que una renuncia solo es efectiva si se hace por escrito?",
+            "¿La cláusula especifica que una renuncia debe ser firmada por un representante autorizado de la parte que renuncia?",
+            "¿La cláusula indica que la renuncia aplica a ambas partes?",
+            "¿La cláusula menciona que la renuncia aplica a cualquier disposición del contrato?"
+          ],
+          "examples": [
+            "Ninguna renuncia por cualquier Parte de cualquier incumplimiento de este Contrato se considerará una renuncia de cualquier incumplimiento anterior o posterior del mismo u otra disposición. Ninguna renuncia será efectiva a menos que se haga por escrito y sea firmada por un representante autorizado de la Parte que renuncia.",
+            "Ninguna falla o demora por cualquier Parte en ejercer cualquier derecho, poder o privilegio bajo este Contrato operará como una renuncia del mismo, ni ningún ejercicio único o parcial del mismo impedirá cualquier otro ejercicio adicional de cualquier derecho, poder o privilegio. Cualquier renuncia de cualquier disposición de este Contrato debe ser por escrito y firmada por un representante autorizado de la Parte que renuncia.",
+            "La falla de cualquier Parte en insistir o hacer cumplir el estricto cumplimiento de cualquier disposición de este Contrato, o en ejercer cualquier derecho o recurso al que tiene derecho bajo este Contrato, no constituirá una renuncia de dicha disposición, derecho o recurso, y no causará una disminución de las obligaciones establecidas por este Contrato. Ninguna renuncia de cualquier disposición de este Contrato será efectiva a menos que sea por escrito y firmada por un representante autorizado de la Parte que renuncia, y cualquier renuncia será efectiva solo en la instancia específica y para el propósito para el cual se otorga.",
+            "Ninguna renuncia por cualquier Parte de cualquier incumplimiento de este Contrato se considerará una renuncia de cualquier incumplimiento anterior o posterior del mismo u otra disposición. Ninguna renuncia será efectiva a menos que se haga por escrito y sea firmada por un representante autorizado de la Parte que renuncia."
+          ]
+        },
+        {
+          "clause_type_id": "35",
+          "name": "No Menosprecio",
+          "standard_wording": "Durante la vigencia de este Contrato y por un período de 5 años después, ninguna Parte hará declaraciones difamatorias o calumniosas, ya sean escritas u orales, sobre la otra Parte o sus productos, servicios, empleados o prácticas comerciales.",
+          "level": "low",
+          "evaluation_questions": [
+            "¿La cláusula prohíbe a ambas partes hacer declaraciones difamatorias o calumniosas durante la vigencia del contrato y por algún período después de su terminación?",
+            "¿La cláusula cubre tanto declaraciones difamatorias o calumniosas escritas como orales?",
+            "¿La cláusula prohíbe declaraciones difamatorias o calumniosas sobre la otra parte, sus productos, servicios, empleados o prácticas comerciales?"
+          ],
+          "examples": [
+            "Durante la vigencia de este Contrato y por un período de 1 año después, ninguna Parte hará declaraciones difamatorias o calumniosas, ya sean escritas u orales, sobre la otra Parte o sus productos, servicios, empleados o prácticas comerciales.",
+            "Cada Parte acuerda que, durante la vigencia de este Contrato y por un período de 2 años después de su terminación o expiración, no hará declaraciones negativas, difamatorias o despectivas, ya sean escritas u orales, sobre la otra Parte, sus productos, servicios, empleados o prácticas comerciales, a terceros, incluyendo pero no limitado a clientes o miembros del público.",
+            "Las Partes acuerdan que, en todo momento durante la vigencia de este Contrato y después, se abstendrán de hacer declaraciones negativas, difamatorias o despectivas, ya sean escritas u orales, sobre la otra Parte, sus productos, servicios, empleados o prácticas comerciales, a terceros, incluyendo pero no limitado a clientes o miembros del público. Esta obligación de no menosprecio sobrevivirá la terminación o expiración de este Contrato.",
+            "Durante la vigencia de este Contrato y por un período de [X] años después, ninguna Parte hará declaraciones difamatorias o calumniosas, ya sean escritas u orales, sobre la otra Parte o sus productos, servicios, empleados o prácticas comerciales."
+          ]
+        },
+        {
+          "clause_type_id": "36",
+          "name": "Derechos de Publicidad y Marketing",
+          "standard_wording": "Ninguna Parte usará el nombre, logotipo o marcas de la otra Parte en cualquier material de publicidad, propaganda o mercadotecnia sin el consentimiento previo por escrito de la otra Parte.",
+          "level": "low",
+          "evaluation_questions": [
+            "¿La cláusula prohíbe a una parte usar el nombre de la otra parte sin consentimiento previo por escrito?",
+            "¿La cláusula prohíbe a una parte usar el logotipo de la otra parte sin consentimiento previo por escrito?",
+            "¿La cláusula prohíbe a una parte usar las marcas de la otra parte sin consentimiento previo por escrito?",
+            "¿La cláusula prohíbe el uso del nombre, logotipo o marcas de la otra parte en materiales de publicidad sin consentimiento previo por escrito?",
+            "¿La cláusula prohíbe el uso del nombre, logotipo o marcas de la otra parte en materiales de propaganda sin consentimiento previo por escrito?",
+            "¿La cláusula prohíbe el uso del nombre, logotipo o marcas de la otra parte en materiales de mercadotecnia sin consentimiento previo por escrito?",
+            "¿La cláusula aplica la prohibición de usar el nombre, logotipo o marcas de la otra parte sin consentimiento previo por escrito a ambas partes?"
+          ],
+          "examples": [
+            "Ninguna Parte usará el nombre, logotipo o marcas de la otra Parte en cualquier material de publicidad, propaganda o mercadotecnia sin el consentimiento previo por escrito de la otra Parte.",
+            "Excepto según se permita expresamente en este Contrato, ninguna Parte usará el nombre, logotipo, marcas u otra propiedad intelectual de la otra Parte en cualquier material de publicidad, propaganda o mercadotecnia sin el consentimiento previo por escrito de la otra Parte. Sin embargo, el Prestador de Servicios puede usar el nombre de la Empresa y una descripción general de los servicios proporcionados en sus materiales de mercadotecnia y listas de clientes, sujeto a la aprobación previa de la Empresa del contenido y contexto específico.",
+            "Ninguna Parte usará el nombre, logotipo, marcas u otra propiedad intelectual de la otra Parte en cualquier material de publicidad, propaganda o mercadotecnia, o para cualquier otro propósito promocional, sin el consentimiento previo por escrito de la otra Parte. No obstante lo anterior, la Empresa tendrá el derecho de usar y mostrar los Entregables y cualquier producto de trabajo resultante de los servicios proporcionados bajo este Contrato para propósitos comerciales internos y demostraciones a clientes potenciales o inversionistas.",
+            "Ninguna Parte usará el nombre, logotipo o marcas de la otra Parte en cualquier material de publicidad, propaganda o mercadotecnia sin el consentimiento previo por escrito de la otra Parte."
+          ]
+        },
+        {
+          "clause_type_id": "37",
+          "name": "Cliente/Nación Más Favorecida",
+          "standard_wording": "Si se especifica en la Declaración de Trabajo, el Prestador de Servicios asegurará que los honorarios y términos ofrecidos a la Empresa sean al menos tan favorables como los ofrecidos a cualquier otro cliente para servicios similares.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula especifica que el Prestador de Servicios debe asegurar que los honorarios y términos ofrecidos a la Empresa sean al menos tan favorables como los ofrecidos a cualquier otro cliente o nación para servicios similares?",
+            "¿Se establece en la cláusula que el requisito de que el Prestador de Servicios ofrezca honorarios y términos al menos tan favorables como los ofrecidos a otros está condicionado a que se especifique en la Declaración de Trabajo?",
+            "¿La cláusula menciona tanto honorarios como términos que el Prestador de Servicios debe asegurar que sean al menos tan favorables como los ofrecidos a otros?",
+            "¿Se menciona explícitamente a la Empresa como la parte a quien el Prestador de Servicios debe ofrecer honorarios y términos que sean al menos tan favorables como los ofrecidos a otros?"
+          ],
+          "examples": [
+            "Esta cláusula puede no ser aplicable o necesaria para servicios típicos de desarrollo de software.",
+            "El Prestador de Servicios asegurará que los precios, términos y condiciones ofrecidos a la Empresa para los servicios de marketing y publicidad sean al menos tan favorables como los ofrecidos a cualquier otro cliente del Prestador de Servicios para servicios similares durante la vigencia de este Contrato.",
+            "Esta cláusula puede no ser aplicable o necesaria para servicios típicos de gestión de instalaciones, a menos que los servicios se proporcionen en múltiples países o regiones, en cuyo caso el Prestador de Servicios asegurará que los precios, términos y condiciones ofrecidos a la Empresa sean al menos tan favorables como los ofrecidos a cualquier otro cliente o nación para servicios similares durante la vigencia de este Contrato.",
+            "Si se especifica en la Declaración de Trabajo, el Prestador de Servicios asegurará que los honorarios y términos ofrecidos a la Empresa sean al menos tan favorables como los ofrecidos a cualquier otro cliente o nación para servicios similares."
+          ]
+        },
+        {
+          "clause_type_id": "38",
+          "name": "Cooperación y Asistencia",
+          "standard_wording": "Cada Parte cooperará y proporcionará asistencia razonable a la otra Parte en conexión con el cumplimiento de sus obligaciones bajo este Contrato. EN TESTIMONIO DE LO CUAL, las Partes han ejecutado este Contrato en la fecha de inicio de vigencia. AnyCompany Por: ______________________________ Nombre: Jane Doe Cargo: Directora General AnyServiceProvider Por: ______________________________ Nombre: John Doe Cargo: Presidente y Director de Operaciones",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula menciona que las partes involucradas están obligadas a cooperar entre sí?",
+            "¿La cláusula establece que las partes involucradas están obligadas a proporcionar asistencia entre sí?",
+            "¿La cláusula especifica que la cooperación y asistencia son en conexión con el cumplimiento de las obligaciones bajo el contrato?",
+            "¿La cláusula indica que la cooperación y asistencia son razonables?",
+            "¿La cláusula aplica el requisito de cooperación y asistencia a ambas partes involucradas?"
+          ],
+          "examples": [
+            "Cada Parte cooperará y proporcionará asistencia razonable a la otra Parte en conexión con el cumplimiento de sus obligaciones bajo este Contrato, incluyendo pero no limitado a proporcionar acceso a información, sistemas y personal necesarios.",
+            "Las Partes cooperarán y proporcionarán asistencia razonable entre sí en conexión con el cumplimiento de sus respectivas obligaciones bajo este Contrato. Dicha cooperación y asistencia puede incluir, pero no se limita a, proporcionar acceso a información, datos, sistemas y personal relevantes, así como participar en reuniones, llamadas de conferencia y otras comunicaciones según lo solicite razonablemente la otra Parte.",
+            "Cada Parte, en todo momento durante la vigencia de este Contrato, cooperará y proporcionará asistencia razonable a la otra Parte en conexión con el cumplimiento de sus obligaciones bajo este Contrato, incluyendo pero no limitado a proporcionar acceso a información, sistemas y personal necesarios, así como responder prontamente a solicitudes razonables de información o aclaración. Las Partes trabajarán juntas de buena fe para facilitar el cumplimiento exitoso de sus respectivas obligaciones bajo este Contrato.",
+            "Cada Parte cooperará y proporcionará asistencia razonable a la otra Parte en conexión con el cumplimiento de sus obligaciones bajo este Contrato."
+          ]
+        },
+        {
+          "clause_type_id": "39",
+          "name": "Relación de las Partes",
+          "standard_wording": "La relación entre las Partes es la de contratistas independientes. Nada en este Contrato se interpretará como la creación de una relación patrón-trabajador, sociedad, asociación en participación o relación de mandato entre las Partes.",
+          "level": "low",
+          "evaluation_questions": [
+            "¿La cláusula establece explícitamente que la relación entre las partes es la de contratistas independientes?",
+            "¿La cláusula niega explícitamente la existencia de una relación patrón-trabajador entre las partes?",
+            "¿La cláusula niega explícitamente la existencia de una sociedad entre las partes?",
+            "¿La cláusula niega explícitamente la existencia de una asociación en participación entre las partes?",
+            "¿La cláusula niega explícitamente la existencia de una relación de mandato entre las partes?"
+          ],
+          "examples": [
+            "La relación entre las Partes es la de contratistas independientes. Nada en este Contrato se interpretará como la creación de una relación patrón-trabajador, sociedad, asociación en participación o relación de mandato entre las Partes.",
+            "Las Partes reconocen y acuerdan que su relación bajo este Contrato es la de contratistas independientes. Nada en este Contrato se interpretará como la creación de una relación patrón-trabajador, sociedad, asociación en participación o relación de mandato entre las Partes. Ninguna Parte tendrá la autoridad para obligar o comprometer a la otra Parte de ninguna manera, excepto según se establezca expresamente en este Contrato.",
+            "Al cumplir sus respectivas obligaciones bajo este Contrato, las Partes son y permanecerán como contratistas independientes. Nada en este Contrato se interpretará como la creación de una relación patrón-trabajador, sociedad, asociación en participación o relación de mandato entre las Partes. Ninguna Parte tendrá la autoridad para actuar en nombre de o comprometer a la otra Parte de ninguna manera, excepto según se establezca expresamente en este Contrato.",
+            "La relación entre las Partes es la de contratistas independientes. Nada en este Contrato se interpretará como la creación de una relación patrón-trabajador, sociedad, asociación en participación o relación de mandato entre las Partes."
+          ]
+        },
+        {
+          "clause_type_id": "40",
+          "name": "Acuerdo Completo y Enmiendas",
+          "standard_wording": "Este Contrato, junto con la Declaración de Trabajo y cualquier otro anexo, constituye el acuerdo integral entre las Partes con respecto al objeto del mismo y reemplaza todos los acuerdos, entendimientos y negociaciones previos, tanto escritos como orales, entre las Partes con respecto al objeto de este Contrato. Este Contrato solo puede ser modificado mediante un instrumento escrito debidamente ejecutado por representantes autorizados de ambas Partes.",
+          "level": "medium",
+          "evaluation_questions": [
+            "¿La cláusula del contrato establece que el contrato, junto con la Declaración de Trabajo y cualquier otro anexo, constituye el acuerdo integral entre las Partes con respecto al objeto del mismo?",
+            "¿La cláusula del contrato establece que el contrato reemplaza todos los acuerdos, entendimientos y negociaciones previos, tanto escritos como orales, entre las Partes con respecto al objeto del contrato?",
+            "¿La cláusula del contrato establece que el contrato solo puede ser modificado mediante un instrumento escrito debidamente ejecutado por representantes autorizados de ambas Partes?"
+          ],
+          "examples": [
+            "Este Contrato, junto con la Declaración de Trabajo y cualquier otro anexo, constituye el acuerdo integral entre las Partes con respecto al objeto del mismo y reemplaza todos los acuerdos, entendimientos y negociaciones previos, tanto escritos como orales, entre las Partes con respecto al objeto de este Contrato. Este Contrato solo puede ser modificado mediante un instrumento escrito debidamente ejecutado por representantes autorizados de ambas Partes.",
+            "Este Contrato, incluyendo todos los anexos, cronogramas y adjuntos al mismo, constituye el acuerdo integral entre las Partes con respecto al objeto del mismo y reemplaza todos los acuerdos, entendimientos y negociaciones previos, tanto escritos como orales, entre las Partes con respecto al objeto de este Contrato. Ninguna enmienda, modificación o suplemento a este Contrato será vinculante a menos que sea por escrito y firmado por representantes autorizados de ambas Partes.",
+            "Este Contrato, junto con cualquier adenda, anexo u otros adjuntos expresamente incorporados en el mismo, constituye el acuerdo integral entre las Partes con respecto al objeto del mismo y reemplaza todos los acuerdos, entendimientos y negociaciones previos, tanto escritos como orales, entre las Partes con respecto al objeto de este Contrato. Este Contrato solo puede ser enmendado, modificado o suplementado mediante un instrumento escrito debidamente ejecutado por representantes autorizados de ambas Partes, que haga referencia expresa a este Contrato y establezca la intención de las Partes de enmendarlo, modificarlo o suplementarlo.",
+            "Este Contrato, junto con la Declaración de Trabajo y cualquier otro anexo, constituye el acuerdo integral entre las Partes con respecto al objeto del mismo y reemplaza todos los acuerdos, entendimientos y negociaciones previos, tanto escritos como orales, entre las Partes con respecto al objeto de este Contrato. Este Contrato solo puede ser modificado mediante un instrumento escrito debidamente ejecutado por representantes autorizados de ambas Partes."
+          ]
+        },
+        {
+          "clause_type_id": "41",
+          "name": "Ley Aplicable y Jurisdicción",
+          "standard_wording": "Este Contrato se regirá e interpretará de acuerdo con las leyes de los Estados Unidos Mexicanos, incluyendo el Código Civil Federal, el Código de Comercio y demás legislación aplicable. Las Partes se someten expresamente a la jurisdicción de los tribunales competentes de la Ciudad de México para cualquier controversia que surja de o se relacione con este Contrato, renunciando a cualquier otro fuero que pudiera corresponderles.",
+          "level": "high",
+          "evaluation_questions": [
+            "¿La cláusula especifica la ley aplicable para el contrato?",
+            "¿La cláusula menciona que el contrato se interpretará de acuerdo con las leyes de una jurisdicción específica?",
+            "¿La cláusula establece que las partes se someten a la jurisdicción exclusiva de tribunales ubicados en un lugar específico para cualquier procedimiento legal relacionado con el contrato?",
+            "¿La cláusula menciona leyes o códigos específicos aplicables a la jurisdicción?"
+          ],
+          "examples": [
+            "Este Contrato se regirá e interpretará de acuerdo con las leyes del Estado de California, sin considerar sus principios de conflicto de leyes. Las Partes se someten a la jurisdicción exclusiva de los tribunales ubicados en el Condado de Los Ángeles, California para cualquier procedimiento legal que surja de o se relacione con este Contrato.",
+            "Este Contrato se regirá e interpretará de acuerdo con las leyes del Estado de Nueva York, sin dar efecto a sus principios de conflicto de leyes. Cualquier disputa, controversia o reclamación que surja de o se relacione con este Contrato, o el incumplimiento, terminación o validez del mismo, estará sujeta a la jurisdicción exclusiva de los tribunales ubicados en el Condado de Nueva York, Nueva York.",
+            "Este Contrato y cualquier disputa que surja de o se relacione con este Contrato se regirá e interpretará de acuerdo con las leyes del Estado de Texas, sin considerar sus reglas de conflicto de leyes. Las Partes consienten irrevocablemente a la jurisdicción y sede exclusiva de los tribunales estatales y federales ubicados en el Condado de Harris, Texas para cualquier procedimiento legal que surja de o se relacione con este Contrato.",
+            "Este Contrato se regirá e interpretará de acuerdo con las leyes de [Jurisdicción Aplicable], sin considerar sus principios de conflicto de leyes. Las Partes se someten a la jurisdicción exclusiva de los tribunales ubicados en [Jurisdicción] para cualquier procedimiento legal que surja de o se relacione con este Contrato."
+          ]
+        }
+      ]
+    }
+  }
+}

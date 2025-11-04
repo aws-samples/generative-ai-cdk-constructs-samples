@@ -1,0 +1,779 @@
+{
+  "contract_types": {
+    "service-agreement": {
+      "name": "Service Agreement",
+      "description": "Guidelines for service agreement contracts",
+      "company_party_type": "Customer",
+      "other_party_type": "Service Provider",
+      "high_risk_threshold": 0,
+      "medium_risk_threshold": 1,
+      "low_risk_threshold": 3,
+      "default_language": "en",
+      "is_active": true,
+      "guidelines": [
+        {
+          "clause_type_id": "1",
+          "name": "Performance Standards",
+          "standard_wording": "Service Provider shall perform the Services in a professional, timely, and workmanlike manner, consistent with industry standards and best practices, and in accordance with the specifications and requirements set forth in the Statement of Work.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause specify that the Service Provider must perform the services in a professional manner?",
+            "Does the clause require the Service Provider to perform the services in a timely manner?",
+            "Does the clause state that the Service Provider must perform the services in a workmanlike manner?",
+            "Does the clause indicate that the services must be performed consistent with industry standards?",
+            "Does the clause specify that the services must be performed consistent with best practices?",
+            "Does the clause require the Service Provider to perform the services in accordance with the specifications set forth in the Statement of Work?",
+            "Does the clause require the Service Provider to perform the services in accordance with the requirements set forth in the Statement of Work?"
+          ],
+          "examples": [
+            "Service Provider shall develop the ERP software system in accordance with the functional and technical specifications outlined in the Statement of Work, adhering to industry-standard coding practices, security protocols, and performance benchmarks.",
+            "Service Provider shall execute marketing and advertising campaigns in a professional manner, utilizing best practices and proven strategies to maximize the reach and effectiveness of the campaigns, as measured by the key performance indicators (KPIs) specified in the Statement of Work.",
+            "Service Provider shall perform facility management services in compliance with all applicable laws, regulations, and industry standards, ensuring that the facilities are maintained in a clean, safe, and operational condition at all times, meeting the service level requirements outlined in the Statement of Work.",
+            "Service Provider shall perform the Services in a professional, timely, and workmanlike manner, consistent with industry standards and best practices, and in accordance with the specifications and requirements set forth in the Statement of Work."
+          ]
+        },
+        {
+          "clause_type_id": "2",
+          "name": "Deliverables",
+          "standard_wording": "Service Provider shall provide the Deliverables specified in the Statement of Work in accordance with the agreed-upon timelines and milestones.",
+          "level": "high",
+          "evaluation_questions": [
+            "Does the clause specify that the Service Provider is responsible for providing certain deliverables?",
+            "Does the clause indicate that the deliverables to be provided are specified in a Statement of Work?",
+            "Does the clause state that the Service Provider must provide the deliverables in accordance with agreed-upon timelines?",
+            "Does the clause state that the Service Provider must provide the deliverables in accordance with agreed-upon milestones?"
+          ],
+          "examples": [
+            "Service Provider shall deliver the following Deliverables as part of the ERP software development project: (a) Detailed software design documents, (b) Source code and compiled executables, (c) User manuals and technical documentation, and (d) Test scripts and reports.",
+            "Service Provider shall deliver the following Deliverables as part of the marketing and advertising campaign: (a) Comprehensive marketing strategy and plan, (b) Creative assets (e.g., advertisements, videos, graphics), (c) Detailed campaign performance reports, and (d) Recommendations for future campaign optimization.",
+            "Service Provider shall deliver the following Deliverables as part of the facility management services: (a) Daily, weekly, and monthly maintenance reports, (b) Incident reports and resolution documentation, (c) Inventory and supply management reports, and (d) Periodic facility condition assessments.",
+            "Service Provider shall provide the Deliverables specified in the Statement of Work in accordance with the agreed-upon timelines and milestones."
+          ]
+        },
+        {
+          "clause_type_id": "3",
+          "name": "Acceptance Criteria",
+          "standard_wording": "Company shall have the right to review and test the Deliverables to ensure they conform to the acceptance criteria set forth in the Statement of Work. If any Deliverable fails to meet the acceptance criteria, Company may reject such Deliverable, and Service Provider shall promptly remedy the deficiencies at no additional cost to Company.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause give the company the right to review and test deliverables?",
+            "Does the clause state that the company can reject deliverables that fail to meet acceptance criteria?",
+            "Does the clause require the service provider to remedy deficiencies in rejected deliverables at no additional cost to the company?",
+            "Does the clause mention acceptance criteria being set forth in a Statement of Work?"
+          ],
+          "examples": [
+            "The ERP software system shall be deemed accepted by Company upon successful completion of user acceptance testing, which shall include verification of functional requirements, performance testing, security testing, and compatibility testing with Company's existing systems and infrastructure.",
+            "The marketing and advertising campaign Deliverables shall be deemed accepted by Company upon meeting the agreed-upon KPIs, such as website traffic, lead generation, conversion rates, and return on investment (ROI) targets specified in the Statement of Work.",
+            "The facility management services and Deliverables shall be deemed accepted by Company upon satisfactory inspection and verification that the services have been performed in accordance with the service level agreements, industry standards, and Company's requirements outlined in the Statement of Work.",
+            "Company shall have the right to review and test the Deliverables to ensure they conform to the acceptance criteria set forth in the Statement of Work. If any Deliverable fails to meet the acceptance criteria, Company may reject such Deliverable, and Service Provider shall promptly remedy the deficiencies at no additional cost to Company."
+          ]
+        },
+        {
+          "clause_type_id": "4",
+          "name": "Service Transition and Implementation",
+          "standard_wording": "Service Provider shall cooperate with Company and any third-party service providers to ensure a smooth transition and implementation of the Services, including, but not limited to, providing necessary training, documentation, and knowledge transfer.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause mention that the Service Provider shall cooperate with the Company?",
+            "Does the clause mention that the Service Provider shall cooperate with any third-party service providers?",
+            "Does the clause mention that the cooperation is to ensure a smooth transition of the Services?",
+            "Does the clause mention that the cooperation is to ensure a smooth implementation of the Services?",
+            "Does the clause mention that the cooperation includes providing necessary training?",
+            "Does the clause mention that the cooperation includes providing necessary documentation?",
+            "Does the clause mention that the cooperation includes providing necessary knowledge transfer?"
+          ],
+          "examples": [
+            "Service Provider shall cooperate with Company's IT team to ensure a smooth transition and implementation of the ERP software system, including conducting training sessions, providing documentation, and assisting with data migration and system integration activities.",
+            "Service Provider shall work closely with Company's marketing and sales teams to ensure a seamless transition and implementation of the marketing and advertising campaigns, including sharing campaign strategies, providing access to marketing tools and platforms, and coordinating the handover of creative assets and campaign data.",
+            "Service Provider shall collaborate with Company's facility management team and any incumbent service providers to ensure a smooth transition and implementation of the facility management services, including conducting site visits, reviewing existing procedures and documentation, and developing a detailed transition plan.",
+            "Service Provider shall cooperate with Company and any third-party service providers to ensure a smooth transition and implementation of the Services, including, but not limited to, providing necessary training, documentation, and knowledge transfer."
+          ]
+        },
+        {
+          "clause_type_id": "5",
+          "name": "Term and Termination",
+          "standard_wording": "a. Term: This Agreement shall commence on the Effective Date and shall continue for the term specified in the Statement of Work, unless earlier terminated in accordance with this Section.\nb. Termination for Convenience: Either Party may terminate this Agreement for convenience upon [X] days' prior written notice to the other Party.\nc. Termination for Cause: Either Party may terminate this Agreement for cause if the other Party materially breaches this Agreement and fails to cure such breach within [X] days after receiving written notice thereof.\nd. Effect of Termination: Upon termination of this Agreement, Service Provider shall promptly deliver to Company all Deliverables and work in progress, and Company shall pay Service Provider for all Services performed and accepted up to the effective date of termination.",
+          "level": "high",
+          "evaluation_questions": [
+            "Does the clause specify when the agreement commences?",
+            "Does the clause mention that the agreement will continue for a specified term?",
+            "Does the clause indicate that the agreement can be terminated earlier under certain conditions?",
+            "Does the clause refer to a separate document called \"Statement of Work\" for specifying the term of the agreement?"
+          ],
+          "examples": [
+            "This Agreement shall commence on the Effective Date and shall remain in effect for a period of 12 months, during which Service Provider shall complete the development and implementation of the ERP software system, unless terminated earlier in accordance with the termination provisions outlined herein.",
+            "This Agreement shall have an initial term of 3 years, during which Service Provider shall provide ongoing marketing and advertising services to Company. Either Party may terminate this Agreement for convenience upon 90 days' prior written notice, or for cause in the event of a material breach that remains uncured after 30 days' written notice.",
+            "This Agreement shall be effective for a period of 5 years, with automatic renewal for successive 2-year terms unless either Party provides written notice of non-renewal at least 180 days prior to the expiration of the then-current term. Company may terminate this Agreement for convenience upon 120 days' prior written notice, subject to payment of any applicable early termination fees.",
+            "a. Term: This Agreement shall commence on the Effective Date and shall continue for the term specified in the Statement of Work, unless earlier terminated in accordance with this Section.\nb. Termination for Convenience: Either Party may terminate this Agreement for convenience upon [X] days' prior written notice to the other Party.\nc. Termination for Cause: Either Party may terminate this Agreement for cause if the other Party materially breaches this Agreement and fails to cure such breach within [X] days after receiving written notice thereof.\nd. Effect of Termination: Upon termination of this Agreement, Service Provider shall promptly deliver to Company all Deliverables and work in progress, and Company shall pay Service Provider for all Services performed and accepted up to the effective date of termination."
+          ]
+        },
+        {
+          "clause_type_id": "6",
+          "name": "Renewal and Extension",
+          "standard_wording": "This Agreement may be renewed or extended by mutual written agreement of the Parties, subject to the same terms and conditions or such other terms and conditions as may be agreed upon by the Parties.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause mention the possibility of renewing or extending the agreement?",
+            "Does the clause state that renewal or extension requires mutual written agreement between the parties?",
+            "Does the clause indicate that renewal or extension would be subject to the same terms and conditions as the current agreement?",
+            "Does the clause allow for the possibility of different terms and conditions upon renewal or extension, if agreed upon by the parties?"
+          ],
+          "examples": [
+            "Upon completion of the initial ERP software development project, this Agreement may be renewed or extended by mutual written agreement of the Parties to cover additional software development or maintenance services, subject to the same terms and conditions or such other terms and conditions as may be agreed upon by the Parties.",
+            "This Agreement may be renewed for additional 2-year terms upon mutual written agreement of the Parties, provided that Service Provider offers Company pricing and terms that are at least as favorable as those offered to any other client for similar services during the renewal term.",
+            "If Company desires to extend the term of this Agreement beyond the initial 5-year period, the Parties shall negotiate in good faith to agree upon revised pricing and terms for the extended term, taking into consideration any changes in market conditions, service requirements, or other relevant factors.",
+            "This Agreement may be renewed or extended by mutual written agreement of the Parties, subject to the same terms and conditions or such other terms and conditions as may be agreed upon by the Parties."
+          ]
+        },
+        {
+          "clause_type_id": "7",
+          "name": "Fees",
+          "standard_wording": "Company shall pay Service Provider the fees specified in the Statement of Work in accordance with the payment schedule set forth therein.",
+          "level": "high",
+          "evaluation_questions": [
+            "Does the clause specify that the company will pay fees to the service provider?",
+            "Does the clause mention a statement of work that specifies the fees to be paid?",
+            "Does the clause indicate that the payment schedule is set forth in the statement of work?",
+            "Does the clause state that the company will pay the fees in accordance with the payment schedule?"
+          ],
+          "examples": [
+            "Company shall pay Service Provider a fixed fee of $500,000 for the development and implementation of the ERP software system, payable in 4 installments upon achievement of the milestones specified in the Statement of Work.",
+            "Service Provider shall be compensated on a commission basis, receiving 15% of the total advertising spend for each marketing and advertising campaign executed on behalf of Company.",
+            "Company shall pay Service Provider a monthly fee of $75,000 for the provision of facility management services, subject to annual adjustments based on changes in the Consumer Price Index (CPI) or other agreed-upon pricing indices.",
+            "Company shall pay Service Provider the fees specified in the Statement of Work in accordance with the payment schedule set forth therein."
+          ]
+        },
+        {
+          "clause_type_id": "8",
+          "name": "Invoicing",
+          "standard_wording": "Service Provider shall submit invoices to Company in accordance with the invoicing instructions provided in the Statement of Work. Company shall pay all undisputed invoices within [X] days of receipt.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause specify that the Service Provider shall submit invoices to the Company?",
+            "Does the clause mention that the invoices should be submitted in accordance with invoicing instructions provided in a Statement of Work?",
+            "Does the clause state that the Company shall pay undisputed invoices?",
+            "Does the clause specify a time period within which the Company shall pay undisputed invoices after receipt?"
+          ],
+          "examples": [
+            "Service Provider shall submit invoices to Company upon achievement of each milestone specified in the Statement of Work, and Company shall make payment within 30 days of receipt of a valid invoice.",
+            "Service Provider shall invoice Company on a monthly basis for the commission fees earned during the preceding month, providing detailed reports and supporting documentation for the advertising spend and campaign performance. Company shall make payment within 45 days of receipt of a valid invoice.",
+            "Service Provider shall submit monthly invoices to Company by the 5th day of each month for the facility management services rendered during the previous month. Company shall make payment within 60 days of receipt of a valid invoice.",
+            "Service Provider shall submit invoices to Company in accordance with the invoicing instructions provided in the Statement of Work. Company shall pay all undisputed invoices within [X] days of receipt."
+          ]
+        },
+        {
+          "clause_type_id": "9",
+          "name": "Expenses",
+          "standard_wording": "Unless otherwise specified in the Statement of Work, Service Provider shall be responsible for all expenses incurred in performing the Services. If reimbursement of expenses is permitted, Service Provider shall provide detailed documentation and receipts for all reimbursable expenses, and Company shall reimburse such expenses in accordance with its expense reimbursement policies.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause specify that the Service Provider is responsible for all expenses incurred in performing the Services, unless otherwise stated in the Statement of Work?",
+            "Does the clause state that if expense reimbursement is permitted, the Service Provider must provide detailed documentation and receipts for all reimbursable expenses?",
+            "Does the clause mention that the Company shall reimburse the Service Provider's expenses in accordance with its expense reimbursement policies, if reimbursement is permitted?"
+          ],
+          "examples": [
+            "Service Provider shall be responsible for all expenses incurred in the performance of the software development services, including but not limited to personnel costs, equipment, software licenses, and travel expenses, unless otherwise agreed upon in writing by the Parties.",
+            "Company shall be responsible for all third-party advertising costs, such as media buys, sponsorships, and promotional materials, while Service Provider shall be responsible for its internal expenses related to the planning, execution, and management of the marketing and advertising campaigns.",
+            "Service Provider shall be responsible for all routine expenses associated with the provision of facility management services, such as labor costs, consumable supplies, and equipment maintenance. Any non-routine or capital expenses exceeding $50,000 shall require prior written approval from Company.",
+            "Unless otherwise specified in the Statement of Work, Service Provider shall be responsible for all expenses incurred in performing the Services. If reimbursement of expenses is permitted, Service Provider shall provide detailed documentation and receipts for all reimbursable expenses, and Company shall reimburse such expenses in accordance with its expense reimbursement policies."
+          ]
+        },
+        {
+          "clause_type_id": "10",
+          "name": "Taxes",
+          "standard_wording": "Each Party shall be responsible for paying any applicable taxes, fees, or other charges imposed by any governmental authority in connection with the performance of this Agreement. If Service Provider is required to collect or remit any taxes on behalf of Company, Service Provider shall separately state such taxes on its invoices, and Company shall pay such taxes in addition to the fees for the Services.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause state that each party is responsible for paying applicable taxes, fees, or other charges imposed by any governmental authority in connection with the performance of the agreement?",
+            "Does the clause specify that if the Service Provider is required to collect or remit any taxes on behalf of the Company, the Service Provider shall separately state such taxes on its invoices?",
+            "Does the clause indicate that the Company shall pay any taxes separately stated by the Service Provider on invoices, in addition to the fees for the Services?"
+          ],
+          "examples": [
+            "Each Party shall be solely responsible for paying any applicable taxes, fees, or other charges imposed by any governmental authority in connection with the performance of this Agreement, including but not limited to income taxes, sales taxes, and value-added taxes.",
+            "Company shall be responsible for paying any applicable sales taxes, use taxes, or other transaction-based taxes imposed on the advertising spend or marketing services provided by Service Provider. Service Provider shall be responsible for paying any income taxes or other taxes imposed on its earnings under this Agreement.",
+            "Service Provider shall be responsible for paying all taxes, fees, and charges imposed by any governmental authority in connection with the provision of facility management services, including but not limited to payroll taxes, income taxes, and property taxes. Company shall be responsible for paying any applicable sales taxes or use taxes imposed on the services rendered by Service Provider.",
+            "Each Party shall be responsible for paying any applicable taxes, fees, or other charges imposed by any governmental authority in connection with the performance of this Agreement. If Service Provider is required to collect or remit any taxes on behalf of Company, Service Provider shall separately state such taxes on its invoices, and Company shall pay such taxes in addition to the fees for the Services."
+          ]
+        },
+        {
+          "clause_type_id": "11",
+          "name": "Service Credits and Service Level Rebates",
+          "standard_wording": "If Service Provider fails to meet the service levels or performance standards specified in the Statement of Work, Company shall be entitled to the service credits or service level rebates set forth therein.",
+          "level": "high",
+          "evaluation_questions": [
+            "Does the clause mention a Service Provider?",
+            "Does the clause mention a Company?",
+            "Does the clause mention service levels or performance standards?",
+            "Does the clause mention that the Company is entitled to service credits or service level rebates if the Service Provider fails to meet the specified service levels or performance standards?",
+            "Does the clause specify that the service credits or service level rebates are set forth in the Statement of Work?"
+          ],
+          "examples": [
+            "If the ERP software system fails to meet the performance or availability requirements specified in the Statement of Work, Company shall be entitled to service credits equal to 5% of the monthly software maintenance fees for each 1% of downtime or performance degradation below the agreed-upon service levels.",
+            "In the event that Service Provider fails to achieve the agreed-upon KPIs or performance targets for a particular marketing or advertising campaign, Company shall be entitled to a service level rebate equal to 10% of the commission fees earned by Service Provider for that campaign.",
+            "If Service Provider fails to meet the service level requirements outlined in the Statement of Work, such as response times for maintenance requests or facility cleanliness standards, Company shall be entitled to service credits or rebates calculated as 3% of the monthly facility management fees, based on the severity and duration of the service level breach.",
+            "If Service Provider fails to meet the service levels or performance standards specified in the Statement of Work, Company shall be entitled to the service credits or service level rebates set forth therein."
+          ]
+        },
+        {
+          "clause_type_id": "12",
+          "name": "Background Intellectual Property",
+          "standard_wording": "Each Party shall retain ownership of its respective pre-existing intellectual property rights, including, but not limited to, patents, copyrights, trademarks, and trade secrets. Any new intellectual property developed in the course of performing the Services shall be owned by Company, unless otherwise specified in the Statement of Work.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause specify that each party retains ownership of their pre-existing intellectual property rights?",
+            "Does the clause mention that pre-existing intellectual property rights include patents, copyrights, trademarks, and trade secrets?",
+            "Does the clause state that any new intellectual property developed during the performance of services will be owned by the company?",
+            "Does the clause allow for exceptions to the ownership of new intellectual property, if specified in a separate Statement of Work?"
+          ],
+          "examples": [
+            "Any pre-existing intellectual property rights, including but not limited to software, tools, libraries, or methodologies, owned or licensed by either Party prior to the Effective Date shall remain the sole and exclusive property of that Party. Any new intellectual property developed by Service Provider in the course of providing the software development services shall be owned by Company, unless otherwise agreed upon in writing by the Parties.",
+            "Each Party shall retain ownership of its respective pre-existing intellectual property rights, including but not limited to trademarks, copyrights, and trade secrets. Any new creative works or marketing materials developed by Service Provider specifically for Company's marketing and advertising campaigns shall be considered \"works made for hire\" and shall be owned by Company.",
+            "Service Provider shall retain ownership of any pre-existing intellectual property rights related to its proprietary processes, methodologies, or technologies used in the provision of facility management services. Any new intellectual property developed jointly by the Parties in the course of this Agreement shall be owned by Company, unless otherwise agreed upon in writing.",
+            "Each Party shall retain ownership of its respective pre-existing intellectual property rights, including, but not limited to, patents, copyrights, trademarks, and trade secrets. Any new intellectual property developed in the course of performing the Services shall be owned by Company, unless otherwise specified in the Statement of Work."
+          ]
+        },
+        {
+          "clause_type_id": "13",
+          "name": "Confidentiality",
+          "standard_wording": "Each Party may disclose to the other Party certain non-public information relating to its business, products, services, or operations (\"Confidential Information\"). Confidential Information shall not include information that: (i) is or becomes publicly available through no fault of the receiving Party; (ii) is rightfully received by the receiving Party from a third party without breach of any confidentiality obligation; (iii) is independently developed by the receiving Party without use of the disclosing Party's Confidential Information; or (iv) was already known to the receiving Party prior to disclosure by the disclosing Party, as evidenced by written records.",
+          "level": "high",
+          "evaluation_questions": [
+            "Does the clause define what constitutes Confidential Information?",
+            "Does the clause specify that Confidential Information excludes information that is publicly available through no fault of the receiving party?",
+            "Does the clause specify that Confidential Information excludes information rightfully received from a third party without breach of confidentiality?",
+            "Does the clause specify that Confidential Information excludes information independently developed by the receiving party without using the disclosing party's Confidential Information?",
+            "Does the clause specify that Confidential Information excludes information already known to the receiving party prior to disclosure, as evidenced by written records?"
+          ],
+          "examples": [
+            "During the course of this Agreement, each Party may disclose to the other Party certain Confidential Information related to its business, products, or services. The receiving Party shall: (a) use the Confidential Information solely for the purposes of performing its obligations under this Agreement; (b) protect the Confidential Information using the same degree of care as it uses to protect its own confidential information, but in no event less than reasonable care; and (c) not disclose the Confidential Information to any third party without the prior written consent of the disclosing Party, except as required by law or court order.",
+            "Service Provider acknowledges that, in the course of providing marketing and advertising services to Company, it may have access to Company's Confidential Information, including but not limited to customer data, marketing strategies, and financial information. Service Provider shall maintain the confidentiality of such information and shall not disclose or use it for any purpose other than the performance of its obligations under this Agreement.",
+            "Each Party shall treat as confidential all non-public information disclosed by the other Party in connection with this Agreement, including but not limited to facility layouts, security protocols, and proprietary processes. The receiving Party shall use such Confidential Information solely for the purposes of performing its obligations under this Agreement and shall not disclose it to any third party without the prior written consent of the disclosing Party, except as required by law or court order.",
+            "Each Party may disclose to the other Party certain non-public information relating to its business, products, services, or operations (\"Confidential Information\"). Confidential Information shall not include information that: (i) is or becomes publicly available through no fault of the receiving Party; (ii) is rightfully received by the receiving Party from a third party without breach of any confidentiality obligation; (iii) is independently developed by the receiving Party without use of the disclosing Party's Confidential Information; or (iv) was already known to the receiving Party prior to disclosure by the disclosing Party, as evidenced by written records."
+          ]
+        },
+        {
+          "clause_type_id": "14",
+          "name": "Non-Disclosure",
+          "standard_wording": "The receiving Party shall: (i) use the same degree of care to protect the Confidential Information as it uses to protect its own confidential information of a similar nature, but in no event less than reasonable care; (ii) not use the Confidential Information for any purpose other than to perform its obligations under this Agreement; and (iii) not disclose the Confidential Information to any third party, except to its employees, agents, or contractors who have a need to know and are bound by confidentiality obligations at least as protective as those set forth herein.",
+          "level": "high",
+          "evaluation_questions": [
+            "Does the clause require the receiving party to use at least reasonable care to protect the confidential information?",
+            "Does the clause prohibit the receiving party from using the confidential information for any purpose other than performing obligations under the agreement?",
+            "Does the clause allow the receiving party to disclose the confidential information to its employees, agents, or contractors who have a need to know and are bound by confidentiality obligations at least as protective as those set forth in the clause?"
+          ],
+          "examples": [
+            "Neither Party shall disclose or use the other Party's Confidential Information for any purpose other than as necessary to perform its obligations under this Agreement. The receiving Party shall not disclose the Confidential Information to any third party, except to its employees, agents, or subcontractors who have a need to know and are bound by confidentiality obligations at least as protective as those set forth herein.",
+            "Service Provider shall not disclose or use Company's Confidential Information, including but not limited to customer data, marketing strategies, and financial information, for any purpose other than the performance of its obligations under this Agreement. Service Provider shall ensure that its employees, agents, and subcontractors who have access to such Confidential Information are bound by confidentiality obligations at least as protective as those set forth herein.",
+            "Each Party shall not disclose or use the other Party's Confidential Information, including but not limited to technical data, financial information, business strategies, and customer data, for any purpose other than the performance of its obligations under this Agreement. The receiving Party shall ensure that its employees, agents, and subcontractors who have access to such Confidential Information are bound by confidentiality obligations at least as protective as those set forth herein.",
+            "The receiving Party shall: (i) use the same degree of care to protect the Confidential Information as it uses to protect its own confidential information of a similar nature, but in no event less than reasonable care; (ii) not use the Confidential Information for any purpose other than to perform its obligations under this Agreement; and (iii) not disclose the Confidential Information to any third party, except to its employees, agents, or contractors who have a need to know and are bound by confidentiality obligations at least as protective as those set forth herein."
+          ]
+        },
+        {
+          "clause_type_id": "15",
+          "name": "Representations and Warranties",
+          "standard_wording": "Service Provider represents and warrants that: (i) it has the necessary skills, qualifications, and expertise to perform the Services; (ii) the Services will be performed in a professional and workmanlike manner; (iii) the Deliverables will conform to the specifications and requirements set forth in the Statement of Work; and (iv) the Deliverables will not infringe upon any third-party intellectual property rights.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause state that the Service Provider has the necessary skills, qualifications, and expertise to perform the Services?",
+            "Does the clause state that the Services will be performed in a professional and workmanlike manner?",
+            "Does the clause state that the Deliverables will conform to the specifications and requirements set forth in the Statement of Work?",
+            "Does the clause state that the Deliverables will not infringe upon any third-party intellectual property rights?"
+          ],
+          "examples": [
+            "Service Provider represents and warrants that: (a) it has the necessary skills, expertise, and resources to develop and implement the ERP software system in accordance with the specifications and requirements set forth in the Statement of Work; (b) the software and Deliverables provided under this Agreement will be free from material defects and will conform to industry standards and best practices; and (c) the software and Deliverables will not infringe upon any third-party intellectual property rights.",
+            "Service Provider represents and warrants that: (a) it has the necessary expertise, experience, and resources to plan, execute, and manage effective marketing and advertising campaigns on behalf of Company; (b) all creative works and marketing materials developed by Service Provider will be original and will not infringe upon any third-party intellectual property rights; and (c) Service Provider will comply with all applicable laws, regulations, and industry standards related to advertising and marketing practices.",
+            "Service Provider represents and warrants that: (a) it has the necessary licenses, permits, and qualifications to provide facility management services in compliance with all applicable laws and regulations; (b) its personnel are properly trained, qualified, and experienced to perform the services in a professional and workmanlike manner; and (c) it will maintain adequate insurance coverage, including but not limited to general liability, workers' compensation, and professional liability insurance, throughout the term of this Agreement.",
+            "Service Provider represents and warrants that: (i) it has the necessary skills, qualifications, and expertise to perform the Services; (ii) the Services will be performed in a professional and workmanlike manner; (iii) the Deliverables will conform to the specifications and requirements set forth in the Statement of Work; and (iv) the Deliverables will not infringe upon any third-party intellectual property rights."
+          ]
+        },
+        {
+          "clause_type_id": "16",
+          "name": "Indemnification",
+          "standard_wording": "Service Provider shall indemnify, defend, and hold harmless Company, its affiliates, and their respective officers, directors, employees, and agents from and against any and all claims, demands, suits, actions, proceedings, losses, liabilities, damages, costs, and expenses (including reasonable attorneys' fees) arising out of or relating to: (i) any breach of this Agreement by Service Provider; (ii) any negligent or willful act or omission by Service Provider or its employees, agents, or subcontractors in the performance of the Services; or (iii) any allegation that the Deliverables or Services infringe upon any third-party intellectual property rights.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause require the Service Provider to indemnify the Company?",
+            "Does the clause require the Service Provider to defend the Company?",
+            "Does the clause require the Service Provider to hold the Company harmless?",
+            "Does the clause cover the Company's affiliates in addition to the Company itself?",
+            "Does the clause cover the officers, directors, employees, and agents of the Company and its affiliates?",
+            "Does the clause cover claims, demands, suits, actions, proceedings, losses, liabilities, damages, costs, and expenses (including reasonable attorneys' fees)?",
+            "Does the clause cover situations arising out of or relating to a breach of the Agreement by the Service Provider?",
+            "Does the clause cover situations arising out of or relating to any negligent or willful act or omission by the Service Provider or its employees, agents, or subcontractors in the performance of the Services?",
+            "Does the clause cover situations arising out of or relating to any allegation that the Deliverables or Services infringe upon any third-party intellectual property rights?"
+          ],
+          "examples": [
+            "Service Provider shall indemnify, defend, and hold harmless Company, its affiliates, and their respective officers, directors, employees, and agents from and against any and all claims, demands, suits, actions, proceedings, losses, liabilities, damages, costs, and expenses (including reasonable attorneys' fees) arising out of or relating to: (a) any breach of this Agreement by Service Provider; (b) any negligent or willful act or omission by Service Provider or its personnel in the performance of the software development services; or (c) any allegation that the ERP software system or Deliverables infringe upon any third-party intellectual property rights.",
+            "Company shall indemnify, defend, and hold harmless Service Provider, its affiliates, and their respective officers, directors, employees, and agents from and against any and all claims, demands, suits, actions, proceedings, losses, liabilities, damages, costs, and expenses (including reasonable attorneys' fees) arising out of or relating to: (a) any breach of this Agreement by Company; (b) any allegation that Company's products, services, or trademarks used in the marketing and advertising campaigns infringe upon any third-party intellectual property rights; or (c) any claims or actions brought by third parties related to the content or subject matter of the marketing and advertising campaigns.",
+            "Each Party shall indemnify, defend, and hold harmless the other Party, its affiliates, and their respective officers, directors, employees, and agents from and against any and all claims, demands, suits, actions, proceedings, losses, liabilities, damages, costs, and expenses (including reasonable attorneys' fees) arising out of or relating to: (a) any breach of this Agreement by the indemnifying Party; (b) any negligent or willful act or omission by the indemnifying Party or its personnel in the performance of its obligations under this Agreement; or (c) any bodily injury, property damage, or other third-party claims caused by the indemnifying Party or its personnel in the course of providing or receiving the facility management services.",
+            "Service Provider shall indemnify, defend, and hold harmless Company, its affiliates, and their respective officers, directors, employees, and agents from and against any and all claims, demands, suits, actions, proceedings, losses, liabilities, damages, costs, and expenses (including reasonable attorneys' fees) arising out of or relating to: (i) any breach of this Agreement by Service Provider; (ii) any negligent or willful act or omission by Service Provider or its employees, agents, or subcontractors in the performance of the Services; or (iii) any allegation that the Deliverables or Services infringe upon any third-party intellectual property rights."
+          ]
+        },
+        {
+          "clause_type_id": "17",
+          "name": "Limitation of Liability",
+          "standard_wording": "EXCEPT FOR CLAIMS ARISING OUT OF A PARTY'S INDEMNIFICATION OBLIGATIONS, GROSS NEGLIGENCE, OR WILLFUL MISCONDUCT, IN NO EVENT SHALL EITHER PARTY BE LIABLE TO THE OTHER PARTY FOR ANY INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES, INCLUDING, BUT NOT LIMITED TO, LOST PROFITS, LOST REVENUE, OR BUSINESS INTERRUPTION, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.",
+          "level": "high",
+          "evaluation_questions": [
+            "Does the clause limit the liability of both parties for certain types of damages?",
+            "Does the clause exclude liability for indirect, incidental, special, punitive, or consequential damages?",
+            "Does the clause provide examples of the types of damages excluded, such as lost profits, lost revenue, or business interruption?",
+            "Does the clause make an exception for claims arising out of a party's indemnification obligations, gross negligence, or willful misconduct?",
+            "Does the clause state that the limitation of liability applies even if a party was advised of the possibility of such damages?"
+          ],
+          "examples": [
+            "EXCEPT FOR CLAIMS ARISING OUT OF A PARTY'S INDEMNIFICATION OBLIGATIONS, GROSS NEGLIGENCE, OR WILLFUL MISCONDUCT, IN NO EVENT SHALL EITHER PARTY BE LIABLE TO THE OTHER PARTY FOR ANY INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES, INCLUDING, BUT NOT LIMITED TO, LOST PROFITS, LOST REVENUE, OR BUSINESS INTERRUPTION, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. COMPANY'S TOTAL LIABILITY TO SERVICE PROVIDER FOR ANY AND ALL CLAIMS ARISING OUT OF OR RELATING TO THIS AGREEMENT SHALL NOT EXCEED THE TOTAL FEES PAID BY COMPANY TO SERVICE PROVIDER UNDER THIS AGREEMENT DURING THE 12 MONTHS PRECEDING THE EVENT GIVING RISE TO THE CLAIM.",
+            "EXCEPT FOR CLAIMS ARISING OUT OF A PARTY'S INDEMNIFICATION OBLIGATIONS, GROSS NEGLIGENCE, OR WILLFUL MISCONDUCT, IN NO EVENT SHALL EITHER PARTY BE LIABLE TO THE OTHER PARTY FOR ANY INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES, INCLUDING, BUT NOT LIMITED TO, LOST PROFITS, LOST REVENUE, OR BUSINESS INTERRUPTION, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. SERVICE PROVIDER'S TOTAL LIABILITY TO COMPANY FOR ANY AND ALL CLAIMS ARISING OUT OF OR RELATING TO THIS AGREEMENT SHALL NOT EXCEED THE TOTAL COMMISSION FEES EARNED BY SERVICE PROVIDER UNDER THIS AGREEMENT DURING THE 6 MONTHS PRECEDING THE EVENT GIVING RISE TO THE CLAIM.",
+            "EXCEPT FOR CLAIMS ARISING OUT OF A PARTY'S INDEMNIFICATION OBLIGATIONS, GROSS NEGLIGENCE, OR WILLFUL MISCONDUCT, IN NO EVENT SHALL EITHER PARTY BE LIABLE TO THE OTHER PARTY FOR ANY INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES, INCLUDING, BUT NOT LIMITED TO, LOST PROFITS, LOST REVENUE, OR BUSINESS INTERRUPTION, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. EACH PARTY'S TOTAL LIABILITY TO THE OTHER PARTY FOR ANY AND ALL CLAIMS ARISING OUT OF OR RELATING TO THIS AGREEMENT SHALL NOT EXCEED 2 TIMES THE TOTAL FEES PAID OR PAYABLE BY COMPANY TO SERVICE PROVIDER UNDER THIS AGREEMENT DURING THE 12 MONTHS PRECEDING THE EVENT GIVING RISE TO THE CLAIM.",
+            "EXCEPT FOR CLAIMS ARISING OUT OF A PARTY'S INDEMNIFICATION OBLIGATIONS, GROSS NEGLIGENCE, OR WILLFUL MISCONDUCT, IN NO EVENT SHALL EITHER PARTY BE LIABLE TO THE OTHER PARTY FOR ANY INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES, INCLUDING, BUT NOT LIMITED TO, LOST PROFITS, LOST REVENUE, OR BUSINESS INTERRUPTION, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES."
+          ]
+        },
+        {
+          "clause_type_id": "18",
+          "name": "Force Majeure",
+          "standard_wording": "Neither Party shall be liable for any delay or failure to perform its obligations under this Agreement due to causes beyond its reasonable control, including, but not limited to, acts of God, acts of civil or military authority, fires, floods, earthquakes, riots, wars, terrorist acts, epidemics, or governmental restrictions (\"Force Majeure Event\"). In the event of a Force Majeure Event, the affected Party shall promptly notify the other Party, and the Parties shall work together in good faith to mitigate the effects of the Force Majeure Event and, if necessary, amend or terminate this Agreement.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause mention that neither party is liable for delays or failures to perform obligations due to causes beyond their reasonable control?",
+            "Does the clause provide examples of such causes, including acts of God, acts of civil or military authority, fires, floods, earthquakes, riots, wars, terrorist acts, epidemics, or governmental restrictions?",
+            "Does the clause refer to these causes collectively as a \"Force Majeure Event\"?",
+            "Does the clause require the affected party to promptly notify the other party in the event of a Force Majeure Event?",
+            "Does the clause state that the parties shall work together in good faith to mitigate the effects of the Force Majeure Event?",
+            "Does the clause allow for the possibility of amending or terminating the agreement if necessary due to a Force Majeure Event?"
+          ],
+          "examples": [
+            "Neither Party shall be liable for any delay or failure to perform its obligations under this Agreement due to causes beyond its reasonable control, including, but not limited to, acts of God, acts of civil or military authority, fires, floods, earthquakes, riots, wars, terrorist acts, epidemics, or governmental restrictions (\"Force Majeure Event\"). In the event of a Force Majeure Event, the affected Party shall promptly notify the other Party, and the Parties shall work together in good faith to mitigate the effects of the Force Majeure Event and, if necessary, amend or terminate this Agreement.",
+            "Neither Party shall be liable for any delay or failure to perform its obligations under this Agreement due to causes beyond its reasonable control, including, but not limited to, acts of God, acts of civil or military authority, fires, floods, earthquakes, riots, wars, terrorist acts, epidemics, or governmental restrictions (\"Force Majeure Event\"). In the event of a Force Majeure Event, the affected Party shall promptly notify the other Party, and the Parties shall work together in good faith to mitigate the effects of the Force Majeure Event, which may include adjusting campaign timelines, reallocating resources, or modifying the scope of services.",
+            "Neither Party shall be liable for any delay or failure to perform its obligations under this Agreement due to causes beyond its reasonable control, including, but not limited to, acts of God, acts of civil or military authority, fires, floods, earthquakes, riots, wars, terrorist acts, epidemics, or governmental restrictions (\"Force Majeure Event\"). In the event of a Force Majeure Event, the affected Party shall promptly notify the other Party, and the Parties shall work together in good faith to mitigate the effects of the Force Majeure Event, which may include implementing contingency plans, adjusting service levels, or modifying the scope of services.",
+            "Neither Party shall be liable for any delay or failure to perform its obligations under this Agreement due to causes beyond its reasonable control, including, but not limited to, acts of God, acts of civil or military authority, fires, floods, earthquakes, riots, wars, terrorist acts, epidemics, or governmental restrictions (\"Force Majeure Event\"). In the event of a Force Majeure Event, the affected Party shall promptly notify the other Party, and the Parties shall work together in good faith to mitigate the effects of the Force Majeure Event and, if necessary, amend or terminate this Agreement."
+          ]
+        },
+        {
+          "clause_type_id": "19",
+          "name": "Ethical Conduct and Anti-Corruption",
+          "standard_wording": "Each Party shall comply with all applicable anti-corruption laws, including, but not limited to, the U.S. Foreign Corrupt Practices Act and the UK Bribery Act, and shall not engage in any form of bribery, kickbacks, or other corrupt practices in connection with this Agreement.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause state that each party shall comply with all applicable anti-corruption laws?",
+            "Does the clause prohibit engaging in any form of bribery?",
+            "Does the clause prohibit engaging in any form of kickbacks?",
+            "Does the clause prohibit engaging in any other form of corrupt practices in connection with the agreement?",
+            "Does the clause mention the U.S. Foreign Corrupt Practices Act?",
+            "Does the clause mention the UK Bribery Act?"
+          ],
+          "examples": [
+            "Each Party shall conduct its business activities in an ethical manner and shall comply with all applicable anti-corruption laws, including but not limited to the U.S. Foreign Corrupt Practices Act and the UK Bribery Act. Neither Party shall offer, give, or accept any bribes, kickbacks, or other improper payments or benefits in connection with this Agreement.",
+            "Service Provider shall ensure that all marketing and advertising campaigns are conducted in an ethical and truthful manner, avoiding any deceptive or misleading practices. Both Parties shall comply with all applicable anti-corruption laws and shall not engage in any form of bribery or improper influence in connection with this Agreement.",
+            "Both Parties shall maintain high ethical standards and comply with all applicable anti-corruption laws, including but not limited to the U.S. Foreign Corrupt Practices Act and the UK Bribery Act. Neither Party shall offer, give, or accept any bribes, kickbacks, or other improper payments or benefits in connection with the provision or receipt of facility management services.",
+            "Each Party shall comply with all applicable anti-corruption laws, including, but not limited to, the U.S. Foreign Corrupt Practices Act and the UK Bribery Act, and shall not engage in any form of bribery, kickbacks, or other corrupt practices in connection with this Agreement."
+          ]
+        },
+        {
+          "clause_type_id": "20",
+          "name": "Corporate Social Responsibility",
+          "standard_wording": "Each Party shall comply with corporate social responsibility laws and standards specific to environmental protection, labor practices, and human rights, and shall implement policies promoting sustainable operations, ethical employment practices, and community welfare.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause mention that the parties must comply with applicable laws and regulations?",
+            "Does the clause specify that the laws and regulations relate to corporate social responsibility?",
+            "Does the clause include environmental protection as one of the areas covered by corporate social responsibility?",
+            "Does the clause include labor practices as one of the areas covered by corporate social responsibility?",
+            "Does the clause include human rights as one of the areas covered by corporate social responsibility?"
+          ],
+          "examples": [
+            "Service Provider shall comply with all applicable laws and regulations related to corporate social responsibility, including but not limited to environmental protection, labor practices, and human rights. Service Provider shall make reasonable efforts to minimize the environmental impact of its software development activities and promote sustainable practices.",
+            "Both Parties shall conduct their business activities in a socially responsible manner, promoting ethical and sustainable practices. Service Provider shall ensure that its marketing and advertising campaigns do not promote or endorse products or services that are harmful to the environment or society.",
+            "Service Provider shall implement and maintain environmentally sustainable practices in the provision of facility management services, including but not limited to energy conservation, waste reduction, and the use of eco-friendly products and materials. Service Provider shall also comply with all applicable labor laws and promote fair working conditions for its employees.",
+            "Each Party shall comply with all applicable laws and regulations related to corporate social responsibility, including, but not limited to, environmental protection, labor practices, and human rights."
+          ]
+        },
+        {
+          "clause_type_id": "21",
+          "name": "Key Personnel and Resource Allocation",
+          "standard_wording": "Service Provider shall assign qualified and experienced personnel to perform the Services, and shall ensure that sufficient resources are allocated to meet the requirements and timelines set forth in the Statement of Work.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause require the Service Provider to assign personnel to perform the Services?",
+            "Does the clause specify that the personnel assigned must be qualified and experienced?",
+            "Does the clause require the Service Provider to allocate sufficient resources to meet the requirements and timelines set forth in the Statement of Work?",
+            "Does the clause mention a Statement of Work that sets forth requirements and timelines?"
+          ],
+          "examples": [
+            "Service Provider shall assign a dedicated project manager and a team of qualified and experienced software developers, designers, and quality assurance personnel to perform the software development services. Service Provider shall ensure that sufficient resources are allocated to meet the project timelines and deliverables specified in the Statement of Work.",
+            "Service Provider shall assign a dedicated account manager and a team of experienced marketing and advertising professionals, including but not limited to strategists, creatives, and analysts, to manage and execute Company's marketing and advertising campaigns. Service Provider shall ensure that adequate resources are allocated to meet the agreed-upon campaign objectives and performance targets.",
+            "Service Provider shall assign a dedicated facility manager and a team of qualified and experienced maintenance technicians, custodial staff, and security personnel to perform the facility management services. Service Provider shall ensure that sufficient resources are allocated to meet the service level requirements and maintain the facilities in a safe and operational condition.",
+            "Service Provider shall assign qualified and experienced personnel to perform the Services, and shall ensure that sufficient resources are allocated to meet the requirements and timelines set forth in the Statement of Work."
+          ]
+        },
+        {
+          "clause_type_id": "22",
+          "name": "Replacement of Personnel",
+          "standard_wording": "If Company reasonably objects to the performance or conduct of any of Service Provider's personnel assigned to perform the Services, Service Provider shall promptly replace such personnel with qualified and experienced replacements acceptable to Company.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause mention that the Company has the right to object to the performance or conduct of the Service Provider's personnel?",
+            "Does the clause state that if the Company objects, the Service Provider must replace the personnel in question?",
+            "Does the clause specify that the replacements for the personnel must be qualified and experienced?",
+            "Does the clause require that the replacements must be acceptable to the Company?",
+            "Does the clause indicate that the Service Provider must replace the personnel promptly if the Company objects?"
+          ],
+          "examples": [
+            "If Company reasonably objects to the performance or conduct of any of Service Provider's personnel assigned to the software development project, Service Provider shall promptly replace such personnel with qualified and experienced replacements acceptable to Company.",
+            "If Company is dissatisfied with the performance or conduct of any of Service Provider's personnel assigned to Company's marketing and advertising campaigns, Service Provider shall promptly replace such personnel with qualified and experienced replacements acceptable to Company.",
+            "If Company reasonably objects to the performance or conduct of any of Service Provider's personnel assigned to the facility management services, Service Provider shall promptly replace such personnel with qualified and experienced replacements acceptable to Company.",
+            "If Company reasonably objects to the performance or conduct of any of Service Provider's personnel assigned to perform the Services, Service Provider shall promptly replace such personnel with qualified and experienced replacements acceptable to Company."
+          ]
+        },
+        {
+          "clause_type_id": "23",
+          "name": "Background Checks and Security Clearances",
+          "standard_wording": "Service Provider shall ensure that all of its employees, agents, and subcontractors assigned to perform Services under this Agreement have successfully completed background checks and obtained any necessary security clearances as required by Company or applicable laws and regulations.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause require the Service Provider to ensure that all of its employees, agents, and subcontractors assigned to perform Services under the Agreement have successfully completed background checks?",
+            "Does the clause require the Service Provider to ensure that all of its employees, agents, and subcontractors assigned to perform Services under the Agreement have obtained any necessary security clearances?",
+            "Does the clause specify that the background checks and security clearances are required by the Company or applicable laws and regulations?",
+            "Does the clause apply to the Service Provider's employees, agents, and subcontractors assigned to perform Services under the Agreement?",
+            "Does the clause relate to the Service Provider's obligations regarding background checks and security clearances for its personnel assigned to perform Services under the Agreement?"
+          ],
+          "examples": [
+            "Service Provider shall ensure that all of its employees, agents, and subcontractors assigned to perform software development services under this Agreement have successfully completed background checks and obtained any necessary security clearances as required by Company or applicable laws and regulations, particularly for projects involving sensitive or confidential data.",
+            "This clause may not be applicable or necessary for typical marketing and advertising services, unless the campaigns involve access to sensitive or confidential information, in which case Service Provider shall ensure that its personnel have undergone appropriate background checks and obtained necessary security clearances.",
+            "Service Provider shall ensure that all of its employees, agents, and subcontractors assigned to perform facility management services under this Agreement have successfully completed background checks and obtained any necessary security clearances as required by Company or applicable laws and regulations, particularly for facilities with heightened security requirements or sensitive areas.",
+            "Service Provider shall ensure that all of its employees, agents, and subcontractors assigned to perform Services under this Agreement have successfully completed background checks and obtained any necessary security clearances as required by Company or applicable laws and regulations."
+          ]
+        },
+        {
+          "clause_type_id": "24",
+          "name": "Assignment",
+          "standard_wording": "Neither Party may assign or transfer this Agreement or any of its rights or obligations hereunder without the prior written consent of the other Party, which shall not be unreasonably withheld or delayed.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause prohibit either party from assigning or transferring the agreement without the other party's consent?",
+            "Does the clause require the other party's consent to be in written form?",
+            "Does the clause state that the other party's consent should not be unreasonably withheld or delayed?",
+            "Does the clause apply the restriction on assignment or transfer to both parties equally?",
+            "Does the clause apply the restriction to both the assignment/transfer of the agreement itself and the assignment/transfer of rights or obligations under the agreement?"
+          ],
+          "examples": [
+            "Neither Party may assign or transfer this Agreement or any of its rights or obligations hereunder without the prior written consent of the other Party, which shall not be unreasonably withheld or delayed.",
+            "Neither Party may assign or transfer this Agreement or any of its rights or obligations hereunder without the prior written consent of the other Party, which shall not be unreasonably withheld or delayed."
+          ]
+        },
+        {
+          "clause_type_id": "25",
+          "name": "Subcontracting",
+          "standard_wording": "Service Provider may engage subcontractors to perform certain Services, provided that Service Provider shall remain responsible for the performance of such subcontractors and shall ensure that such subcontractors comply with the terms and conditions of this Agreement.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause allow the Service Provider to engage subcontractors to perform certain Services?",
+            "Does the clause state that the Service Provider remains responsible for the performance of any subcontractors engaged?",
+            "Does the clause require that any subcontractors engaged by the Service Provider comply with the terms and conditions of the Agreement?"
+          ],
+          "examples": [
+            "Service Provider may engage subcontractors to perform certain software development tasks, provided that Service Provider shall remain responsible for the performance of such subcontractors and shall ensure that such subcontractors comply with the terms and conditions of this Agreement.",
+            "Service Provider may engage subcontractors or third-party vendors to provide certain services or resources related to the marketing and advertising campaigns, provided that Service Provider shall remain responsible for the performance of such subcontractors and shall ensure that such subcontractors comply with the terms and conditions of this Agreement.",
+            "Service Provider may engage subcontractors to perform certain facility management tasks, provided that Service Provider shall remain responsible for the performance of such subcontractors and shall ensure that such subcontractors comply with the terms and conditions of this Agreement.",
+            "Service Provider may engage subcontractors to perform certain Services, provided that Service Provider shall remain responsible for the performance of such subcontractors and shall ensure that such subcontractors comply with the terms and conditions of this Agreement."
+          ]
+        },
+        {
+          "clause_type_id": "26",
+          "name": "Exclusivity",
+          "standard_wording": "If the Statement of Work specifies that the Services are to be provided on an exclusive basis, Service Provider shall not provide similar services to any third party during the term of this Agreement without Company's prior written consent",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause mention that the services are to be provided on an exclusive basis if specified in the Statement of Work?",
+            "Does the clause prohibit the Service Provider from delivering similar services to third parties when the Statement of Work specifies exclusivity?",
+            "Does the clause specify that providing similar services to third parties requires prior written consent from the Company?"
+          ],
+          "examples": [
+            "This Agreement shall be non-exclusive, and Service Provider shall have the right to provide similar software development services to other clients, provided that Service Provider does not use or disclose Company's Confidential Information or infringe upon Company's intellectual property rights.",
+            "This Agreement shall be exclusive, and Service Provider shall not provide similar marketing and advertising services to any of Company's direct competitors during the term of this Agreement without Company's prior written consent.",
+            "This Agreement shall be non-exclusive, and Service Provider shall have the right to provide similar facility management services to other clients, provided that Service Provider does not disclose or use Company's Confidential Information or proprietary processes in the performance of services for other clients.",
+            "If the Statement of Work specifies that the Services are to be provided on an exclusive basis, Service Provider shall not provide similar services to any third party during the term of this Agreement without Company's prior written consent"
+          ]
+        },
+        {
+          "clause_type_id": "27",
+          "name": "Non-Circumvention",
+          "standard_wording": "During the term of this Agreement and for a period of [X] years thereafter, neither Party shall circumvent or attempt to circumvent the other Party's business relationships or contractual arrangements with third parties.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause specify two parties?",
+            "Does the clause prohibit certain actions by the parties during the term of the agreement?",
+            "Does the clause prohibit certain actions by the parties for a period after the term of the agreement?",
+            "Does the clause specify a duration for the period after the term of the agreement?",
+            "Does the clause prohibit circumventing or attempting to circumvent the other party's business relationships?",
+            "Does the clause prohibit circumventing or attempting to circumvent the other party's contractual arrangements with third parties?"
+          ],
+          "examples": [
+            "During the term of this Agreement and for a period of 3 years thereafter, neither Party shall circumvent or attempt to circumvent the other Party's business relationships or contractual arrangements with third parties related to the software development services, including but not limited to vendors, suppliers, or customers.",
+            "During the term of this Agreement and for a period of 2 years thereafter, neither Party shall circumvent or attempt to circumvent the other Party's business relationships or contractual arrangements with third parties related to the marketing and advertising services, including but not limited to media outlets, influencers, or advertising platforms.",
+            "During the term of this Agreement and for a period of 1 year thereafter, neither Party shall circumvent or attempt to circumvent the other Party's business relationships or contractual arrangements with third parties related to the facility management services, including but not limited to suppliers, vendors, or subcontractors.",
+            "During the term of this Agreement and for a period of [X] years thereafter, neither Party shall circumvent or attempt to circumvent the other Party's business relationships or contractual arrangements with third parties."
+          ]
+        },
+        {
+          "clause_type_id": "28",
+          "name": "Audit Rights",
+          "standard_wording": "Company shall have the right, upon reasonable notice and during regular business hours, to audit Service Provider's records and facilities to verify compliance with this Agreement.",
+          "level": "high",
+          "evaluation_questions": [
+            "Does the clause mention the right of the company to audit the service provider's records and facilities?",
+            "Does the clause specify that the audit is for verifying compliance with the agreement?",
+            "Does the clause state that the company must provide reasonable notice before conducting the audit?",
+            "Does the clause indicate that the audit can only be conducted during regular business hours?"
+          ],
+          "examples": [
+            "Company shall have the right, upon reasonable notice and during regular business hours, to audit Service Provider's records and facilities related to the software development services to verify compliance with this Agreement, including but not limited to compliance with applicable laws and regulations, security protocols, and intellectual property rights.",
+            "Company shall have the right, upon reasonable notice and during regular business hours, to audit Service Provider's records and facilities related to the marketing and advertising services to verify compliance with this Agreement, including but not limited to compliance with applicable laws and regulations, advertising standards, and proper allocation of advertising spend.",
+            "Company shall have the right, upon reasonable notice and during regular business hours, to audit Service Provider's records and facilities related to the facility management services to verify compliance with this Agreement, including but not limited to compliance with applicable laws and regulations, service level agreements, and proper allocation of resources and personnel.",
+            "Company shall have the right, upon reasonable notice and during regular business hours, to audit Service Provider's records and facilities to verify compliance with this Agreement."
+          ]
+        },
+        {
+          "clause_type_id": "29",
+          "name": "Negotiation",
+          "standard_wording": "In the event of any dispute or disagreement arising out of or relating to this Agreement, the Parties shall first attempt to resolve the dispute through good faith negotiations.",
+          "level": "low",
+          "evaluation_questions": [
+            "Does the clause mention that it applies in case of any dispute or disagreement related to the agreement?",
+            "Does the clause state that the parties involved must first try to resolve the dispute?",
+            "Does the clause specify that the parties must attempt to resolve the dispute through good faith negotiations?"
+          ],
+          "examples": [
+            "In the event of any dispute or disagreement arising out of or relating to this Agreement, the Parties shall first attempt to resolve the dispute through good faith negotiations between their respective executive-level representatives",
+            "In the event of any dispute or disagreement arising out of or relating to this Agreement, the Parties shall first attempt to resolve the dispute through good faith negotiations between their respective project managers or designated representatives",
+            "In the event of any dispute or disagreement arising out of or relating to this Agreement, the Parties shall first attempt to resolve the dispute through good faith negotiations between their respective legal representatives or in-house counsel",
+            "In the event of any dispute or disagreement arising out of or relating to this Agreement, the Parties shall first attempt to resolve the dispute through good faith negotiations."
+          ]
+        },
+        {
+          "clause_type_id": "30",
+          "name": "Mediation",
+          "standard_wording": "If the Parties are unable to resolve the dispute through negotiations within [X] days, the Parties shall submit the dispute to non-binding mediation in accordance with the rules of [Mediation Service Provider].",
+          "level": "low",
+          "evaluation_questions": [
+            "Does the clause mention the parties being unable to resolve a dispute through negotiations?",
+            "Does the clause specify a time period (in days) for the parties to attempt negotiations before proceeding further?",
+            "Does the clause mention the parties submitting the dispute to non-binding mediation if negotiations fail?",
+            "Does the clause reference the rules of a specific mediation service provider?"
+          ],
+          "examples": [
+            "If the Parties are unable to resolve the dispute through negotiations within 60 days, the Parties shall submit the dispute to non-binding mediation in accordance with the rules of the American Arbitration Association.",
+            "If the Parties are unable to resolve the dispute through negotiations within 45 days, the Parties shall submit the dispute to non-binding mediation in accordance with the rules of the International Institute for Conflict Prevention and Resolution.",
+            "If the Parties are unable to resolve the dispute through negotiations within 30 days, the Parties shall submit the dispute to non-binding mediation in accordance with the rules of the American Arbitration Association.",
+            "If the Parties are unable to resolve the dispute through negotiations within [X] days, the Parties shall submit the dispute to non-binding mediation in accordance with the rules of [Mediation Service Provider]."
+          ]
+        },
+        {
+          "clause_type_id": "31",
+          "name": "Arbitration or Litigation",
+          "standard_wording": "If the dispute cannot be resolved through mediation, either Party may pursue binding arbitration in accordance with the rules of [Arbitration Service Provider], or, if the Parties mutually agree, may pursue litigation in a court of competent jurisdiction.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause mention mediation as a step before pursuing binding arbitration or litigation?",
+            "Does the clause state that binding arbitration can be pursued if the dispute cannot be resolved through mediation?",
+            "Does the clause specify that the binding arbitration should be in accordance with the rules of a recognized arbitration organization?",
+            "Does the clause indicate that litigation in a court of competent jurisdiction can be pursued if the parties mutually agree?"
+          ],
+          "examples": [
+            "If the dispute cannot be resolved through mediation, either Party may pursue binding arbitration in accordance with the rules of the International Chamber of Commerce.",
+            "If the dispute cannot be resolved through mediation, either Party may pursue litigation in a court of competent jurisdiction.",
+            "If the dispute cannot be resolved through mediation, either Party may pursue binding arbitration in accordance with the rules of the International Centre for Dispute Resolution, or, if the Parties mutually agree, may pursue litigation in a court of competent jurisdiction.",
+            "If the dispute cannot be resolved through mediation, either Party may pursue binding arbitration in accordance with the rules of [Arbitration Service Provider], or, if the Parties mutually agree, may pursue litigation in a court of competent jurisdiction."
+          ]
+        },
+        {
+          "clause_type_id": "32",
+          "name": "Notices",
+          "standard_wording": "All notices, requests, consents, claims, demands, waivers, and other communications under this Agreement shall be in writing and shall be deemed to have been duly given: (a) when delivered by hand (with written confirmation of receipt); (b) when received by the addressee if sent by a nationally recognized overnight courier (receipt requested); (c) on the date sent by email (with confirmation of transmission) if sent during normal business hours of the recipient, and on the next business day if sent after normal business hours of the recipient; or (d) on the third day after the date mailed, by certified or registered mail, return receipt requested, postage prepaid.",
+          "level": "low",
+          "evaluation_questions": [
+            "Does the clause specify that all communications under the agreement must be in writing?",
+            "Does the clause list the acceptable methods for delivering written communications?",
+            "Does the clause include hand delivery with written confirmation of receipt as an acceptable method?",
+            "Does the clause include delivery by a nationally recognized overnight courier (with receipt requested) as an acceptable method?",
+            "Does the clause include email delivery as an acceptable method?",
+            "Does the clause specify conditions for when an email is considered duly delivered based on the time it was sent?",
+            "Does the clause include certified or registered mail (return receipt requested) as an acceptable method?",
+            "Does the clause specify a timeframe for when a communication sent by certified or registered mail is considered duly delivered?"
+          ],
+          "examples": [
+            "All notices, requests, consents, claims, demands, waivers, and other communications under this Agreement shall be in writing and shall be deemed to have been duly given: (i) when delivered by hand (with written confirmation of receipt); (ii) when received by the addressee if sent by a nationally recognized overnight courier (receipt requested); (iii) on the date sent by email (with confirmation of transmission) if sent during normal business hours of the recipient, and on the next business day if sent after normal business hours of the recipient; or (iv) on the third day after the date mailed, by certified or registered mail, return receipt requested, postage prepaid, to the respective addresses of the Parties set forth in this Agreement or such other address as may be designated by a Party in accordance with this Section.",
+            "All notices, requests, consents, claims, demands, waivers, and other communications under this Agreement shall be in writing and shall be deemed to have been duly given: (i) when delivered in person; (ii) when sent by facsimile transmission with confirmation of transmission; (iii) when sent by email with confirmation of receipt; or (iv) three (3) business days after being sent by nationally recognized overnight courier service, in each case to the respective addresses or facsimile numbers of the Parties set forth in this Agreement or such other address or facsimile number as may be designated by a Party in accordance with this Section.",
+            "All notices, requests, consents, claims, demands, waivers, and other communications under this Agreement shall be in writing and shall be deemed to have been duly given: (i) when delivered by hand or by a nationally recognized courier service (with written confirmation of receipt); (ii) when sent by certified or registered mail, return receipt requested, postage prepaid; or (iii) when sent by email (with confirmation of transmission) if sent during normal business hours of the recipient, and on the next business day if sent after normal business hours of the recipient, in each case to the respective addresses or email addresses of the Parties set forth in this Agreement or such other address or email address as may be designated by a Party in accordance with this Section.",
+            "All notices, requests, consents, claims, demands, waivers, and other communications under this Agreement shall be in writing and shall be deemed to have been duly given: (a) when delivered by hand (with written confirmation of receipt); (b) when received by the addressee if sent by a nationally recognized overnight courier (receipt requested); (c) on the date sent by email (with confirmation of transmission) if sent during normal business hours of the recipient, and on the next business day if sent after normal business hours of the recipient; or (d) on the third day after the date mailed, by certified or registered mail, return receipt requested, postage prepaid."
+          ]
+        },
+        {
+          "clause_type_id": "33",
+          "name": "Severability",
+          "standard_wording": "If any provision of this Agreement is held to be invalid, illegal, or unenforceable, the validity, legality, and enforceability of the remaining provisions shall not in any way be affected or impaired thereby.",
+          "level": "low",
+          "evaluation_questions": [
+            "Does the clause address the situation where one or more provisions of the agreement are deemed invalid, illegal, or unenforceable?",
+            "Does the clause state that the validity, legality, and enforceability of the remaining provisions will not be affected or impaired if one or more provisions are deemed invalid, illegal, or unenforceable?",
+            "Does the clause use the term \"Agreement\" to refer to the contract or agreement being discussed?",
+            "Does the clause avoid making any deductions, proposing premises, making generalizations, or implying/deducing implicit content?"
+          ],
+          "examples": [
+            "If any provision of this Agreement is held to be invalid, illegal, or unenforceable, the validity, legality, and enforceability of the remaining provisions shall not in any way be affected or impaired thereby.",
+            "If any term or provision of this Agreement is determined to be invalid, illegal, or unenforceable, such term or provision shall be severed from this Agreement, and the remaining terms and provisions shall remain in full force and effect. In such event, the Parties shall negotiate in good faith to amend this Agreement to replace the invalid, illegal, or unenforceable term or provision with a valid, legal, and enforceable term or provision that, to the extent possible, achieves the original intent of the Parties.",
+            "In the event that any provision of this Agreement is held to be invalid, illegal, or unenforceable, such provision shall be severed from this Agreement, and the remaining provisions shall remain in full force and effect. The Parties shall use their best efforts to negotiate a legally valid and enforceable provision that is as consistent as possible with the original intent of the severed provision.",
+            "If any provision of this Agreement is held to be invalid, illegal, or unenforceable, the validity, legality, and enforceability of the remaining provisions shall not in any way be affected or impaired thereby."
+          ]
+        },
+        {
+          "clause_type_id": "34",
+          "name": "Waiver",
+          "standard_wording": "No waiver by either Party of any breach of this Agreement shall be deemed a waiver of any preceding or succeeding breach of the same or any other provision hereof. No waiver shall be effective unless made in writing and signed by an authorized representative of the waiving Party.",
+          "level": "low",
+          "evaluation_questions": [
+            "Does the clause mention that no waiver of a breach is considered a waiver of any other breach?",
+            "Does the clause state that a waiver is only effective if made in writing?",
+            "Does the clause specify that a waiver must be signed by an authorized representative of the waiving party?",
+            "Does the clause indicate that the waiver applies to both parties?",
+            "Does the clause mention that the waiver applies to any provision of the agreement?"
+          ],
+          "examples": [
+            "No waiver by either Party of any breach of this Agreement shall be deemed a waiver of any preceding or succeeding breach of the same or any other provision hereof. No waiver shall be effective unless made in writing and signed by an authorized representative of the waiving Party.",
+            "No failure or delay by either Party in exercising any right, power, or privilege under this Agreement shall operate as a waiver thereof, nor shall any single or partial exercise thereof preclude any other or further exercise of any right, power, or privilege. Any waiver of any provision of this Agreement must be in writing and signed by an authorized representative of the waiving Party.",
+            "The failure of either Party to insist upon or enforce strict performance of any provision of this Agreement, or to exercise any right or remedy to which it is entitled under this Agreement, shall not constitute a waiver of such provision, right, or remedy, and shall not cause a diminution of the obligations established by this Agreement. No waiver of any provision of this Agreement shall be effective unless it is in writing and signed by an authorized representative of the waiving Party, and any such waiver shall be effective only in the specific instance and for the purpose for which it is given.",
+            "No waiver by either Party of any breach of this Agreement shall be deemed a waiver of any preceding or succeeding breach of the same or any other provision hereof. No waiver shall be effective unless made in writing and signed by an authorized representative of the waiving Party."
+          ]
+        },
+        {
+          "clause_type_id": "35",
+          "name": "Non-Disparagement",
+          "standard_wording": "During the term of this Agreement and for a period of [X] years thereafter, neither Party shall make any disparaging or defamatory statements, whether written or oral, regarding the other Party or its products, services, employees, or business practices.",
+          "level": "low",
+          "evaluation_questions": [
+            "Does the clause prohibit both parties from making disparaging or defamatory statements during the term of the agreement and for some period after its termination?",
+            "Does the clause cover both written and oral disparaging or defamatory statements?",
+            "Does the clause prohibit disparaging or defamatory statements about the other party, its products, services, employees, or business practices?"
+          ],
+          "examples": [
+            "During the term of this Agreement and for a period of 1 year thereafter, neither Party shall make any disparaging or defamatory statements, whether written or oral, regarding the other Party or its products, services, employees, or business practices.",
+            "Each Party agrees that, during the term of this Agreement and for a period of 2 years following its termination or expiration, it shall not make any negative, disparaging, or derogatory statements, whether written or oral, about the other Party, its products, services, employees, or business practices, to any third party, including but not limited to any customers, clients, or members of the public.",
+            "The Parties agree that, at all times during the term of this Agreement and thereafter, they shall refrain from making any negative, disparaging, or derogatory statements, whether written or oral, about the other Party, its products, services, employees, or business practices, to any third party, including but not limited to any customers, clients, or members of the public. This non-disparagement obligation shall survive the termination or expiration of this Agreement.",
+            "During the term of this Agreement and for a period of [X] years thereafter, neither Party shall make any disparaging or defamatory statements, whether written or oral, regarding the other Party or its products, services, employees, or business practices."
+          ]
+        },
+        {
+          "clause_type_id": "36",
+          "name": "Publicity and Marketing Rights",
+          "standard_wording": "Neither Party shall use the other Party's name, logo, or trademarks in any publicity, advertising, or marketing materials without the prior written consent of the other Party.",
+          "level": "low",
+          "evaluation_questions": [
+            "Does the clause prohibit one party from using the other party's name without prior written consent?",
+            "Does the clause prohibit one party from using the other party's logo without prior written consent?",
+            "Does the clause prohibit one party from using the other party's trademarks without prior written consent?",
+            "Does the clause prohibit the use of the other party's name, logo, or trademarks in publicity materials without prior written consent?",
+            "Does the clause prohibit the use of the other party's name, logo, or trademarks in advertising materials without prior written consent?",
+            "Does the clause prohibit the use of the other party's name, logo, or trademarks in marketing materials without prior written consent?",
+            "Does the clause apply the prohibition of using the other party's name, logo, or trademarks without prior written consent to both parties?"
+          ],
+          "examples": [
+            "Neither Party shall use the other Party's name, logo, or trademarks in any publicity, advertising, or marketing materials without the prior written consent of the other Party.",
+            "Except as expressly permitted in this Agreement, neither Party shall use the other Party's name, logo, trademarks, or other intellectual property in any publicity, advertising, or marketing materials without the prior written consent of the other Party. However, Service Provider may use Company's name and a general description of the services provided in its marketing materials and client lists, subject to Company's prior approval of the specific content and context.",
+            "Neither Party shall use the other Party's name, logo, trademarks, or other intellectual property in any publicity, advertising, or marketing materials, or for any other promotional purposes, without the prior written consent of the other Party. Notwithstanding the foregoing, Company shall have the right to use and display the Deliverables and any work product resulting from the services provided under this Agreement for internal business purposes and demonstrations to potential customers or investors.",
+            "Neither Party shall use the other Party's name, logo, or trademarks in any publicity, advertising, or marketing materials without the prior written consent of the other Party."
+          ]
+        },
+        {
+          "clause_type_id": "37",
+          "name": "Most Favored Customer/Nation",
+          "standard_wording": "If specified in the Statement of Work, Service Provider shall ensure that the fees and terms offered to Company are at least as favorable as those offered to any other customer or nation for similar services.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause specify that the Service Provider must ensure that the fees and terms offered to the Company are at least as favorable as those offered to any other customer or nation for similar services?",
+            "Is it stated in the clause that the requirement for the Service Provider to offer fees and terms at least as favorable as those offered to others is conditional on it being specified in the Statement of Work?",
+            "Does the clause mention both fees and terms that the Service Provider must ensure are at least as favorable as those offered to others?",
+            "Is the Company explicitly mentioned as the party to whom the Service Provider must offer fees and terms that are at least as favorable as those offered to others?"
+          ],
+          "examples": [
+            "This clause may not be applicable or necessary for typical software development services.",
+            "Service Provider shall ensure that the pricing, terms, and conditions offered to Company for the marketing and advertising services are at least as favorable as those offered to any other client of Service Provider for similar services during the term of this Agreement.",
+            "This clause may not be applicable or necessary for typical facility management services, unless the services are being provided in multiple countries or regions, in which case Service Provider shall ensure that the pricing, terms, and conditions offered to Company are at least as favorable as those offered to any other client or nation for similar services during the term of this Agreement.",
+            "If specified in the Statement of Work, Service Provider shall ensure that the fees and terms offered to Company are at least as favorable as those offered to any other customer or nation for similar services."
+          ]
+        },
+        {
+          "clause_type_id": "38",
+          "name": "Cooperation and Assistance",
+          "standard_wording": "Each Party shall cooperate with and provide reasonable assistance to the other Party in connection with the performance of its obligations under this Agreement.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the clause mention that the parties involved are required to cooperate with each other?",
+            "Does the clause state that the parties involved are required to provide assistance to each other?",
+            "Does the clause specify that the cooperation and assistance are in connection with the performance of obligations under the agreement?",
+            "Does the clause indicate that the cooperation and assistance are reasonable?",
+            "Does the clause apply the requirement of cooperation and assistance to both parties involved?"
+          ],
+          "examples": [
+            "Each Party shall cooperate with and provide reasonable assistance to the other Party in connection with the performance of its obligations under this Agreement, including but not limited to providing access to necessary information, systems, and personnel.",
+            "The Parties shall cooperate and provide reasonable assistance to each other in connection with the performance of their respective obligations under this Agreement. Such cooperation and assistance may include, but is not limited to, providing access to relevant information, data, systems, and personnel, as well as participating in meetings, conference calls, and other communications as reasonably requested by the other Party.",
+            "Each Party shall, at all times during the term of this Agreement, cooperate and provide reasonable assistance to the other Party in connection with the performance of its obligations under this Agreement, including but not limited to providing access to necessary information, systems, and personnel, as well as responding promptly to reasonable requests for information or clarification. The Parties shall work together in good faith to facilitate the successful performance of their respective obligations under this Agreement.",
+            "Each Party shall cooperate with and provide reasonable assistance to the other Party in connection with the performance of its obligations under this Agreement."
+          ]
+        },
+        {
+          "clause_type_id": "39",
+          "name": "Relationship of the Parties",
+          "standard_wording": "The relationship between the Parties is that of independent contractors. Nothing in this Agreement shall be construed as creating an employer-employee relationship, partnership, joint venture, or agency relationship between the Parties.",
+          "level": "low",
+          "evaluation_questions": [
+            "Does the clause explicitly state that the relationship between the parties is that of independent contractors?",
+            "Does the clause explicitly deny the existence of an employer-employee relationship between the parties?",
+            "Does the clause explicitly deny the existence of a partnership between the parties?",
+            "Does the clause explicitly deny the existence of a joint venture between the parties?",
+            "Does the clause explicitly deny the existence of an agency relationship between the parties?"
+          ],
+          "examples": [
+            "The relationship between the Parties is that of independent contractors. Nothing in this Agreement shall be construed as creating an employer-employee relationship, partnership, joint venture, or agency relationship between the Parties.",
+            "The Parties acknowledge and agree that their relationship under this Agreement is that of independent contractors. Nothing in this Agreement shall be construed as creating an employer-employee relationship, partnership, joint venture, or agency relationship between the Parties. Neither Party shall have the authority to bind or obligate the other Party in any way, except as expressly set forth in this Agreement.",
+            "In performing their respective obligations under this Agreement, the Parties are and shall remain independent contractors. Nothing in this Agreement shall be construed as creating an employer-employee relationship, partnership, joint venture, or agency relationship between the Parties. Neither Party shall have the authority to act on behalf of or bind the other Party in any manner whatsoever, except as expressly set forth in this Agreement.",
+            "The relationship between the Parties is that of independent contractors. Nothing in this Agreement shall be construed as creating an employer-employee relationship, partnership, joint venture, or agency relationship between the Parties."
+          ]
+        },
+        {
+          "clause_type_id": "40",
+          "name": "Entire Agreement and Amendments",
+          "standard_wording": "This Agreement, together with the Statement of Work and any other exhibits or attachments, constitutes the entire agreement between the Parties with respect to the subject matter hereof and supersedes all prior agreements, understandings, and negotiations, both written and oral, between the Parties with respect to the subject matter of this Agreement. This Agreement may be amended or modified only by a written instrument duly executed by authorized representatives of both Parties.",
+          "level": "medium",
+          "evaluation_questions": [
+            "Does the contract clause state that the agreement, together with the Statement of Work and any other exhibits or attachments, constitutes the entire agreement between the Parties with respect to the subject matter?",
+            "Does the contract clause state that the agreement supersedes all prior agreements, understandings, and negotiations, both written and oral, between the Parties with respect to the subject matter of the agreement?",
+            "Does the contract clause state that the agreement may be amended or modified only by a written instrument duly executed by authorized representatives of both Parties?"
+          ],
+          "examples": [
+            "This Agreement, together with the Statement of Work and any other exhibits or attachments, constitutes the entire agreement between the Parties with respect to the subject matter hereof and supersedes all prior agreements, understandings, and negotiations, both written and oral, between the Parties with respect to the subject matter of this Agreement. This Agreement may be amended or modified only by a written instrument duly executed by authorized representatives of both Parties.",
+            "This Agreement, including all exhibits, schedules, and attachments hereto, constitutes the entire agreement between the Parties with respect to the subject matter hereof and supersedes all prior agreements, understandings, and negotiations, both written and oral, between the Parties with respect to the subject matter of this Agreement. No amendment, modification, or supplement to this Agreement shall be binding unless it is in writing and signed by authorized representatives of both Parties.",
+            "This Agreement, together with any addenda, exhibits, or other attachments expressly incorporated herein, constitutes the entire agreement between the Parties with respect to the subject matter hereof and supersedes all prior agreements, understandings, and negotiations, both written and oral, between the Parties with respect to the subject matter of this Agreement. This Agreement may be amended, modified, or supplemented only by a written instrument duly executed by authorized representatives of both Parties, which expressly references this Agreement and states the intention of the Parties to amend, modify, or supplement it.",
+            "This Agreement, together with the Statement of Work and any other exhibits or attachments, constitutes the entire agreement between the Parties with respect to the subject matter hereof and supersedes all prior agreements, understandings, and negotiations, both written and oral, between the Parties with respect to the subject matter of this Agreement. This Agreement may be amended or modified only by a written instrument duly executed by authorized representatives of both Parties."
+          ]
+        },
+        {
+          "clause_type_id": "41",
+          "name": "Governing Law and Jurisdiction",
+          "standard_wording": "This Agreement shall be governed by and construed in accordance with the laws of [Governing Jurisdiction], without regard to its conflict of laws principles. The Parties hereby submit to the exclusive jurisdiction of the courts located in [Jurisdiction] for any legal proceedings arising out of or relating to this Agreement.",
+          "level": "high",
+          "evaluation_questions": [
+            "Does the clause specify the governing law for the agreement?",
+            "Does the clause mention that the agreement shall be construed in accordance with the laws of a specific jurisdiction?",
+            "Does the clause state that the parties submit to the exclusive jurisdiction of courts located in a specific location for any legal proceedings related to the agreement?",
+            "Does the clause disregard conflict of laws principles for the governing jurisdiction?"
+          ],
+          "examples": [
+            "This Agreement shall be governed by and construed in accordance with the laws of the State of California, without regard to its conflict of laws principles. The Parties hereby submit to the exclusive jurisdiction of the courts located in Los Angeles County, California for any legal proceedings arising out of or relating to this Agreement.",
+            "This Agreement shall be governed by and interpreted in accordance with the laws of the State of New York, without giving effect to its principles of conflict of laws. Any dispute, controversy, or claim arising out of or relating to this Agreement, or the breach, termination, or validity thereof, shall be subject to the exclusive jurisdiction of the courts located in New York County, New York.",
+            "This Agreement and any disputes arising out of or relating to this Agreement shall be governed by and construed in accordance with the laws of the State of Texas, without regard to its conflict of laws rules. The Parties irrevocably consent to the exclusive jurisdiction and venue of the state and federal courts located in Harris County, Texas for any legal proceedings arising out of or relating to this Agreement.",
+            "This Agreement shall be governed by and construed in accordance with the laws of [Governing Jurisdiction], without regard to its conflict of laws principles. The Parties hereby submit to the exclusive jurisdiction of the courts located in [Jurisdiction] for any legal proceedings arising out of or relating to this Agreement."
+          ]
+        }
+      ]
+    }
+  }
+}

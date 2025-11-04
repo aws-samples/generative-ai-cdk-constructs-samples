@@ -15,7 +15,6 @@
     ]
   },
   "context": {
-    "appPropertiesFilePath": "app_properties.yaml",
     "@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId": true,
     "@aws-cdk/core:stackRelativeExports": true,
     "@aws-cdk/aws-rds:lowercaseDbIdentifier": true,

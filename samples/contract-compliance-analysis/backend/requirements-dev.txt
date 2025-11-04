@@ -1,0 +1,19 @@
+# check legislation deps for development:
+-r check_legislation/agent/requirements.txt
+requests-aws4auth
+
+# we consume powertools for lambda via a managed layer, so we need to manually install here for the llm not to complain
+aws-lambda-powertools[all]==3.18.0
+
+bedrock-agentcore-starter-toolkit==0.1.4
+
+pytest==8.4.1
+pytest-cov
+moto[s3,dynamodb,stepfunctions]==5.0.21
+ruff==0.12.8
+mypy==1.8.0
+freezegun
+polyfactory
+
+# For better typing
+boto3-stubs[s3,dynamodb,stepfunctions]

@@ -11,26 +11,21 @@
 // and limitations under the License.
 //
 
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router";
 import NavBar from "@/components/Navbar";
+import HeaderGradient from "@/components/HeaderGradient";
 
-export default function Root() {
+export function Root() {
   return (
     <>
       <NavBar />
       <main className="container mx-auto mt-4">
-        <div className="absolute inset-0 -z-10 mx-0 max-w-none overflow-hidden">
-          <div className="absolute left-1/2 top-0 ml-[-38rem] h-[25rem] w-[81.25rem] dark:[mask-image:linear-gradient(white,transparent)]">
-            <div className="absolute inset-0 bg-gradient-to-r from-[#feb303] to-[#8e07ef] opacity-40 [mask-image:radial-gradient(farthest-side_at_top,white,transparent)] dark:from-[#36b49f]/30 dark:to-[#DBFF75]/30 dark:opacity-100"></div>
-            <svg
-              viewBox="0 0 1113 440"
-              aria-hidden="true"
-              className="absolute left-1/2 top-0 ml-[-19rem] w-[69.5625rem] fill-white blur-[30px] dark:hidden"
-            >
-              <path d="M.016 439.5s-9.5-300 434-300S882.516 20 882.516 20V0h230.004v439.5H.016Z"></path>
-            </svg>
-          </div>
-        </div>
+        <HeaderGradient
+          lightColors={["#F97316", "#EF4444", "#F59E0B", "#EC4899", "#F97316"]}
+          lightOpacity={35}
+          animate={true}
+          animationDuration={100}
+        />
         <Outlet />
       </main>
     </>

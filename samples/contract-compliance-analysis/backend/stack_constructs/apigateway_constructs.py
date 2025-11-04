@@ -14,6 +14,7 @@ import builtins
 import typing
 from aws_cdk import (
     Stack,
+    Duration,
     aws_apigateway as apigateway,
     aws_cognito as cognito,
     aws_logs as logs,
@@ -50,9 +51,17 @@ class ApiGatewayConstruct(Construct):
             "RestApi",
             cloud_watch_role=True,
             default_cors_preflight_options=apigateway.CorsOptions(
-                allow_origins=apigateway.Cors.ALL_ORIGINS,
+                allow_origins=[
+                    "http://localhost:5173",
+                    "http://localhost:5174",
+                    "http://localhost:5175",
+                    "http://127.0.0.1:5173",
+                    "http://127.0.0.1:5174",
+                    "http://127.0.0.1:5175",
+                ],
                 allow_methods=apigateway.Cors.ALL_METHODS,
                 allow_headers=[*apigateway.Cors.DEFAULT_HEADERS, 'Access-Control-Allow-Origin'],
+                max_age=Duration.seconds(300),
             ),
             deploy_options=apigateway.StageOptions(
                 logging_level=apigateway.MethodLoggingLevel.INFO,
@@ -163,6 +172,7 @@ class ApiGatewayConstruct(Construct):
             integration: typing.Optional[Integration] = None,
             method_responses: typing.Optional[
                 typing.Sequence[typing.Union["MethodResponse", typing.Dict[builtins.str, typing.Any]]]] = None,
+            request_models: dict = None,
     ):
         path_parts = list(filter(bool, resource_path.split("/")))
         resource = self.rest_api.root
@@ -180,6 +190,7 @@ class ApiGatewayConstruct(Construct):
             request_parameters=request_parameters,
             request_validator=request_validator,
             method_responses=method_responses,
+            request_models=request_models,
         )
 
         # Add Cognito auth to all methods except OPTIONS to allow for CORS header lookups
@@ -209,13 +220,15 @@ class ApiGatewayConstruct(Construct):
             resource_path: str,
             http_method: str,
             lambda_function: aws_lambda.Function,
-            request_validator: apigateway.RequestValidator
+            request_validator: apigateway.RequestValidator,
+            request_models: dict = None
     ):
         self.add_method(
             resource_path=resource_path,
             http_method=http_method,
             request_validator=request_validator,
             integration=apigateway.LambdaIntegration(lambda_function),
+            request_models=request_models
         )
 
     def add_s3_method(

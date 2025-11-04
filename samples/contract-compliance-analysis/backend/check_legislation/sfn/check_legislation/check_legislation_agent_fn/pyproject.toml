@@ -1,0 +1,13 @@
+[tool.poetry]
+name = "check-legislation-agent-fn"
+version = "0.1.0"
+description = "Lambda function to invoke Bedrock AgentCore for legislation checking"
+authors = ["Your Name <your.email@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

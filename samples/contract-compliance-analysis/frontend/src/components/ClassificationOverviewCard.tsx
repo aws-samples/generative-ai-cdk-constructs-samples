@@ -11,7 +11,8 @@
 // and limitations under the License.
 //
 
-import { Suspense } from "react";
+import { Suspense, use } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Card,
   CardContent,
@@ -21,16 +22,15 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Skeleton } from "./ui/skeleton";
-import { useLoaderData, Await } from "react-router-dom";
 import {
-  IconAlertTriangle,
-  IconCheck,
-  IconEyeQuestion,
-  IconFileText,
-  IconZoomQuestion,
-} from "@tabler/icons-react";
-import { Job, ImpactLevel, TotalComplianceByImpact } from "@/types";
-import { IMPACT_LEVELS } from "@/constants";
+  AlertTriangleIcon,
+  CheckIcon,
+  FileQuestionIcon,
+  FileTextIcon,
+  GlassesIcon,
+} from "lucide-react";
+import { Job, ImpactLevel, TotalComplianceByImpact } from "@/lib/types";
+import { IMPACT_LEVELS, EMPTY_TOTALS } from "@/lib/constants";
 import { Badge } from "./ui/badge";
 
 type CalculatedTotals = {
@@ -38,6 +38,7 @@ type CalculatedTotals = {
   missing: number;
   non_compliant: number;
 };
+
 const calculateTotals = (
   totalComplianceByImpact: TotalComplianceByImpact,
 ): CalculatedTotals => {
@@ -60,19 +61,20 @@ const calculateTotals = (
   };
 };
 
-export default function ClassificationOverviewCard() {
-  const loaderData = useLoaderData() as { job: Job };
-
+export default function ClassificationOverviewCard({
+  jobPromise,
+}: {
+  jobPromise: Promise<Job>;
+}) {
+  const { t } = useTranslation();
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex justify-between">
-          Categorization overview
+          {t("job.classification.title")}
           {/* <IconInfoCircle /> */}
         </CardTitle>
-        <CardDescription>
-          Overall clause types distribution per guidelines alignment
-        </CardDescription>
+        <CardDescription>{t("job.classification.description")}</CardDescription>
       </CardHeader>
 
       <Suspense
@@ -82,85 +84,74 @@ export default function ClassificationOverviewCard() {
           </CardContent>
         }
       >
-        <Await
-          resolve={loaderData.job}
-          errorElement={
-            <CardContent className="flex flex-col gap-2">
-              <IconAlertTriangle className="h-6 w-6" /> Error loading data
-            </CardContent>
-          }
-        >
-          {(loadedData) => {
-            const totals = calculateTotals(
-              loadedData.total_compliance_by_impact,
-            );
-            const { compliant, non_compliant, missing } = totals;
-            return (
-              <>
-                <CardContent>
-                  <div className="flex w-full flex-col justify-around gap-3 rounded-md border p-2">
-                    <span className="ml-3 text-center text-lg font-bold">
-                      Guidelines alignment
-                    </span>
-                    <div className="flex">
-                      <Counter
-                        label={"Compliant"}
-                        count={compliant}
-                        icon={
-                          <IconCheck size={24} className=" text-lime-500" />
-                        }
-                      />
-                      <Counter
-                        label={"Non-compliant"}
-                        count={non_compliant}
-                        icon={
-                          <IconAlertTriangle
-                            size={24}
-                            className=" text-amber-500"
-                          />
-                        }
-                      />
-                      <Counter
-                        label={"Missing"}
-                        count={missing}
-                        icon={
-                          <IconEyeQuestion
-                            size={24}
-                            className=" text-slate-500"
-                          />
-                        }
-                      />
-                    </div>
-                  </div>
-                </CardContent>
-                <CardFooter className="flex flex-col gap-2">
-                  <Badge
-                    variant={"outline"}
-                    className="flex w-full justify-between text-slate-500"
-                  >
-                    <span className="flex items-center gap-1">
-                      <IconFileText size={16} />
-                      Total clauses in this contract:
-                    </span>
-                    <span>{loadedData.clauses.length}</span>
-                  </Badge>
-                  <Badge
-                    variant={"outline"}
-                    className="flex w-full justify-between text-slate-500"
-                  >
-                    <span className="flex items-center gap-1">
-                      <IconZoomQuestion size={16} />
-                      Clauses not matching any type from the guidelines:
-                    </span>
-                    <span>{loadedData.unknown_total}</span>
-                  </Badge>
-                </CardFooter>
-              </>
-            );
-          }}
-        </Await>
+        <ResolvedOverview jobPromise={jobPromise} />
       </Suspense>
     </Card>
+  );
+}
+
+function ResolvedOverview({ jobPromise }: { jobPromise: Promise<Job> }) {
+  const loadedData = use(jobPromise);
+
+  const complianceData =
+    loadedData.checks?.guidelines?.metrics?.totalComplianceByImpact ??
+    EMPTY_TOTALS;
+  const unknownTotal =
+    loadedData.checks?.guidelines?.metrics?.unknownTotal ?? 0;
+
+  const totals = calculateTotals(complianceData);
+  const { compliant, non_compliant, missing } = totals;
+  const { t } = useTranslation();
+
+  return (
+    <>
+      <CardContent>
+        <div className="flex w-full flex-col justify-around gap-3 rounded-md border p-2">
+          <span className="ml-3 text-center text-lg font-bold">
+            {t("job.classification.guidelinesAlignment")}
+          </span>
+          <div className="flex">
+            <Counter
+              label={t("common.compliant")}
+              count={compliant}
+              icon={<CheckIcon size={24} className=" text-lime-500" />}
+            />
+            <Counter
+              label={t("common.nonCompliant")}
+              count={non_compliant}
+              icon={<AlertTriangleIcon size={24} className=" text-amber-500" />}
+            />
+            <Counter
+              label={t("common.missing")}
+              count={missing}
+              icon={<FileQuestionIcon size={24} className=" text-slate-500" />}
+            />
+          </div>
+        </div>
+      </CardContent>
+      <CardFooter className="flex flex-col gap-2">
+        <Badge
+          variant={"outline"}
+          className="flex w-full justify-between text-slate-500"
+        >
+          <span className="flex items-center gap-1">
+            <FileTextIcon size={16} />
+            {t("job.classification.totalClauses")}:
+          </span>
+          <span>{loadedData.clauses?.length ?? 0}</span>
+        </Badge>
+        <Badge
+          variant={"outline"}
+          className="flex w-full justify-between text-slate-500"
+        >
+          <span className="flex items-center gap-1">
+            <GlassesIcon size={16} />
+            {t("job.classification.unknownClauses")}:
+          </span>
+          <span>{unknownTotal}</span>
+        </Badge>
+      </CardFooter>
+    </>
   );
 }
 
@@ -175,7 +166,7 @@ function Counter({
 }) {
   return (
     <div className="flex flex-1 flex-col">
-      <div className="text-wrap flex h-5 items-center justify-center text-center text-[9px] font-bold uppercase text-slate-500">
+      <div className="flex h-5 items-center justify-center text-wrap text-center text-[9px] font-bold uppercase text-slate-500">
         {label}
       </div>
       <div className="flex items-center justify-center gap-1.5 pb-1 pt-2 text-2xl font-bold">
@@ -190,10 +181,10 @@ export function ComplianceCardSkeleton({ rows = 5 }: { rows?: number }) {
   return (
     <div className="flex w-full flex-col gap-2">
       {[...Array(rows)].map((_, index) => (
-        <Skeleton key={index} className="h-[60px] w-full bg-slate-200" />
+        <Skeleton key={index} className="h-[60px] w-full bg-accent/80" />
       ))}
 
-      <Skeleton className="mt-3 h-[20px] w-[30%] rounded-full bg-slate-200" />
+      <Skeleton className="mt-3 h-[20px] w-[30%] rounded-full bg-accent/80" />
     </div>
   );
 }

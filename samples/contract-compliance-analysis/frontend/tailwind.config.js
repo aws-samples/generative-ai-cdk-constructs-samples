@@ -11,16 +11,16 @@
 // and limitations under the License.
 //
 
-import animate from "tailwindcss-animate"
+import animate from "tailwindcss-animate";
 
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ["class"],
+  // v4 scans automatically; keep content for any non-standard paths
   content: [
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./app/**/*.{ts,tsx}",
+    "./index.html",
     "./src/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
   ],
   theme: {
     container: {
@@ -87,5 +87,5 @@ export default {
       },
     },
   },
-  plugins: [animate]
+  plugins: [animate],
 };

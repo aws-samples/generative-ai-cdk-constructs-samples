@@ -111,7 +111,7 @@ class CognitoConstruct(Construct):
                 "sts:AssumeRoleWithWebIdentity",
             ),
         )
-        
+
         self.unauth_user_role = iam.Role(
             self,
             "UnauthenticatedUserRole",
