@@ -119,7 +119,7 @@ For the most up-to-date pricing information, refer to the [Amazon Bedrock Pricin
 
 For detailed usage instructions and guidance, see the [User Guide](./documentation/user-guide.adoc).
 
-## Optional: Amazon Q Developer CLI Assistant
+## Optional: Use Amazon Q Developer CLI Assistant to setup project
 
 For additional setup assistance, you can optionally use Amazon Q Developer CLI, an AI assistant that can help guide you through the deployment process, troubleshoot issues, and answer questions about AWS services.
 
