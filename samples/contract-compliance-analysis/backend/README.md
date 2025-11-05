@@ -1,4 +1,4 @@
-# Contract Compliance Analysis - Back-end
+# Contract Compliance Analysis - Backend
 
 ## Basic setup
 
@@ -10,7 +10,6 @@ In order to deploy this project, you need to have installed:
 
 - [Python](https://www.python.org/downloads/) 3.11 or higher
 - [Docker](https://docs.docker.com/engine/install/)
-- Git (if using code repository)
 - [AWS CDK Toolkit](https://docs.aws.amazon.com/cdk/v2/guide/cli.html)
 - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
 
@@ -276,7 +275,7 @@ Replace it with the model ID you want to use. The list of model IDs available th
 
 ## OPTIONAL FEATURE: Legislation Checks
 
-**ATTENTION** Current version of legislation checks uses Amazon Open Search Serverless, which has an estimated monthly cost of 200$.
+**ATTENTION** Current version of legislation checks uses Amazon Open Search Serverless, which has an estimated monthly cost of 350$.
 
 **Model Requirements**: The Legislation Check agent uses Anthropic Claude 3.5 Haiku. Before deploying this feature, ensure you have enabled Claude model access by following the procedure in the [Enable Bedrock Model Access](#enable-bedrock-model-access-prerequisite) section.
 
