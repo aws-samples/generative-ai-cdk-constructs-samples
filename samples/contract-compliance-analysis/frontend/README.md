@@ -26,20 +26,27 @@ These extensions work together through the configured `prettier-plugin-tailwindc
 
 ## Setup and run
 
-1. After successfully deploying your backend stack, you can easily find the information required for the next step by inspecting to Amazon API Gateway and/or Amazon CloudFormation console.
+1. After successfully deploying your backend stack, retrieve the required configuration values from CloudFormation outputs:
 
-2. Create a `.env` file by duplicating the included `example.env` and replace the property values with the values retrieved from MainBackendStack outputs.
+   ```bash
+   aws cloudformation describe-stacks --stack-name MainBackendStack --query "Stacks[0].Outputs[].{OutputKey:OutputKey,OutputValue:OutputValue}" --output yaml
+   ```
+
+2. Create a `.env` file by duplicating the included `example.env` and replace the placeholder values with the outputs from step 1.
 
    ```properties
-   VITE_AWS_REGION="<REGION_NAME>"
+   VITE_APP_NAME="Contract Compliance Analysis"
+   VITE_AWS_REGION="<MainBackendStack.RegionName>"
    VITE_AWS_ACCOUNT_ID="<AWS_ACCOUNT_ID>"
-   VITE_COGNITO_USER_POOL_ID="<COGNITO_USER_POOL_ID>"
-   VITE_COGNITO_USER_POOL_CLIENT_ID="<COGNITO_USER_POOL_CLIENT_ID>"
-   VITE_COGNITO_IDENTITY_POOL_ID="<COGNITO_IDENTITY_POOL_ID>"
-   VITE_API_GATEWAY_REST_ENDPOINT="<API_GATEWAY_REST_ENDPOINT>"
+   VITE_COGNITO_USER_POOL_ID="<MainBackendStack.CognitoUserPoolId*>"
+   VITE_COGNITO_USER_POOL_CLIENT_ID="<MainBackendStack.CognitoUserPoolClientId*>"
+   VITE_COGNITO_IDENTITY_POOL_ID="<MainBackendStack.CognitoIdentityPoolId*>"
+   VITE_API_GATEWAY_REST_ENDPOINT="<MainBackendStack.ApiGatewayRestApiEndpoint*>"
    VITE_API_NAME="RestAPI"
-   VITE_S3_BUCKET_NAME="<S3_BUCKET_NAME>"
+   VITE_S3_BUCKET_NAME="<MainBackendStack.ContractBucketName>"
    ```
+
+   **Note**: Output names marked with `*` may have CDK-generated suffixes.
 
 3. Install dependencies:
 
