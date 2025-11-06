@@ -218,23 +218,71 @@ The prototype is built on a serverless, event-driven architecture that leverages
 
 The following diagrams illustrate the prototype architecture at different levels of detail:
 
+ifdef::env-github[]
+++++
+<p align="center">
+  <img src="images/high-level-architecture.png" width="90%" alt="High Level Architecture">
+  <br>
+  <em>High Level Architecture</em>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
 .High Level Architecture
 image::high-level-architecture.png[width=90%,align=center]
+endif::[]
 
 The core contract analysis workflow processes contracts through validation, preprocessing, classification, evaluation, and risk assessment:
 
+ifdef::env-github[]
+++++
+<p align="center">
+  <img src="images/guidelines-compliance-architecture.png" width="90%" alt="Guidelines Compliance Architecture">
+  <br>
+  <em>Guidelines Compliance Architecture</em>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
 .Guidelines Compliance Architecture
 image::guidelines-compliance-architecture.png[width=90%,align=center]
+endif::[]
 
 The AI-powered import workflow automatically extracts contract types and guidelines from reference contracts:
 
+ifdef::env-github[]
+++++
+<p align="center">
+  <img src="images/contract-import-architecture.png" width="90%" alt="Contract Import Architecture">
+  <br>
+  <em>Contract Import Architecture</em>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
 .Contract Import Architecture
 image::contract-import-architecture.png[width=90%,align=center]
+endif::[]
 
 The optional legislation compliance feature verifies contract clauses against legislation requirements:
 
+ifdef::env-github[]
+++++
+<p align="center">
+  <img src="images/legislation-compliance-architecture.png" width="90%" alt="Legislation Compliance Architecture">
+  <br>
+  <em>Legislation Compliance Architecture</em>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
 .Legislation Compliance Architecture
 image::legislation-compliance-architecture.png[width=90%,align=center]
+endif::[]
 
 ==== Amazon Services Description
 
@@ -398,8 +446,20 @@ The approach to analyze a contract comprises six different steps, in this order:
 
 The six steps comprise the workflow that is orchestrated by AWS Step Functions. Below, a visual representation of a workflow that ran into completion:
 
+ifdef::env-github[]
+++++
+<p align="center">
+  <img src="images/guidelines_stepfunctions_workflow.png" width="40%" alt="Contract Processing - Guidelines compliance Workflow">
+  <br>
+  <em>Contract Processing - Guidelines compliance Workflow</em>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
 .Contract Processing - Guidelines compliance Workflow
 image::guidelines_stepfunctions_workflow.png[width=40%,align=center]
+endif::[]
 
 The following sections detail each one of those six steps.
 
@@ -534,8 +594,20 @@ When a contract analysis job is started with legislation checking enabled:
    - If ALL clauses are compliant, the contract is marked as compliant
 5. The overall compliance status is stored in the Jobs table as `legislation_compliant` (boolean)
 
+ifdef::env-github[]
+++++
+<p align="center">
+  <img src="images/legislation_stepfunctions_workflow.png" width="40%" alt="Contract Processing - Legislation Compliance Workflow">
+  <br>
+  <em>Contract Processing - Legislation Compliance Workflow</em>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
 .Contract Processing - Legislation Compliance Workflow
 image::legislation_stepfunctions_workflow.png[width=40%,align=center]
+endif::[]
 
 ==== Legislation Management
 
@@ -583,8 +655,20 @@ The ContractImportWorkflow is a Step Functions state machine with four steps:
    - AI-generated evaluation questions
 4. *Finalize Import*: Persists the extracted contract type and all guidelines to DynamoDB tables
 
+ifdef::env-github[]
+++++
+<p align="center">
+  <img src="images/contract_import_stepfunctions_workflow.png" width="40%" alt="Contract Import Workflow">
+  <br>
+  <em>Contract Import Workflow</em>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
 .Contract Import Workflow
 image::contract_import_stepfunctions_workflow.png[width=40%,align=center]
+endif::[]
 
 ==== How to Use the Import Feature
 
@@ -724,8 +808,20 @@ The application uses AWS Amplify UI with Amazon Cognito for authentication. User
 
 ==== How to analyze a contract
 
+ifdef::env-github[]
+++++
+<p align="center">
+  <img src="images/frontend-list-page.png" width="90%" alt="Home Page - Contract Analysis Job List">
+  <br>
+  <em>Home Page - Contract Analysis Job List</em>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
 .Home Page - Contract Analysis Job List
 image::frontend-list-page.png[width=90%,align=center]
+endif::[]
 
 Once you open the web application in your browser, the home page displays all contract analysis jobs with filtering capabilities by contract type, status, and review requirements. Click the New Analysis button near the top right corner and select a contract file. Supported formats: PDF (.pdf), Word (.doc, .docx), or plain text (.txt).
 
@@ -737,25 +833,73 @@ The processing will take a couple of minutes. A click to the refresh button disp
 
 Once processing is complete, click on the job to view detailed analysis results:
 
+ifdef::env-github[]
+++++
+<p align="center">
+  <img src="images/frontend-contract-page.png" width="90%" alt="Contract Analysis Results - Overview">
+  <br>
+  <em>Contract Analysis Results - Overview</em>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
 .Contract Analysis Results - Overview
 image::frontend-contract-page.png[width=90%,align=center]
+endif::[]
 
 The contract analysis results page shows a comprehensive overview including compliance assessment, risk distribution, and classification statistics. Each clause is displayed with its compliance status and impact level.
 
+ifdef::env-github[]
+++++
+<p align="center">
+  <img src="images/frontend-clause-analysis.png" width="90%" alt="Clause-by-Clause Analysis">
+  <br>
+  <em>Clause-by-Clause Analysis</em>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
 .Clause-by-Clause Analysis
 image::frontend-clause-analysis.png[width=90%,align=center]
+endif::[]
 
 Detailed clause analysis shows the original clause text, compliance evaluation against guidelines, and AI-generated recommendations. Each clause is color-coded based on its compliance status and risk level.
 
+ifdef::env-github[]
+++++
+<p align="center">
+  <img src="images/frontend-risk-assessment.png" width="70%" alt="Risk Assessment Dashboard">
+  <br>
+  <em>Risk Assessment Dashboard</em>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
 .Risk Assessment Dashboard
 image::frontend-risk-assessment.png[width=70%,align=center]
+endif::[]
 
 The risk assessment view provides visual analytics of contract risks, showing distribution across impact levels and highlighting areas requiring attention.
 
 ==== Contract Type Management Workflow
 
+ifdef::env-github[]
+++++
+<p align="center">
+  <img src="images/frontend-contract-type-management.png" width="90%" alt="Contract Type Management Interface">
+  <br>
+  <em>Contract Type Management Interface</em>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
 .Contract Type Management Interface
 image::frontend-contract-type-management.png[width=90%,align=center]
+endif::[]
 
 The application provides a complete interface for managing contract types:
 
@@ -766,15 +910,39 @@ The application provides a complete interface for managing contract types:
 3. Enter contract type name and description
 4. Save - the contract type is created and ready for guidelines
 
+ifdef::env-github[]
+++++
+<p align="center">
+  <img src="images/frontend-create-new-contract-type.png" width="90%" alt="Create New Contract Type">
+  <br>
+  <em>Create New Contract Type</em>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
 .Create New Contract Type
 image::frontend-create-new-contract-type.png[width=90%,align=center]
+endif::[]
 
 The contract type creation form captures essential information including name, description, party types, risk thresholds, and language preferences.
 
 *Importing from Reference Contract (AI-Powered):*
 
+ifdef::env-github[]
+++++
+<p align="center">
+  <img src="images/frontend-import-contract-type.png" width="90%" alt="Import Contract Type from Reference">
+  <br>
+  <em>Import Contract Type from Reference</em>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
 .Import Contract Type from Reference
 image::frontend-import-contract-type.png[width=90%,align=center]
+endif::[]
 
 1. Click "Import Contract Type"
 2. Paste a reference contract text (e.g., an existing contract that follows the desired structure)
@@ -785,8 +953,20 @@ image::frontend-import-contract-type.png[width=90%,align=center]
    - Example clauses
    - Evaluation questions
 +
+ifdef::env-github[]
+++++
+<p align="center">
+  <img src="images/frontend-import-contract-type-progress.png" width="90%" alt="Import Progress Indicator">
+  <br>
+  <em>Import Progress Indicator</em>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
 .Import Progress Indicator
 image::frontend-import-contract-type-progress.png[width=90%,align=center]
+endif::[]
 
 4. Review the extracted data (progress shown during AI analysis)
 5. Edit any fields as needed
@@ -799,8 +979,20 @@ image::frontend-import-contract-type-progress.png[width=90%,align=center]
 
 ==== Guidelines Management Workflow
 
+ifdef::env-github[]
+++++
+<p align="center">
+  <img src="images/frontend-guidelines-management.png" width="90%" alt="Guidelines Management Interface">
+  <br>
+  <em>Guidelines Management Interface</em>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
 .Guidelines Management Interface
 image::frontend-guidelines-management.png[width=90%,align=center]
+endif::[]
 
 For each contract type, you can manage its guidelines. The guidelines management page displays all guidelines with search and filtering capabilities, showing guideline counts by impact level.
 
@@ -817,8 +1009,20 @@ For each contract type, you can manage its guidelines. The guidelines management
 5. Review and edit the generated questions
 6. Save the guideline
 
+ifdef::env-github[]
+++++
+<p align="center">
+  <img src="images/frontend-edit-guideline.png" width="90%" alt="Edit Guideline">
+  <br>
+  <em>Edit Guideline</em>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
 .Edit Guideline
 image::frontend-edit-guideline.png[width=90%,align=center]
+endif::[]
 
 The guideline editor allows users to modify clause types, standard wording, impact levels, examples, and evaluation questions. The AI-powered "Generate Questions" feature automatically creates evaluation questions from the standard wording.
 
@@ -1806,8 +2010,20 @@ This shared model can help relieve the customer's operational burden as AWS oper
 
 The customer assumes responsibility and management of the guest operating system (including updates and security patches), other associated application software as well as the configuration of the AWS provided security group firewall. Customers should carefully consider the services they choose as their responsibilities vary depending on the services used, the integration of those services into their IT environment, and applicable laws and regulations. The nature of this shared responsibility also provides the flexibility and customer control that permits the deployment. As shown in the chart below, this differentiation of responsibility is commonly referred to as Security "of" the Cloud versus Security "in" the Cloud.
 
+ifdef::env-github[]
+++++
+<p align="center">
+  <img src="images/shared_responsibility_model.jpg" width="80%" alt="Shared responsibility model">
+  <br>
+  <em>Shared responsibility model</em>
+</p>
+++++
+endif::[]
+
+ifndef::env-github[]
 .Shared responsibility model
 image::shared_responsibility_model.jpg[width=80%,align=center]
+endif::[]
 
 ==== Amazon Bedrock
 
