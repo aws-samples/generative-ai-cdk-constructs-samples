@@ -21,9 +21,14 @@
     "noFallthroughCasesInSwitch": true,
 
     /* ChadCN UI */
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+      "@routes/*": ["./src/routes/*"],
+      "@loaders/*": ["./src/loaders/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@util/*": ["./src/util/*"],
+      "@hooks/*": ["./src/hooks/*"]
     }
   },
   "include": ["src"],

@@ -1,0 +1,4 @@
+pytest==8.4.1
+moto[dynamodb]==5.0.21
+
+faker==37.6.0

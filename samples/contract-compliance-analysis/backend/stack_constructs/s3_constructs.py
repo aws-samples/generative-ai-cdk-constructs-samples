@@ -78,8 +78,15 @@ class BucketConstruct(s3.Bucket):
         scope: Construct,
         construct_id: str,
         server_access_logs_bucket: s3.Bucket,
+        lifecycle_rules: list = None,
         **kwargs,
     ):
+        # Default lifecycle rule: 90 days expiration
+        if lifecycle_rules is None:
+            lifecycle_rules = [
+                s3.LifecycleRule(enabled=True, expiration=Duration.days(90)),
+            ]
+        
         super().__init__(
             scope,
             construct_id,
@@ -95,9 +102,7 @@ class BucketConstruct(s3.Bucket):
             ),
             encryption=s3.BucketEncryption.S3_MANAGED,
             enforce_ssl=True,
-            lifecycle_rules=[
-                s3.LifecycleRule(enabled=True, expiration=Duration.days(90)),
-            ],
+            lifecycle_rules=lifecycle_rules,
             server_access_logs_bucket=server_access_logs_bucket,
             server_access_logs_prefix=f"{construct_id}/",
             cors=[s3.CorsRule(

@@ -101,7 +101,74 @@ def _lambda_basic_policy(
     )
     NagSuppressions.add_resource_suppressions(
         construct=policy,
-        suppressions=[NagPackSuppression(id="AwsSolutions-IAM5", reason="CloudWatch log groups")],
+        suppressions=[
+            NagPackSuppression(
+                id="AwsSolutions-IAM5",
+                applies_to=[{
+                    "regex": "/^Resource::arn:aws:logs:<AWS::Region>:<AWS::AccountId>:log-group:/aws/lambda/.*:\\*$/"
+                }],
+                reason="Lambda requires wildcard suffix on log group ARN to create and write to log streams within its dedicated log group."
+            )
+        ],
     )
     return policy
+
+
+def add_bedrock_marketplace_permissions(role: iam.Role):
+    """
+    Add AWS Marketplace permissions for Claude models to enable auto-subscription on first invocation.
+    
+    All Anthropic Claude models are sold through AWS Marketplace and require marketplace subscription.
+    This policy allows Lambda to automatically subscribe to Claude models when first invoked,
+    restricted to only Claude product IDs and only when called by Bedrock.
+    
+    Reference: https://docs.aws.amazon.com/bedrock/latest/userguide/model-access-product-ids.html
+    """
+    role.add_to_policy(iam.PolicyStatement(
+        actions=[
+            "aws-marketplace:ViewSubscriptions",
+            "aws-marketplace:Subscribe",
+        ],
+        resources=["*"],
+        conditions={
+            "ForAllValues:StringEquals": {
+                # Product IDs from: https://docs.aws.amazon.com/bedrock/latest/userguide/model-access-product-ids.html
+                "aws-marketplace:ProductId": [
+                    "c468b48a-84df-43a4-8c46-8870630108a7",  # Anthropic Claude
+                    "b0eb9475-3a2c-43d1-94d3-56756fd43737",  # Anthropic Claude Instant
+                    "prod-6dw3qvchef7zy",  # Anthropic Claude 3 Sonnet
+                    "prod-m5ilt4siql27k",  # Anthropic Claude 3.5 Sonnet
+                    "prod-cx7ovbu5wex7g",  # Anthropic Claude 3.5 Sonnet v2
+                    "prod-4dlfvry4v5hbi",  # Anthropic Claude 3.7 Sonnet
+                    "prod-mxcfnwvpd6kb4",  # Anthropic Claude Sonnet 4.5
+                    "prod-4pmewlybdftbs",  # Anthropic Claude Sonnet 4
+                    "prod-ozonys2hmmpeu",  # Anthropic Claude 3 Haiku
+                    "prod-5oba7y7jpji56",  # Anthropic Claude 3.5 Haiku
+                    "prod-xdkflymybwmvi",  # Anthropic Claude Haiku 4.5
+                    "prod-fm3feywmwerog",  # Anthropic Claude 3 Opus
+                    "prod-azycxvnd5mhqi",  # Anthropic Claude Opus 4
+                    "prod-w3q2d6rfge4tw",  # Anthropic Claude Opus 4.1
+                ]
+            },
+            "StringEquals": {
+                "aws:CalledViaLast": "bedrock.amazonaws.com"
+            }
+        }
+    ))
+    
+    # Suppress cdk-nag warning for wildcard resource (required by AWS Marketplace API)
+    # Must target the DefaultPolicy/Resource that gets auto-created
+    from aws_cdk import Stack
+    stack = Stack.of(role)
+    NagSuppressions.add_resource_suppressions_by_path(
+        stack,
+        f"{role.node.path}/DefaultPolicy/Resource",
+        [
+            {
+                "id": "AwsSolutions-IAM5",
+                "appliesTo": ["Resource::*"],
+                "reason": "AWS Marketplace Subscribe/ViewSubscriptions actions do not support resource-level permissions. Access is restricted by ProductId condition to 14 Anthropic Claude models and CalledViaLast condition to Bedrock service only."
+            }
+        ]
+    )
 

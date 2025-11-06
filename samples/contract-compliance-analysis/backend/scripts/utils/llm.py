@@ -1,3 +1,16 @@
+#
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License"). You may not use this file except in compliance
+# with the License. A copy of the License is located at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# or in the 'license' file accompanying this file. This file is distributed on an 'AS IS' BASIS, WITHOUT WARRANTIES
+# OR CONDITIONS OF ANY KIND, express or implied. See the License for the specific language governing permissions
+# and limitations under the License.
+#
+
 import boto3
 import json
 import logging
@@ -6,7 +19,7 @@ from retrying import retry
 from botocore.config import Config
 from botocore.exceptions import ClientError
 
-CLAUDE_MODEL_ID = "amazon.nova-pro-v1:0"
+DEFAULT_MODEL_ID = "amazon.nova-pro-v1:0"
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -35,7 +48,7 @@ class BedrockRetryableError(Exception):
 def invoke_llm(prompt, model_id, temperature=0.5, top_k=None, top_p=None, max_new_tokens=4096, verbose=False):
     """
     Invoke LLM using direct bedrock_runtime calls.
-    
+
     Args:
         prompt: The user prompt text
         model_id: Model identifier
@@ -44,11 +57,11 @@ def invoke_llm(prompt, model_id, temperature=0.5, top_k=None, top_p=None, max_ne
         top_p: Top-p sampling parameter
         max_new_tokens: Maximum tokens to generate
         verbose: Enable verbose logging
-    
+
     Returns:
         tuple: (response_content, usage_data, stop_reason)
     """
-    model_id = (model_id or CLAUDE_MODEL_ID)
+    model_id = (model_id or DEFAULT_MODEL_ID)
 
     if verbose:
         logger.info(f"ModelId: {model_id}")
@@ -72,13 +85,13 @@ def invoke_llm(prompt, model_id, temperature=0.5, top_k=None, top_p=None, max_ne
                 "maxTokens": max_new_tokens,
             }
         }
-        
+
         # Add optional parameters to inferenceConfig if provided
         if top_p is not None:
             body["inferenceConfig"]["topP"] = top_p
         if top_k is not None:
             body["inferenceConfig"]["topK"] = top_k
-            
+
     elif _is_claude_model(model_id):
         # Anthropic Claude models use anthropic_version structure
         body = {
@@ -95,7 +108,7 @@ def invoke_llm(prompt, model_id, temperature=0.5, top_k=None, top_p=None, max_ne
             "temperature": temperature,
             "max_tokens": max_new_tokens,
         }
-        
+
         # Add optional parameters if provided
         if top_p is not None:
             body["top_p"] = top_p
@@ -106,12 +119,12 @@ def invoke_llm(prompt, model_id, temperature=0.5, top_k=None, top_p=None, max_ne
 
     try:
         response = bedrock_runtime.invoke_model(
-            body=json.dumps(body), 
+            body=json.dumps(body),
             modelId=model_id
         )
     except ClientError as exc:
         logger.warning(f"Bedrock ClientError: {exc}")
-        
+
         if exc.response['Error']['Code'] == 'ThrottlingException':
             logger.warning("Bedrock throttling. Retrying...")
             raise BedrockRetryableError(str(exc))
@@ -132,7 +145,7 @@ def invoke_llm(prompt, model_id, temperature=0.5, top_k=None, top_p=None, max_ne
 
     # Parse response based on model type
     response_body = json.loads(response.get('body').read())
-    
+
     if _is_nova_model(model_id):
         # Amazon Nova response format
         response_content = response_body['output']['message']['content'][0]['text']
@@ -157,7 +170,7 @@ def invoke_llm(prompt, model_id, temperature=0.5, top_k=None, top_p=None, max_ne
             "input_tokens": usage_data.get('input_tokens', 0),
             "output_tokens": usage_data.get('output_tokens', 0)
         }
-        
+
         logger.info(f"LLM token usage: {token_usage_log}")
 
     return response_content, usage_data, stop_reason
@@ -168,7 +181,7 @@ def _is_nova_model(model_id):
     # Remove region prefix if it exists (e.g., "us." or "eu.")
     if model_id.startswith('us.') or model_id.startswith('eu.'):
         model_id = model_id.split('.', 1)[1]
-    
+
     return model_id.startswith('amazon.nova-')
 
 
@@ -177,7 +190,7 @@ def _is_claude_model(model_id):
     # Remove region prefix if it exists (e.g., "us." or "eu.")
     if model_id.startswith('us.') or model_id.startswith('eu.'):
         model_id = model_id.split('.', 1)[1]
-    
+
     return model_id.startswith('anthropic.claude-')
 
 

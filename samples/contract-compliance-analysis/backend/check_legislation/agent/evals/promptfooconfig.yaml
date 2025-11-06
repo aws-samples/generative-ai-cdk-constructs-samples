@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=https://promptfoo.dev/config-schema.json
+description: Legislation Agent Evaluation
+
+evaluateOptions:
+  maxConcurrency: 1
+
+defaultTest:
+  assertScoringFunction: file://scoring.py:calculate_score
+  options:
+    provider: bedrock:us.anthropic.claude-sonnet-4-20250514-v1:0
+
+# The extension to start and stop the agent server automatically is not
+# working... need time to troubleshoot. For now, the user must manually
+# start the local-running server bound to port 8080
+#extensions:
+#  - file://server_extension.py:extension_hook
+
+prompts:
+  - "Analyze clause: {{text}}"  # this is not used, but promptfoo requires a prompt
+
+providers:
+  - file://legislation_provider.py
+
+tests:
+  - file://test_cases.csv

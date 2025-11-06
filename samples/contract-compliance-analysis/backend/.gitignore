@@ -6,8 +6,12 @@ __pycache__
 *.egg-info
 ~*.*
 drafts
-evaluation_questions.xlsx
+evaluation_questions.json
 .DS_Store
+.mypy_cache
+
+# Application properties
+app_properties.yaml
 
 # CDK asset staging directory
 .cdk.staging
@@ -262,3 +266,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Bedrock agentcore config files
+/check_legislation/agent/.bedrock_agentcore.yaml*
+/check_legislation/agent/.bedrock_agentcore*.yaml
+/check_legislation/agent/evals/promptfoo-errors.log

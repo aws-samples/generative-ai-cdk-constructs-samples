@@ -1,0 +1,129 @@
+Contrato de Prestação de Serviços
+
+1. Relacionamento entre as Partes
+O relacionamento entre as Partes é de contratantes independentes. Nada neste Contrato deve ser interpretado como criando uma relação de emprego, sociedade, joint venture ou relação de agência entre as Partes.
+
+2. Acordo Integral e Alterações
+Este Contrato, juntamente com a Declaração de Trabalho e quaisquer outros anexos, constitui o acordo integral entre as Partes com relação ao objeto deste documento e substitui todos os acordos, entendimentos e negociações anteriores, escritos e orais, entre as Partes. Este Contrato pode ser alterado ou modificado apenas por instrumento escrito devidamente executado por representantes autorizados de ambas as Partes.
+
+3. Lei Aplicável e Jurisdição
+Este Contrato será regido e interpretado de acordo com as leis da República Federativa do Brasil, incluindo o Código Civil Brasileiro (Lei 10.406/2002) e legislação complementar aplicável. As Partes submetem-se à jurisdição exclusiva dos tribunais brasileiros competentes para quaisquer procedimentos legais decorrentes ou relacionados a este Contrato.
+
+4. Padrões de Desempenho
+O Prestador de Serviços deve executar os Serviços de maneira profissional, pontual e adequada, consistente com os padrões da indústria e melhores práticas, e de acordo com as especificações e requisitos estabelecidos na Declaração de Trabalho.
+
+5. Entregáveis
+O Prestador de Serviços deve fornecer os entregáveis especificados na Declaração de Trabalho (os "Entregáveis") de acordo com os cronogramas e marcos acordados.
+
+6. Critérios de Aceitação
+A Empresa terá o direito de revisar e testar os Entregáveis para garantir que estejam em conformidade com os critérios de aceitação estabelecidos na Declaração de Trabalho. Se qualquer Entregável não atender aos critérios de aceitação, a Empresa pode rejeitá-lo, e o Prestador de Serviços deve prontamente remediar as deficiências sem custo adicional para a Empresa.
+
+7. Transição e Implementação de Serviços
+O Prestador de Serviços deve cooperar com a Empresa e quaisquer prestadores de serviços terceirizados para garantir uma transição e implementação suave dos Serviços, incluindo, mas não limitado a, fornecer treinamento necessário, documentação e transferência de conhecimento.
+
+8. Prazo e Rescisão
+a. Prazo: Este Contrato entrará em vigor na Data de Vigência e continuará pelo prazo especificado na Declaração de Trabalho, a menos que rescindido antecipadamente de acordo com esta Seção.
+b. Rescisão por Conveniência: Qualquer Parte pode rescindir este Contrato por conveniência mediante aviso prévio por escrito de 30 dias à outra Parte.
+c. Rescisão por Justa Causa: Qualquer Parte pode rescindir este Contrato por justa causa se a outra Parte violar materialmente este Contrato e não sanar tal violação dentro de 15 dias após receber notificação por escrito.
+d. Efeito da Rescisão: Após a rescisão deste Contrato, o Prestador de Serviços deve prontamente entregar à Empresa todos os Entregáveis e trabalhos em andamento, e a Empresa deve pagar ao Prestador de Serviços por todos os Serviços executados e aceitos até a data efetiva da rescisão.
+
+9. Renovação e Prorrogação
+Este Contrato pode ser renovado ou prorrogado por acordo mútuo por escrito das Partes, sujeito aos mesmos termos e condições ou outros termos que possam ser acordados pelas Partes.
+
+10. Termos de Pagamento (Honorários, Faturamento, Despesas)
+a. Honorários: A Empresa deve pagar ao Prestador de Serviços os honorários especificados na Declaração de Trabalho de acordo com o cronograma de pagamento estabelecido.
+b. Faturamento: O Prestador de Serviços deve submeter faturas à Empresa de acordo com as instruções de faturamento fornecidas na Declaração de Trabalho. A Empresa deve pagar todas as faturas não contestadas dentro de 30 dias do recebimento, conforme legislação brasileira aplicável.
+c. Despesas: A menos que especificado de outra forma na Declaração de Trabalho, o Prestador de Serviços será responsável por todas as despesas incorridas na execução dos Serviços. Se o reembolso de despesas for permitido, o Prestador de Serviços deve fornecer documentação detalhada e recibos para todas as despesas reembolsáveis.
+
+11. Tributos
+Cada Parte será responsável pelo pagamento de quaisquer tributos aplicáveis, taxas ou outros encargos impostos por qualquer autoridade governamental em conexão com a execução deste Contrato, incluindo ISS, PIS/COFINS, IRPJ, CSLL e demais tributos conforme legislação tributária brasileira. O Prestador de Serviços deve emitir nota fiscal de serviços conforme exigido pela legislação brasileira.
+
+12. Créditos de Serviço e Descontos por Nível de Serviço
+Se o Prestador de Serviços não conseguir atender aos níveis de serviço ou padrões de desempenho especificados na Declaração de Trabalho, a Empresa terá direito aos créditos de serviço ou descontos por nível de serviço estabelecidos.
+
+13. Propriedade Intelectual Preexistente
+Cada Parte manterá a propriedade de seus respectivos direitos de propriedade intelectual preexistentes, incluindo, mas não limitado a, patentes, direitos autorais, marcas registradas e segredos comerciais. Qualquer nova propriedade intelectual desenvolvida no curso da execução dos Serviços será de propriedade da Empresa, a menos que especificado de outra forma na Declaração de Trabalho.
+
+14. Confidencialidade e Não Divulgação
+a. Informações Confidenciais: Cada Parte pode divulgar à outra Parte certas informações não públicas relacionadas aos seus negócios, produtos, serviços ou operações ("Informações Confidenciais"). As Informações Confidenciais não incluem informações que: (i) são ou se tornam publicamente disponíveis sem culpa da Parte receptora; (ii) são legitimamente recebidas pela Parte receptora de terceiros sem violação de qualquer obrigação de confidencialidade; (iii) são desenvolvidas independentemente pela Parte receptora sem uso das Informações Confidenciais da Parte divulgadora; ou (iv) já eram conhecidas pela Parte receptora antes da divulgação pela Parte divulgadora.
+b. Não Divulgação: A Parte receptora deve: (i) usar o mesmo grau de cuidado para proteger as Informações Confidenciais que usa para proteger suas próprias informações confidenciais de natureza similar, mas em nenhum caso menos que cuidado razoável; (ii) não usar as Informações Confidenciais para qualquer propósito além de cumprir suas obrigações sob este Contrato; e (iii) não divulgar as Informações Confidenciais a terceiros, exceto a seus funcionários, agentes ou contratados que tenham necessidade de saber e estejam vinculados por obrigações de confidencialidade pelo menos tão protetivas quanto as estabelecidas aqui.
+
+15. Declarações e Garantias
+Declarações e Garantias do Prestador de Serviços: O Prestador de Serviços declara e garante que: (i) possui as habilidades, qualificações e expertise necessárias para executar os Serviços; (ii) os Serviços serão executados de maneira profissional e adequada; (iii) os Entregáveis estarão em conformidade com as especificações e requisitos estabelecidos na Declaração de Trabalho; e (iv) os Entregáveis não infringirão direitos de propriedade intelectual de terceiros.
+
+16. Indenização
+O Prestador de Serviços deve indenizar, defender e isentar a Empresa, suas afiliadas e seus respectivos diretores, administradores, funcionários e agentes de e contra quaisquer reivindicações, demandas, ações, processos, perdas, responsabilidades, danos, custos e despesas (incluindo honorários advocatícios razoáveis) decorrentes de ou relacionados a: (i) qualquer violação deste Contrato pelo Prestador de Serviços; (ii) qualquer ato ou omissão negligente ou intencional pelo Prestador de Serviços ou seus funcionários, agentes ou subcontratados na execução dos Serviços; ou (iii) qualquer alegação de que os Entregáveis ou Serviços infringem direitos de propriedade intelectual de terceiros.
+
+17. Limitação de Responsabilidade
+EXCETO POR REIVINDICAÇÕES DECORRENTES DAS OBRIGAÇÕES DE INDENIZAÇÃO DE UMA PARTE, NEGLIGÊNCIA GRAVE OU CONDUTA INTENCIONAL, EM NENHUM EVENTO QUALQUER PARTE SERÁ RESPONSÁVEL PERANTE A OUTRA PARTE POR QUAISQUER DANOS INDIRETOS, INCIDENTAIS, ESPECIAIS, PUNITIVOS OU CONSEQUENCIAIS, INCLUINDO, MAS NÃO LIMITADO A, LUCROS CESSANTES, RECEITA PERDIDA OU INTERRUPÇÃO DE NEGÓCIOS, MESMO SE AVISADA DA POSSIBILIDADE DE TAIS DANOS.
+
+18. Força Maior
+Nenhuma Parte será responsável por qualquer atraso ou falha em cumprir suas obrigações sob este Contrato devido a causas além de seu controle razoável, incluindo, mas não limitado a, atos de Deus, atos de autoridade civil ou militar, incêndios, inundações, terremotos, tumultos, guerras, atos terroristas, epidemias ou restrições governamentais ("Evento de Força Maior"). No caso de um Evento de Força Maior, a Parte afetada deve prontamente notificar a outra Parte, e as Partes devem trabalhar juntas de boa-fé para mitigar os efeitos do Evento de Força Maior.
+
+19. Conduta Ética e Anticorrupção
+Cada Parte deve cumprir todas as leis anticorrupção aplicáveis, incluindo, mas não limitado à Lei Anticorrupção Brasileira (Lei 12.846/2013 - Lei da Empresa Limpa), e não deve se envolver em qualquer forma de suborno, propina ou outras práticas corruptas em conexão com este Contrato.
+
+20. Responsabilidade Social Corporativa
+Cada Parte deve cumprir as leis e padrões de responsabilidade social corporativa específicos à proteção ambiental, práticas trabalhistas e direitos humanos conforme legislação brasileira, incluindo a Consolidação das Leis do Trabalho (CLT) e legislação ambiental aplicável, e deve implementar políticas promovendo operações sustentáveis, práticas de emprego éticas e bem-estar comunitário.
+
+21. Pessoal-Chave e Alocação de Recursos
+O Prestador de Serviços deve designar pessoal qualificado e experiente para executar os Serviços, e deve garantir que recursos suficientes sejam alocados para atender aos requisitos e cronogramas estabelecidos na Declaração de Trabalho.
+
+22. Substituição de Pessoal
+Se a Empresa objetar razoavelmente ao desempenho ou conduta de qualquer pessoal do Prestador de Serviços designado para executar os Serviços, o Prestador de Serviços deve prontamente substituir tal pessoal por substitutos qualificados e experientes aceitáveis para a Empresa.
+
+23. Verificação de Antecedentes e Autorizações de Segurança
+O Prestador de Serviços deve garantir que todos os seus funcionários, agentes e subcontratados designados para executar Serviços sob este Contrato tenham completado com sucesso verificações de antecedentes e obtido quaisquer autorizações de segurança necessárias conforme exigido pela Empresa ou leis e regulamentos aplicáveis.
+
+24. Cessão e Subcontratação
+a. Cessão: Nenhuma Parte pode ceder ou transferir este Contrato ou quaisquer de seus direitos ou obrigações sem o consentimento prévio por escrito da outra Parte, que não deve ser irrazoavelmente negado ou atrasado.
+b. Subcontratação: O Prestador de Serviços pode contratar subcontratados para executar certos Serviços, desde que o Prestador de Serviços permaneça responsável pelo desempenho de tais subcontratados e garanta que tais subcontratados cumpram os termos e condições deste Contrato.
+
+25. Exclusividade ou Não Exclusividade
+Se a Declaração de Trabalho especificar que os Serviços devem ser fornecidos em base exclusiva, o Prestador de Serviços não deve fornecer serviços similares a terceiros durante o prazo deste Contrato sem o consentimento prévio por escrito da Empresa.
+
+26. Não Circunvenção
+Durante o prazo deste Contrato e por um período de 3 anos após, nenhuma Parte deve contornar ou tentar contornar os relacionamentos comerciais ou arranjos contratuais da outra Parte com terceiros.
+
+27. Direitos de Auditoria
+A Empresa terá o direito, mediante aviso razoável e durante horário comercial regular, de auditar os registros e instalações do Prestador de Serviços para verificar o cumprimento deste Contrato.
+
+28. Resolução de Disputas
+a. Negociação: No caso de qualquer disputa ou desacordo decorrente de ou relacionado a este Contrato, as Partes devem primeiro tentar resolver a disputa através de negociações de boa-fé.
+b. Mediação: Se as Partes não conseguirem resolver a disputa através de negociações dentro de 30 dias, as Partes devem submeter a disputa à mediação não vinculante de acordo com as regras da legislação brasileira de mediação (Lei 13.140/2015).
+c. Arbitragem ou Litígio: Se a disputa não puder ser resolvida através de mediação, qualquer Parte pode buscar arbitragem vinculante de acordo com as regras da Lei de Arbitragem Brasileira (Lei 9.307/1996), ou, se as Partes concordarem mutuamente, podem buscar litígio em tribunal de jurisdição competente no Brasil.
+
+29. Notificações
+Todas as notificações, solicitações, consentimentos, reivindicações, demandas, renúncias e outras comunicações sob este Contrato devem ser por escrito e serão consideradas devidamente entregues: (a) quando entregues pessoalmente (com confirmação escrita de recebimento); (b) quando recebidas pelo destinatário se enviadas por correio expresso reconhecido nacionalmente; (c) na data de envio por email (com confirmação de transmissão) se enviado durante horário comercial normal do destinatário, e no próximo dia útil se enviado após horário comercial normal; ou (d) no terceiro dia após a data de postagem, por correio certificado ou registrado, com aviso de recebimento solicitado.
+
+30. Divisibilidade
+Se qualquer disposição deste Contrato for considerada inválida, ilegal ou inexequível, a validade, legalidade e exequibilidade das disposições restantes não serão de forma alguma afetadas ou prejudicadas.
+
+31. Renúncia
+Nenhuma renúncia por qualquer Parte de qualquer violação deste Contrato será considerada uma renúncia de qualquer violação anterior ou subsequente da mesma ou qualquer outra disposição. Nenhuma renúncia será efetiva a menos que feita por escrito e assinada por um representante autorizado da Parte renunciante.
+
+32. Não Difamação
+Durante o prazo deste Contrato e por um período de 5 anos após, nenhuma Parte deve fazer declarações difamatórias ou caluniosas, escritas ou orais, sobre a outra Parte ou seus produtos, serviços, funcionários ou práticas comerciais.
+
+33. Direitos de Publicidade e Marketing
+Nenhuma Parte deve usar o nome, logotipo ou marcas registradas da outra Parte em quaisquer materiais de publicidade, propaganda ou marketing sem o consentimento prévio por escrito da outra Parte.
+
+34. Cliente/Nação Mais Favorecida
+Se especificado na Declaração de Trabalho, o Prestador de Serviços deve garantir que os honorários e termos oferecidos à Empresa sejam pelo menos tão favoráveis quanto aqueles oferecidos a qualquer outro cliente ou nação para serviços similares.
+
+35. Cooperação e Assistência
+Cada Parte deve cooperar e fornecer assistência razoável à outra Parte em conexão com o cumprimento de suas obrigações sob este Contrato.
+
+EM TESTEMUNHO DO QUE, as Partes executaram este Contrato na Data de Vigência.
+
+AnyCompany
+
+Por: ______________________________
+Nome: Jane Doe
+Cargo: Diretora Executiva
+
+AnyServiceProvider
+
+Por: ______________________________
+Nome: John Doe
+Cargo: Presidente e Diretor de Operações

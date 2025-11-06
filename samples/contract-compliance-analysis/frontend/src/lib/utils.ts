@@ -14,6 +14,7 @@
 import { ApiError } from "aws-amplify/api";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import type { Job, ChecksCollection } from "@/lib/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -42,3 +43,63 @@ export const getErrorMessage = (error: unknown): string => {
 
   return message;
 };
+
+export const removePrefix = (prefix: string, str: string) => {
+  return str.startsWith(prefix) ? str.slice(prefix.length) : str;
+};
+
+/**
+ * Determines if a job is overall compliant based on all checks.
+ * Returns true if ALL checks are compliant (job is compliant overall).
+ */
+export function isOverallCompliant(job: Job): boolean {
+  const { guidelines, legislation } = job.checks;
+
+  if (!legislation) {
+    return guidelines.compliant;
+  }
+
+  return guidelines.compliant && legislation.compliant;
+}
+
+/**
+ * Gets the overall processing status based on checks.
+ * If legislation check doesn't exist, only considers guidelines.
+ * Priority: RUNNING > FAILED/TIMED_OUT/ABORTED > SUCCEEDED
+ */
+export function getOverallProcessingStatus(
+  checks: ChecksCollection,
+): "SUCCEEDED" | "FAILED" | "RUNNING" | "TIMED_OUT" | "ABORTED" {
+  const { guidelines, legislation } = checks;
+
+  // Se não tem legislation, considera apenas guidelines
+  if (!legislation) {
+    return guidelines.processingStatus;
+  }
+
+  // Se tem legislation, considera ambos
+  // Prioridade: RUNNING > FAILED/TIMED_OUT/ABORTED > SUCCEEDED
+  if (
+    guidelines.processingStatus === "RUNNING" ||
+    legislation.processingStatus === "RUNNING"
+  ) {
+    return "RUNNING";
+  }
+
+  // Se qualquer um falhou, retorna o status de falha
+  if (guidelines.processingStatus !== "SUCCEEDED")
+    return guidelines.processingStatus;
+  if (legislation.processingStatus !== "SUCCEEDED")
+    return legislation.processingStatus;
+
+  // Ambos succeeded
+  return "SUCCEEDED";
+}
+
+/**
+ * Determines if a job is clickable (can navigate to detail page).
+ * Job is clickable only when all applicable checks have SUCCEEDED.
+ */
+export function isJobClickable(checks: ChecksCollection): boolean {
+  return getOverallProcessingStatus(checks) === "SUCCEEDED";
+}

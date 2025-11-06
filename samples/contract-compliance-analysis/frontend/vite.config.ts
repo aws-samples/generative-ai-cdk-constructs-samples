@@ -11,17 +11,29 @@
 // and limitations under the License.
 //
 
+/// <reference types="vitest" />
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
+import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [tailwindcss(), react()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      "./runtimeConfig": "./runtimeConfig.browser", // ensures browser compatible version of AWS JS SDK is used
+      "@components": path.resolve(__dirname, "src/components"),
+      "@routes": path.resolve(__dirname, "src/routes"),
+      "@loaders": path.resolve(__dirname, "src/loaders"),
+      "@lib": path.resolve(__dirname, "src/lib"),
+      "@util": path.resolve(__dirname, "src/util"),
+      "@hooks": path.resolve(__dirname, "src/hooks"),
     },
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./src/test/setup.ts'],
   },
 });

@@ -1,0 +1,49 @@
+extends: default
+
+# Reference: https://docs.asciidoctor.org/pdf-converter/latest/theme/title-page/#title-page
+title-page:
+  text-align: center  
+  title:
+    margin-top: 1in
+    font-color: #000000
+    font-size: 28
+  subtitle:
+    margin-top: 0.3in 
+    font-color: #000000
+    font-style: normal
+    font-size: 14
+  authors:
+    font-size: 16
+    margin-top: 1in
+  revision:    
+    font-size: 14
+
+image:
+  align: center # Reference: https://docs.asciidoctor.org/pdf-converter/latest/theme/block-image/#image
+  caption:  # Reference: https://docs.asciidoctor.org/pdf-converter/latest/theme/block-images/#caption-align
+    align: inherit
+
+# Reference: https://docs.asciidoctor.org/pdf-converter/latest/theme/table/#caption
+table:
+  caption:
+    align: center
+    end: bottom
+
+# Reference: https://docs.asciidoctor.org/pdf-converter/latest/theme/code/#code
+code:
+  font_family: Courier
+    
+# Reference: https://docs.asciidoctor.org/pdf-converter/latest/theme/add-running-content/#page-number
+footer:
+  columns: =100%
+  recto:
+    center:
+      content: '{page-number}'
+  verso:
+    center:
+      content: '{page-number}'
+    
+
+
+
+    

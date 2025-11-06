@@ -134,16 +134,16 @@ def run_query(logs_client, query: str, log_groups: List[str], start_time: int, e
             raise Exception(f"Unknown query status: {status}")
 
 
-def print_table_with_tabulate(table_data: List[Dict], total_input: int, total_output: int, 
+def print_table_with_tabulate(table_data: List[Dict], total_input: int, total_output: int,
                              total_cache_read: int, total_cache_write: int, total_calls: int) -> None:
     """Print the table using the tabulate library in simple format."""
     if not TABULATE_AVAILABLE:
         print("⚠️  tabulate library not available. Install with: pip install tabulate")
         return
-    
+
     # Prepare data for tabulate
     headers = ["Job ID", "Model", "Input", "Output", "Cache Read", "Cache Write", "Calls"]
-    
+
     # Convert table data to list of lists
     rows = []
     for row in table_data:
@@ -156,7 +156,7 @@ def print_table_with_tabulate(table_data: List[Dict], total_input: int, total_ou
             row['cache_write_tokens'],
             row['llm_calls']
         ])
-    
+
     # Print table in simple format (no TOTAL row)
     print(tabulate(rows, headers=headers, tablefmt="simple"))
 
@@ -170,7 +170,7 @@ def format_results(results: Dict[str, Any]) -> None:
     # Display statistics
     stats = results['statistics']
     records_matched = int(stats['recordsMatched'])
-    
+
     if records_matched > 0:
         print(f"Records matched: {records_matched}")
 
@@ -235,13 +235,13 @@ def main():
 Examples:
   # Query token usage for a specific job ID
   python workflow_token_usage.py --job-id e1737ab0-ddf0-4403-ad77-f54077b89809
-  
+
   # Query all token usage in the last hour (default)
   python workflow_token_usage.py --hours 1
-  
+
   # Query all token usage in the last 24 hours
   python workflow_token_usage.py --hours 24
-  
+
   # Query with custom stack name
   python workflow_token_usage.py --job-id e1737ab0-ddf0-4403-ad77-f54077b89809 --stack-name MyCustomStack
         """

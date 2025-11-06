@@ -1,26 +1,15 @@
-# Contract Compliance Analysis - Back-end
-
-## Table of contents
-
-- [Basic setup](#basic-setup)
-    - [Local environment](#local-environment)
-    - [Setup steps](#setup-steps)
-- [How to customize contract analysis according to your use case](#how-to-customize-contract-analysis-according-to-your-use-case)
-- [How to use a different Amazon Bedrock FM](#how-to-use-a-different-amazon-bedrock-fm)
+# Contract Compliance Analysis - Backend
 
 ## Basic setup
 
-### Local environment
-
 You can run the setup from a local workspace.
 
-### Setup steps  
+### Setup steps
 
 In order to deploy this project, you need to have installed:
 
 - [Python](https://www.python.org/downloads/) 3.11 or higher
 - [Docker](https://docs.docker.com/engine/install/)
-- Git (if using code repository)
 - [AWS CDK Toolkit](https://docs.aws.amazon.com/cdk/v2/guide/cli.html)
 - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
 
@@ -40,6 +29,7 @@ Ensure that your CDK version is using CDK V2, by checking if the second line of 
 
 Having those installed, it is time to configure your environment to connect to your AWS Account.
 To set up your local environment to use such an AWS account you can follow the steps described at [https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html)
+
 
 #### Create Python virtual environment
 
@@ -68,6 +58,35 @@ Once the virtualenv is activated, you can install the required dependencies.
 pip install -r requirements.txt
 ```
 
+#### Enable Bedrock Model Access (Prerequisite)
+
+Before deploying the stack, ensure you have access to the required Amazon Bedrock models:
+
+**Amazon Nova models** (default): Automatically available. Most features in this prototype have Amazon Nova Pro as the default model, so no action needed.
+
+**Claude models** (optional): Required only if you plan to use Claude models or the [Legislation Check](#optional-feature-legislation-checks) feature. Requires a one-time use case submission per account. By using Claude models, you agree to the [Anthropic EULA](https://aws.amazon.com/legal/bedrock/third-party-models/).
+
+**Option 1 - Using the provided script**:
+```bash
+python scripts/enable_anthropic_models.py \
+  --company-name "Your Company" \
+  --company-website "https://yourcompany.com" \
+  --use-cases "Contract compliance analysis using AI" \
+  --intended-users "0" \
+  --industry "Technology"
+```
+(Or run without arguments for interactive mode)
+
+**Option 2 - Via AWS Console**:
+- Go to Amazon Bedrock → Model catalog → Select any Claude model → Submit use case form
+
+After use case submission, marketplace subscription is handled automatically by Lambda functions on first invocation.
+
+**New Claude models**: If Anthropic releases a new Claude model not yet in the IAM policy:
+1. Get the product ID from [AWS documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/model-access-product-ids.html)
+2. Add it to the `add_bedrock_marketplace_permissions()` function in `stack_constructs/lambda_constructs.py`
+3. Redeploy with `cdk deploy`
+
 #### Bootstrap CDK
 
 Run the following
@@ -81,24 +100,41 @@ cdk bootstrap
 1. Run AWS CDK Toolkit to deploy the Backend stack with the runtime resources.
 
     ```shell
-    cdk deploy --require-approval=never
+    cdk deploy MainBackendStack --require-approval=never
     ```
 
 2. Any modifications made to the code can be applied to the deployed stack by running the same command again.
 
     ```shell
-    cdk deploy --require-approval=never
+    cdk deploy MainBackendStack --require-approval=never
     ```
 
 #### Populate Guidelines table
 
-Once the Stack is setup, you need to populate the DynamoDB Guidelines table with the data from the Guidelines Excel sheet that is included in the `guidelines` folder.
+Once the Stack is setup, you need to populate the DynamoDB Contract Types and Guidelines tables with the data from the Guidelines JSON files that are included in the `guidelines` folder.
 
-At the `scripts` folder, run the following script to populate the Guidelines table
+Navigate to the `scripts` folder and run the script to load the guidelines for your desired language(s):
 
 ```shell
-python load_guidelines.py  --guidelines_file_path ../guidelines/guidelines_example.xlsx
+cd scripts
 ```
+
+**English guidelines (sample):**
+```shell
+python load_guidelines.py --json-file ../guidelines/guidelines_example.json
+```
+
+**Spanish guidelines (sample - Mexican legal terms):**
+```shell
+python load_guidelines.py --json-file ../guidelines/guidelines_example_es.json
+```
+
+**Portuguese guidelines (sample - Brazilian legal terms):**
+```shell
+python load_guidelines.py --json-file ../guidelines/guidelines_example_pt_BR.json
+```
+
+You can load one or more language versions depending on your needs. **Note:** These are sample guidelines for demonstration purposes and should be customized according to your specific legal requirements and use case.
 
 #### Add users to Cognito User Pool
 
@@ -114,103 +150,239 @@ $ aws cloudformation describe-stacks --stack-name MainBackendStack --query "Stac
 
 You can then go the Amazon Cognito page at the AWS Console, search for the User Pool and add users
 
-#### Enable access to Bedrock models
 
-Models are not enabled by default on Amazon Bedrock, so if this is the first time you are going to use Amazon Bedrock, 
-it is recommended to first check if the access is already enabled. 
+## Managing Application Properties
 
-The default model is Amazon Nova Lite. Please ensure this model is enabled in the AWS Console (Amazon Bedrock -> Model access).
+### Using Configuration Scripts
+The application uses AWS Systems Manager Parameter Store for configuration. You can manage parameters using the provided scripts:
 
-Steps:
+```shell
+# Create a new YAML configuration template
+python scripts/init_app_properties.py  # Creates app_properties.yaml from template
 
-- Go to the AWS Console, then go to Amazon Bedrock
-
-- Click Model access at the left side
-
-![Bedrock Model Access](images/bedrock-model-access.png)
-
-- Click the **Enable specific models** button and enable the checkbox for the models used by the application
-
-- Click **Next** and **Submit** buttons
-
-
-## How to customize contract analysis according to your use case  
-
-This solution was designed to support analysis of contracts of different types and of different languages, based on the assumption that the contracts establish an agreement between two parties: a given company and another party. The solution already comes pre-configured to analyze service contract contracts in English for the company *AnyCompany*, together with an example of guidelines.
-
-The customization of the contract analysis according to your specific use case basically comprises two major configuration artifacts:
-
-- The App Properties. It's a YAML file that defines the service contract type, the language, the customer name and the role setting for two parties in the agreement. It's passed to scripts under `scripts` folder and to the CloudFormation resources via the `cdk deploy` command. You can either configure the existing *app_properties.yaml* located at the root folder, or you can create a new file - for the latter, you'd need to send an extra parameter to each script/command that depends on the App properties.
-- The guidelines. It's an Excel worksheet defining the taxonomy of clause types and how to classify and evaluate the contract clauses. The `guidelines_example.xslx` is your fastest reference defining your guidelines.
-
-The recommended sequence of steps:
-
-1. Customize App Properties.
-2. Deploy the Backend stack again.
-3. Create a custom guidelines worksheet. Using the example worksheet (`guidelines_example.xslx`) as reference, you can create your own, preserving the same tab/column naming. Apart from what is defined in the example in terms of naming, you can create additional tabs/columns. The content of each column can be in any language that is supported by the LLM - just make sure the content language is same as the `language` value defined in the App Properties.
-4. Generate evaluation questions for the guidelines. From the `scripts` folder:
-
-    ```shell
-    $ python generate_evaluation_questions.py --guidelines_file_path <custom_guidelines_file_path>
-    ```
-
-5. Open the resulting `evaluation_questions.xslx` folder and do your own curation. The file content was generated by a Large Language Model as an attempt to produce a set of binary questions (that are answered as 'Yes'/'No') to evaluate the compliance of each contract clause, but that is not authoritative, so you are recommended to go over the results and complement, correct, remove the existing content and also add your own set of binary questions.
-6. Bring your curated set of evaluation questions to your custom guidelines worksheet: at the `Taxonomy` tab --> `Evaluation Questions` column
-7. Load the custom guidelines into DynamoDB. From the `scripts` folder:
-
-    ```shell
-    python load_guidelines.py --guidelines_file_path <custom_guidelines_file_path>
-    ```
-
-## How to use a different Amazon Bedrock FM
-
-By default, the application uses Amazon Nova Lite. Here are steps explaining how to update the model to use a different one. For this example, we will use [Anthropic Claude 3.5 Haiku](https://aws.amazon.com/about-aws/whats-new/2024/11/anthropics-claude-3-5-haiku-model-amazon-bedrock/):
-
-- Open the [app_properties.yaml](./app_properties.yaml) file and update the field ```llm_model_id``` to use the model you selected. In this case, we update the field to ```us.anthropic.claude-3-5-haiku-20241022-v1:0```. Replace it with the model id you want to use. The list of model ids available through Amazon Bedrock is available in the [documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html). Ensure the model you are selecting is enabled in the console (Amazon Bedrock -> Model access) and available in your region. In case of using a predefined Inference Profile to use a model in a cross-region fashion, consult [documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html) of all regions that needs to have model access enabled. 
-- Depending on the model selected, you might need to update some hardcoded values regarding the max number of new tokens generated. For instance, all Amazon Nova models (including Nova Lite) support 5000 output tokens, which doesn't require any modifications. However, some models might have a max output tokens of 3000, which requires some changes in the sample. Update the following lines if required:
-    - In file [fn-preprocess-contract/index.py](./stack/sfn/preprocessing/fn-preprocess-contract/index.py), update line 98 to change the chunks size to a value smaller than the max tokens output for your model, as well as line 108 to match your model's max output tokens.
-    - In file [scripts/utils/llm.py](./scripts/utils/llm.py), update the max tokens output line 28.
-    - In file [common-layer/llm.py](./stack/sfn/common-layer/llm.py) update the max tokens output line 80.
-    - In file [fn-classify-clauses/index.py](./stack/sfn/classification/fn-classify-clauses/index.py), update line 173 the max tokens output for your model
-- Re-deploy the solution as described in previous sections
-
-### Troubleshooting
-
-#### KeyError in step X
-
-If you change the model, it is possible that you face an error in the step function run. This can be due to the parsing of the LLM response.
-In that case, identify the failing lambda function from the step functions logs, and update the dedicated lambda function code to enable verbose messaging. For instance, if the failing lambda function is ```PreprocessingStepPreproc```, open the file [fn-preprocess-contract/index.py](./stack/sfn/preprocessing/fn-preprocess-contract/index.py) and update the invoke_llm code:
-
-```python
-llm_response, model_usage, stop_reason = invoke_llm(
-    prompt=PROMPT_TEMPLATE.format(CONTRACT_EXCERPT=contract_excerpt),
-    model_id=prompt_vars_dict.get("llm_model_id", ''),
-    temperature=0.0,
-    top_p=0.999,
-    max_new_tokens=4096,
-    verbose=True # <- turn on verbose mode
-)
+# Sync YAML configuration to Parameter Store
+python scripts/apply_app_properties.py --preview  # Preview changes
+python scripts/apply_app_properties.py  # Apply changes
 ```
 
-Then, modify the file [common-layer/llm.py](./stack/sfn/common-layer/llm.py) and print the response from the runnable invocation:
+### Available Properties
 
-```python
-response = chain.invoke({})
-logger.info(f"Model response: {response}") # <- log the response
-content = response.content
+Global parameters:
+- `CompanyName`: Your company name (e.g., "AnyCompany")
+- `LanguageModelId`: Amazon Bedrock model ID (e.g., "amazon.nova-lite-v1:0")
+
+Task-specific overrides (prefix parameter with task name):
+- `ContractPreprocessing/LanguageModelId`: Document preprocessing and clause extraction
+- `ContractClassification/LanguageModelId`: Clause type classification
+- `ContractEvaluation/LanguageModelId`: Clause compliance evaluation
+- `GenerateEvaluationQuestions/LanguageModelId`: Evaluation question generation
+- `GenerateClauseExamples/LanguageModelId`: Clause example generation
+- `LegislationCheck/LanguageModelId`: Legislation compliance checking
+
+Example configuration:
+```yaml
+# Global fallback
+LanguageModelId: "amazon.nova-lite-v1:0"
+
+# Use more powerful models for specific tasks
+ContractEvaluation/LanguageModelId: "us.amazon.nova-pro-v1:0"
+GenerateEvaluationQuestions/LanguageModelId: "amazon.nova-premier-v1:0"
 ```
 
-Re-deploy the solution, and verify in the logs the structure of the response. Depending on the model used, it is possible that the schema of the reponse is different, thus the ```usage``` and ```stop reason``` values might require to be parsed differently. In that case, add the correct code in the file [common-layer/llm.py](./stack/sfn/common-layer/llm.py):
 
-```python
-if ('mymodel' in model_id):
-        usage_data = response.XXX # <- specify how to parse usage data
-        stop_reason = response.XXX # <- specify how to parse stop reason
+## How to customize contract analysis according to your use case
+
+This solution was designed to support analysis of contracts of different types and of different languages, based on the assumption that the contracts establish an agreement between two parties: a given company and another party. The solution already comes pre-configured with sample service contract guidelines in English, Spanish and Portuguese for the company *AnyCompany*. These sample guidelines serve as a starting point and should be customized according to your specific use case and legal requirements.
+
+The customization of the contract analysis according to your specific use case comprises two major configuration artifacts:
+
+- **Contract Types & Guidelines**: The application supports multiple contract types, each with its own set of guidelines that define the taxonomy of clause types and how to classify and evaluate contract clauses.
+- **Application Properties**: Configuration settings such as company name and language model IDs (see [Managing Application Properties](#managing-application-properties)).
+
+### Managing Contract Types and Guidelines
+
+The frontend application includes a comprehensive management interface for contract types and guidelines:
+
+- **Contract Type Management**: Create, view, and delete contract types through the UI
+- **Guidelines Management**: Add, edit, and delete guidelines for each contract type with an intuitive form interface
+- **AI-Assisted Generation**: Use AI to generate evaluation questions for guidelines automatically
+- **Import from Reference Contracts**: Import contract types and their guidelines from existing reference contracts (see below)
+
+Access these features through the frontend application after deployment.
+
+### Customization Workflow
+
+1. **Deploy the Backend stack**
+2. **(Optional) Configure Application Parameters** using Parameter Store (see below). The system will use sensible defaults if not configured
+3. **Access the frontend application** and navigate to the Contract Types management section
+4. **Create a new contract type** or use the default "Service Agreement" type
+5. **Add guidelines** for your contract type using one of these approaches:
+   - **Manual Entry**: Use the guidelines form to add clause types and evaluation questions
+   - **AI-Assisted Generation**: Automatically generate evaluation questions and review/edit as needed
+   - **Import from Reference Contract**: Upload an existing contract to extract contract type, clause types, and initial guidelines (see below)
+
+### Reference Contract Import
+
+The reference contract import feature allows you to bootstrap a new contract type by analyzing an existing contract document:
+
+**When to use:**
+- Quickly set up a new contract type based on an existing template
+- Understand the structure and clause types in a reference contract
+- Accelerate the guidelines creation process
+
+**How it works:**
+1. Upload a reference contract document (PDF, DOCX, or TXT) via the frontend UI
+2. The system uses AI to extract:
+   - Contract type metadata (name, description, language)
+   - Party roles (e.g., "Service Provider" and "Customer")
+   - Clause types present in the contract
+   - Initial guidelines and evaluation questions
+3. Review and refine the imported data through the web UI
+4. (Optional) Use AI-assisted generation to enhance guidelines:
+   - Generate additional evaluation questions for each clause type
+   - Create clause examples to help with classification
+   - Review and edit AI-generated content as needed
+5. The new contract type is ready to use for analyzing similar contracts
+
+Access via: Frontend UI → Contract Types → Import from Reference Contract
+
+## How to use a different Language Model on Amazon Bedrock
+
+The application supports any Amazon Bedrock foundation model. You can configure different models globally or per-task based on your specific requirements (cost, latency, accuracy trade-offs).
+
+For this example, we'll configure Amazon Nova Pro for more complex reasoning tasks:
+
+- Update your `app_properties.yaml` file to change the `LanguageModelId` field, then apply the changes:
+
+```yaml
+# Global model setting - applies to all tasks
+LanguageModelId: "us.amazon.nova-pro-v1:0"
+
+# Or use task-specific overrides to mix different models
+ContractEvaluation/LanguageModelId: "us.amazon.nova-pro-v1:0"
+GenerateEvaluationQuestions/LanguageModelId: "anthropic.claude-3-5-haiku-20241022-v1:0"
 ```
 
-## Token Usage Tracking
+```shell
+# Update the parameter in Parameter Store
+python scripts/apply_app_properties.py
+```
 
-Track LLM token consumption for workflow executions:
+Replace it with the model ID you want to use. The list of model IDs available through Amazon Bedrock is available in the [documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/models-supported.html). 
+
+**Note**: When using cross-region inference profiles (model IDs starting with `us.`), the IAM permissions already include wildcard region support for both foundation models and inference profiles.
+
+
+## OPTIONAL FEATURE: Legislation Checks
+
+**ATTENTION** Current version of legislation checks uses Amazon Open Search Serverless, which has an estimated monthly cost of 350$.
+
+**Model Requirements**: The Legislation Check agent uses Anthropic Claude 3.5 Haiku. Before deploying this feature, ensure you have enabled Claude model access by following the procedure in the [Enable Bedrock Model Access](#enable-bedrock-model-access-prerequisite) section.
+
+If you would like to deploy the Legislation Checks feature of the Contract Analysis blueprint, you will follow the steps below:
+
+1. Deploy CheckLegislationStack CDK stack
+2. Add your first Legislation documents
+
+### Deploy CDK stack with Legislation Check resources
+
+```bash
+cdk deploy CheckLegislationStack --require-approval=never
+```
+
+The output of this deployment will be something like this:
+
+```bash
+ ✅  CheckLegislationStack
+
+✨  Deployment time: 56.37s
+
+Outputs:
+CheckLegislationStack.CheckLegislationAOSSEndpointURL = https://xxxxxx.us-east-1.aoss.amazonaws.com
+CheckLegislationStack.CheckLegislationAgentDataSourceId = XXXXX
+CheckLegislationStack.CheckLegislationAgentKnowledgeBaseId = XXXXX
+```
+
+Take note of all these values.
+
+### Add your first legislation documents
+
+You can index legislation documents into the deployed Amazon Bedrock Knowledge Base, that the agent will consult when evaluating your contracts, using a companion CLI tool.
+
+The agent uses the `--law-id` identifier for determining which legislation document to use from the knowledge base.
+
+For example, a contract being evaluated under the lens of Consumer Law in Brazil could use the Código de Defesa do Consumidor legislation.
+
+You can find at samples/legislation folder a couple of legislation docs already available for indexing into the Knowledge Base. Feel free to choose what samples to index into the Knowledge Base.
+
+**Option 1: Upload local PDF files directly (recommended):**
+
+```bash
+python scripts/legislation_cli.py ingest-legislation --law-id="br-constituicao-88-67ed" --law-name="Constituição Federal Brasileira de 1988, 67a edição" --local-file="samples/legislation/br-CF88_67ed.pdf" --wait
+python scripts/legislation_cli.py ingest-legislation --law-id="br-codigo-civil" --law-name="Código Civil Brasileiro" --local-file="samples/legislation/br-codigo-civil-2a-ed.pdf" --wait
+python scripts/legislation_cli.py ingest-legislation --law-id="br-cdc" --law-name="Código de Defesa do Consumidor" --local-file="samples/legislation/br-CDC_2025.pdf" --wait
+python scripts/legislation_cli.py ingest-legislation --law-id="mx-codigo-civil-federal" --law-name="Código Civil Federal de México" --local-file="samples/legislation/mx-codigo-civil-federal.pdf" --wait
+```
+
+**Option 2: Use existing S3 files:**
+
+```bash
+# Get the legislation bucket name from stack outputs
+LEGISLATION_BUCKET_NAME=$(aws cloudformation describe-stacks --stack-name CheckLegislationStack --query "Stacks[0].Outputs[?OutputKey=='LegislationBucketName'].OutputValue" --output text)
+
+aws s3 cp samples/legislation/ s3://<LEGISLATION_BUCKET_NAME>/legislation/ --recursive --exclude "*" --include "*.pdf"
+python scripts/legislation_cli.py ingest-legislation --law-id="br-constituicao-88-67ed" --law-name="Constituição Federal Brasileira de 1988, 67a edição" --s3-key="legislation/br-CF88_67ed.pdf" --wait
+python scripts/legislation_cli.py ingest-legislation --law-id="br-codigo-civil" --law-name="Código Civil Brasileiro" --s3-key="legislation/br-codigo-civil-2a-ed.pdf" --wait
+python scripts/legislation_cli.py ingest-legislation --law-id="br-cdc" --law-name="Código de Defesa do Consumidor" --s3-key="legislation/br-CDC_2025.pdf" --wait
+python scripts/legislation_cli.py ingest-legislation --law-id="mx-codigo-civil-federal" --law-name="Código Civil Federal de México" --s3-key="legislation/mx-codigo-civil-federal.pdf" --wait
+```
+
+**Data Retention:** Legislation files in S3 have no expiration policy (kept indefinitely). Deleting files from S3 does not automatically remove them from the Knowledge Base - you must trigger a [data source sync](https://docs.aws.amazon.com/bedrock/latest/userguide/kb-data-source-sync-ingest.html) to reflect deletions.
+
+**File Size Limits:** PDF files must not exceed 50 MB per document. See [Knowledge Base data prerequisites](https://docs.aws.amazon.com/bedrock/latest/userguide/knowledge-base-ds.html) for details.
+
+## Development
+
+### Running Tests
+
+The project uses pytest for testing. To run the test suite:
+
+1. Ensure your virtual environment is activated:
+```shell
+source .venv/bin/activate
+```
+
+2. Install development dependencies:
+```shell
+pip install -r requirements-dev.txt
+```
+
+3. Run all tests:
+```shell
+python -m pytest tests/ -v
+```
+
+4. Run tests by directory:
+```shell
+python -m pytest tests/unit/ -v          # Unit tests only
+python -m pytest tests/integration/ -v   # Integration tests only
+```
+
+5. Run with coverage:
+```shell
+pytest tests/ --cov=stack --cov-report=html
+```
+
+Test results can be redirected to a file for review:
+```shell
+python -m pytest tests/ -v > /tmp/pytest_output.txt 2>&1
+```
+
+### Token Usage Tracking
+
+Track LLM token consumption for guideline compliance workflow executions.
+
+**Note**: Currently supports the guideline compliance workflow only. Does not yet track legislation check or contract import workflows.
 
 ```bash
 # Query specific job token usage

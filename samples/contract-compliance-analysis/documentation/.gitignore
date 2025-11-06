@@ -1,0 +1,4 @@
+*.pdf
+*.html
+.DS_Store
+.idea/

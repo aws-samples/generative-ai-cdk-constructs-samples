@@ -11,60 +11,41 @@
 // and limitations under the License.
 //
 
-import { Authenticator } from "@aws-amplify/ui-react";
+import "@lib/amplify"; // Import this first so auth is validated before other calls.
+
 import React from "react";
 import ReactDOM from "react-dom/client";
-import {
-  LoaderFunction,
-  Route,
-  RouterProvider,
-  createBrowserRouter,
-  createRoutesFromElements,
-  defer,
-} from "react-router-dom";
+import { Authenticator } from "@aws-amplify/ui-react";
+import { RouterProvider, createBrowserRouter } from "react-router";
+import { Root, Errors, Home, Jobs, ContractTypeGuidelines } from "@/routes";
+import { ContractTypeManagement } from "@/components/ContractTypeManagement";
+import "@/styles/index.css";
+import { Toaster } from "@/components/ui/sonner";
 
-import { getJob, getJobs } from "@/lib/api";
-import "./index.css";
-
-import Error from "@/routes/Errors";
-import Home from "@/routes/Home";
-import Jobs from "@/routes/Job";
-import Root from "@/routes/Root";
-import { RequireAuth } from "./components/RequireAuth";
-import { Login } from "./routes/Login";
-
-const jobListLoader: LoaderFunction = function () {
-  return defer({ jobs: getJobs() });
-};
-
-const jobLoader: LoaderFunction = ({ params }) => {
-  return defer({
-    job: getJob(params.jobId),
-  });
-};
-
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route errorElement={<Error />}>
-      <Route
-        element={
-          <RequireAuth>
-            <Root />
-          </RequireAuth>
-        }
-      >
-        <Route index element={<Home />} loader={jobListLoader} />
-        <Route path="jobs/:jobId" element={<Jobs />} loader={jobLoader} />
-      </Route>
-      <Route path="login" element={<Login />} />"
-    </Route>,
-  ),
-);
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Root />,
+    errorElement: <Errors />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: "jobs/:jobId", element: <Jobs /> },
+      { path: "contract-types", element: <ContractTypeManagement /> },
+      {
+        path: "contract-types/:contractTypeId/guidelines",
+        element: <ContractTypeGuidelines />,
+      },
+    ],
+  },
+]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Authenticator.Provider>
-      <RouterProvider router={router} />
+      <Authenticator hideSignUp={true}>
+        <RouterProvider router={router} />
+        <Toaster />
+      </Authenticator>
     </Authenticator.Provider>
   </React.StrictMode>,
 );
