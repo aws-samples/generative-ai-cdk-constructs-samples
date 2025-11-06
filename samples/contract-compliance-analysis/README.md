@@ -32,11 +32,11 @@ To deploy this project, follow the instructions available in the README files lo
 
 ## Key Features
 
-- **Automated Contract Analysis**: Validates, processes, classifies, and evaluates contract clauses against your guidelines with risk assessment
+- **AI-Assisted Contract Analysis**: Validates, processes, classifies, and evaluates contract clauses against your guidelines with risk assessment
 - **Multi-Language AI Analysis**: Generate analysis reports in English, Spanish, or Portuguese based on user selection
 - **Multi-Contract Type Support**: Define and manage multiple contract types (service agreements, employment contracts, etc.) with type-specific guidelines
 - **Web Application**: User interface for managing contract types, guidelines, and viewing analysis results
-- **AI-Generated Evaluation Questions**: Automatically create compliance questions from guideline definitions
+- **AI-Generated Evaluation Questions**: Generate compliance questions from guideline definitions
 - **Contract Import**: Bootstrap new contract types by extracting guidelines from reference contracts
 - **Configurable Risk Thresholds**: Customize risk classification criteria per contract type
 - **Flexible Model Selection**: Configure different foundation models for specific tasks via parameter store
@@ -45,7 +45,7 @@ To deploy this project, follow the instructions available in the README files lo
 
 ## Architecture
 
-This prototype leverages AWS managed services and Large Language Models to automate contract compliance analysis. The architecture consists of multiple workflows that work together to validate contracts against your guidelines and optionally verify compliance with legislation.
+This prototype leverages AWS managed services and Large Language Models to assist with contract compliance analysis. The architecture consists of multiple workflows that work together to validate contracts against your guidelines and optionally verify compliance with legislation.
 
 ### High-Level Architecture
 
@@ -67,7 +67,7 @@ When enabled, this workflow uses an AI agent with access to a knowledge base of 
 
 ### Contract Import Workflow
 
-This workflow uses LLMs to automatically extract contract type information and guidelines from reference contracts, enabling rapid onboarding of new contract types without manual guideline creation:
+This workflow uses LLMs to extract contract type information and guidelines from reference contracts, enabling rapid onboarding of new contract types with reduced manual effort:
 
 ![Contract Import Architecture](./images/contract-import-architecture.png)
 
