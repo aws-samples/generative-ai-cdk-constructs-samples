@@ -15,7 +15,7 @@
 :revdate: {currentdate}
 :author: Technical Documentation
 
-= Automated Contract Compliance Analysis
+= Contract Compliance Analysis
 
 <<<
 // Table of Contents is automatically generated here
@@ -48,7 +48,7 @@ During the prototyping engagement/proof of concept, AWS may use third-party mode
 <<<
 == Overview
 
-This document details a solution prototype developed to automate the compliance analysis of contracts. The prototype leverages Generative Artificial Intelligence (GenAI) to evaluate contract clauses against predefined guidelines and provide feedback on their adherence to the required standards.
+This document details a solution prototype developed to assist legal teams in analyzing contract compliance. The prototype leverages Generative Artificial Intelligence (GenAI) to evaluate contract clauses against predefined guidelines and provide feedback on their adherence to the required standards.
 
 The prototype is powered by AWS Machine Learning services and a Large Language Model (LLM) capable of understanding legal terminology and concepts. Such a LLM is used to perform advanced natural language tasks, such as clause classification and compliance evaluation, based on the provided guidelines.
 
@@ -102,7 +102,7 @@ The prototype includes a web-based interface and REST APIs for managing contract
 * Create, update, and delete contract types through the UI
 * Define and manage guidelines for each contract type
 * Import guidelines from structured text using AI-powered extraction
-* Generate evaluation questions automatically using the LLM
+* Generate evaluation questions using the LLM
 
 This approach is recommended for production use as it provides a user-friendly interface and maintains data consistency through the application layer.
 
@@ -185,7 +185,7 @@ The script validates the JSON structure, checks for required fields, and imports
 
 Evaluation questions are binary questions used to assess whether a contract clause is compliant with the standard wording for a clause type. The prototype provides two methods for generating these questions:
 
-*API-Based Generation (Recommended)*: When creating or updating guidelines through the web interface, the system can automatically generate evaluation questions using the LLM, allowing immediate review and editing.
+*API-Based Generation (Recommended)*: When creating or updating guidelines through the web interface, the system can generate evaluation questions using the LLM, allowing immediate review and editing.
 
 *JSON File Definition*: For bulk imports, evaluation questions can be predefined in the JSON file, allowing version control and consistent evaluation criteria across environments.
 
@@ -199,7 +199,7 @@ The architecture consists of:
 
 * *Contract Analysis Workflow*: Orchestrated multi-step pipeline that processes contracts through validation, preprocessing, classification, evaluation, and risk assessment
 * *Guideline Management*: Storage and management of contract types, clause types, and evaluation criteria
-* *AI-Powered Import*: Automated extraction of guidelines from reference contracts using LLMs
+* *AI-Powered Import*: AI-assisted extraction of guidelines from reference contracts using LLMs
 
 ==== Optional Features
 
@@ -250,7 +250,7 @@ ifndef::env-github[]
 image::guidelines-compliance-architecture.png[width=90%,align=center]
 endif::[]
 
-The AI-powered import workflow automatically extracts contract types and guidelines from reference contracts:
+The AI-powered import workflow extracts contract types and guidelines from reference contracts:
 
 ifdef::env-github[]
 ++++
@@ -636,7 +636,7 @@ The agent has access to:
 
 === Contract Type and Guidelines Import Workflow
 
-The prototype provides an AI-powered workflow to automatically extract contract type definitions and guidelines from reference contract text. This eliminates the need for manual guideline creation and accelerates the setup of new contract types.
+The prototype provides an AI-powered workflow to extract contract type definitions and guidelines from reference contract text. This reduces manual effort in guideline creation and accelerates the setup of new contract types.
 
 ==== Import Workflow Steps
 
@@ -677,7 +677,7 @@ Through the web application:
 1. Navigate to Contract Types management
 2. Click "Import Contract Type"
 3. Paste the reference contract text (can be an existing contract that follows the desired structure)
-4. Submit - the AI workflow automatically extracts:
+4. Submit - the AI workflow extracts:
    - Contract type definition
    - All clause types with standard wording
    - Evaluation questions for each clause type
@@ -946,7 +946,7 @@ endif::[]
 
 1. Click "Import Contract Type"
 2. Paste a reference contract text (e.g., an existing contract that follows the desired structure)
-3. Submit - the AI automatically extracts:
+3. Submit - the AI extracts:
    - Contract type name and description
    - All clause types with standard wording
    - Impact levels for each clause type
@@ -1024,7 +1024,7 @@ ifndef::env-github[]
 image::frontend-edit-guideline.png[width=90%,align=center]
 endif::[]
 
-The guideline editor allows users to modify clause types, standard wording, impact levels, examples, and evaluation questions. The AI-powered "Generate Questions" feature automatically creates evaluation questions from the standard wording.
+The guideline editor allows users to modify clause types, standard wording, impact levels, examples, and evaluation questions. The AI-powered "Generate Questions" feature creates evaluation questions from the standard wording.
 
 *Editing Guidelines:*
 
@@ -1047,7 +1047,7 @@ Example: If standard wording mentions "30 days notice period", a generated quest
 
 Users can:
 
-- Generate questions automatically using AI
+- Generate questions using AI
 - Manually add/edit/remove questions
 - Ensure questions are specific and verifiable
 

@@ -218,7 +218,7 @@ Access these features through the frontend application after deployment.
 4. **Create a new contract type** or use the default "Service Agreement" type
 5. **Add guidelines** for your contract type using one of these approaches:
    - **Manual Entry**: Use the guidelines form to add clause types and evaluation questions
-   - **AI-Assisted Generation**: Automatically generate evaluation questions and review/edit as needed
+   - **AI-Assisted Generation**: Generate evaluation questions and review/edit as needed
    - **Import from Reference Contract**: Upload an existing contract to extract contract type, clause types, and initial guidelines (see below)
 
 ### Reference Contract Import
