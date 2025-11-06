@@ -60,7 +60,7 @@ For development and UI testing, the application includes a comprehensive mock da
 
 ## How to analyze a contract
 
-Once you open the web application in your browser, click the **Browse** button near the top right corner and select a contract file. The file needs to be in plain text format.
+Once you open the web application in your browser, click the **New Analysis** button near the top right corner and select a contract file. Supported formats: PDF (.pdf), Word (.doc, .docx), or plain text (.txt).
 
 ![Main page](images/main-webapp-page.png)
 

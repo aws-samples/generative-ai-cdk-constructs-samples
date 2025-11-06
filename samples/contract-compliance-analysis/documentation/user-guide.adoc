@@ -727,7 +727,7 @@ The application uses AWS Amplify UI with Amazon Cognito for authentication. User
 .Home Page - Contract Analysis Job List
 image::frontend-list-page.png[width=90%,align=center]
 
-Once you open the web application in your browser, the home page displays all contract analysis jobs with filtering capabilities by contract type, status, and review requirements. Click the Browse button near the top right corner and select a contract file. The file needs to be in plain text format.
+Once you open the web application in your browser, the home page displays all contract analysis jobs with filtering capabilities by contract type, status, and review requirements. Click the New Analysis button near the top right corner and select a contract file. Supported formats: PDF (.pdf), Word (.doc, .docx), or plain text (.txt).
 
 For ready-to-use examples, refer to the `backend/samples` folder.
 
