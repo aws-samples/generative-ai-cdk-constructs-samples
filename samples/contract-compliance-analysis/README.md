@@ -117,7 +117,7 @@ For the most up-to-date pricing information, refer to the [Amazon Bedrock Pricin
 
 ## Documentation
 
-For detailed usage instructions and guidance, see the [User Guide](./documentation/user-guide.adoc).
+For comprehensive information including architecture, security, deployment, and operations, see the [Technical Documentation](./documentation/technical-documentation.adoc).
 
 ## Optional: Use Amazon Q Developer CLI Assistant to setup project
 

@@ -1,0 +1,147 @@
+= Contract Compliance Analysis Technical Documentation AsciiDoc
+
+This project contains the Technical Documentation based in AsciiDoc. You can use it to generate the PDF documentation through code.
+
+== Setup (for MacOS)
+
+=== Option 1. Local Setup
+
+==== Ruby
+
+[TIP]
+====
+Even with your macOS already come with a preinstalled version of Ruby, you need to install your own version, otherwise you will not be able to install additional gems (https://forums.developer.apple.com/forums/thread/697249[source])
+====
+
+. Install rbenv:
++
+```
+brew install rbenv
+```
+
+. See all Ruby versions available:
++
+```
+rbenv install -l
+```
+
+. Install the Ruby version of your preference (ideally the latest one):
++
+```
+rbenv install <version>
+rbenv global <version> 
+```
+
+. For the changes to take effect, open a new terminal session or reload your shell configuration:
++
+```
+source ~/.zshrc  # Or ~/.bash_profile for bash users
+```
+
+. Doublecheck the Ruby version to make sure it conforms to the version you installed:
++
+```
+ruby --version
+```
+
+. If the version returned by the command above does not correspond to the one you just setup via rbenv, then initialize rbenv in your shell:
++
+```
+echo 'eval "$(rbenv init -)"' >> ~/.zshrc
+# Or for bash users:
+# echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+```
+
+
+[NOTE]
+====
+At least in my initial testing, by using `brew` instead of `rbenv` I was not able to override the preinstalled Ruby version
+====
+
+
+==== AsciiDoctor
+
+Install the following:
+
+```
+gem install asciidoctor
+gem install asciidoctor-pdf
+gem install asciidoctor-lists
+gem install rouge
+```
+
+=== Option 2. Docker container setup
+
+Pre-requisite: link:https://www.docker.com/products/docker-desktop[Docker Desktop] up and running
+
+```
+docker build -t asciidoc-generator .
+```
+
+[IMPORTANT]
+====
+There might be issues on generating diagrams via asciidoctor-diagram
+====
+
+
+== Generate your PDF file
+
+[Option 1] If setup was done locally:
+
+```
+./generate-report.sh
+```
+
+
+[Option 2]: If setup was done via Docker container:
+
+```
+./generate-report-docker.sh
+```
+
+
+The result is a `technical-documentation.pdf` file
+
+== Customization
+
+=== Content
+
+The `technical-documentation.adoc` file contains the main document structure. Update this file to add or remove chapters.
+
+=== Images
+
+Put your images in the `images` folder
+
+=== PDF Layout customization (Theming)
+
+That is achieved through the `custom-theme.yml` that is passed as an argument to the PDF generation executable.
+More details on all that is customizable at https://docs.asciidoctor.org/pdf-converter/latest/theme
+
+[TIP]
+====
+Theming was heavily used to customize the title page layout
+====
+
+== IDE support
+
+* VS Code - https://marketplace.visualstudio.com/items?itemName=asciidoctor.asciidoctor-vscode
+* IntelliJ - https://intellij-asciidoc-plugin.ahus1.de/docs/users-guide/index.html
+
+
+== Additional components
+
+* Diagrams: https://docs.asciidoctor.org/diagram-extension/latest/
+
+* Equations and Formulas (STEM): https://docs.asciidoctor.org/pdf-converter/latest/stem/
+
+[IMPORTANT]
+====
+Unlike Asciidoctor’s built-in HTML converter, Asciidoctor PDF does not provide native support for STEM blocks and inline macros (i.e., asciimath and latexmath)
+====
+
+
+== Related documentation
+
+* AsciiDoc Language Documentation: https://docs.asciidoctor.org/asciidoc/latest
+* Asciidoc PDF converter: https://docs.asciidoctor.org/pdf-converter
+* Asciidoctor: https://docs.asciidoctor.org/asciidoctor
