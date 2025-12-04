@@ -25,6 +25,7 @@ This repo provides samples to demonstrate how to build your own Generative AI so
 |[Stateless MCP Server on ECS](samples/mcp-stateless-ecs/)| Sample stateless MCP Server running natively on ECS Fargate and ALB without any extra bridging components or custom transports and a test MCP client. | API layer | TypeScript |
 |[Stateful MCP Server on ECS](samples/mcp-stateful-ecs/)| Sample stateful MCP Server running natively on ECS Fargate and ALB without any extra bridging components or custom transports and a test MCP client. | API layer | TypeScript |
 |[Speech to speech](samples/speech-to-speech/)| Real-time Speech to Speech solution with Amazon Nova Sonic, featuring a Java WebSocket server and React frontend. | Backend + Frontend | Python for Backend, TypeScript (React) for Frontend |
+| [Strands Lambda Durable](samples/cdk-lambda-strands-durable/) | This folder contains demos showcasing the [Strands Agents Python SDK](https://strandsagents.com/latest/) integrated with [AWS Lambda durable execution](https://docs.aws.amazon.com/lambda/latest/dg/durable-functions.html). | Backend | Python for Lambda, Ts for IaC |
 
 ## Contributing
 
