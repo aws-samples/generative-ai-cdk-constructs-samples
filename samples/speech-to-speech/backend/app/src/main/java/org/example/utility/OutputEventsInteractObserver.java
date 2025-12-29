@@ -29,6 +29,9 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Getter
 class ChatTurn {
@@ -55,6 +58,8 @@ public class OutputEventsInteractObserver implements InteractObserver<String> {
     private final AtomicReference<String> role = new AtomicReference<>("");
     private final AtomicReference<String> generationStage = new AtomicReference<>("");
     private final AtomicBoolean isCompleted = new AtomicBoolean(false);
+    // Executor for asynchronous tool execution (Nova 2 Sonic feature)
+    private static final ExecutorService toolExecutor = Executors.newCachedThreadPool();
 
     public OutputEventsInteractObserver(Session session) {
         this.session = session;
@@ -173,7 +178,16 @@ public class OutputEventsInteractObserver implements InteractObserver<String> {
 
         try {
             validateToolUseParameters();
-            processToolUse(node);
+            // Execute tool asynchronously (Nova 2 Sonic feature: async tool calling)
+            // This allows the model to continue responding while tools run in the background
+            CompletableFuture.runAsync(() -> {
+                try {
+                    processToolUse(node);
+                } catch (Exception e) {
+                    log.error("Error in async tool execution: {}", e.getMessage(), e);
+                }
+            }, toolExecutor);
+            log.info("Tool {} execution started asynchronously (Nova 2 Sonic async tool calling)", toolName.get());
         } catch (IllegalStateException e) {
             log.error("Tool use processing failed: {}", e.getMessage());
         }

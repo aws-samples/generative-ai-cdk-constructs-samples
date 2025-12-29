@@ -18,7 +18,7 @@ from stack import BackendStack
 import os
 
 USAGE_METRIC = 'uksb-1tupboc45'
-SOLUTION_NAME = "Bedrock Nova Sonic Solution"
+SOLUTION_NAME = "Bedrock Nova Sonic 2 Solution"
 
 app = cdk.App()
 BackendStack(

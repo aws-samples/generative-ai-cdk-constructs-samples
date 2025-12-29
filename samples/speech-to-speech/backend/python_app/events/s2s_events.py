@@ -40,10 +40,12 @@ class S2sEvent:
         "sampleRateHertz": 24000,
         "sampleSizeBits": 16,
         "channelCount": 1,
-        "voiceId": "matthew",
+        "voiceId": "tiffany",
         "encoding": "base64",
         "audioType": "SPEECH",
     }
+    # Polyglot voices that can switch between languages (Nova 2 Sonic feature)
+    POLYGLOT_VOICES = ["tiffany"]  # Add more as they become available
     DEFAULT_TOOL_CONFIG = {
         "tools": [
             {
@@ -87,8 +89,23 @@ class S2sEvent:
     }
 
     @staticmethod
-    def session_start(inference_config=DEFAULT_INFER_CONFIG):
-        return {"event": {"sessionStart": {"inferenceConfiguration": inference_config}}}
+    def session_start(inference_config=DEFAULT_INFER_CONFIG, endpointing_sensitivity="MEDIUM"):
+        """Create a session start event.
+        
+        Args:
+            inference_config: Inference configuration dictionary
+            endpointing_sensitivity: Turn detection sensitivity ("HIGH", "MEDIUM", "LOW")
+                - "HIGH": Fastest response time (1.5s pause duration)
+                - "MEDIUM": Balanced response time (1.75s pause duration) - default
+                - "LOW": Slowest response time, maximum patience (2.0s pause duration)
+        """
+        session_start_data = {
+            "inferenceConfiguration": inference_config,
+            "turnDetectionConfiguration": {
+                "endpointingSensitivity": endpointing_sensitivity
+            }
+        }
+        return {"event": {"sessionStart": session_start_data}}
 
     @staticmethod
     def prompt_start(
@@ -109,7 +126,17 @@ class S2sEvent:
         }
 
     @staticmethod
-    def content_start_text(prompt_name, content_name):
+    def content_start_text(prompt_name, content_name, role="SYSTEM"):
+        """Create a text content start event.
+        
+        Args:
+            prompt_name: Name of the prompt
+            content_name: Name of the content block
+            role: Role of the text content ("SYSTEM" for system prompts, "USER" for user text input)
+        
+        Note: For crossmodal support (Nova 2 Sonic feature), use role="USER" to send
+        user text input during an active session.
+        """
         return {
             "event": {
                 "contentStart": {
@@ -117,24 +144,31 @@ class S2sEvent:
                     "contentName": content_name,
                     "type": "TEXT",
                     "interactive": True,
-                    "role": "SYSTEM",
+                    "role": role,
                     "textInputConfiguration": {"mediaType": "text/plain"},
                 }
             }
         }
 
     @staticmethod
-    def text_input(prompt_name, content_name, system_prompt):
-        """Create a text input event with the provided system prompt.
-
-        Note: System prompt now comes from frontend (like Java backend) rather than hardcoded default.
+    def text_input(prompt_name, content_name, text_content, role="SYSTEM"):
+        """Create a text input event.
+        
+        Args:
+            prompt_name: Name of the prompt
+            content_name: Name of the content block
+            text_content: The text content to send
+            role: Role of the text input ("SYSTEM" for system prompts, "USER" for user text input)
+        
+        Note: For crossmodal support (Nova 2 Sonic feature), this can be used to send
+        user text input during an active session, not just system prompts.
         """
         return {
             "event": {
                 "textInput": {
                     "promptName": prompt_name,
                     "contentName": content_name,
-                    "content": system_prompt,
+                    "content": text_content,
                 }
             }
         }

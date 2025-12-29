@@ -31,7 +31,7 @@ from tools.base_tool import BaseTool
 class WebSocketHandler:
     """Main WebSocket handler using refactored architecture."""
 
-    def __init__(self, model_id="amazon.nova-sonic-v1:0", region="us-east-1"):
+    def __init__(self, model_id="amazon.nova-2-sonic-v1:0", region="us-east-1"):
         """Initialize the WebSocket handler.
 
         Args:
@@ -383,23 +383,25 @@ class WebSocketHandler:
                                 # Clear any queued audio output
                                 await self._clear_audio_output_queue()
 
-                        # Handle tool use detection
+                        # Handle tool use detection (Nova 2 Sonic asynchronous tool calling)
                         elif event_name == "toolUse":
                             self.tool_use_content = json_data["event"]["toolUse"]
                             self.tool_name = json_data["event"]["toolUse"]["toolName"]
                             self.tool_use_id = json_data["event"]["toolUse"][
                                 "toolUseId"
                             ]
-                            self.logger.info(f"Tool use detected: {self.tool_name}")
+                            self.logger.info(f"Tool use detected: {self.tool_name} (Nova 2 Sonic async tool calling)")
 
                         # Process tool use when content ends
+                        # Note: With Nova 2 Sonic, the model continues responding while tools execute
                         elif (
                             event_name == "contentEnd"
                             and json_data["event"][event_name].get("type") == "TOOL"
                         ):
-                            await self._handle_tool_use(
+                            # Execute tool asynchronously - model can continue responding
+                            asyncio.create_task(self._handle_tool_use(
                                 json_data["event"]["contentEnd"].get("promptName")
-                            )
+                            ))
 
                         # Handle audio output - track it for barge-in clearing
                         elif event_name == "audioOutput":
@@ -457,6 +459,11 @@ class WebSocketHandler:
 
     async def _handle_tool_use(self, prompt_name: str):
         """Handle a tool use request using the tool architecture.
+        
+        Note: With Nova 2 Sonic's asynchronous tool calling feature, the model can continue
+        responding to new user input while tools run in the background. This method executes
+        tools asynchronously, allowing the response processing loop to continue handling
+        other events concurrently.
 
         Args:
             prompt_name: Name of the prompt

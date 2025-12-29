@@ -39,7 +39,7 @@ warnings.filterwarnings("ignore")
 class BedrockInteractClient:
     """Client for interacting with AWS Bedrock Nova Sonic model"""
 
-    def __init__(self, model_id="amazon.nova-sonic-v1:0", region="us-east-1"):
+    def __init__(self, model_id="amazon.nova-2-sonic-v1:0", region="us-east-1"):
         """Initialize the Bedrock client.
 
         Args:

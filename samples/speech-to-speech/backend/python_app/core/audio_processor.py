@@ -127,12 +127,18 @@ class AudioProcessor:
         )
 
     async def _process_audio_loop(self):
-        """Main audio processing loop."""
+        """Main audio processing loop.
+        
+        Optimized for low latency: processes audio chunks immediately without batching.
+        For Nova 2 Sonic with high VAD sensitivity, immediate sending reduces latency.
+        The queue.get() call blocks until data is available, ensuring immediate processing.
+        """
         self.logger.info("Starting audio input processing")
 
         while self.is_active:
             try:
-                # Get audio data from the queue
+                # Get audio data from the queue - this blocks until data is available
+                # which is optimal for low latency (no polling delay)
                 data = await self.audio_input_queue.get()
 
                 # Extract data from the queue item
@@ -149,7 +155,8 @@ class AudioProcessor:
                     prompt_name, content_name, audio_bytes
                 )
 
-                # Send the event to Bedrock - match original timing by removing success check
+                # Send the event to Bedrock immediately for low latency
+                # No batching - each chunk is sent as soon as it's processed
                 await self.bedrock_client.send_event(self.stream, audio_event)
 
             except asyncio.CancelledError:

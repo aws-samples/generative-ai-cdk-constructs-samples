@@ -72,6 +72,7 @@ interface WebSocketEventData {
   audioOutput?: AudioOutputEvent;
   contentEnd?: ContentEndEvent;
   completionEnd?: CompletionEndEvent;
+  usageEvent?: unknown; // Nova 2 Sonic usage tracking event (can be ignored)
 }
 
 interface OutgoingEventData {
@@ -150,13 +151,14 @@ export class WebSocketEventManager {
   private userIsSpeaking: boolean = false;
   private silenceTimer: NodeJS.Timeout | null = null;
   private speechSampleCount: number = 0;
-  private readonly SILENCE_THRESHOLD = 0.01;
-  private readonly SPEECH_THRESHOLD = 0.015;
+  private readonly SILENCE_THRESHOLD = 0.005; // Threshold for UI feedback (silence detection)
+  private readonly SPEECH_THRESHOLD = 0.01; // Threshold for UI feedback (speech detection)
   private readonly SILENCE_DURATION = 1000;
-  private readonly MIN_SPEECH_SAMPLES = 5;
+  private readonly MIN_SPEECH_SAMPLES = 3; // Samples needed for UI feedback
   private audioProcessor: ScriptProcessorNode | null = null;
   private audioContext: AudioContext | null = null;
   private audioStream: MediaStream | null = null;
+  private voiceId: string = "tiffany"; // Default voice (polyglot voice for Nova 2 Sonic)
 
   constructor(wsUrl: string, onDisconnect?: () => void, onConnect?: () => void, systemPrompt?: string) {
     this.wsUrl = wsUrl;
@@ -239,7 +241,13 @@ export class WebSocketEventManager {
     this.socket.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data) as WebSocketEvent;
+        // Handle the message internally
         this.handleMessage(data);
+        // Also emit a custom event so SpeechToSpeech component can listen
+        // This ensures both handlers can process the event
+        if (data.event) {
+          window.dispatchEvent(new CustomEvent('nova-sonic-event', { detail: data }));
+        }
       } catch (e) {
         console.error("Error parsing message:", e, "Raw data:", JSON.stringify(event.data));
       }
@@ -322,22 +330,23 @@ export class WebSocketEventManager {
       return;
     }
 
-    const hasContent = 'content' in eventData && typeof eventData.content === 'string';
+    const hasContent = eventData && typeof eventData === 'object' && 'content' in eventData && typeof (eventData as any).content === 'string';
     const contentDetails = hasContent ? {
-      contentLength: eventData.content.length,
-      contentPreview: eventData.content.substring(0, 100) + (eventData.content.length > 100 ? '...' : '')
+      contentLength: (eventData as any).content.length,
+      contentPreview: (eventData as any).content.substring(0, 100) + ((eventData as any).content.length > 100 ? '...' : '')
     } : {};
 
     // Enhanced logging for all incoming events
+    const eventDataObj = eventData as Record<string, any>;
     console.log("[WebSocketEventManager] Received event:", {
       direction: "INCOMING",
       type: eventType,
       details: {
-        ...eventData,
+        ...eventDataObj,
         ...contentDetails,
-        sessionId: 'sessionId' in eventData ? eventData.sessionId : undefined,
-        completionId: 'completionId' in eventData ? eventData.completionId : undefined,
-        contentId: 'contentId' in eventData ? eventData.contentId : undefined
+        sessionId: eventDataObj?.sessionId,
+        completionId: eventDataObj?.completionId,
+        contentId: eventDataObj?.contentId
       },
       timestamp: new Date().toISOString()
     });
@@ -510,6 +519,11 @@ export class WebSocketEventManager {
         // Only resume audio processing, don't start new prompt
         this.resumeAudioProcessing();
       }
+      // Handle usageEvent (Nova 2 Sonic feature - usage tracking, can be ignored)
+      else if (event.usageEvent) {
+        console.log("[WebSocketEventManager] Usage event received (ignored):", event.usageEvent);
+        // Usage events are informational and don't need processing
+      }
       else {
         console.warn("Unknown event type received:", JSON.stringify(Object.keys(event)[0]));
       }
@@ -543,22 +557,38 @@ export class WebSocketEventManager {
     }
   }
 
+  private endpointingSensitivity: "HIGH" | "MEDIUM" | "LOW" = "MEDIUM";
+
+  setEndpointingSensitivity(sensitivity: "HIGH" | "MEDIUM" | "LOW"): void {
+    this.endpointingSensitivity = sensitivity;
+  }
+
   startSession(): void {
     console.log("Starting session...");
+    const sessionStartData: any = {
+      inferenceConfiguration: {
+        maxTokens: 1024,
+        topP: 0.9,
+        temperature: 0.7
+      },
+      // Nova 2 Sonic uses turnDetectionConfiguration with endpointingSensitivity
+      turnDetectionConfiguration: {
+        endpointingSensitivity: this.endpointingSensitivity
+      }
+    };
+    
     const sessionStartEvent = {
       event: {
-        sessionStart: {
-          inferenceConfiguration: {
-            maxTokens: 1024,
-            topP: 0.9,
-            temperature: 0.7
-          }
-        }
+        sessionStart: sessionStartData
       }
     };
     console.log("Sending session start:", JSON.stringify(sessionStartEvent, null, 2));
     this.sendEvent(sessionStartEvent);
     this.startPrompt();
+  }
+
+  setVoiceId(voiceId: string): void {
+    this.voiceId = voiceId;
   }
 
   startPrompt(): void {
@@ -598,7 +628,7 @@ export class WebSocketEventManager {
             sampleRateHertz: 24000,
             sampleSizeBits: 16,
             channelCount: 1,
-            voiceId: "matthew",
+            voiceId: this.voiceId, // Use configurable voice ID (supports polyglot voices)
             encoding: "base64",
             audioType: "SPEECH"
           },
@@ -757,8 +787,16 @@ export class WebSocketEventManager {
         latencyHint: 'interactive'
       });
 
+      // Ensure audio context is resumed (required by browsers after user interaction)
+      if (this.audioContext.state === 'suspended') {
+        await this.audioContext.resume();
+        console.log("[WebSocketEventManager] Audio context resumed");
+      }
+
       const source = this.audioContext.createMediaStreamSource(this.audioStream);
-      this.audioProcessor = this.audioContext.createScriptProcessor(512, 1, 1);
+      // Use smaller buffer size (256 samples) for lower latency
+      // Smaller buffer = more frequent processing = lower latency
+      this.audioProcessor = this.audioContext.createScriptProcessor(256, 1, 1);
 
       source.connect(this.audioProcessor);
       this.audioProcessor.connect(this.audioContext.destination);
@@ -788,64 +826,61 @@ export class WebSocketEventManager {
       };
       this.sendEvent(contentStartEvent);
 
-      // Set up audio processing handler with speech detection
+      // Set up audio processing handler
+      // According to Nova 2 Sonic documentation, audio should be streamed continuously
+      // as it's captured, maintaining the natural microphone sampling cadence.
+      // The server-side turn detection will handle speech detection and filtering.
       this.audioProcessor.onaudioprocess = (e) => {
         if (!this.isProcessingAudio) return;
 
         const inputData = e.inputBuffer.getChannelData(0);
         
-        // Calculate audio level for speech detection
+        // Calculate audio level for UI feedback only (not for filtering)
         const audioLevel = Math.max(...Array.from(inputData).map(Math.abs));
 
-        // Speech detection logic
-        if (audioLevel > this.SPEECH_THRESHOLD) {
-          // Potential speech detected
-          this.speechSampleCount++;
+        // Convert audio to PCM format
+        const buffer = new ArrayBuffer(inputData.length * 2);
+        const pcmData = new DataView(buffer);
+        
+        for (let i = 0; i < inputData.length; i++) {
+          const int16 = Math.max(-32768, Math.min(32767, Math.round(inputData[i] * 32767)));
+          pcmData.setInt16(i * 2, int16, true);
+        }
 
-          // If we have enough speech samples, confirm the user is speaking
+        let data = "";
+        for (let i = 0; i < pcmData.byteLength; i++) {
+          data += String.fromCharCode(pcmData.getUint8(i));
+        }
+
+        // Send ALL audio chunks immediately - Nova 2 Sonic handles speech detection server-side
+        // This is critical for low latency. The documentation states audio should be
+        // "immediately sent as audioInput events" maintaining "natural microphone sampling cadence"
+        this.sendAudioChunk(btoa(data));
+
+        // Use audio level only for UI feedback (showing "USER Listening" indicator)
+        // Don't filter audio based on this - send everything
+        if (audioLevel > this.SPEECH_THRESHOLD) {
+          this.speechSampleCount++;
           if (this.speechSampleCount >= this.MIN_SPEECH_SAMPLES && !this.userIsSpeaking) {
             this.userIsSpeaking = true;
-            console.log("[WebSocketEventManager] Speech detected");
+            console.log("[WebSocketEventManager] Speech detected (UI feedback only)");
           }
-
           // Reset silence timer if active
           if (this.silenceTimer) {
             clearTimeout(this.silenceTimer);
             this.silenceTimer = null;
           }
-
-          // Only send audio when user is speaking
-          if (this.userIsSpeaking) {
-            const buffer = new ArrayBuffer(inputData.length * 2);
-            const pcmData = new DataView(buffer);
-            
-            for (let i = 0; i < inputData.length; i++) {
-              const int16 = Math.max(-32768, Math.min(32767, Math.round(inputData[i] * 32767)));
-              pcmData.setInt16(i * 2, int16, true);
-            }
-
-            let data = "";
-            for (let i = 0; i < pcmData.byteLength; i++) {
-              data += String.fromCharCode(pcmData.getUint8(i));
-            }
-
-            this.sendAudioChunk(btoa(data));
-          }
         } else if (audioLevel < this.SILENCE_THRESHOLD && this.userIsSpeaking) {
-          // Potential silence detected
+          // Potential silence detected - only for UI feedback
           this.speechSampleCount = 0;
-
-          // Start silence timer if not already running
           if (!this.silenceTimer) {
             this.silenceTimer = setTimeout(() => {
-              // After SILENCE_DURATION, mark user as stopped talking
               this.userIsSpeaking = false;
-              console.log("[WebSocketEventManager] Silence detected");
+              console.log("[WebSocketEventManager] Silence detected (UI feedback only)");
               this.silenceTimer = null;
             }, this.SILENCE_DURATION);
           }
         } else {
-          // Reset speech counter during ambiguous audio levels
           this.speechSampleCount = 0;
         }
       };
@@ -874,6 +909,56 @@ export class WebSocketEventManager {
     }
   }
 
+  // Crossmodal support: Send text input during an active session (Nova 2 Sonic feature)
+  sendTextInput(text: string): void {
+    if (!this.isInitialized || !this.promptName) {
+      console.warn("Cannot send text input - session not initialized");
+      return;
+    }
+
+    const textContentName = crypto.randomUUID();
+    
+    // Start text content with USER role for crossmodal input
+    const contentStartEvent = {
+      event: {
+        contentStart: {
+          promptName: this.promptName,
+          contentName: textContentName,
+          type: "TEXT",
+          role: "USER",
+          interactive: true,
+          textInputConfiguration: {
+            mediaType: "text/plain"
+          }
+        }
+      }
+    };
+    this.sendEvent(contentStartEvent);
+
+    // Send the text input
+    const textInputEvent = {
+      event: {
+        textInput: {
+          promptName: this.promptName,
+          contentName: textContentName,
+          content: text
+        }
+      }
+    };
+    this.sendEvent(textInputEvent);
+
+    // End the text content
+    const contentEndEvent = {
+      event: {
+        contentEnd: {
+          promptName: this.promptName,
+          contentName: textContentName
+        }
+      }
+    };
+    this.sendEvent(contentEndEvent);
+  }
+
   sendAudioChunk(base64AudioData: string): void {
     if (!this.isInitialized || !this.promptName || !this.audioContentName) {
       console.warn("WebSocket initialization state:", {
@@ -892,6 +977,12 @@ export class WebSocketEventManager {
       return;
     }
 
+    // Send audio chunk immediately without JSON.stringify overhead for better performance
+    // This reduces latency by avoiding the async sendEvent wrapper
+    if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
+      return;
+    }
+
     const audioInputEvent = {
       event: {
         audioInput: {
@@ -901,7 +992,13 @@ export class WebSocketEventManager {
         }
       }
     };
-    this.sendEvent(audioInputEvent);
+    
+    // Send directly for lower latency (audio chunks are sent frequently)
+    try {
+      this.socket.send(JSON.stringify(audioInputEvent));
+    } catch (error) {
+      console.error("[WebSocketEventManager] Error sending audio chunk:", error);
+    }
   }
 
   endContent(): void {

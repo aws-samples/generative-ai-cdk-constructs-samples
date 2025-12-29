@@ -1,8 +1,8 @@
-# Nova Sonic Solution
+# Nova 2 Sonic Solution
 
 ## Table of Contents
 
-- [Nova Sonic Solution](#nova-sonic-solution)
+- [Nova 2 Sonic Solution](#nova-2-sonic-solution)
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Architecture](#architecture)
@@ -22,7 +22,20 @@
 
 ## Overview
 
-A real-time speech-to-speech communication platform powered by Amazon Bedrock's Nova model for advanced language processing and AWS real-time messaging capabilities, featuring a Java WebSocket server and React frontend. Nova enables natural, context-aware speech-to-speech conversations through its state-of-the-art language understanding and generation capabilities.
+A real-time speech-to-speech communication platform powered by Amazon Bedrock's Nova 2 Sonic model for advanced language processing and AWS real-time messaging capabilities, featuring a Java WebSocket server and React frontend. Nova 2 Sonic enables natural, context-aware speech-to-speech conversations through its state-of-the-art language understanding and generation capabilities, with improved conversational quality, expanded language support, and enhanced features.
+
+### About Nova 2 Sonic
+
+Nova 2 Sonic is Amazon's next-generation speech-to-speech foundation model that delivers industry-leading conversational quality and best-in-class speech understanding. Key features include:
+
+- **Expanded Language Support**: Supports English, French, Italian, German, Spanish, Portuguese, and Hindi
+- **Polyglot Voices**: Individual voices that can switch between languages within the same conversation
+- **Natural Turn-Taking**: Configurable voice activity detection sensitivity for optimal response timing
+- **Crossmodal Support**: Switch between text and voice input within the same session (available for future enhancement)
+- **Asynchronous Tool Calling**: Continue responding while tools run in the background (available for future enhancement)
+- **Improved Speech Understanding**: Enhanced handling of alphanumeric inputs, short utterances, and telephony speech input
+
+For more information about Nova 2 Sonic, see the [AWS blog announcement](https://aws.amazon.com/blogs/aws/introducing-amazon-nova-2-sonic-next-generation-speech-to-speech-model-for-conversational-ai/).
 
 ## Architecture
 
@@ -66,14 +79,15 @@ The solution consists of three main components:
 The solution supports two backend implementations with identical functionality:
 
 #### Java WebSocket Server (Default)
+
 - Java-based WebSocket server implementation
-- Production-ready with comprehensive error handling
 - Jetty WebSocket server with connection pooling
 - Real-time speech-to-speech communication
 - Cognito token validation
 - Connection management and logging
 
 #### Python WebSocket Server
+
 - Python-based alternative implementation
 - AWS Bedrock integration with `aws_sdk_bedrock_runtime` beta SDK
 - Equivalent functionality to Java implementation
@@ -105,7 +119,7 @@ Default output format [None]: json
 ```
 - Node.js: v18.12.1 or higher
 - npm 8.x or higher
-- Ensure you enable model access to Amazon Nova Sonic in the [Bedrock console](https://us-east-1.console.aws.amazon.com/bedrock/home?region=us-east-1#/modelaccess) in the region you intend to deploy this sample. For an up to date list of supported regions for Amazon Nova Sonic, please refer to the [documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/models-regions.html)
+- Ensure you enable model access to Amazon Nova 2 Sonic in the [Bedrock console](https://us-east-1.console.aws.amazon.com/bedrock/home?region=us-east-1#/modelaccess) in the region you intend to deploy this sample. For an up to date list of supported regions for Amazon Nova 2 Sonic, please refer to the [documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/models-regions.html)
 - Chrome, Safari, or Edge browser environment (Firefox is currently not supported)
 - Microphone and speakers
 
@@ -244,21 +258,69 @@ $ aws cloudformation describe-stacks --stack-name NovaSonicSolutionBackendStack 
 ]
 ```
 
-1. Navigate to AWS Console:
+1. Navigate to [AWS Console](https://us-east-1.console.aws.amazon.com/cognito/v2/idp/user-pools?region=us-east-1)
 2. Search for "Cognito" in the AWS Console search bar, Click on "Cognito" under Services, Click on "User Pools" in the left navigation.
    Find and click on the User Pool created by the CDK stack you recovered above.
 3. In the User Pool dashboard, click "Users" in the left navigation. Click the "Create user" button and create user with password.
 
 ## Usage
 
+![Speech to Speech Interface](docs/images/speechToSpeech_home.png)
+
 1. Open your browser and go to the application URL (CloudFront domain from CDK outputs) previously recovered.
 2. Click on "Speech to Speech" in the sidebar navigation menu.
-3. Click the "Start Streaming" button. When prompted, allow access to your microphone.
-4. Begin speaking - you should see your speech being transcribed in real-time on the UI
-5. The assistant will automatically process your message and respond through speech
-6. Click "Stop Streaming" when you're done
+3. Configure Nova 2 Sonic features (optional):
+   - **Voice Activity Detection Sensitivity**: Select "High" for fastest responses, "Medium" for balanced interaction, or "Low" to give users more time to complete thoughts
+   - **Voice Selection**: Choose from available voices including polyglot voices like "Tiffany" that can switch between languages
+4. Enter a system prompt (optional) to customize the assistant's behavior
+5. Click the "Start Streaming" button. When prompted, allow access to your microphone.
+6. Begin speaking - you should see your speech being transcribed in real-time on the UI
+7. The assistant will automatically process your message and respond through speech
+8. **Crossmodal Input**: While streaming, you can type text messages in the text input field that appears below the system prompt. This allows you to switch between voice and text input within the same session.
+9. Click "Stop Streaming" when you're done
 
-![Speech to Speech Interface](docs/images/speechToSpeech_home.png)
+### Cross modal support
+
+Once you start streaming, you can use type text to send a message to the model:
+
+![Speech to Speech Interface](docs/images/cross_modal_1.png)
+
+Then, press 'enter' on your keyboard or click on 'send text'. This will send the input to the model, and the text will appear in the chat window:
+
+![Speech to Speech Interface](docs/images/cross_modal_2.png)
+
+You can switch back to voice at anytime:
+
+![Speech to Speech Interface](docs/images/cross_modal_3.png)
+
+### Polyglot voices
+
+Nova 2 Sonic includes polyglot voices that can automatically switch between multiple languages within the same conversation. This enables natural multilingual conversations without needing to change voice settings.
+
+**Using Polyglot Voices:**
+
+1. Select a polyglot voice (e.g., "Tiffany") from the Voice Selection dropdown before starting streaming
+2. Begin your conversation in any supported language (English, French, Italian, German, Spanish, Portuguese, or Hindi)
+3. The polyglot voice will automatically detect and respond in the language you're using
+4. You can switch languages mid-conversation - the voice will adapt seamlessly
+
+**Example:**
+- Start speaking in English: "Hello, how are you?"
+- Switch to Spanish: "¿Puedes ayudarme con esto?"
+- The assistant will respond in the same language you're using, maintaining natural conversation flow
+
+> **Note**: "Tiffany" is the default polyglot voice in this sample and supports all languages available in Nova 2 Sonic. Polyglot voices are ideal for multilingual applications, international customer service, and language learning scenarios.
+
+![Polyglot Voice Example](docs/images/polyglot.png)
+
+### Nova 2 Sonic Features
+
+This sample includes support for the following Nova 2 Sonic features:
+
+- **Configurable Turn-Taking**: Adjust voice activity detection sensitivity to optimize response timing for your use case
+- **Crossmodal Support**: Switch between text and voice input during an active session - type quick questions or complex information while maintaining voice conversation
+- **Polyglot Voices**: Use voices like "Tiffany" that can naturally switch between multiple languages within the same conversation
+- **Asynchronous Tool Calling**: Tools execute in the background while the model continues responding, enabling more natural multi-step interactions
    
 > Note: Ensure your microphone is properly connected and working before testing. The browser may require you to grant microphone permissions the first time you use the feature.
 
