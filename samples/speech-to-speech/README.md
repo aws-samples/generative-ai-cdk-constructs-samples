@@ -264,14 +264,62 @@ $ aws cloudformation describe-stacks --stack-name NovaSonicSolutionBackendStack 
 
 ## Usage
 
+![Speech to Speech Interface](docs/images/speechToSpeech_home.png)
+
 1. Open your browser and go to the application URL (CloudFront domain from CDK outputs) previously recovered.
 2. Click on "Speech to Speech" in the sidebar navigation menu.
-3. Click the "Start Streaming" button. When prompted, allow access to your microphone.
-4. Begin speaking - you should see your speech being transcribed in real-time on the UI
-5. The assistant will automatically process your message and respond through speech
-6. Click "Stop Streaming" when you're done
+3. Configure Nova 2 Sonic features (optional):
+   - **Voice Activity Detection Sensitivity**: Select "High" for fastest responses, "Medium" for balanced interaction, or "Low" to give users more time to complete thoughts
+   - **Voice Selection**: Choose from available voices including polyglot voices like "Tiffany" that can switch between languages
+4. Enter a system prompt (optional) to customize the assistant's behavior
+5. Click the "Start Streaming" button. When prompted, allow access to your microphone.
+6. Begin speaking - you should see your speech being transcribed in real-time on the UI
+7. The assistant will automatically process your message and respond through speech
+8. **Crossmodal Input**: While streaming, you can type text messages in the text input field that appears below the system prompt. This allows you to switch between voice and text input within the same session.
+9. Click "Stop Streaming" when you're done
 
-![Speech to Speech Interface](docs/images/speechToSpeech_home.png)
+### Cross modal support
+
+Once you start streaming, you can use type text to send a message to the model:
+
+![Speech to Speech Interface](docs/images/cross_modal_1.png)
+
+Then, press 'enter' on your keyboard or click on 'send text'. This will send the input to the model, and the text will appear in the chat window:
+
+![Speech to Speech Interface](docs/images/cross_modal_2.png)
+
+You can switch back to voice at anytime:
+
+![Speech to Speech Interface](docs/images/cross_modal_3.png)
+
+### Polyglot voices
+
+Nova 2 Sonic includes polyglot voices that can automatically switch between multiple languages within the same conversation. This enables natural multilingual conversations without needing to change voice settings.
+
+**Using Polyglot Voices:**
+
+1. Select a polyglot voice (e.g., "Tiffany") from the Voice Selection dropdown before starting streaming
+2. Begin your conversation in any supported language (English, French, Italian, German, Spanish, Portuguese, or Hindi)
+3. The polyglot voice will automatically detect and respond in the language you're using
+4. You can switch languages mid-conversation - the voice will adapt seamlessly
+
+**Example:**
+- Start speaking in English: "Hello, how are you?"
+- Switch to Spanish: "¿Puedes ayudarme con esto?"
+- The assistant will respond in the same language you're using, maintaining natural conversation flow
+
+> **Note**: "Tiffany" is the default polyglot voice in this sample and supports all languages available in Nova 2 Sonic. Polyglot voices are ideal for multilingual applications, international customer service, and language learning scenarios.
+
+![Polyglot Voice Example](docs/images/polyglot.png)
+
+### Nova 2 Sonic Features
+
+This sample includes support for the following Nova 2 Sonic features:
+
+- **Configurable Turn-Taking**: Adjust voice activity detection sensitivity to optimize response timing for your use case
+- **Crossmodal Support**: Switch between text and voice input during an active session - type quick questions or complex information while maintaining voice conversation
+- **Polyglot Voices**: Use voices like "Tiffany" that can naturally switch between multiple languages within the same conversation
+- **Asynchronous Tool Calling**: Tools execute in the background while the model continues responding, enabling more natural multi-step interactions
    
 > Note: Ensure your microphone is properly connected and working before testing. The browser may require you to grant microphone permissions the first time you use the feature.
 

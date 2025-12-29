@@ -47,6 +47,9 @@ export function SpeechToSpeech({ websocketUrl = config.websocketUrl }: SpeechToS
   const [systemPrompt, setSystemPrompt] = useState(
     "You are a friend. The user and you will engage in a spoken dialog exchanging the transcripts of a natural real-time conversation. Keep your responses short, generally two or three sentences for chatty scenarios."
   );
+  const [endpointingSensitivity, setEndpointingSensitivity] = useState<"HIGH" | "MEDIUM" | "LOW">("MEDIUM");
+  const [voiceId, setVoiceId] = useState("tiffany");
+  const [textInput, setTextInput] = useState("");
   interface MessageWithId extends ChatMessage {
     id: string;
   }
@@ -109,6 +112,11 @@ export function SpeechToSpeech({ websocketUrl = config.websocketUrl }: SpeechToS
     // Use the WebSocket URL from the config file
     const wsUrl = websocketUrl + '/interact-s2s';
     wsManagerRef.current = new WebSocketEventManager(wsUrl, handleDisconnect, handleConnect, systemPrompt);
+    
+    // Configure Nova 2 Sonic features BEFORE connection is established
+    // These will be used when startSession() is called
+    wsManagerRef.current.setEndpointingSensitivity(endpointingSensitivity);
+    wsManagerRef.current.setVoiceId(voiceId);
 
     // Start inactivity timer
     if (inputTimeoutRef.current) clearTimeout(inputTimeoutRef.current);
@@ -138,70 +146,16 @@ export function SpeechToSpeech({ websocketUrl = config.websocketUrl }: SpeechToS
         checkConnection();
       });
 
-      setStatus("WebSocket connected. Requesting microphone access...");
+      setStatus("WebSocket connected. Waiting for session initialization...");
 
-      const stream = await navigator.mediaDevices.getUserMedia({
-        audio: {
-          channelCount: config.audioChannels,
-          sampleRate: config.audioSampleRate,
-          sampleSize: 16,
-          echoCancellation: true,
-          noiseSuppression: true,
-          autoGainControl: true
-        }
-      });
-
-      setStatus("Microphone access granted. Setting up audio processing...");
-
-      // Create AudioContext for processing
-      const audioContext = new AudioContext({
-        sampleRate: config.audioSampleRate,
-        latencyHint: 'interactive'
-      });
-
-      // Create MediaStreamSource
-      const source = audioContext.createMediaStreamSource(stream);
-
-      // Create ScriptProcessor for raw PCM data
-      const processor = audioContext.createScriptProcessor(512, 1, 1);
-
-      source.connect(processor);
-      processor.connect(audioContext.destination);
-
-      processor.onaudioprocess = (e) => {
-        const inputData = e.inputBuffer.getChannelData(0);
-
-        const buffer = new ArrayBuffer(inputData.length * 2);
-        const pcmData = new DataView(buffer);
-        for (let i = 0; i < inputData.length; i++) {
-          const int16 = Math.max(-32768, Math.min(32767, Math.round(inputData[i] * 32767)));
-          pcmData.setInt16(i * 2, int16, true);
-        }
-        // Binary data string
-        let data = "";
-        for (let i = 0; i < pcmData.byteLength; i++) {
-          data += String.fromCharCode(pcmData.getUint8(i));
-        }
-
-        // Send to WebSocket
-        if (wsManagerRef.current) {
-          wsManagerRef.current.sendAudioChunk(btoa(data));
-        }
-      };
-
+      // The WebSocketEventManager will handle audio setup via startAudioContent()
+      // We just need to wait for it to be ready
       setIsStreaming(true);
       setIsInitializing(false);
       setStatus("Ready - Speak to begin conversation");
 
-      // Store cleanup functions
-      const audioCleanup = () => {
-        processor.disconnect();
-        source.disconnect();
-        stream.getTracks().forEach(track => track.stop());
-      };
-
-      // Store the cleanup function for later use
-      return audioCleanup;
+      // No cleanup needed here - WebSocketEventManager handles it
+      return null;
     } catch (error) {
       setIsInitializing(false);
       setStatus(`Error: ${error instanceof Error ? error.message : 'Unknown error occurred'}`);
@@ -210,12 +164,8 @@ export function SpeechToSpeech({ websocketUrl = config.websocketUrl }: SpeechToS
     }
   }
 
-  function stopStreaming(audioCleanup: (() => void) | null) {
-    // Cleanup audio processing
-    if (audioCleanup) {
-      audioCleanup();
-    }
-
+  function stopStreaming(_audioCleanup: (() => void) | null) {
+    // Cleanup is handled by WebSocketEventManager
     if (wsManagerRef.current) {
       console.log("[SpeechToSpeech] Calling wsManagerRef.current.cleanup() to close WebSocket.");
       wsManagerRef.current.cleanup();
@@ -246,6 +196,28 @@ export function SpeechToSpeech({ websocketUrl = config.websocketUrl }: SpeechToS
 
   const handleClearChat = () => {
     setMessages([]);
+    setIsUserThinking(false);
+    setIsAssistantThinking(false);
+  };
+
+  const handleSendTextInput = () => {
+    if (!textInput.trim() || !wsManagerRef.current) return;
+    
+    const textToSend = textInput.trim();
+    
+    // Display the text input in the chat immediately
+    const messageId = `user-text-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    setMessages(prev => [...prev, { id: messageId, role: 'USER', message: textToSend }]);
+    setIsUserThinking(false);
+    
+    wsManagerRef.current.sendTextInput(textToSend);
+    setTextInput("");
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSendTextInput();
+    }
   };
 
   // Ensure audio context is resumed after user interaction
@@ -292,8 +264,13 @@ export function SpeechToSpeech({ websocketUrl = config.websocketUrl }: SpeechToS
           } else if (event.contentStart.role === 'ASSISTANT') {
             setIsAssistantThinking(false);
           }
-        } else if (event.contentStart.type === 'AUDIO' && isStreaming) {
-          setIsUserThinking(true);
+        } else if (event.contentStart.type === 'AUDIO') {
+          // Only show "Listening" for USER audio input, not ASSISTANT audio output
+          if (event.contentStart.role === 'USER' && isStreaming) {
+            setIsUserThinking(true);
+          } else if (event.contentStart.role === 'ASSISTANT') {
+            setIsUserThinking(false);
+          }
         }
       }
 
@@ -332,21 +309,40 @@ export function SpeechToSpeech({ websocketUrl = config.websocketUrl }: SpeechToS
           if (event.contentEnd.stopReason === 'END_TURN') {
             setMessages(prev => prev.map(msg => ({ ...msg, endOfResponse: true })));
           }
+        } else if (event.contentEnd.type === 'AUDIO') {
+          // When audio content ends, clear the listening indicator
+          if (wsManagerRef.current?.role === 'USER') {
+            setIsUserThinking(false);
+          }
         }
       }
     };
 
-    // Set up WebSocket message listener
+    // Set up WebSocket message listener - listen to both direct socket and custom events
     const socket = wsManagerRef.current.socket;
     if (socket) {
-      socket.addEventListener('message', (event) => {
+      const messageHandler = (event: MessageEvent) => {
         try {
           const data = JSON.parse(event.data);
           handleWebSocketMessage(data);
         } catch (e) {
           console.error("Error parsing WebSocket message:", e);
         }
-      });
+      };
+      
+      socket.addEventListener('message', messageHandler);
+      
+      // Also listen to custom events from WebSocketEventManager
+      const customEventHandler = ((event: CustomEvent) => {
+        handleWebSocketMessage(event.detail);
+      }) as EventListener;
+      
+      window.addEventListener('nova-sonic-event', customEventHandler);
+      
+      return () => {
+        socket.removeEventListener('message', messageHandler);
+        window.removeEventListener('nova-sonic-event', customEventHandler);
+      };
     }
 
     return () => {
@@ -401,18 +397,83 @@ export function SpeechToSpeech({ websocketUrl = config.websocketUrl }: SpeechToS
         {disconnected && (
           <div className="text-red-600 font-semibold mt-2">Connection lost. Please click "Start Streaming" to reconnect.</div>
         )}
-        <div className="mt-4">
-          <label htmlFor="system-prompt" className="block text-sm font-medium mb-1">System Prompt:</label>
-          <textarea
-            id="system-prompt"
-            className="w-full border rounded p-2 text-sm"
-            rows={3}
-            value={systemPrompt}
-            onChange={e => setSystemPrompt(e.target.value)}
-            disabled={isStreaming || isInitializing}
-          />
+        <div className="mt-4 space-y-4">
+          <div>
+            <label htmlFor="system-prompt" className="block text-sm font-medium mb-1">System Prompt:</label>
+            <textarea
+              id="system-prompt"
+              className="w-full border rounded p-2 text-sm"
+              rows={3}
+              value={systemPrompt}
+              onChange={e => setSystemPrompt(e.target.value)}
+              disabled={isStreaming || isInitializing}
+            />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label htmlFor="vad-sensitivity" className="block text-sm font-medium mb-1">
+                Turn Detection Sensitivity (Nova 2 Sonic):
+              </label>
+              <select
+                id="vad-sensitivity"
+                className="w-full border rounded p-2 text-sm"
+                value={endpointingSensitivity}
+                onChange={e => setEndpointingSensitivity(e.target.value as "HIGH" | "MEDIUM" | "LOW")}
+                disabled={isStreaming || isInitializing}
+              >
+                <option value="HIGH">High (Fast Response - 1.5s pause)</option>
+                <option value="MEDIUM">Medium (Balanced - 1.75s pause)</option>
+                <option value="LOW">Low (Patient - 2.0s pause)</option>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="voice-id" className="block text-sm font-medium mb-1">
+                Voice (Nova 2 Sonic):
+              </label>
+              <select
+                id="voice-id"
+                className="w-full border rounded p-2 text-sm"
+                value={voiceId}
+                onChange={e => setVoiceId(e.target.value)}
+                disabled={isStreaming || isInitializing}
+              >
+                <option value="matthew">Matthew (en-US, Masculine)</option>
+                <option value="tiffany">Tiffany (Polyglot - All languages)</option>
+                <option value="amy">Amy (en-GB, Feminine)</option>
+                <option value="olivia">Olivia (en-AU, Feminine)</option>
+                <option value="lupe">Lupe (es-US, Feminine)</option>
+              </select>
+            </div>
+          </div>
         </div>
       </Card>
+      
+      {/* Crossmodal Text Input (Nova 2 Sonic feature) */}
+      {isStreaming && (
+        <Card className="p-4 mb-4">
+          <div className="flex gap-2">
+            <input
+              type="text"
+              className="flex-1 border rounded p-2 text-sm"
+              placeholder="Type a message (crossmodal support - Nova 2 Sonic)"
+              value={textInput}
+              onChange={e => setTextInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+            />
+            <Button
+              onClick={handleSendTextInput}
+              disabled={!textInput.trim()}
+              variant="default"
+              className="bg-blue-600 hover:bg-blue-700"
+            >
+              Send Text
+            </Button>
+          </div>
+          <p className="text-xs text-gray-500 mt-2">
+            You can send text messages during an active voice session (Nova 2 Sonic crossmodal feature)
+          </p>
+        </Card>
+      )}
       
       <Card className="flex-1 overflow-y-auto mb-4 p-4" ref={chatContainerRef}>
         <div className="chat-container h-full">
