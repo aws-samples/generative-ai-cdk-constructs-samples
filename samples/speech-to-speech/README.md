@@ -79,14 +79,15 @@ The solution consists of three main components:
 The solution supports two backend implementations with identical functionality:
 
 #### Java WebSocket Server (Default)
+
 - Java-based WebSocket server implementation
-- Production-ready with comprehensive error handling
 - Jetty WebSocket server with connection pooling
 - Real-time speech-to-speech communication
 - Cognito token validation
 - Connection management and logging
 
 #### Python WebSocket Server
+
 - Python-based alternative implementation
 - AWS Bedrock integration with `aws_sdk_bedrock_runtime` beta SDK
 - Equivalent functionality to Java implementation
