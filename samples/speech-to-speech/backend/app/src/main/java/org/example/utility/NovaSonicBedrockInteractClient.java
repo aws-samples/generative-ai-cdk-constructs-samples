@@ -55,7 +55,7 @@ public class NovaSonicBedrockInteractClient {
             int retryCount
     ) {
         InvokeModelWithBidirectionalStreamRequest request = InvokeModelWithBidirectionalStreamRequest.builder()
-                .modelId("amazon.nova-sonic-v1:0")
+                .modelId("amazon.nova-2-sonic-v1:0")
                 .build();
 
         // Create a new publisher for each attempt

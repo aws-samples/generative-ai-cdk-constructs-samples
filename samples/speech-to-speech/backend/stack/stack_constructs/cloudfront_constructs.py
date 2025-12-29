@@ -76,7 +76,7 @@ class CloudFrontDistributionConstruct(Construct):
             self,
             "Distribution",
             default_behavior=cloudfront.BehaviorOptions(
-                origin=origins.S3BucketOrigin.with_origin_access_identity(website_bucket),
+                origin=origins.S3Origin(website_bucket, origin_access_identity=origin_access_identity),
                 allowed_methods=cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
                 viewer_protocol_policy=cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
                 cache_policy=cloudfront.CachePolicy.CACHING_OPTIMIZED,

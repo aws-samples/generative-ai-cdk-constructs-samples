@@ -1,8 +1,8 @@
-# Nova Sonic Solution
+# Nova 2 Sonic Solution
 
 ## Table of Contents
 
-- [Nova Sonic Solution](#nova-sonic-solution)
+- [Nova 2 Sonic Solution](#nova-2-sonic-solution)
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Architecture](#architecture)
@@ -22,7 +22,20 @@
 
 ## Overview
 
-A real-time speech-to-speech communication platform powered by Amazon Bedrock's Nova model for advanced language processing and AWS real-time messaging capabilities, featuring a Java WebSocket server and React frontend. Nova enables natural, context-aware speech-to-speech conversations through its state-of-the-art language understanding and generation capabilities.
+A real-time speech-to-speech communication platform powered by Amazon Bedrock's Nova 2 Sonic model for advanced language processing and AWS real-time messaging capabilities, featuring a Java WebSocket server and React frontend. Nova 2 Sonic enables natural, context-aware speech-to-speech conversations through its state-of-the-art language understanding and generation capabilities, with improved conversational quality, expanded language support, and enhanced features.
+
+### About Nova 2 Sonic
+
+Nova 2 Sonic is Amazon's next-generation speech-to-speech foundation model that delivers industry-leading conversational quality and best-in-class speech understanding. Key features include:
+
+- **Expanded Language Support**: Supports English, French, Italian, German, Spanish, Portuguese, and Hindi
+- **Polyglot Voices**: Individual voices that can switch between languages within the same conversation
+- **Natural Turn-Taking**: Configurable voice activity detection sensitivity for optimal response timing
+- **Crossmodal Support**: Switch between text and voice input within the same session (available for future enhancement)
+- **Asynchronous Tool Calling**: Continue responding while tools run in the background (available for future enhancement)
+- **Improved Speech Understanding**: Enhanced handling of alphanumeric inputs, short utterances, and telephony speech input
+
+For more information about Nova 2 Sonic, see the [AWS blog announcement](https://aws.amazon.com/blogs/aws/introducing-amazon-nova-2-sonic-next-generation-speech-to-speech-model-for-conversational-ai/).
 
 ## Architecture
 
@@ -105,7 +118,7 @@ Default output format [None]: json
 ```
 - Node.js: v18.12.1 or higher
 - npm 8.x or higher
-- Ensure you enable model access to Amazon Nova Sonic in the [Bedrock console](https://us-east-1.console.aws.amazon.com/bedrock/home?region=us-east-1#/modelaccess) in the region you intend to deploy this sample. For an up to date list of supported regions for Amazon Nova Sonic, please refer to the [documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/models-regions.html)
+- Ensure you enable model access to Amazon Nova 2 Sonic in the [Bedrock console](https://us-east-1.console.aws.amazon.com/bedrock/home?region=us-east-1#/modelaccess) in the region you intend to deploy this sample. For an up to date list of supported regions for Amazon Nova 2 Sonic, please refer to the [documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/models-regions.html)
 - Chrome, Safari, or Edge browser environment (Firefox is currently not supported)
 - Microphone and speakers
 
@@ -244,7 +257,7 @@ $ aws cloudformation describe-stacks --stack-name NovaSonicSolutionBackendStack 
 ]
 ```
 
-1. Navigate to AWS Console:
+1. Navigate to [AWS Console](https://us-east-1.console.aws.amazon.com/cognito/v2/idp/user-pools?region=us-east-1)
 2. Search for "Cognito" in the AWS Console search bar, Click on "Cognito" under Services, Click on "User Pools" in the left navigation.
    Find and click on the User Pool created by the CDK stack you recovered above.
 3. In the User Pool dashboard, click "Users" in the left navigation. Click the "Create user" button and create user with password.

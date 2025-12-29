@@ -31,7 +31,7 @@ from tools.base_tool import BaseTool
 class WebSocketHandler:
     """Main WebSocket handler using refactored architecture."""
 
-    def __init__(self, model_id="amazon.nova-sonic-v1:0", region="us-east-1"):
+    def __init__(self, model_id="amazon.nova-2-sonic-v1:0", region="us-east-1"):
         """Initialize the WebSocket handler.
 
         Args:

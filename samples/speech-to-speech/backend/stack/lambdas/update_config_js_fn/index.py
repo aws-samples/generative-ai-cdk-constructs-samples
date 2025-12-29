@@ -18,7 +18,7 @@ def handler(event: Dict[str, Any], _context: Any) -> Dict[str, Any]:
         "VITE_COGNITO_USER_POOL_CLIENT_ID": "{cognito_user_pool_client_id}",
         "VITE_COGNITO_IDENTITY_POOL_ID": "{cognito_identity_pool_id}",
         "VITE_LOAD_BALANCER_DNS": "{load_balancer_dns}",
-        "VITE_APP_NAME": "Bedrock Nova Sonic Solution",
+        "VITE_APP_NAME": "Bedrock Nova Sonic 2 Solution",
         "VITE_DEPLOYMENT_TYPE": "remote"
     }};"""
 
