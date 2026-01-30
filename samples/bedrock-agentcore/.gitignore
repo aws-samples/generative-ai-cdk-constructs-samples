@@ -1,0 +1,10 @@
+*.js
+!jest.config.js
+*.d.ts
+node_modules
+
+generative-ai-cdk-constructs@0.0.0.jsii.tgz
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out

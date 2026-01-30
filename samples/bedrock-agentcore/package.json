@@ -1,0 +1,33 @@
+{
+  "name": "agentcore-demo",
+  "version": "1.0.0",
+  "description": "Amazon Bedrock AgentCore Demo - Research Assistant showcasing L2 Constructs",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "cdk": "cdk",
+    "deploy": "cdk deploy",
+    "synth": "cdk synth"
+  },
+  "keywords": [
+    "aws-cdk",
+    "bedrock",
+    "agentcore",
+    "ai-agent"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "aws-cdk": "^2.236.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.0"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-bedrock-agentcore-alpha": "^2.236.0-alpha.0",
+    "aws-cdk-lib": "^2.236.0",
+    "constructs": "^10.4.2",
+    "source-map-support": "^0.5.21"
+  }
+}

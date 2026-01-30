@@ -1,0 +1,212 @@
+#!/usr/bin/env python3
+"""
+🌴 Travel Agent - Amazon Bedrock AgentCore Demo
+Beautiful CLI for showcasing AgentCore capabilities
+"""
+
+import boto3
+import json
+import sys
+import uuid
+from datetime import datetime
+
+# ANSI color codes for beautiful output
+class Colors:
+    HEADER = '\033[95m'
+    BLUE = '\033[94m'
+    CYAN = '\033[96m'
+    GREEN = '\033[92m'
+    YELLOW = '\033[93m'
+    RED = '\033[91m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+    END = '\033[0m'
+    
+    # Emoji-like symbols
+    ROCKET = '🚀'
+    BRAIN = '🧠'
+    CODE = '🖥️'
+    BROWSER = '🌐'
+    WEATHER = '🌦️'
+    SPARKLES = '✨'
+    CHECK = '✅'
+    CROSS = '❌'
+    PALM = '🌴'
+
+
+def print_header():
+    """Print beautiful demo header"""
+    print(f"\n{Colors.CYAN}{Colors.BOLD}")
+    print("═" * 70)
+    print(f"  {Colors.PALM} AMAZON BEDROCK AGENTCORE - TRAVEL PLANNING DEMO {Colors.PALM}")
+    print("═" * 70)
+    print(f"{Colors.END}")
+    print(f"{Colors.YELLOW}{Colors.SPARKLES} AgentCore Features:{Colors.END}")
+    print(f"  {Colors.ROCKET} {Colors.BOLD}Runtime{Colors.END}       : Serverless deployment & auto-scaling")
+    print(f"  {Colors.BRAIN} {Colors.BOLD}Memory{Colors.END}        : Conversation history (hour-based sessions)")
+    print(f"  {Colors.CODE} {Colors.BOLD}Code Interpreter{Colors.END}: Python execution for calculations")
+    print(f"  {Colors.BROWSER} {Colors.BOLD}Browser{Colors.END}       : Web research capabilities")
+    print(f"  {Colors.WEATHER} {Colors.BOLD}Weather{Colors.END}       : Real-time weather data")
+    print(f"{Colors.CYAN}{'─' * 70}{Colors.END}\n")
+
+
+def get_runtime_arn():
+    """Get Runtime ARN from CloudFormation"""
+    try:
+        cfn = boto3.client('cloudformation', region_name='us-east-1')
+        response = cfn.describe_stacks(StackName='AgentCoreDemoStack')
+        outputs = response['Stacks'][0]['Outputs']
+        
+        for output in outputs:
+            if output['OutputKey'] == 'RuntimeArn':
+                return output['OutputValue']
+        return None
+    except Exception as e:
+        print(f"{Colors.RED}{Colors.CROSS} Error: {e}{Colors.END}", file=sys.stderr)
+        return None
+
+
+def generate_session_id():
+    """Generate valid session ID (33+ chars) based on current hour"""
+    now = datetime.now()
+    hour_prefix = now.strftime("%Y-%m-%d-%H")
+    # Pad to meet 33 char minimum: need 11 zeros for total of 33 chars
+    # "session-" (8) + "2026-01-29-23" (13) + "-" (1) + "00000000000" (11) = 33
+    session_id = f"session-{hour_prefix}-00000000000"
+    return session_id
+
+
+def invoke_agent(runtime_arn, prompt, session_id):
+    """Invoke the AgentCore Runtime with beautiful output"""
+    try:
+        client = boto3.client('bedrock-agentcore', region_name='us-east-1')
+        
+        # Show session info
+        print(f"{Colors.BLUE}{Colors.BRAIN} [SESSION]{Colors.END} {session_id}")
+        print(f"{Colors.BLUE}{Colors.ROCKET} [RUNTIME]{Colors.END} Invoking agent...")
+        print()
+        
+        # Prepare request
+        params = {
+            'agentRuntimeArn': runtime_arn,
+            'payload': json.dumps({'prompt': prompt}),
+            'runtimeSessionId': session_id
+        }
+        
+        # Invoke
+        response = client.invoke_agent_runtime(**params)
+        
+        # Parse response
+        if 'response' in response:
+            body_bytes = response['response'].read()
+            body_str = body_bytes.decode('utf-8')
+            
+            try:
+                body_json = json.loads(body_str)
+                result = body_json.get('result', {})
+                
+                # Handle both dict and string results
+                if isinstance(result, dict):
+                    # Extract message content
+                    message = result.get('message', result)
+                    if isinstance(message, dict):
+                        content = message.get('content', [])
+                        if content and isinstance(content, list):
+                            text = content[0].get('text', str(message))
+                        else:
+                            text = str(message)
+                    else:
+                        text = str(message)
+                else:
+                    text = str(result)
+                
+                return text
+                
+            except json.JSONDecodeError:
+                return body_str
+        
+        return str(response)
+        
+    except Exception as e:
+        print(f"\n{Colors.RED}{Colors.CROSS} Error invoking agent:{Colors.END}")
+        print(f"{Colors.RED}{str(e)}{Colors.END}\n")
+        import traceback
+        traceback.print_exc(file=sys.stderr)
+        return None
+
+
+def parse_and_highlight_response(response_text):
+    """Parse response and highlight AgentCore features - all text in GREEN"""
+    lines = response_text.split('\n')
+    
+    for line in lines:
+        # Code block markers with special indicator
+        if '```python' in line.lower():
+            print(f"{Colors.CODE} {Colors.BOLD}[CODE INTERPRETER]{Colors.END}")
+            print(f"{Colors.GREEN}{Colors.BOLD}{line}{Colors.END}")
+        elif '```' in line and not line.startswith('```python'):
+            print(f"{Colors.GREEN}{Colors.BOLD}{line}{Colors.END}")
+        # Results section in yellow for extra emphasis
+        elif '📊' in line or 'Result:' in line:
+            print(f"{Colors.YELLOW}{Colors.BOLD}{line}{Colors.END}")
+        # Everything else in GREEN (main agent response)
+        else:
+            print(f"{Colors.GREEN}{line}{Colors.END}")
+
+
+def main():
+    if len(sys.argv) < 2:
+        print_header()
+        print(f"{Colors.YELLOW}Usage:{Colors.END}")
+        print(f"  ./travel-agent \"your prompt\"")
+        print()
+        print(f"{Colors.YELLOW}Examples:{Colors.END}")
+        print(f"  ./travel-agent \"Plan a 3-day trip to Miami\"")
+        print(f"  ./travel-agent \"What's the weather in Seattle?\"")
+        print(f"  ./travel-agent \"Calculate 15% tip on $120 dinner\"")
+        print(f"  ./travel-agent \"Research top beaches in Hawaii\"")
+        print()
+        sys.exit(1)
+    
+    prompt = ' '.join(sys.argv[1:])
+    
+    # Print header
+    print_header()
+    
+    # Generate valid session ID (33+ chars, hour-based)
+    session_id = generate_session_id()
+    
+    # Show user prompt
+    print(f"{Colors.BOLD}🎯 Your Request:{Colors.END}")
+    print(f"  {prompt}")
+    print()
+    
+    # Get runtime ARN
+    print(f"{Colors.BLUE}🔍 [SETUP]{Colors.END} Fetching Runtime ARN from CloudFormation...")
+    runtime_arn = get_runtime_arn()
+    if not runtime_arn:
+        print(f"{Colors.RED}{Colors.CROSS} Failed to get Runtime ARN{Colors.END}")
+        print(f"{Colors.YELLOW}Make sure AgentCoreDemoStack is deployed: cdk deploy{Colors.END}")
+        sys.exit(1)
+    
+    print(f"{Colors.GREEN}{Colors.CHECK} Runtime found{Colors.END}\n")
+    
+    # Invoke agent
+    response = invoke_agent(runtime_arn, prompt, session_id)
+    
+    if response:
+        print(f"{Colors.CYAN}{'─' * 70}{Colors.END}")
+        print(f"{Colors.BOLD}{Colors.GREEN}🤖 Agent Response:{Colors.END}\n")
+        parse_and_highlight_response(response)
+        print(f"\n{Colors.CYAN}{'─' * 70}{Colors.END}")
+        
+        # Show memory hint
+        print(f"\n{Colors.BRAIN} {Colors.BOLD}[MEMORY]{Colors.END} Session: {session_id}")
+        print(f"{Colors.YELLOW}💡 All conversations this hour share memory!{Colors.END}\n")
+    else:
+        print(f"{Colors.RED}{Colors.CROSS} No response received{Colors.END}")
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
