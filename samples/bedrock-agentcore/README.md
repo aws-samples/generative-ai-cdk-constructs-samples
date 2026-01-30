@@ -1,4 +1,4 @@
-# AI Travel Planning Agent - Amazon Bedrock AgentCore Demo
+# AI Travel Planning Agent - Amazon Bedrock AgentCore Sample
 
 ## Table of Contents
 
