@@ -41,31 +41,30 @@ This AI-powered travel planning assistant provides comprehensive trip planning c
 - **Real-Time Weather** - Current conditions for any global location
 - **Context Awareness** - Maintains conversation history and user preferences across sessions
 
-**Example Interaction:**
+## Project Structure
 
 ```
-User: "I'm planning a 5-day trip to Miami. Check weather and calculate budget."
-
-Agent: 
-Weather: Sunny, 82°F, ideal beach conditions
-
-Python Code:
-```python
-days = 5
-hotel = 150
-flights = 400
-food_per_day = 60
-total = (hotel * days) + flights + (food_per_day * days)
+bedrock-agentcore/
+├── agent/                      # Agent code (deployed to Runtime)
+│   ├── agent.py               # Main entrypoint with @app.entrypoint decorator
+│   ├── config.py              # System prompt and configuration
+│   ├── tools.py               # Tool initialization and configuration
+│   ├── memory.py              # Memory utilities (reference implementation)
+│   ├── Dockerfile             # Container definition for Runtime
+│   └── requirements.txt       # Python dependencies
+├── lib/
+│   └── agentcore-demo-stack.ts # AWS CDK L2 constructs infrastructure
+├── lambda/
+│   └── weather-tool/          # Gateway Lambda target implementation
+├── travel-agent               # Demo CLI tool (Python)
+├── travel-agent-wrapper.sh    # Wrapper script using virtual environment
+├── package.json               # Node.js dependencies
+├── cdk.json                   # CDK configuration
+└── README.md                  # This file
 ```
 
-Result: Total budget: $1,450
-
-Context Remembered: User preference for warm destinations and beach activities
-```
 
 ## Architecture
-
-### High-Level Component Diagram
 
 
 ### Component Details
@@ -121,7 +120,6 @@ Context Remembered: User preference for warm destinations and beach activities
 - Amazon Bedrock AgentCore Gateway for MCP protocol communication
 - Amazon Cognito for machine-to-machine authentication
 - Automatic IAM permission configuration
-
 
 ## Prerequisites
 
@@ -344,266 +342,13 @@ travel-agent "I'm planning a 5-day Seattle trip. Check weather, calculate $2000 
 - Browser Tool → Top attractions research
 - Memory → Conversation context preservation
 
-### Verification Steps
-
-1. **Check Amazon CloudWatch Logs**
-   ```bash
-   # View Runtime logs
-   aws logs tail /aws/bedrock-agentcore/runtime/travel_planning_agent --follow
-   ```
-
-2. **Verify Memory Storage**
-   - Run the memory test scenario twice within the same hour
-   - Confirm agent recalls information from first conversation
-
-3. **Test Tool Permissions**
-   - Each scenario should execute without permission errors
-   - Check CloudWatch logs for successful tool invocations
-
-### Troubleshooting
-
-**Common Issues:**
-
-1. **"Access Denied" Errors**
-   - Verify IAM permissions are correctly configured
-   - Check AWS credentials are valid and have necessary permissions
-
-2. **Memory Not Persisting**
-   - Ensure both invocations occur within the same hour
-   - Verify Memory ID is correctly configured in environment variables
-
-3. **Code Interpreter Failures**
-   - Check Amazon CloudWatch logs for detailed error messages
-   - Verify Code Interpreter permissions in IAM role
-
-4. **Gateway Connection Errors**
-   - Confirm Gateway URL is correctly configured
-   - Check Amazon Cognito authentication is functioning
-
-## Monitoring and Operations
-
-### Amazon CloudWatch Logs
-
-View real-time logs for debugging and monitoring:
-
-```bash
-# Amazon Bedrock AgentCore Runtime logs
-aws logs tail /aws/bedrock-agentcore/runtime/travel_planning_agent --follow
-
-# AWS Lambda weather tool logs
-aws logs tail /aws/lambda/AgentCoreDemoStack-WeatherToolFunction --follow
-```
-
-### Session Tracking
-
-Monitor agent logs for session identifiers to track conversation flows:
-
-```
-Generated hour-based session ID: session-2026-01-29-23
-```
-
-### Performance Metrics
-
-Key metrics to monitor in Amazon CloudWatch:
-- Runtime invocation count
-- Average invocation duration
-- Tool execution latency
-- Memory retrieval/storage operations
-- Error rates
-
 ## Clean Up
 
 To avoid incurring future charges, delete all deployed resources:
 
-### Step 1: Destroy CDK Stack
-
 ```bash
 cdk destroy AgentCoreDemoStack
 ```
-
-### Step 2: Delete CloudWatch Log Groups
-
-```bash
-# Delete Runtime logs
-aws logs delete-log-group --log-group-name /aws/bedrock-agentcore/runtime/travel_planning_agent
-
-# Delete Lambda logs
-aws logs delete-log-group --log-group-name /aws/lambda/AgentCoreDemoStack-WeatherToolFunction
-```
-
-### Step 3: Verify Resource Deletion
-
-Ensure all resources have been removed:
-
-```bash
-# Verify stack deletion
-aws cloudformation describe-stacks --stack-name AgentCoreDemoStack
-# Should return: "Stack with id AgentCoreDemoStack does not exist"
-```
-
-### Step 4: Remove CLI Tool (If Installed)
-
-```bash
-sudo rm /usr/local/bin/travel-agent
-```
-
-## Project Structure
-
-```
-bedrock-agentcore/
-├── agent/                      # Agent code (deployed to Runtime)
-│   ├── agent.py               # Main entrypoint with @app.entrypoint decorator
-│   ├── config.py              # System prompt and configuration
-│   ├── tools.py               # Tool initialization and configuration
-│   ├── memory.py              # Memory utilities (reference implementation)
-│   ├── Dockerfile             # Container definition for Runtime
-│   └── requirements.txt       # Python dependencies
-├── lib/
-│   └── agentcore-demo-stack.ts # AWS CDK L2 constructs infrastructure
-├── lambda/
-│   └── weather-tool/          # Gateway Lambda target implementation
-├── travel-agent               # Demo CLI tool (Python)
-├── travel-agent-wrapper.sh    # Wrapper script using virtual environment
-├── package.json               # Node.js dependencies
-├── cdk.json                   # CDK configuration
-└── README.md                  # This file
-```
-
-## Technical Implementation Details
-
-### Agent Entrypoint (agent/agent.py)
-
-```python
-from bedrock_agentcore.runtime import BedrockAgentCoreApp
-from strands import Agent
-from bedrock_agentcore.memory.integrations.strands.session_manager import AgentCoreMemorySessionManager
-
-app = BedrockAgentCoreApp()
-
-@app.entrypoint
-def invoke(payload: Dict[str, Any], context: Any) -> Dict[str, Any]:
-    # Generate hour-based session identifier
-    session_id = datetime.now().strftime("session-%Y-%m-%d-%H")
-    
-    # Initialize session manager for automatic memory management
-    session_manager = AgentCoreMemorySessionManager(
-        agentcore_memory_config=AgentCoreMemoryConfig(
-            memory_id=MEMORY_ID,
-            session_id=session_id,
-            actor_id=actor_id
-        ),
-        region_name=AWS_REGION
-    )
-    
-    # Create agent with automatic memory handling
-    agent = Agent(
-        model=MODEL_ID,
-        system_prompt=SYSTEM_PROMPT,
-        tools=tools,
-        session_manager=session_manager  # Automatic memory retrieval/storage
-    )
-    
-    # Invoke agent (memory managed automatically by session_manager)
-    result = agent(payload.get("prompt"))
-    
-    return {"result": result.message}
-```
-
-### Infrastructure as Code (AWS CDK Stack)
-
-```typescript
-// 1. Amazon Bedrock AgentCore Runtime - Deploys agent container
-const runtime = new agentcore.Runtime(this, 'TravelAgentRuntime', {
-  runtimeName: 'travel_planning_agent',
-  agentRuntimeArtifact: agentcore.AgentRuntimeArtifact.fromAsset(
-    path.join(__dirname, '../agent')
-  ),
-});
-
-// 2. Amazon Bedrock AgentCore Memory - Conversation storage
-const memory = new agentcore.Memory(this, 'TravelAgentMemory', {
-  memoryName: 'travel_agent_memory',
-  expirationDuration: cdk.Duration.days(90),
-});
-
-// 3. Amazon Bedrock AgentCore Gateway - External tool integration
-const gateway = new agentcore.Gateway(this, 'TravelAgentGateway', {
-  gatewayName: 'travel-agent-gateway',
-  // Amazon Cognito M2M authentication created automatically
-});
-
-// 4. Amazon Bedrock AgentCore Gateway Target - Weather Lambda
-const weatherTarget = gateway.addLambdaTarget('WeatherTarget', {
-  lambdaFunction: weatherLambda,
-  toolSchema: agentcore.ToolSchema.fromInline([/* schema */]),
-  // IAM permissions granted automatically
-});
-
-// 5. IAM Permissions - Automatic grant methods
-memory.grantRead(runtime);
-memory.grantWrite(runtime);
-gateway.grantInvoke(runtime);
-```
-
-### Session Management
-
-**Hour-Based Session Format:** `session-YYYY-MM-DD-HH`
-
-**Examples:**
-```
-10:00-10:59 → session-2026-01-29-10 (shared session)
-11:00-11:59 → session-2026-01-29-11 (new session)
-```
-
-**Benefits:**
-- Automatic memory reset every hour prevents overflow
-- Same-hour conversations maintain full context
-- No manual session lifecycle management required
-- Predictable memory behavior for testing and debugging
-
-### Tool Configuration
-
-**Amazon Bedrock AgentCore Code Interpreter:**
-```python
-from strands_tools.code_interpreter import AgentCoreCodeInterpreter
-
-code_interpreter = AgentCoreCodeInterpreter(region=AWS_REGION)
-tools.append(code_interpreter.code_interpreter)
-```
-
-**Amazon Bedrock AgentCore Browser:**
-```python
-from strands_tools.browser import AgentCoreBrowser
-
-browser = AgentCoreBrowser(region=AWS_REGION)
-tools.append(browser.browser)
-```
-
-**Weather Tool via Gateway:**
-```typescript
-gateway.addLambdaTarget('WeatherTarget', {
-  gatewayTargetName: 'weather-tool',
-  description: 'Real-time weather information tool',
-  lambdaFunction: weatherLambda,
-  toolSchema: agentcore.ToolSchema.fromInline([
-    {
-      name: 'get_weather',
-      description: 'Retrieve current weather conditions for specified location',
-      inputSchema: {/* schema definition */}
-    }
-  ]),
-});
-```
-
-## Additional Resources
-
-### Documentation
-
-- **DEMO_SCRIPT.md** - Complete presentation guide with demonstration scenarios
-- **TRAVEL_AGENT_QUICK_START.md** - Quick reference for CLI usage
-- **MEMORY_SESSION_FIX.md** - Memory implementation technical details
-- **AWS_CONSOLE_INVOCATION.md** - Manual invocation via AWS Management Console
-- **STACK_REFACTOR_SUMMARY.md** - AWS CDK stack architecture explanation
 
 ### AWS Documentation
 
@@ -611,24 +356,6 @@ gateway.addLambdaTarget('WeatherTarget', {
 - [Amazon Bedrock AgentCore Documentation](https://docs.aws.amazon.com/bedrock-agentcore/)
 - [AWS Cloud Development Kit (AWS CDK) Developer Guide](https://docs.aws.amazon.com/cdk/latest/guide/)
 
-### Key Takeaways
-
-**AWS CDK L2 Constructs Efficiency:**
-- 70% code reduction compared to L1 constructs
-- Type-safe, intuitive APIs with IntelliSense support
-- Automatic IAM permission configuration
-- Production-ready defaults with full customization
-
-**Amazon Bedrock AgentCore Production Readiness:**
-- Serverless scaling (Amazon Bedrock AgentCore Runtime)
-- Persistent memory (Amazon Bedrock AgentCore Memory)
-- Secure tool execution (Amazon Bedrock AgentCore Browser, Code Interpreter)
-- Custom integrations (Amazon Bedrock AgentCore Gateway)
-
-**Rapid Development Cycle:**
-- Infrastructure: ~180 lines of TypeScript
-- Agent implementation: ~100 lines of Python
-- Complete AI assistant deployed in under 30 minutes
 
 ## Contributing
 
