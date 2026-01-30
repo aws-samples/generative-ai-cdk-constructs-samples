@@ -222,6 +222,8 @@ which travel-agent
 
 ## Testing the Sample
 
+![Travel Agent CLI Interface](images/img_sample.png)
+
 ### Basic Command Structure
 
 From the project directory:
