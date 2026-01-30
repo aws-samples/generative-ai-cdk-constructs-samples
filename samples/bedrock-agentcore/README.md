@@ -203,40 +203,6 @@ cdk bootstrap aws://ACCOUNT-ID/us-east-1
 cdk deploy --require-approval=never
 ```
 
-**Deployment Duration:** Approximately 5-10 minutes
-
-**Resources Deployed:**
-- Amazon Bedrock AgentCore Runtime with containerized agent
-- Amazon Bedrock AgentCore Memory with hour-based session configuration
-- Amazon Bedrock AgentCore Gateway with Amazon Cognito authentication
-- AWS Lambda function for weather data
-- Amazon Bedrock AgentCore Gateway Target for Lambda integration
-- All AWS Identity and Access Management (IAM) permissions automatically configured
-
-### Step 7: Retrieve Deployment Outputs
-
-After successful deployment, retrieve the required configuration values:
-
-```bash
-# Get Runtime Name
-aws cloudformation describe-stacks \
-  --stack-name AgentCoreDemoStack \
-  --query 'Stacks[0].Outputs[?OutputKey==`RuntimeName`].OutputValue' \
-  --output text
-
-# Get Memory ID
-aws cloudformation describe-stacks \
-  --stack-name AgentCoreDemoStack \
-  --query 'Stacks[0].Outputs[?OutputKey==`MemoryId`].OutputValue' \
-  --output text
-
-# Get Gateway URL
-aws cloudformation describe-stacks \
-  --stack-name AgentCoreDemoStack \
-  --query 'Stacks[0].Outputs[?OutputKey==`GatewayUrl`].OutputValue' \
-  --output text
-```
-
 ### Step 8: Install CLI Tool (Optional)
 
 For convenient access from any directory:
