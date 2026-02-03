@@ -55,14 +55,39 @@ def get_runtime_arn():
     try:
         cfn = boto3.client('cloudformation', region_name='us-east-1')
         response = cfn.describe_stacks(StackName='AgentCoreDemoStack')
-        outputs = response['Stacks'][0]['Outputs']
         
+        stack = response['Stacks'][0]
+        
+        # Check stack status
+        status = stack.get('StackStatus', 'UNKNOWN')
+        if status not in ['CREATE_COMPLETE', 'UPDATE_COMPLETE']:
+            print(f"{Colors.YELLOW}⚠️  Stack status: {status}{Colors.END}")
+            print(f"{Colors.YELLOW}Wait for stack to complete, then try again{Colors.END}")
+            return None
+        
+        # Check if outputs exist
+        if 'Outputs' not in stack:
+            print(f"{Colors.RED}Stack has no outputs!{Colors.END}")
+            print(f"{Colors.YELLOW}Try: cd samples/bedrock-agentcore && cdk deploy{Colors.END}")
+            return None
+        
+        outputs = stack['Outputs']
+        
+        # Find RuntimeArn output
         for output in outputs:
             if output['OutputKey'] == 'RuntimeArn':
                 return output['OutputValue']
+        
+        # RuntimeArn not found
+        print(f"{Colors.YELLOW}RuntimeArn output not found. Available outputs:{Colors.END}")
+        for output in outputs:
+            print(f"  - {output['OutputKey']}")
         return None
+        
     except Exception as e:
         print(f"{Colors.RED}{Colors.CROSS} Error: {e}{Colors.END}", file=sys.stderr)
+        import traceback
+        traceback.print_exc(file=sys.stderr)
         return None
 
 

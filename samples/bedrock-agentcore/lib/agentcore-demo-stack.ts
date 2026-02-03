@@ -3,64 +3,32 @@ import { Construct } from 'constructs';
 import * as agentcore from '@aws-cdk/aws-bedrock-agentcore-alpha';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as path from 'path';
 
-/**
- * AgentCore Demo Stack - Refactored Structure
- * 
- * Resource Creation Order:
- * 1. Runtime (agent container infrastructure)
- * 2. Memory (conversation storage)
- * 3. Gateway (external tool integration)
- * 4. Gateway Targets (Lambda functions)
- * 5. Tool Permissions (Code Interpreter, Browser)
- * 
- * Business Use Case: AI Research Assistant
- */
 export class AgentCoreDemoStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
     // ========================================
-    // 1. RUNTIME - Core Agent Infrastructure
+    // 1. MEMORY - Conversation Storage
     // ========================================
-    // Create the agent runtime first - this is the foundation
-    // Environment variables will be populated after dependencies are created
-    const runtime = new agentcore.Runtime(this, 'ResearchAssistantRuntime', {
-      runtimeName: 'research_assistant',
-      agentRuntimeArtifact: agentcore.AgentRuntimeArtifact.fromAsset(
-        path.join(__dirname, '../agent')
-      ),
-      // Environment variables added after Memory and Gateway creation
-    });
-
-    // ========================================
-    // 2. MEMORY - Conversation Storage
-    // ========================================
-    // Default short-term memory for immediate conversation retrieval
     const memory = new agentcore.Memory(this, 'ResearchAssistantMemory', {
       memoryName: 'research_assistant_memory',
       description: 'Short-term memory for AI Research Assistant chat conversations',
-      expirationDuration: cdk.Duration.days(90),
-      // NO memoryStrategies = uses default STM (matches aws-asl-metahuman pattern)
+      // NO memoryStrategies = uses default STM 
     });
 
     // ========================================
-    // 3. GATEWAY - External Tool Integration
+    // 2. GATEWAY - External Tool Integration
     // ========================================
-    // MCP Gateway with Cognito M2M authentication
     const gateway = new agentcore.Gateway(this, 'ResearchAssistantGateway', {
       gatewayName: 'research-assistant-gateway',
       description: 'Gateway for Research Assistant external tools',
-      protocolConfiguration: new agentcore.McpProtocolConfiguration({
-        instructions: 'Use this gateway to access weather and external data tools',
-        searchType: agentcore.McpGatewaySearchType.SEMANTIC,
-        supportedVersions: [agentcore.MCPProtocolVersion.MCP_2025_03_26],
-      }),
     });
 
     // ========================================
-    // 4. GATEWAY TARGETS - Lambda Functions
+    // 3. GATEWAY TARGETS - Lambda Functions
     // ========================================
     // Weather tool Lambda function
     const weatherLambda = new lambda.Function(this, 'WeatherToolFunction', {
@@ -68,11 +36,6 @@ export class AgentCoreDemoStack extends cdk.Stack {
       handler: 'index.handler',
       code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/weather-tool')),
       description: 'Weather tool for Research Assistant',
-      timeout: cdk.Duration.seconds(30),
-      memorySize: 256,
-      environment: {
-        LOG_LEVEL: 'INFO',
-      },
     });
 
     // Add Lambda as Gateway target
@@ -105,9 +68,55 @@ export class AgentCoreDemoStack extends cdk.Stack {
     // Ensure Gateway Target waits for IAM permissions
     weatherTarget.node.addDependency(gateway.role);
 
-    
     // ========================================
-    // 5. TOOL PERMISSIONS - Code Interpreter & Browser
+    // 4. CODE INTERPRETER - Python Code Execution
+    // ========================================
+    const codeInterpreter = new agentcore.CodeInterpreterCustom(this, 'CodeInterpreter', {
+      codeInterpreterCustomName: 'research_assistant_interpreter',
+      description: 'Code interpreter for Research Assistant',
+    });
+
+    // ========================================
+    // 5. BROWSER - Web Browsing Capability with Recording
+    // ========================================
+    // S3 bucket for browser session recordings
+    const recordingBucket = new s3.Bucket(this, 'BrowserRecordings', {
+      bucketName: `agent-browser-recordings-${this.account}`,
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+      encryption: s3.BucketEncryption.S3_MANAGED,
+    });
+
+    const browser = new agentcore.BrowserCustom(this, 'Browser', {
+      browserCustomName: 'research_assistant_browser',
+      description: 'Browser for Research Assistant with session recording',
+      recordingConfig: {
+        enabled: true,
+        s3Location: {
+          bucketName: recordingBucket.bucketName,
+          objectKey: 'browser-sessions/',
+        },
+      },
+    });
+
+    // ========================================
+    // 6. RUNTIME - Core Agent Infrastructure
+    // ========================================
+    const runtime = new agentcore.Runtime(this, 'ResearchAssistantRuntime', {
+      runtimeName: 'research_assistant',
+      agentRuntimeArtifact: agentcore.AgentRuntimeArtifact.fromAsset(
+        path.join(__dirname, '../agent')
+      ),
+      environmentVariables: {
+        'MEMORY_ID': memory.memoryId!,
+        'GATEWAY_URL': gateway.gatewayUrl!,
+        'AWS_REGION': this.region,
+        'CODE_INTERPRETER_ID': codeInterpreter.codeInterpreterId!,
+        'BROWSER_ID': browser.browserId!,
+      },
+    });
+
+    // ========================================
+    // 7. BEDROCK MODEL PERMISSIONS
     // ========================================
     // Grant Runtime permissions to invoke Bedrock models
     runtime.addToRolePolicy(new iam.PolicyStatement({
@@ -119,39 +128,8 @@ export class AgentCoreDemoStack extends cdk.Stack {
       resources: ['*'],
     }));
 
-    // Code Interpreter permissions
-    runtime.addToRolePolicy(new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: [
-        'bedrock-agentcore:InvokeCodeInterpreter',
-        'bedrock-agentcore:StartCodeInterpreterSession',
-        'bedrock-agentcore:StopCodeInterpreterSession',
-        'bedrock-agentcore:GetCodeInterpreterSession',
-      ],
-      resources: ['*'],
-    }));
-
-    // Browser permissions (complete set from AWS documentation)
-    runtime.addToRolePolicy(new iam.PolicyStatement({
-      effect: iam.Effect.ALLOW,
-      actions: [
-        'bedrock-agentcore:CreateBrowser',
-        'bedrock-agentcore:ListBrowsers',
-        'bedrock-agentcore:GetBrowser',
-        'bedrock-agentcore:DeleteBrowser',
-        'bedrock-agentcore:StartBrowserSession',
-        'bedrock-agentcore:ListBrowserSessions',
-        'bedrock-agentcore:GetBrowserSession',
-        'bedrock-agentcore:StopBrowserSession',
-        'bedrock-agentcore:UpdateBrowserStream',
-        'bedrock-agentcore:ConnectBrowserAutomationStream',
-        'bedrock-agentcore:ConnectBrowserLiveViewStream',
-      ],
-      resources: ['*'],
-    }));
-
     // ========================================
-    // 6. RESOURCE PERMISSIONS
+    // 8. RESOURCE PERMISSIONS
     // ========================================
     // Grant Runtime access to Memory
     memory.grantRead(runtime);
@@ -160,20 +138,28 @@ export class AgentCoreDemoStack extends cdk.Stack {
     // Grant Runtime access to Gateway
     gateway.grantInvoke(runtime);
 
-    // ========================================
-    // 5. RUNTIME CONFIGURATION
-    // ========================================
-    // Add environment variables to Runtime (now that Memory and Gateway exist)
-    const runtimeCfn = runtime.node.defaultChild as cdk.aws_bedrockagentcore.CfnRuntime;
-    runtimeCfn.addPropertyOverride('EnvironmentVariables', {
-      'MEMORY_ID': memory.memoryId,
-      'GATEWAY_URL': gateway.gatewayUrl,
-      'AWS_REGION': this.region,
-    });
+    // Grant Runtime access to Code Interpreter (automatic IAM permissions for custom instance)
+    codeInterpreter.grantUse(runtime);
 
+    // Grant Runtime access to Browser (automatic IAM permissions for custom instance)
+    browser.grantUse(runtime);
+
+    runtime.addToRolePolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: [
+        'bedrock-agentcore:StartBrowserSession',
+        'bedrock-agentcore:GetBrowserSession',
+        'bedrock-agentcore:StopBrowserSession',
+        'bedrock-agentcore:UpdateBrowserStream',
+        'bedrock-agentcore:ConnectBrowserAutomationStream',
+        'bedrock-agentcore:ConnectBrowserLiveViewStream',
+      ],
+      resources: ['*'],
+      sid: 'AllowDefaultBrowserForStrands',
+    }));
 
     // ========================================
-    // 8. OUTPUTS - For CLI Usage
+    // 9. OUTPUTS - For CLI Usage
     // ========================================
     // Export important values for deployment and testing
     
@@ -238,36 +224,18 @@ export class AgentCoreDemoStack extends cdk.Stack {
       });
     }
 
-    // ========================================
-    // NOTES ON L2 CONSTRUCT BENEFITS
-    // ========================================
-    /*
-     * This stack demonstrates the power of AgentCore L2 constructs:
-     * 
-     * 1. SIMPLIFIED SYNTAX
-     *    - No CfnXxx constructs needed
-     *    - Clean, intuitive API
-     *    - Type-safe properties
-     * 
-     * 2. AUTOMATIC IAM PERMISSIONS
-     *    - Gateway automatically gets Lambda invoke permissions
-     *    - Memory automatically configures service roles
-     *    - No manual IAM policy crafting required
-     * 
-     * 3. BUILT-IN BEST PRACTICES
-     *    - Memory strategies use recommended configurations
-     *    - Gateway uses secure defaults (Cognito M2M)
-     *    - Proper encryption and logging
-     * 
-     * 4. SEAMLESS INTEGRATION
-     *    - Gateway.addLambdaTarget() handles everything
-     *    - Memory strategies work out of the box
-     *    - Cross-construct references just work
-     * 
-     * 5. PRODUCTION READY
-     *    - All resources properly tagged
-     *    - CloudWatch logging enabled
-     *    - Security best practices applied
-     */
+    // Output Code Interpreter and Browser IDs
+    new cdk.CfnOutput(this, 'CodeInterpreterCustomId', {
+      value: codeInterpreter.codeInterpreterId || 'Not available',
+      description: 'Code Interpreter Custom ID',
+      exportName: 'ResearchAssistantCodeInterpreterCustomId',
+    });
+
+    new cdk.CfnOutput(this, 'BrowserCustomId', {
+      value: browser.browserId || 'Not available',
+      description: 'Browser Custom ID',
+      exportName: 'ResearchAssistantBrowserCustomId',
+    });
+
   }
 }
