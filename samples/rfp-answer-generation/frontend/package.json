@@ -30,7 +30,7 @@
     "@tabler/icons-react": "^3.36.0",
     "@tanstack/react-table": "^8.21.3",
     "aws-amplify": "^5.3.11",
-    "axios": "^1.5.1",
+    "axios": "^1.13.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "exceljs": "^4.4.0",
