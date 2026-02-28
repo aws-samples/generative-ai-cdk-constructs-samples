@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@aws-solutions-constructs/aws-alb-fargate": "^2.85.2",
-    "aws-cdk-lib": "2.193.0",
+    "aws-cdk-lib": "2.240.0",
     "constructs": "^10.0.0"
   }
 }
