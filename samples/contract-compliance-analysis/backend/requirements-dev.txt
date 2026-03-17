@@ -5,7 +5,7 @@ requests-aws4auth
 # we consume powertools for lambda via a managed layer, so we need to manually install here for the llm not to complain
 aws-lambda-powertools[all]==3.18.0
 
-bedrock-agentcore-starter-toolkit==0.1.4
+bedrock-agentcore-starter-toolkit==0.1.13
 
 pytest==8.4.1
 pytest-cov
