@@ -23,7 +23,7 @@ readme = "README.md"
 black = "^24.10.0"
 mypy = "^1.11.2"
 python-dotenv = "^1.0.1"
-pytest = "7.4.3"
+pytest = "9.0.3"
 
   [tool.poetry.group.dev.dependencies.boto3-stubs-lite]
   version = "^1.35.37"
