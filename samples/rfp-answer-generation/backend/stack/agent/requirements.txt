@@ -9,7 +9,7 @@ opentelemetry-instrumentation-threading==0.59b0
 opentelemetry-instrumentation==0.59b0
 opentelemetry-sdk==1.38.0
 opentelemetry-semantic-conventions==0.59b0
-pillow==11.3.0
+pillow==12.2.0
 pydantic==2.12.2
 PyYAML==6.0.3
 strands-agents-tools==0.2.10
