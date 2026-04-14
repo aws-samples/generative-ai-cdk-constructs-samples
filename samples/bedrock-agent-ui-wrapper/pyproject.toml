@@ -19,7 +19,7 @@ cdklabs-generative-ai-cdk-constructs = "^0.1.296"
 
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.3.4"
+pytest = "^9.0.3"
 jupyter = "^1.1.1"
 ipykernel = "^6.29.5"
 
