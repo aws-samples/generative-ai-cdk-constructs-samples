@@ -7,7 +7,7 @@
     "test": "./run-load-test.sh"
   },
   "dependencies": {
-    "artillery": "^2.0.0-31",
+    "artillery": "^2.0.31",
     "aws-sdk": "^2.1450.0",
     "ws": "^8.13.0",
     "uuid": "^9.0.0"
